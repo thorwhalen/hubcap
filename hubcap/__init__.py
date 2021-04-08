@@ -3,14 +3,14 @@ from github import GithubException
 
 # from py2store.util import lazyprop
 # from py2store.trans import cache_iter
-# from py2store.key_mappers.paths import PathGetMixin
+# from py2store.paths import PathGetMixin
 from github import Github, ContentFile
 
 from py2store.util import format_invocation
 
 
 #
-# from py2store.utils.signatures import update_signature_with_signatures_from_funcs
+# from py2store.signatures import update_signature_with_signatures_from_funcs
 #
 # # Just meant to be used for it's signature:
 # def _account_name(account_name): ...
@@ -212,7 +212,7 @@ def _content_file_isdir(content_file):
 # from github import GithubException
 # from py2store.util import lazyprop
 # from py2store.trans import cache_iter
-# from py2store.key_mappers.paths import PathGetMixin
+# from py2store.paths import PathGetMixin
 #
 #
 # # @cache_iter(keys_cache=sorted)
