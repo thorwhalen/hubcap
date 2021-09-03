@@ -1,9 +1,5 @@
 from py2store import KvReader
 from github import GithubException
-
-# from py2store.util import lazyprop
-# from py2store.trans import cache_iter
-# from py2store.paths import PathGetMixin
 from github import Github, ContentFile
 
 from py2store.util import format_invocation
@@ -212,7 +208,6 @@ def _content_file_isdir(content_file):
 # from github import GithubException
 # from py2store.util import lazyprop
 # from py2store.trans import cache_iter
-# from py2store.paths import PathGetMixin
 #
 #
 # # @cache_iter(keys_cache=sorted)
