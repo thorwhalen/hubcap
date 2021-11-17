@@ -1,5 +1,7 @@
 """Scrap (but sometimes useable) code that doesn't yet have a proper home
 
+List repositories for a given user or organization, along with 78 fields of info.
+
 >>> from hubcap.scrap import repos_info, actions_info
 >>>
 >>> repos = repos_info('i2mint')  # doctest: +SKIP
