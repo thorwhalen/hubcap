@@ -43,10 +43,10 @@ def _repos_info(
 
 
 def repos_info(
-    user=DFLT_USER, token=None,
+    user=DFLT_USER, token=None, **params
 ):
     """List repos and their info: dataframe"""
-    r = _repos_info(user, token=token)
+    r = _repos_info(user, token=token, **params)
     df = pd.DataFrame(r.json()).set_index('full_name', drop=False)
     return df
 
@@ -94,6 +94,14 @@ def date_selection_lidx(df, hours_ago=24, date_column='updated_at', op=gt):
     df[date] = pd.to_datetime(df[date_column])
     df = df.set_index(date, drop=False)
     return op(df[date], str(thresh_date)).values
+
+
+def ci_status(user=DFLT_USER, hours_ago=24, token=None, **params):
+    """Get a dict of CI "conclusions" for all recently updated repos for a user/org"""
+    repos = repos_info(user, token=token, **params)
+    updated_recently_lidx = date_selection_lidx(repos, hours_ago=hours_ago)
+    updated_recently = repos.iloc[updated_recently_lidx]
+    return {repo: get_last_build_status(repo) for repo in updated_recently['full_name']}
 
 
 # def check_status_changed(status):

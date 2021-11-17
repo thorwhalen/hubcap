@@ -71,8 +71,18 @@ Find most recently changed repositories and check if their CI failed or not.
  'i2mint/stream2py': 'success',
  'i2mint/creek': 'success'}
 
+Note: You can get this directly using the `ci_status` function
+
+>>> from hubcap.scrap import ci_status
+>>> ci_status('i2mint', hours_ago=24)  # doctest: +SKIP
+{'i2mint/py2mqtt': 'failure',
+ 'i2mint/mongodol': 'success',
+ 'i2mint/dol': 'success',
+ 'i2mint/stream2py': 'success',
+ 'i2mint/creek': 'success'}
+
 """
 
 from hubcap.scrap.direct_github_api import (
-    repos_info, actions_info, date_selection_lidx, get_last_build_status
+    repos_info, actions_info, date_selection_lidx, get_last_build_status, ci_status
 )
