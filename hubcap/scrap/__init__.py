@@ -84,5 +84,9 @@ Note: You can get this directly using the `ci_status` function
 """
 
 from hubcap.scrap.direct_github_api import (
-    repos_info, actions_info, date_selection_lidx, get_last_build_status, ci_status
+    repos_info,
+    actions_info,
+    date_selection_lidx,
+    get_last_build_status,
+    ci_status,
 )

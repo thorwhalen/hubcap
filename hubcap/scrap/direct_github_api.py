@@ -42,9 +42,7 @@ def _repos_info(
     return r
 
 
-def repos_info(
-    user=DFLT_USER, token=None, **params
-):
+def repos_info(user=DFLT_USER, token=None, **params):
     """List repos and their info: dataframe"""
     r = _repos_info(user, token=token, **params)
     df = pd.DataFrame(r.json()).set_index('full_name', drop=False)
@@ -89,7 +87,7 @@ from datetime import datetime, timedelta
 
 def date_selection_lidx(df, hours_ago=24, date_column='updated_at', op=gt):
     thresh_date = datetime.now() - timedelta(hours=hours_ago)
-    date = f"_{date_column}"
+    date = f'_{date_column}'
     df = df.copy()
     df[date] = pd.to_datetime(df[date_column])
     df = df.set_index(date, drop=False)
