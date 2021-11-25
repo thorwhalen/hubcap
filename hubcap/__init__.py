@@ -37,12 +37,11 @@ class GitHubReader(KvReader):
             jwt=None,
             base_url="https://api.github.com",
             timeout=15,
-            client_id=None,
-            client_secret=None,
             user_agent="PyGithub/Python",
             per_page=30,
             verify=True,
             retry=None,
+            pool_size=None
     ):
 
         assert isinstance(
@@ -55,12 +54,11 @@ class GitHubReader(KvReader):
             jwt=jwt,
             base_url=base_url,
             timeout=timeout,
-            client_id=client_id,
-            client_secret=client_secret,
             user_agent=user_agent,
             per_page=per_page,
             verify=verify,
             retry=retry,
+            pool_size=pool_size
         )
         self._github = _github
         self._source_obj = (
