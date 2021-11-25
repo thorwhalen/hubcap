@@ -1,3 +1,43 @@
+"""
+The simplest facade to github data
+
+Warning: You'll need to have a github api token (google it if you don't have one;
+it's easy to get). You'll have to specify this token when making hubcap objects,
+or put it in an environmental variable under the name `HUBCAP_GITHUB_TOKEN` or
+`GITHUB_TOKEN`
+
+>>> s = GitHubReader('thorwhalen')  # connnecting to a particular user/organization
+>>> list(s)  # doctest: +SKIP
+['agen',
+ 'aix',
+ ...
+ 'viral',
+ 'wealth',
+ 'wrapt']
+>>> 'a_non_existing_repository_name' in s
+False
+>>> 'hubcap' in s  # of course, this will be true, it's what you're using now!
+True
+>>> repo = s['hubcap']
+>>> list(repo)
+['master']
+>>> branch = repo['master']
+>>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
+['/.gitattributes',
+ '/.github',
+ '/.gitignore',
+ '/LICENSE',
+ '/README.md',
+ '/docsrc',
+ '/hubcap',
+ '/setup.cfg',
+ '/setup.py']
+>>> content = branch['/setup.cfg']
+>>> print(content[:32].decode())
+[metadata]
+name = hubcap
+version
+"""
 from py2store import KvReader
 from github import GithubException
 from github import Github, ContentFile
@@ -19,6 +59,15 @@ def decoded_contents(content_file):
     return content_file.decoded_content
     # from base64 import b64decode
     # return b64decode(content_file.content).decode()
+
+
+# TODO: Enable user parametrization of how to find token
+def find_github_token():
+    import os
+
+    return os.environ.get('HUBCAP_GITHUB_TOKEN', None) or os.environ.get(
+        'GITHUB_TOKEN', None
+    )
 
 
 # TODO: use signature arithmetic
@@ -45,6 +94,7 @@ class GitHubReader(KvReader):
     ):
 
         assert isinstance(account_name, str), 'account_name must be given (and a str)'
+        login_or_token = login_or_token or find_github_token()
 
         _github = Github(
             login_or_token=login_or_token,
@@ -80,6 +130,11 @@ class GitHubReader(KvReader):
         except GithubException as e:
             raise KeyError(f"Key doesn't exist: {k}")
         return Branches(repository, self.content_file_extractor)
+
+    def __contains__(self, k):
+        if self.get(k, None) is None:
+            return False
+        return True
 
     def __repr__(self):
         return format_invocation(
