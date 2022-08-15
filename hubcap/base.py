@@ -1,9 +1,9 @@
 """Base objects"""
-from py2store import KvReader
+from dol import KvReader
 from github import GithubException
 from github import Github, ContentFile
 
-from py2store.util import format_invocation
+from dol.util import format_invocation
 
 
 def decoded_contents(content_file):
@@ -60,15 +60,15 @@ class GitHubReader(KvReader):
             pool_size=pool_size,
         )
         self._github = _github
-        self._source_obj = (
+        self.src = (
             _github.get_user(account_name) if account_name else _github.get_user()
         )
         self.content_file_extractor = content_file_extractor
 
     def __iter__(self):
-        for x in self._source_obj.get_repos():
+        for x in self.src.get_repos():
             org, name = x.full_name.split('/')
-            if org == self._source_obj.login:
+            if org == self.src.login:
                 yield name
 
     def __getitem__(self, k):
@@ -77,7 +77,7 @@ class GitHubReader(KvReader):
         :rtype: :class:`github.Repository.Repository`
         """
         try:
-            repository = self._source_obj.get_repo(k)
+            repository = self.src.get_repo(k)
         except GithubException as e:
             raise KeyError(f"Key doesn't exist: {k}")
         return Branches(repository, self.content_file_extractor)
@@ -89,24 +89,24 @@ class GitHubReader(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self._source_obj, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )
 
 
 class Branches(KvReader):
     def __init__(self, repository_obj, content_file_extractor=decoded_contents):
-        self._source_obj = repository_obj
+        self.src = repository_obj
         self.content_file_extractor = content_file_extractor
         # self._con = repository_obj  # same as this.
 
     def __iter__(self):
-        yield from (x.name for x in self._source_obj.get_branches())
+        yield from (x.name for x in self.src.get_branches())
 
     def __getitem__(self, k):
-        # return self._source_obj.get_branch(k) # should not give only the branch
-        # return self._source_obj.get_contents("", ref = k)
+        # return self.src.get_branch(k) # should not give only the branch
+        # return self.src.get_contents("", ref = k)
         return BranchDir(
-            self._source_obj,
+            self.src,
             branch_name=k,
             path='',
             content_file_extractor=self.content_file_extractor,
@@ -114,7 +114,7 @@ class Branches(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self._source_obj, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )
 
 
@@ -126,26 +126,28 @@ class BranchDir(KvReader):
         path='',
         content_file_extractor=decoded_contents,
     ):
-        self._source_obj = repository_obj
+        self.src = repository_obj
         self.branch_name = branch_name
         self.path = path
         self.content_file_extractor = content_file_extractor
 
     def __iter__(self):
         yield from (
-            self.path + '/' + x.name
-            for x in self._source_obj.get_contents(self.path, ref=self.branch_name)
+            self.path + '/' + x.name + ('/' if x.type == 'dir' else '')
+            for x in self.src.get_contents(self.path, ref=self.branch_name)
         )
-        # yield from (x.name for x in self._source_obj.get_contents(self.subpath, ref=self.branch_name))
+        # yield from (x.name for x in self.src.get_contents(self.subpath, ref=self.branch_name))
 
     def __getitem__(self, k):
-        t = self._source_obj.get_contents(k)
+        if k.endswith('/'):
+            k = k[:-1]  # remove the / suffix
+        t = self.src.get_contents(k)
         # TODO: There is an inefficiency here in the isinstance(t, list) case
         if isinstance(
             t, list
         ):  # TODO: ... you already have the content_files in t, so don't need to call API again.
             return self.__class__(
-                self._source_obj, self.branch_name, k, self.content_file_extractor,
+                self.src, self.branch_name, k, self.content_file_extractor,
             )
         else:
             return self.content_file_extractor(t)
@@ -153,14 +155,9 @@ class BranchDir(KvReader):
     def __repr__(self):
         return format_invocation(
             self.__class__.__name__,
-            (
-                self._source_obj,
-                self.branch_name,
-                self.path,
-                self.content_file_extractor,
-            ),
+            (self.src, self.branch_name, self.path, self.content_file_extractor,),
         )
-        # return f"{self.__class__.__name__}({self._source_obj}, {self.branch_name})"
+        # return f"{self.__class__.__name__}({self.src}, {self.branch_name})"
 
 
 # Not used, but for principle:
@@ -174,7 +171,7 @@ def _content_file_isdir(content_file):
     return content_file.type == 'dir'
 
 
-# from py2store import kv_wrap
+# from dol import kv_wrap
 #
 # BranchContent = kv_wrap.outcoming_vals(lambda x: x.contents if isinstance(x, ))
 
@@ -185,6 +182,7 @@ class PaginatedListDol:
     """Gives a Sized & Iterable & Reversible view of a paginated_list.
     That is, iterating over a PaginatedListDol
     """
+
     def __init__(self, paginated_list: PaginatedList):
         self.paginated_list = paginated_list
 
@@ -236,15 +234,15 @@ class GitHubDol(KvReader):
             pool_size=pool_size,
         )
         self._github = _github
-        self._source_obj = (
+        self.src = (
             _github.get_user(account_name) if account_name else _github.get_user()
         )
         self.content_file_extractor = content_file_extractor
 
     def __iter__(self):
-        for x in self._source_obj.get_repos():
+        for x in self.src.get_repos():
             org, name = x.full_name.split('/')
-            if org == self._source_obj.login:
+            if org == self.src.login:
                 yield name
 
     def __getitem__(self, k):
@@ -253,7 +251,7 @@ class GitHubDol(KvReader):
         :rtype: :class:`github.Repository.Repository`
         """
         try:
-            repository = self._source_obj.get_repo(k)
+            repository = self.src.get_repo(k)
         except GithubException as e:
             raise KeyError(f"Key doesn't exist: {k}")
         return Branches(repository, self.content_file_extractor)
@@ -265,6 +263,5 @@ class GitHubDol(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self._source_obj, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )
-
