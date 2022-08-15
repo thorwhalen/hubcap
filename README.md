@@ -36,12 +36,12 @@ True
 >>> branch = repo['master']
 >>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
 ['/.gitattributes',
- '/.github',
+ '/.github/',
  '/.gitignore',
  '/LICENSE',
  '/README.md',
- '/docsrc',
- '/hubcap',
+ '/docsrc/',
+ '/hubcap/',
  '/setup.cfg',
  '/setup.py']
 >>> content = branch['/setup.cfg']
@@ -58,7 +58,7 @@ version
 List repositories for a given user or organization, along with 78 fields of info.
 
 ```python
->>> from hubcap.scrap import repos_info, actions_info
+>>> from hubcap.examples import repos_info, actions_info
 >>>
 >>> repos = repos_info('i2mint')  # doctest: +SKIP
 >>> print(repos.shape)   # doctest: +SKIP
@@ -120,7 +120,7 @@ Get info about github actions for a given repository.
 Find most recently changed repositories and check if their CI failed or not.
 
 ```python
->>> from hubcap.scrap import date_selection_lidx
+>>> from hubcap.examples import date_selection_lidx
 >>> updated_recently = repos.iloc
 ...     [date_selection_lidx(repos, hours_ago=24)]  # doctest: +SKIP
 >>> {repo: get_last_build_status(repo)
@@ -136,7 +136,7 @@ Find most recently changed repositories and check if their CI failed or not.
 Note: You can get this directly using the `ci_status` function
 
 ```python
->>> from hubcap.scrap import ci_status
+>>> from hubcap.examples import ci_status
 >>> ci_status('i2mint', hours_ago=24)  # doctest: +SKIP
 {'i2mint/py2mqtt': 'failure',
  'i2mint/mongodol': 'success',
