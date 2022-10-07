@@ -1,10 +1,11 @@
 """Base objects"""
 from dol import KvReader
-from github import GithubException
-from github import Github, ContentFile
+from github import GithubException, Github
+import github
 
 from dol.util import format_invocation
 
+NotSet = github.GithubObject.NotSet
 
 def decoded_contents(content_file):
     return content_file.decoded_content
@@ -32,6 +33,7 @@ class GitHubReader(KvReader):
         self,
         account_name: str = None,
         content_file_extractor=decoded_contents,
+        *,
         login_or_token=None,
         password=None,
         jwt=None,
@@ -41,7 +43,7 @@ class GitHubReader(KvReader):
         per_page=30,
         verify=True,
         retry=None,
-        pool_size=None,
+        get_repos_kwargs=()
     ):
 
         assert isinstance(account_name, str), 'account_name must be given (and a str)'
@@ -57,16 +59,16 @@ class GitHubReader(KvReader):
             per_page=per_page,
             verify=verify,
             retry=retry,
-            pool_size=pool_size,
         )
         self._github = _github
         self.src = (
             _github.get_user(account_name) if account_name else _github.get_user()
         )
         self.content_file_extractor = content_file_extractor
+        self.get_repos_kwargs = dict(get_repos_kwargs)
 
     def __iter__(self):
-        for x in self.src.get_repos():
+        for x in self.src.get_repos(**self.get_repos_kwargs):
             org, name = x.full_name.split('/')
             if org == self.src.login:
                 yield name
