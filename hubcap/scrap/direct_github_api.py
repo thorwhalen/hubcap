@@ -81,6 +81,16 @@ def get_last_build_status(repo=DFLT_REPO, token=None, **params):
     return conclusion
 
 
+def get_action_ci_status(repos, hours_ago=24 * 365):
+    """Get a table of CI status (failure or success or None) for some repositories"""
+    import pandas as pd
+
+    updated_recently = repos.iloc[date_selection_lidx(repos, hours_ago=hours_ago)]
+    cis = {
+        repo: get_last_build_status(repo) for repo in updated_recently['full_name']
+    }
+    return pd.Series(cis)
+
 from operator import gt
 from datetime import datetime, timedelta
 
