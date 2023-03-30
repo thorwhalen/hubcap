@@ -42,3 +42,4 @@ version
 
 from github import GithubException, Github, ContentFile
 from hubcap.base import find_github_token, GitHubReader, Branches, BranchDir
+from hubcap.util import get_repository_info, cached_github_object
