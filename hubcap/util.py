@@ -93,8 +93,9 @@ def _ensure_repo_func(prop_spec: RepoPropSpec) -> RepoFunc:
 def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, RepoFunc]:
     """Ensure a dict of repo info.
 
-    >>> ensure_repo_info_dict(DFLT_REPO_INFO)
-    {'name': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'full_name': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'description': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'stargazers_count': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'forks_count': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'watchers_count': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'html_url': <operator.attrgetter object at 0x7f7b0e6b9a00>, 'last_commit_date': <function _last_commit_date at 0x7f7b0e6b9ca0>}
+    >>> d = _ensure_repo_info_dict_with_func_values('name html_url')
+    >>> all(callable(x) for x in d.values())
+    True
     """
     if isinstance(repo_info, str):
         prop_names = repo_info.split()
