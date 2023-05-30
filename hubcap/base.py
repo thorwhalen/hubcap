@@ -24,6 +24,14 @@ def find_github_token():
     )
 
 
+def find_user_name():
+    import os
+
+    return os.environ.get("HUBCAP_GITHUB_TOKEN", None) or os.environ.get(
+        "GITHUB_USERNAME", None
+    )
+
+
 # TODO: use signature arithmetic
 # @kv_decorator
 class GitHubReader(KvReader):
@@ -47,8 +55,15 @@ class GitHubReader(KvReader):
         retry=None,
         get_repos_kwargs=(),
     ):
-        assert isinstance(account_name, str), "account_name must be given (and a str)"
+        # TODO: Not sure what the rules are with account_name and login_or_token
+        #  So only using a search-if-not-given strategy if account_name is None
+        # account_name = account_name or find_user_name()
+
         login_or_token = login_or_token or find_github_token()
+        if login_or_token is None:
+            assert isinstance(
+                account_name, str
+            ), "account_name must be given (and a str)"
 
         _github = Github(
             login_or_token=login_or_token,
