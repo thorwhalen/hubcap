@@ -156,3 +156,92 @@ def ensure_repo_obj(repo: Union[Repository, str]) -> Repository:
     else:
         g = cached_github_object()
         return g.get_repo(ensure_full_name(repo))
+
+
+# --------------------------------------------------------------------------------------
+# At the time of writing this, python's github API doesn't provide discussions info
+# so we're using the graphQL github API here, directly, using requests
+
+import requests
+from functools import cached_property, partial
+
+from dol import KvReader, path_get
+from config2py import simple_config_getter
+
+APP_NAME = 'hubcap'
+get_config = simple_config_getter(APP_NAME)
+
+
+def defaulted_itemgetter(d, k, default):
+    return d.get(k, default)
+
+
+def _raise_if_error(data):
+    """Raises an error if the data has errors"""
+    if errors := data.get('errors'):
+        msg = '\n'.join([e['message'] for e in errors])
+        raise RuntimeError(msg)
+    return data
+
+
+# TODO: Pack the graphQL query logic further using template-enabled function
+class GithubDiscussions(KvReader):
+    get_value = partial(path_get, get_value=partial(defaulted_itemgetter, default={}))
+    _max_discussions = 100
+
+    def __init__(self, repo, token=None):
+        token = token or get_config('GITHUB_TOKEN')
+        self.owner, self.repo_name = repo.split('/')
+        self.repo = repo
+        self.token = token
+        self.headers = {"Authorization": f"Bearer {token}"}
+        self.url = "https://api.github.com/graphql"
+
+    @cached_property
+    def _discussions(self):
+        query = f"""
+        query {{
+          repository(owner: "{self.owner}", name: "{self.repo_name}") {{
+            discussions(first: self._max_discussions) {{
+              nodes {{
+                number
+              }}
+              totalCount
+            }}
+          }}
+        }}
+        """
+        response = requests.post(self.url, headers=self.headers, json={"query": query})
+        response.raise_for_status()
+        data = _raise_if_error(response.json())
+        return self.get_value(data, 'data.repository.discussions')
+
+    def __iter__(self):
+        nodes = self._discussions.get('nodes', ())
+        return (node["number"] for node in nodes)
+
+    def __len__(self):
+        return self._discussions.get('totalCount', 0)
+
+    def __contains__(self, key):
+        return len(self._discussions.get('nodes', ()))
+
+    def __getitem__(self, key):
+        query = f"""
+        query {{
+          repository(owner: "{self.owner}", name: "{self.repo_name}") {{
+            discussion(number: {key}) {{
+              title
+              body
+            }}
+          }}
+        }}
+        """
+        response = requests.post(self.url, headers=self.headers, json={"query": query})
+        response.raise_for_status()
+        data = _raise_if_error(response.json())
+        discussion = self.get_value(data, 'data.repository.discussion')
+        return {
+            "title": discussion.get('title', ''),
+            "body": discussion.get('body', ''),
+        }

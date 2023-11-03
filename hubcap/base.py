@@ -34,7 +34,7 @@ def find_user_name():
 
 # TODO: use signature arithmetic
 # @kv_decorator
-class GitHubReader(KvReader):
+class GithubReader(KvReader):
     """
     a Store that can access a GitHub account
     """
@@ -110,6 +110,9 @@ class GitHubReader(KvReader):
             self.__class__.__name__,
             (self.src, self.content_file_extractor),
         )
+
+
+GitHubReader = GithubReader  # backcompatibility alias
 
 
 class Branches(KvReader):

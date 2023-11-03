@@ -43,9 +43,27 @@ version
 'https://github.com/thorwhalen/hubcap'
 >>> info['stargazers_count'] >= 1
 True
+
+You also have `GithubDiscussions`. 
+
+>>> discussions = GithubDiscussions('i2mint/creek')  # doctest: +SKIP
+>>> len(discussions)
+2
+>>> # get the discussion ids (numbers)
+>>> list(discussions)  # doctest: +SKIP
+[7, 8]
+>>> # get the discussion data
+>>> discussions_data_dict = discussions[7]  # doctest: +SKIP
+
 """
 
 
 from github import GithubException, Github, ContentFile
-from hubcap.base import find_github_token, GitHubReader, Branches, BranchDir
-from hubcap.util import get_repository_info, cached_github_object
+from hubcap.base import (
+    GithubReader,
+    find_github_token,
+    Branches,
+    BranchDir,
+    GitHubReader,  # backcompatibility alias of GithubReader
+)
+from hubcap.util import get_repository_info, cached_github_object, GithubDiscussions
