@@ -136,7 +136,7 @@ def ensure_github_url(user_repo_str: str, prefix="https://www.github.com/") -> s
     return f"{prefix.strip('/')}/{user_repo_str.strip('/')}"
 
 
-def ensure_repo_obj(repo: Union[Repository, str]) -> Repository:
+def ensure_repo_obj(repo: RepoSpec) -> Repository:
     """Ensure a Repository object.
 
     >>> ensure_repo_obj('thorwhalen/hubcap')
@@ -186,13 +186,14 @@ def _raise_if_error(data):
 
 
 # TODO: Pack the graphQL query logic further using template-enabled function
-class GithubDiscussions(KvReader):
+class Discussions(KvReader):
     get_value = partial(path_get, get_value=partial(defaulted_itemgetter, default={}))
     _max_discussions = 100
 
-    def __init__(self, repo, token=None):
+    def __init__(self, repo: RepoSpec, token=None):
         token = token or get_config('GITHUB_TOKEN')
-        self.owner, self.repo_name = repo.split('/')
+        repo = ensure_repo_obj(repo)
+        self.owner, self.repo_name = ensure_full_name(repo).split('/')
         self.repo = repo
         self.token = token
         self.headers = {"Authorization": f"Bearer {token}"}

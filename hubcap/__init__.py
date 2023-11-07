@@ -1,13 +1,70 @@
-"""
-The simplest facade to github data
+r"""
+The simplest facade to github data.
 
 Warning: You'll need to have a github api token (google it if you don't have one;
 it's easy to get). You'll have to specify this token when making hubcap objects,
 or put it in an environmental variable under the name `HUBCAP_GITHUB_TOKEN` or
 `GITHUB_TOKEN`
 
->>> from hubcap import GitHubReader
->>> s = GitHubReader('thorwhalen')  # connnecting to a particular user/organization
+
+# Example usage
+
+## hubcap function
+
+The high level function `hubcap` is the simplest way to get started. It's a
+function that takes a path to a github resource and returns a mapping to that
+resource. The mapping is lazy, so it's only when you access a key that the
+resource is actually fetched from github.
+
+>>> repositories = hubcap('thorwhalen')
+>>> 'hubcap' in repositories
+True
+>>> hubcap_repo = repositories['hubcap']
+>>>
+>>> repo = hubcap('thorwhalen/hubcap')
+>>> 'master' in repo
+True
+>>> master_files = repo['master']
+>>>
+>>> files = hubcap('thorwhalen/hubcap/master')
+>>> '/README.md' in files
+True
+>>> '/hubcap/' in files
+True
+>>> hubcap_files = files['/hubcap/']
+>>> '/hubcap/base.py' in hubcap_files
+True
+
+### Access issues
+
+>>> issues = hubcap('thorwhalen/hubcap/issues')
+>>> 3 in issues  # there's a "number 3" issue
+>>> issue = issues[3]
+>>> issue.title
+'Test Issue'
+>>> issue.body
+'This is just a test issue to test that hubcap can see it.\r\n'
+>>> issue.comments  # meaning "number of comments"
+1
+
+### Access discussions
+
+>>> discussions = hubcap('thorwhalen/hubcap/discussions')
+>>> 2 in discussions  # issue number 2 is in the discussions
+True
+>>> discussion = discussions[2]
+>>> discussion['title']
+'Root interface of hubcap'
+
+
+## GithubReader
+
+One of the main classes is `GithubReader`. It's a mapping that connects to a
+github user or organization, and returns a mapping of repositories. The
+repositories are also mappings, that return mappings of branches, and so on.
+
+>>> from hubcap import GithubReader
+>>> s = GithubReader('thorwhalen')  # connnecting to a particular user/organization
 >>> list(s)  # doctest: +SKIP
 ['agen',
  'aix',
@@ -44,16 +101,8 @@ version
 >>> info['stargazers_count'] >= 1
 True
 
-You also have `GithubDiscussions`. 
+You also have other useful objects, like `Issues`, `IssueComments`, `Discussions`, etc.   
 
->>> discussions = GithubDiscussions('i2mint/creek')  # doctest: +SKIP
->>> len(discussions)
-2
->>> # get the discussion ids (numbers)
->>> list(discussions)  # doctest: +SKIP
-[7, 8]
->>> # get the discussion data
->>> discussions_data_dict = discussions[7]  # doctest: +SKIP
 
 """
 
@@ -64,6 +113,9 @@ from hubcap.base import (
     find_github_token,
     Branches,
     BranchDir,
+    Issues,
+    IssueComments,
     GitHubReader,  # backcompatibility alias of GithubReader
 )
-from hubcap.util import get_repository_info, cached_github_object, GithubDiscussions
+from hubcap.util import get_repository_info, cached_github_object, Discussions
+from hubcap.tools import hubcap

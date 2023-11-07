@@ -4,8 +4,29 @@ from typing import Iterable, Literal
 import time
 from functools import partial
 
-from github import Github
-from hubcap.base import GitHubReader
+from hubcap.base import GithubReader, Issues
+from hubcap.util import Discussions
+
+
+def hubcap(path):
+    org, *_path = path.split('/')
+    s = GithubReader(org)
+    path_iter = iter(_path)
+    if (repo := next(path_iter, None)) is not None:
+        s = s[repo]
+    if (resource := next(path_iter, None)) is not None:
+        if resource == 'issues':
+            s = Issues(s.src)
+        elif resource == 'discussions':
+            s = Discussions(s.src)
+        else:
+            if resource == 'tree':  # then skip this to the next resource (a branch)
+                resource = next(path_iter)
+            s = s[resource]
+    # Process the rest of the path with the s mapping
+    for part in path_iter:
+        s = s[part]
+    return s
 
 
 def team_repositories_action(
@@ -20,7 +41,7 @@ def team_repositories_action(
     Add a list of repositories to a team with read permission
     """
     # Create a GitHub instance using an access token
-    g = GitHubReader()._github
+    g = GithubReader()._github
 
     # Get the organization object by name
     org_ = g.get_organization(org)

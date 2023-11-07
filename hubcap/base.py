@@ -6,6 +6,7 @@ from github import GithubException, Github
 import github
 
 from dol.util import format_invocation
+from hubcap.util import RepoSpec, ensure_repo_obj
 
 NotSet = github.GithubObject.NotSet
 
@@ -118,10 +119,10 @@ GitHubReader = GithubReader  # backcompatibility alias
 
 
 class Branches(KvReader):
-    def __init__(self, repository_obj, content_file_extractor=decoded_contents):
-        self.src = repository_obj
+    def __init__(self, repo: RepoSpec, content_file_extractor=decoded_contents):
+        self.src = ensure_repo_obj(repo)
         self.content_file_extractor = content_file_extractor
-        # self._con = repository_obj  # same as this.
+        # self._con = repo  # same as this.
 
     def __iter__(self):
         yield from (x.name for x in self.src.get_branches())
@@ -146,12 +147,12 @@ class Branches(KvReader):
 class BranchDir(KvReader):
     def __init__(
         self,
-        repository_obj,
+        repo: RepoSpec,
         branch_name,
         path="",
         content_file_extractor=decoded_contents,
     ):
-        self.src = repository_obj
+        self.src = ensure_repo_obj(repo)
         self.branch_name = branch_name
         self.path = path
         self.content_file_extractor = content_file_extractor
@@ -200,19 +201,19 @@ class Issues(KvReader):
 
     def __init__(
         self,
-        repository_obj,
+        repo: RepoSpec,
         *,
         issue_key: str = 'number',
         state="open",
         **issues_filt,
     ):
         """
-        :param repository_obj: :class:`github.Repository.Repository`
+        :param repo: :class:`github.Repository.Repository`
         :param issue_key: str, or callable that takes an iterable of issues and returns
             an iterable of (key, issue) pairs (e.g. `enumerate`).
             If str, then the attribute of the issue to use as the key.
         """
-        self.src = repository_obj
+        self.src = ensure_repo_obj(repo)
         if isinstance(issue_key, str):
             key_attr = issue_key
             _get_key = attrgetter(key_attr)
