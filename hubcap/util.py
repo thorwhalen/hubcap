@@ -164,6 +164,7 @@ def ensure_repo_obj(repo: Union[Repository, str]) -> Repository:
 
 import requests
 from functools import cached_property, partial
+import json
 
 from dol import KvReader, path_get
 from config2py import simple_config_getter
@@ -202,7 +203,7 @@ class GithubDiscussions(KvReader):
         query = f"""
         query {{
           repository(owner: "{self.owner}", name: "{self.repo_name}") {{
-            discussions(first: self._max_discussions) {{
+            discussions(first: {self._max_discussions}) {{
               nodes {{
                 number
               }}
@@ -213,18 +214,50 @@ class GithubDiscussions(KvReader):
         """
         response = requests.post(self.url, headers=self.headers, json={"query": query})
         response.raise_for_status()
-        data = _raise_if_error(response.json())
+        data = _raise_if_error(json.loads(response.text))
         return self.get_value(data, 'data.repository.discussions')
 
+    # TODO: Should get rid of this and replace uses with use of _discussions
+    @cached_property
+    def _discussion_numbers(self):
+        headers = {"Authorization": f"Bearer {self.token}"}
+        url = "https://api.github.com/graphql"
+        query = f"""
+        query {{
+        repository(owner: "{self.owner}", name: "{self.repo_name}") {{
+            discussions(first: {self._max_discussions}) {{
+            nodes {{
+                number
+            }}
+            }}
+        }}
+        }}
+        """
+        response = requests.post(url, headers=headers, json={"query": query})
+        response.raise_for_status()
+        data = response.json()
+        if errors := data.get('errors'):
+            msg = '\n'.join([e['message'] for e in errors])
+            raise RuntimeError(msg)
+        return tuple(
+            [
+                node['number']
+                for node in self.get_value(data, "data.repository.discussions.nodes")
+            ]
+        )
+
     def __iter__(self):
-        nodes = self._discussions.get('nodes', ())
-        return (node["number"] for node in nodes)
+        yield from self._discussion_numbers
+        # nodes = self._discussions.get('nodes', ())
+        # return (node["number"] for node in nodes)
 
     def __len__(self):
-        return self._discussions.get('totalCount', 0)
+        return len(self._discussion_numbers)
+        # return self._discussions.get('totalCount', 0)
 
     def __contains__(self, key):
-        return len(self._discussions.get('nodes', ()))
+        nodes = self._discussions.get('nodes', ())
+        return key in (node["number"] for node in nodes)
 
     def __getitem__(self, key):
         query = f"""

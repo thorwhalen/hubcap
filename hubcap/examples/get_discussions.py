@@ -38,7 +38,7 @@ def get_discussion_numbers(repo, token=None):
     query = f"""
     query {{
       repository(owner: "{owner}", name: "{repository}") {{
-        discussions(first: 10) {{
+        discussions(first: 150) {{
           nodes {{
             number
           }}

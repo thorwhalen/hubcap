@@ -1,4 +1,6 @@
 """Base objects"""
+from functools import cached_property, partial
+from operator import attrgetter
 from dol import KvReader
 from github import GithubException, Github
 import github
@@ -189,6 +191,71 @@ class BranchDir(KvReader):
             ),
         )
         # return f"{self.__class__.__name__}({self.src}, {self.branch_name})"
+
+
+# TODO: Find a way to lazy load comments
+# TODO: Refactor out logic common to other base objects
+class Issues(KvReader):
+    """Mapping interface to repository issues"""
+
+    def __init__(
+        self,
+        repository_obj,
+        *,
+        issue_key: str = 'number',
+        state="open",
+        **issues_filt,
+    ):
+        """
+        :param repository_obj: :class:`github.Repository.Repository`
+        :param issue_key: str, or callable that takes an iterable of issues and returns
+            an iterable of (key, issue) pairs (e.g. `enumerate`).
+            If str, then the attribute of the issue to use as the key.
+        """
+        self.src = repository_obj
+        if isinstance(issue_key, str):
+            key_attr = issue_key
+            _get_key = attrgetter(key_attr)
+            self._issue_key = lambda x: zip(map(_get_key, x), x)
+        else:
+            assert callable(issue_key), "issue_key must be a str or callable"
+            self._issue_key = issue_key
+        self.state = state
+        self.issues_filt = issues_filt
+
+    @cached_property
+    def _issues(self):
+        return {
+            k: v
+            for k, v in self._issue_key(
+                self.src.get_issues(state=self.state, **self.issues_filt)
+            )
+        }
+
+    def __iter__(self):
+        yield from self._issues
+
+    def __getitem__(self, k):
+        return self._issues[k]
+
+
+class IssueComments(KvReader):
+    """Mapping interface to repository issue comments"""
+
+    _comment_key = enumerate
+
+    def __init__(self, issue_obj):
+        self.src = issue_obj
+
+    @cached_property
+    def _comments(self):
+        return {k: v for k, v in self._comment_key(self.src.get_comments())}
+
+    def __iter__(self):
+        yield from self._comments
+
+    def __getitem__(self, k):
+        return self._comments[k]
 
 
 # Not used, but for principle:
