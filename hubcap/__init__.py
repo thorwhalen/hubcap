@@ -9,6 +9,69 @@ or put it in an environmental variable under the name `HUBCAP_GITHUB_TOKEN` or
 
 # Example usage
 
+## RepoReader
+
+>>> from hubcap import RepoReader
+>>> r = RepoReader('thorwhalen/test_repo')
+>>> sorted(r)  # doctest: +SKIP
+['artifacts', 'assignees', 'autolinks', 'branches', 'codescan_alerts', 'collaborators', 
+'comments', 'commits', 'contributors', 'deployments', 'discussions', 'downloads', 
+'environments', 'events', 'forks', 'git_refs', 'hooks', 'issues', 'issues_comments', 
+'issues_events', 'labels', 'languages', 'milestones', 'network_events', 
+'notifications', 'pending_invitations', 'projects', 'pulls', 'pulls_comments', 
+'pulls_review_comments', 'releases', 'repository_advisories', 'secrets', 
+'self_hosted_runners', 'stargazers', 'stargazers_with_dates', 'stats_contributors', 
+'subscribers', 'tags', 'teams', 'top_paths', 'top_referrers', 'topics', 'variables', 
+'watchers', 'workflow_runs', 'workflows']
+>>>
+>>> 'issues' in r
+True
+>>> issues = r['issues']
+>>> sorted(issues)
+[4, 5]
+>>> issue_obj = issues[4]
+>>> issue_obj
+Issue(title="Test Issue A", number=4)
+>>> sorted([attr for attr in dir(issue_obj) if not attr.startswith('_')])  # doctest: +SKIP
+['CHECK_AFTER_INIT_FLAG', 'active_lock_reason', 'add_to_assignees', 'add_to_labels', 
+'as_pull_request', 'assignee', 'assignees', 'body', 'closed_at', 'closed_by', 
+'comments', 'comments_url', 'create_comment', 'create_reaction', 'created_at', 
+'delete_labels', 'delete_reaction', 'edit', 'etag', 'events_url', 'get__repr__', 
+'get_comment', 'get_comments', 'get_events', 'get_labels', 'get_reactions', 
+'get_timeline', 'html_url', 'id', 'labels', 'labels_url', 'last_modified', 'lock', 
+'locked', 'milestone', 'number', 'pull_request', 'raw_data', 'raw_headers', 
+'remove_from_assignees', 'remove_from_labels', 'repository', 'setCheckAfterInitFlag', 
+'set_labels', 'state', 'state_reason', 'title', 'unlock', 'update', 'updated_at', 
+'url', 'user']
+>>> issue_obj.number
+4
+>>> issue_obj.state
+'open'
+>>> issue_obj.labels
+[Label(name="documentation"), Label(name="enhancement")]
+>>> # title of issue
+>>> issue_obj.title
+'Test Issue A'
+>>> # content of issue
+>>> issue_obj.body
+'Contents of Test Issue A'
+>>>
+>>> issue_obj.comments
+2
+>>>
+>>> list(issue_obj.get_comments())  # doctest: +NORMALIZE_WHITESPACE
+[IssueComment(user=NamedUser(login="thorwhalen"), id=1801792378), 
+IssueComment(user=NamedUser(login="thorwhalen"), id=1801792855)]
+>>> issue_comment = issue_obj.get_comment(1801792378)
+>>> issue_comment.body
+'Comment 1 of Test Issue A'
+>>>
+>>> 'discussions' in r
+True
+>>> discussions = r['discussions']
+>>> sorted(discussions)
+[1, 2, 3]
+
 ## hubcap function
 
 The high level function `hubcap` is the simplest way to get started. It's a
@@ -39,6 +102,7 @@ True
 
 >>> issues = hubcap('thorwhalen/hubcap/issues')
 >>> 3 in issues  # there's a "number 3" issue
+True
 >>> issue = issues[3]
 >>> issue.title
 'Test Issue'
@@ -109,6 +173,7 @@ You also have other useful objects, like `Issues`, `IssueComments`, `Discussions
 
 from github import GithubException, Github, ContentFile
 from hubcap.base import (
+    RepoReader,
     GithubReader,
     find_github_token,
     Branches,

@@ -1,12 +1,22 @@
 """Base objects"""
 from functools import cached_property, partial
 from operator import attrgetter
+from typing import Mapping
 from dol import KvReader
-from github import GithubException, Github
+from dol.signatures import Sig
 import github
 
 from dol.util import format_invocation
-from hubcap.util import RepoSpec, ensure_repo_obj
+from hubcap.util import (
+    RepoSpec,
+    ensure_repo_obj,
+    GithubException,
+    Github,
+    Repository,
+    Discussions,
+)
+from hubcap.constants import repo_collection_names
+
 
 NotSet = github.GithubObject.NotSet
 
@@ -33,6 +43,164 @@ def find_user_name():
     return os.environ.get("HUBCAP_GITHUB_TOKEN", None) or os.environ.get(
         "GITHUB_USERNAME", None
     )
+
+
+# --------------------------------------------------------------------------------------
+# RepoObjects
+
+
+def identity(x):
+    return x
+
+
+class RepoObjects(KvReader):
+    def __init__(
+        self,
+        repo: RepoSpec,
+        get_objs,
+        *,
+        objs_to_items=enumerate,
+        data_of_obj=identity,
+        get_objs_kwargs=None,
+    ):
+        self.repo = ensure_repo_obj(repo)
+        self.get_objs = get_objs
+        self.data_of_obj = data_of_obj
+        self.get_objs_kwargs = dict(get_objs_kwargs or {})
+
+        if isinstance(objs_to_items, str):
+            key_attr = objs_to_items
+            _get_key = attrgetter(key_attr)
+            self.objs_to_items = lambda x: zip(map(_get_key, x), x)
+        else:
+            assert callable(
+                objs_to_items
+            ), "issue_objs_to_itemskey must be a str or callable"
+            self.objs_to_items = objs_to_items
+
+    @cached_property
+    def _objs(self):
+        return {
+            k: v
+            for k, v in self.objs_to_items(
+                self.get_objs(self.repo, **self.get_objs_kwargs)
+            )
+        }
+
+    def __iter__(self):
+        yield from self._objs
+
+    def __getitem__(self, k):
+        return self.data_of_obj(self._objs[k])
+
+    # def __repr__(self):
+    #     return f"{type(self).__name__}({self.repo}, {self.get_objs}, ...)"
+
+
+from hubcap.util import repo_collections_configs
+
+dflt_repo_kwargs = {
+    k: {'objs_to_items': v} for k, v in repo_collections_configs.items()
+}
+dflt_repo_kwargs['issues']['get_objs_kwargs'] = (('state', 'open'),)
+
+
+def repo_objects_instance(repo, object_name: str) -> Mapping:
+    if object_name in repo_collection_names:
+        return RepoObjects(
+            repo,
+            get_objs=getattr(Repository, f'get_{object_name}'),
+            **dflt_repo_kwargs.get(object_name, {}),
+        )
+    elif object_name == 'discussions':
+        return Discussions(repo)
+    else:
+        raise KeyError(f"Unknown object name: {object_name}")
+
+
+class RepoReader(KvReader):
+    repo_collection_names = sorted(set(repo_collection_names) | {'discussions'})
+
+    def __init__(self, repo: RepoSpec):
+        self.repo = ensure_repo_obj(repo)
+
+    def __getitem__(self, k):
+        return repo_objects_instance(self.repo, k)
+
+    def __iter__(self):
+        yield from self.repo_collection_names
+
+    def __contains__(self, k):
+        return k in self.repo_collection_names
+
+    def __repr__(self):
+        return f'{type(self).__name__}({self.path})'
+
+
+# Extras -----------------------------------------------------------------------------
+
+
+# TODO: Figure out how to make Issues and Workflows (pickable) classes automatically
+#   (The instances can be made from repo_objects_instance)
+class Issues(RepoObjects):
+    def __init__(
+        self,
+        repo: RepoSpec,
+        get_objs=Repository.get_issues,
+        *,
+        objs_to_items='number',
+        data_of_obj=identity,
+        get_objs_kwargs=(('state', 'open'),),
+    ):
+        super().__init__(
+            repo,
+            get_objs=get_objs,
+            objs_to_items=objs_to_items,
+            data_of_obj=data_of_obj,
+            get_objs_kwargs=get_objs_kwargs,
+        )
+
+
+class Workflows(RepoObjects):
+    def __init__(
+        self,
+        repo: RepoSpec,
+        get_objs=Repository.get_workflows,
+        *,
+        objs_to_items='id',
+        data_of_obj=identity,
+        get_objs_kwargs=(),
+    ):
+        super().__init__(
+            repo,
+            get_objs=get_objs,
+            objs_to_items=objs_to_items,
+            data_of_obj=data_of_obj,
+            get_objs_kwargs=get_objs_kwargs,
+        )
+
+
+class IssueComments(KvReader):
+    """Mapping interface to repository issue comments"""
+
+    _comment_key = enumerate
+
+    def __init__(self, issue_obj):
+        self.src = issue_obj
+
+    @cached_property
+    def _comments(self):
+        return {k: v for k, v in self._comment_key(self.src.get_comments())}
+
+    def __iter__(self):
+        yield from self._comments
+
+    def __getitem__(self, k):
+        return self._comments[k]
+
+
+# --------------------------------------------------------------------------------------
+# GithubReader
 
 
 # TODO: use signature arithmetic
@@ -194,71 +362,7 @@ class BranchDir(KvReader):
         # return f"{self.__class__.__name__}({self.src}, {self.branch_name})"
 
 
-# TODO: Find a way to lazy load comments
-# TODO: Refactor out logic common to other base objects
-class Issues(KvReader):
-    """Mapping interface to repository issues"""
-
-    def __init__(
-        self,
-        repo: RepoSpec,
-        *,
-        issue_key: str = 'number',
-        state="open",
-        **issues_filt,
-    ):
-        """
-        :param repo: :class:`github.Repository.Repository`
-        :param issue_key: str, or callable that takes an iterable of issues and returns
-            an iterable of (key, issue) pairs (e.g. `enumerate`).
-            If str, then the attribute of the issue to use as the key.
-        """
-        self.src = ensure_repo_obj(repo)
-        if isinstance(issue_key, str):
-            key_attr = issue_key
-            _get_key = attrgetter(key_attr)
-            self._issue_key = lambda x: zip(map(_get_key, x), x)
-        else:
-            assert callable(issue_key), "issue_key must be a str or callable"
-            self._issue_key = issue_key
-        self.state = state
-        self.issues_filt = issues_filt
-
-    @cached_property
-    def _issues(self):
-        return {
-            k: v
-            for k, v in self._issue_key(
-                self.src.get_issues(state=self.state, **self.issues_filt)
-            )
-        }
-
-    def __iter__(self):
-        yield from self._issues
-
-    def __getitem__(self, k):
-        return self._issues[k]
-
-
-class IssueComments(KvReader):
-    """Mapping interface to repository issue comments"""
-
-    _comment_key = enumerate
-
-    def __init__(self, issue_obj):
-        self.src = issue_obj
-
-    @cached_property
-    def _comments(self):
-        return {k: v for k, v in self._comment_key(self.src.get_comments())}
-
-    def __iter__(self):
-        yield from self._comments
-
-    def __getitem__(self, k):
-        return self._comments[k]
-
-
+# --------------------------------------------------------------------------------------
 # Not used, but for principle:
 
 

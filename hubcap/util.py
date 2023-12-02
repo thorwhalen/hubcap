@@ -4,7 +4,7 @@ from typing import Union, Dict
 from functools import lru_cache
 from operator import attrgetter
 
-from github import Github
+from github import Github, GithubException
 from github.Repository import Repository
 
 from hubcap.constants import (
@@ -104,6 +104,21 @@ def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, Re
     return {k: _ensure_repo_func(v) for k, v in repo_info.items()}
 
 
+def ensure_url_suffix(url: Union[str, Repository]) -> str:
+    """Ensure a url suffix
+
+    >>> ensure_url_suffix('https://www.github.com/thorwhalen/hubcap/README.md')
+    'thorwhalen/hubcap/README.md'
+    >>> ensure_url_suffix('www.github.com/thorwhalen/hubcap//README.md')
+    'thorwhalen/hubcap/README.md'
+    >>> ensure_url_suffix('thorwhalen/hubcap/README.md')
+    'thorwhalen/hubcap/README.md'
+    """
+    if isinstance(url, Repository):
+        return url.full_name
+    return url.split("github.com/")[-1].strip("/")
+
+
 def ensure_full_name(repo: RepoSpec) -> str:
     """Ensure we have a full name (user/repo string)
 
@@ -114,14 +129,12 @@ def ensure_full_name(repo: RepoSpec) -> str:
     >>> ensure_full_name('thorwhalen/hubcap')
     'thorwhalen/hubcap'
     """
-    if isinstance(repo, Repository):
-        return repo.full_name
-    suffix = repo.split("github.com/")[-1]
+    suffix = ensure_url_suffix(repo)
     slash_seperated = suffix.strip("/").split("/")
     if len(slash_seperated) == 2:
         return suffix.strip("/")
     else:
-        ValueError(f"Couldn't (safely) parse {repo} as a repo full name")
+        raise ValueError(f"Couldn't (safely) parse {repo} as a repo full name")
 
 
 def ensure_github_url(user_repo_str: str, prefix="https://www.github.com/") -> str:
@@ -165,12 +178,30 @@ def ensure_repo_obj(repo: RepoSpec) -> Repository:
 import requests
 from functools import cached_property, partial
 import json
-
+from warnings import warn
+from importlib_resources import files
 from dol import KvReader, path_get
 from config2py import simple_config_getter
 
 APP_NAME = 'hubcap'
+REPO_COLLECTION_CONFIGS = 'REPO_COLLECTION_CONFIGS'
+USER_REPO_COLLECTION_KEY_PROPS_FILE = 'repo_collections_key_props.json'
+
 get_config = simple_config_getter(APP_NAME)
+configs = get_config.configs
+data_files = files('hubcap.data')
+repo_collections_configs = json.loads(
+    data_files.joinpath('dflt_repo_collections_key_props.json').read_text()
+)
+
+if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
+    configs[USER_REPO_COLLECTION_KEY_PROPS_FILE] = '{}'
+
+try:
+    user_key_props = json.loads(configs[USER_REPO_COLLECTION_KEY_PROPS_FILE])
+    repo_collections_configs.update(user_key_props)
+except Exception as e:
+    warn(f'Error loading user repo_collections_key_props.json: {e}', UserWarning)
 
 
 def defaulted_itemgetter(d, k, default):

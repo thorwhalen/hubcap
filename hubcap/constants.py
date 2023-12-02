@@ -5,7 +5,7 @@ from typing import Any, Literal, Tuple, Dict, Iterable, Union, Callable, NewType
 from datetime import datetime
 
 from github.Repository import Repository
-
+from dol.signatures import Sig
 
 # --------------------------------------------------------------------------- #
 # Some functions to help create the constants
@@ -51,3 +51,30 @@ _dflt_repo_props = "name full_name description stargazers_count forks_count watc
 DFLT_REPO_INFO = tuple(
     [*zip(_dflt_repo_props, _dflt_repo_props), ("last_commit_date", _last_commit_date)]
 )
+
+
+def repo_collection_names_():
+    """
+    List of the names of the objects that can be retrieved from a repository
+    (e.g. commits, contributors, issues, pull_requests, releases, tags, etc.)
+    These names are extracted by taking all the method names of the
+    `github.Repository` class that start with `get_` and end with `s`,
+    and removing the `get_` prefix.
+    """
+    repo_object_names = {
+        k for k in dir(Repository) if k.startswith('get_') and k.endswith('s')
+    }
+    repo_object_names = {
+        k[len('get_') :]
+        for k in repo_object_names
+        if Sig(getattr(Repository, k)).n_required == 1
+    }
+    return repo_object_names - set(dir(dict))
+
+
+# tuple.__doc__ is read-only, so had to subclass to give my variable a doc
+_tuple = type('_tuple', (tuple,), {'__doc__': repo_collection_names_.__doc__})
+repo_collection_names = _tuple(sorted(repo_collection_names_()))
+
+# TODO: When in 3.11, change to Literal[*repo_collection_names]
+RepoCollectionNames = Literal[repo_collection_names]  # type: ignore

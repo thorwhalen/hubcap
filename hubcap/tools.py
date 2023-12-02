@@ -4,23 +4,32 @@ from typing import Iterable, Literal
 import time
 from functools import partial
 
-from hubcap.base import GithubReader, Issues
-from hubcap.util import Discussions
+from dol import KvReader
+from i2 import Sig
+from github.Repository import Repository
+
+from hubcap.base import GithubReader, RepoReader
+from hubcap.constants import repo_collection_names
+from hubcap.util import RepoSpec, ensure_url_suffix
 
 
-def hubcap(path):
-    org, *_path = path.split('/')
-    s = GithubReader(org)
+def hubcap(path: RepoSpec):
+    path = ensure_url_suffix(path)
+    if '/' not in path:
+        org = path
+        return GithubReader(org)
+    # at this point we have at least org/repo/...
+    org, repo, *_path = path.split('/')
+    s = RepoReader(f"{org}/{repo}")
     path_iter = iter(_path)
     if (repo := next(path_iter, None)) is not None:
         s = s[repo]
     if (resource := next(path_iter, None)) is not None:
-        if resource == 'issues':
-            s = Issues(s.src)
-        elif resource == 'discussions':
-            s = Discussions(s.src)
+        if resource in repo_collection_names or resource == 'discussions':
+            s = RepoReader(s.src)[resource]
         else:
-            if resource == 'tree':  # then skip this to the next resource (a branch)
+            if resource == 'tree':
+                # then consider this to be a request for branches
                 resource = next(path_iter)
             s = s[resource]
     # Process the rest of the path with the s mapping
