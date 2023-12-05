@@ -33,7 +33,7 @@ def hub(path: RepoSpec):
     #     s = s[repo]
     if (resource := next(path_iter, None)) is not None:
         if resource in repo_collection_names or resource == 'discussions':
-            s = RepoReader(s.src)[resource]
+            s = RepoReader(s.repo)[resource]
         else:
             # From now we assume the intent is to get a specific branch...
             if resource == 'tree':  # this is to be consistent with browser url access
