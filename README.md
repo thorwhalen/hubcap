@@ -14,8 +14,9 @@ Interact with github like you'd interact with a `dict` object.
 
 Warning: You'll need to have a github api token (google it if you don't have one;
 it's easy to get). You'll have to specify this token when making hubcap objects,
-or put it in an environmental variable under the name `HUBCAP_GITHUB_TOKEN` or
-`GITHUB_TOKEN`
+or put it in an environmental variable under the name `GITHUB_TOKEN` or `HUBCAP_GITHUB_TOKEN` 
+(useful since github actions doesn't allow you to have env variables starting with `GITHUB`).
+
 
 ```python
 >>> s = GitHubReader('thorwhalen')  # connnecting to a particular user/organization
