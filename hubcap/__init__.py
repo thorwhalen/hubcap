@@ -72,24 +72,24 @@ True
 >>> sorted(discussions)
 [1, 2, 3]
 
-## hubcap function
+## hub function
 
-The high level function `hubcap` is the simplest way to get started. It's a
+The high level function `hub` is the simplest way to get started. It's a
 function that takes a path to a github resource and returns a mapping to that
 resource. The mapping is lazy, so it's only when you access a key that the
 resource is actually fetched from github.
 
->>> repositories = hubcap('thorwhalen')
+>>> repositories = hub('thorwhalen')
 >>> 'hubcap' in repositories
 True
 >>> hubcap_repo = repositories['hubcap']
 >>>
->>> repo = hubcap('thorwhalen/hubcap')
+>>> repo = hub('thorwhalen/hubcap')
 >>> 'master' in repo
 True
 >>> master_files = repo['master']
 >>>
->>> files = hubcap('thorwhalen/hubcap/master')
+>>> files = hub('thorwhalen/hubcap/master')
 >>> '/README.md' in files
 True
 >>> '/hubcap/' in files
@@ -100,7 +100,7 @@ True
 
 ### Access issues
 
->>> issues = hubcap('thorwhalen/hubcap/issues')
+>>> issues = hub('thorwhalen/hubcap/issues')
 >>> 3 in issues  # there's a "number 3" issue
 True
 >>> issue = issues[3]
@@ -113,7 +113,7 @@ True
 
 ### Access discussions
 
->>> discussions = hubcap('thorwhalen/hubcap/discussions')
+>>> discussions = hub('thorwhalen/hubcap/discussions')
 >>> 2 in discussions  # issue number 2 is in the discussions
 True
 >>> discussion = discussions[2]
@@ -183,4 +183,4 @@ from hubcap.base import (
     GitHubReader,  # backcompatibility alias of GithubReader
 )
 from hubcap.util import get_repository_info, cached_github_object, Discussions
-from hubcap.tools import hubcap
+from hubcap.tools import hub

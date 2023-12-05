@@ -134,7 +134,7 @@ class RepoReader(KvReader):
         return k in self.repo_collection_names
 
     def __repr__(self):
-        return f'{type(self).__name__}({self.path})'
+        return f'{type(self).__name__}("{self.repo.full_name}")'
 
 
 # Extras -----------------------------------------------------------------------------

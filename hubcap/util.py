@@ -105,11 +105,11 @@ def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, Re
 
 
 def ensure_url_suffix(url: Union[str, Repository]) -> str:
-    """Ensure a url suffix
+    """Ensure a url suffix, that is, get rid of the (...)www.github.com prefix.
 
     >>> ensure_url_suffix('https://www.github.com/thorwhalen/hubcap/README.md')
     'thorwhalen/hubcap/README.md'
-    >>> ensure_url_suffix('www.github.com/thorwhalen/hubcap//README.md')
+    >>> ensure_url_suffix('www.github.com/thorwhalen/hubcap/README.md')
     'thorwhalen/hubcap/README.md'
     >>> ensure_url_suffix('thorwhalen/hubcap/README.md')
     'thorwhalen/hubcap/README.md'

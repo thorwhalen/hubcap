@@ -13,25 +13,39 @@ from hubcap.constants import repo_collection_names
 from hubcap.util import RepoSpec, ensure_url_suffix
 
 
-def hubcap(path: RepoSpec):
+# TODO: Design horribly unclean. Once RepoReader is finished, this should become
+# cleaner to write.
+def hub(path: RepoSpec):
     path = ensure_url_suffix(path)
     if '/' not in path:
         org = path
         return GithubReader(org)
     # at this point we have at least org/repo/...
     org, repo, *_path = path.split('/')
+    if not _path:
+        return GithubReader(org)[repo]
+
+    # If not, use RepoReader as the base object  # TODO: Finish RepoReader
     s = RepoReader(f"{org}/{repo}")
     path_iter = iter(_path)
-    if (repo := next(path_iter, None)) is not None:
-        s = s[repo]
+    # TODO: Temporarily commented out -- if not needed, remove
+    # if (repo := next(path_iter, None)) is not None:
+    #     s = s[repo]
     if (resource := next(path_iter, None)) is not None:
         if resource in repo_collection_names or resource == 'discussions':
             s = RepoReader(s.src)[resource]
         else:
-            if resource == 'tree':
+            # From now we assume the intent is to get a specific branch...
+            if resource == 'tree':  # this is to be consistent with browser url access
                 # then consider this to be a request for branches
                 resource = next(path_iter)
+            else:
+                # TODO: Change what s is suddenly: Terrible design
+                # The point here is that the following instance will then work for
+                # getting the branch
+                s = GithubReader(org)[repo]
             s = s[resource]
+
     # Process the rest of the path with the s mapping
     for part in path_iter:
         s = s[part]
