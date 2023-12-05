@@ -26,7 +26,7 @@ def hub(path: RepoSpec):
         return GithubReader(org)[repo]
 
     # If not, use RepoReader as the base object  # TODO: Finish RepoReader
-    s = RepoReader(f"{org}/{repo}")
+    s = RepoReader(f'{org}/{repo}')
     path_iter = iter(_path)
     # TODO: Temporarily commented out -- if not needed, remove
     # if (repo := next(path_iter, None)) is not None:
@@ -56,7 +56,7 @@ def team_repositories_action(
     repositories: Iterable[str],
     team: str,
     *,
-    action: Literal["add_to_repo", "remove_from_repos"],
+    action: Literal['add_to_repo', 'remove_from_repos'],
     org: str,
     wait_s: int = 1,
 ):
@@ -81,5 +81,5 @@ def team_repositories_action(
         time.sleep(wait_s)
 
 
-add_repos_to_team = partial(team_repositories_action, action="add_to_repo")
-rm_repos_from_team = partial(team_repositories_action, action="remove_from_repos")
+add_repos_to_team = partial(team_repositories_action, action='add_to_repo')
+rm_repos_from_team = partial(team_repositories_action, action='remove_from_repos')

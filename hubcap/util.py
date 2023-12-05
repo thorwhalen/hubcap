@@ -116,7 +116,7 @@ def ensure_url_suffix(url: Union[str, Repository]) -> str:
     """
     if isinstance(url, Repository):
         return url.full_name
-    return url.split("github.com/")[-1].strip("/")
+    return url.split('github.com/')[-1].strip('/')
 
 
 def ensure_full_name(repo: RepoSpec) -> str:
@@ -130,14 +130,14 @@ def ensure_full_name(repo: RepoSpec) -> str:
     'thorwhalen/hubcap'
     """
     suffix = ensure_url_suffix(repo)
-    slash_seperated = suffix.strip("/").split("/")
+    slash_seperated = suffix.strip('/').split('/')
     if len(slash_seperated) == 2:
-        return suffix.strip("/")
+        return suffix.strip('/')
     else:
         raise ValueError(f"Couldn't (safely) parse {repo} as a repo full name")
 
 
-def ensure_github_url(user_repo_str: str, prefix="https://www.github.com/") -> str:
+def ensure_github_url(user_repo_str: str, prefix='https://www.github.com/') -> str:
     """Ensure a string to a github url
 
     >>> ensure_github_url('https://www.github.com/thorwhalen/hubcap')
@@ -239,12 +239,12 @@ class Discussions(KvReader):
         self.owner, self.repo_name = ensure_full_name(repo).split('/')
         self.repo = repo
         self.token = github_token(token)
-        self.headers = {"Authorization": f"Bearer {self.token}"}
-        self.url = "https://api.github.com/graphql"
+        self.headers = {'Authorization': f'Bearer {self.token}'}
+        self.url = 'https://api.github.com/graphql'
 
     @cached_property
     def _discussions(self):
-        query = f"""
+        query = f'''
         query {{
           repository(owner: "{self.owner}", name: "{self.repo_name}") {{
             discussions(first: {self._max_discussions}) {{
@@ -255,8 +255,8 @@ class Discussions(KvReader):
             }}
           }}
         }}
-        """
-        response = requests.post(self.url, headers=self.headers, json={"query": query})
+        '''
+        response = requests.post(self.url, headers=self.headers, json={'query': query})
         response.raise_for_status()
         data = _raise_if_error(json.loads(response.text))
         return self.get_value(data, 'data.repository.discussions')
@@ -264,9 +264,9 @@ class Discussions(KvReader):
     # TODO: Should get rid of this and replace uses with use of _discussions
     @cached_property
     def _discussion_numbers(self):
-        headers = {"Authorization": f"Bearer {self.token}"}
-        url = "https://api.github.com/graphql"
-        query = f"""
+        headers = {'Authorization': f'Bearer {self.token}'}
+        url = 'https://api.github.com/graphql'
+        query = f'''
         query {{
         repository(owner: "{self.owner}", name: "{self.repo_name}") {{
             discussions(first: {self._max_discussions}) {{
@@ -276,8 +276,8 @@ class Discussions(KvReader):
             }}
         }}
         }}
-        """
-        response = requests.post(url, headers=headers, json={"query": query})
+        '''
+        response = requests.post(url, headers=headers, json={'query': query})
         response.raise_for_status()
         data = response.json()
         if errors := data.get('errors'):
@@ -286,7 +286,7 @@ class Discussions(KvReader):
         return tuple(
             [
                 node['number']
-                for node in self.get_value(data, "data.repository.discussions.nodes")
+                for node in self.get_value(data, 'data.repository.discussions.nodes')
             ]
         )
 
@@ -301,10 +301,10 @@ class Discussions(KvReader):
 
     def __contains__(self, key):
         nodes = self._discussions.get('nodes', ())
-        return key in (node["number"] for node in nodes)
+        return key in (node['number'] for node in nodes)
 
     def __getitem__(self, key):
-        query = f"""
+        query = f'''
         query {{
           repository(owner: "{self.owner}", name: "{self.repo_name}") {{
             discussion(number: {key}) {{
@@ -313,12 +313,12 @@ class Discussions(KvReader):
             }}
           }}
         }}
-        """
-        response = requests.post(self.url, headers=self.headers, json={"query": query})
+        '''
+        response = requests.post(self.url, headers=self.headers, json={'query': query})
         response.raise_for_status()
         data = _raise_if_error(response.json())
         discussion = self.get_value(data, 'data.repository.discussion')
         return {
-            "title": discussion.get('title', ''),
-            "body": discussion.get('body', ''),
+            'title': discussion.get('title', ''),
+            'body': discussion.get('body', ''),
         }

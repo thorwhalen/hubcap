@@ -13,7 +13,7 @@ from dol.signatures import Sig
 
 def _non_callable_non_dundered_attrs(obj: Any) -> Tuple[str]:
     return tuple(
-        x for x in dir(obj) if not x.startswith("_") and not callable(getattr(obj, x))
+        x for x in dir(obj) if not x.startswith('_') and not callable(getattr(obj, x))
     )
 
 
@@ -24,7 +24,7 @@ def _non_callable_non_dundered_attrs_of_repo_type() -> Tuple[str]:
 def _last_commit_date(repo: Repository):
     return (
         datetime.strptime(
-            repo.updated_at.strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"
+            repo.updated_at.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S'
         )
         .date()
         .isoformat()
@@ -46,10 +46,10 @@ RepoInfo = Union[
     str,  # "prop1 prop2 ..."
 ]
 
-_dflt_repo_props = "name full_name description stargazers_count forks_count watchers_count html_url".split()
+_dflt_repo_props = 'name full_name description stargazers_count forks_count watchers_count html_url'.split()
 
 DFLT_REPO_INFO = tuple(
-    [*zip(_dflt_repo_props, _dflt_repo_props), ("last_commit_date", _last_commit_date)]
+    [*zip(_dflt_repo_props, _dflt_repo_props), ('last_commit_date', _last_commit_date)]
 )
 
 
