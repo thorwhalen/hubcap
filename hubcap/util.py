@@ -199,8 +199,8 @@ repo_collections_configs = json.loads(
 def github_token(token=None):
     token = (
         token
-        or get_config('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
-        or os.getenv('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
+        or os.environ.get('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
+        or os.environ.get('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
         or get_config(  # look under GITHUB_TOKEN env var
             'GITHUB_TOKEN'
         )  # ask get_config for it (triggering user prompt and file persistence of it)
