@@ -175,6 +175,7 @@ def ensure_repo_obj(repo: RepoSpec) -> Repository:
 # At the time of writing this, python's github API doesn't provide discussions info
 # so we're using the graphQL github API here, directly, using requests
 
+import os
 import requests
 from functools import cached_property, partial
 import json
@@ -193,6 +194,18 @@ data_files = files('hubcap.data')
 repo_collections_configs = json.loads(
     data_files.joinpath('dflt_repo_collections_key_props.json').read_text()
 )
+
+
+def github_token(token=None):
+    token = (
+        token
+        or get_config('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
+        or os.getenv('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
+        or get_config(  # look under GITHUB_TOKEN env var
+            'GITHUB_TOKEN'
+        )  # ask get_config for it (triggering user prompt and file persistence of it)
+    )
+
 
 if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
     configs[USER_REPO_COLLECTION_KEY_PROPS_FILE] = '{}'
@@ -222,12 +235,11 @@ class Discussions(KvReader):
     _max_discussions = 100
 
     def __init__(self, repo: RepoSpec, token=None):
-        token = token or get_config('GITHUB_TOKEN')
         repo = ensure_repo_obj(repo)
         self.owner, self.repo_name = ensure_full_name(repo).split('/')
         self.repo = repo
-        self.token = token
-        self.headers = {"Authorization": f"Bearer {token}"}
+        self.token = github_token(token)
+        self.headers = {"Authorization": f"Bearer {self.token}"}
         self.url = "https://api.github.com/graphql"
 
     @cached_property
