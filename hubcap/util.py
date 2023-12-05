@@ -179,7 +179,7 @@ import requests
 from functools import cached_property, partial
 import json
 from warnings import warn
-from importlib_resources import files
+from importlib.resources import files
 from dol import KvReader, path_get
 from config2py import simple_config_getter
 
