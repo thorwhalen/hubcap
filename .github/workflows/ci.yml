@@ -35,15 +35,11 @@ jobs:
       - name: Pylint Validation
         run: pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114,E0401 | mk_pylint_report
 
-      - name: Fetch repository secrets
-        uses: actions/secrets@v6
-        with:
-          secrets: HUBCAP_GITHUB_TOKEN
-    
-      - name: Set environment variable
-        run: echo "HUBCAP_GITHUB_TOKEN=$(secrets.HUBCAP_GITHUB_TOKEN)" >> $GITHUB_ENV
+
         
       - name: Test
+        env:
+          HUBCAP_GITHUB_TOKEN: ${{ secrets.HUBCAP_GITHUB_TOKEN }}
         run: pytest --ignore=$PROJECT_NAME/examples --ignore=$PROJECT_NAME/scrap --doctest-modules -v $PROJECT_NAME
 
   publish:
