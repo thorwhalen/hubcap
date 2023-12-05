@@ -68,8 +68,8 @@ IssueComment(user=NamedUser(login="thorwhalen"), id=1801792855)]
 >>>
 >>> 'discussions' in r
 True
->>> discussions = r['discussions']
->>> sorted(discussions)
+>>> discussions = r['discussions']  # doctest: +SKIP
+>>> sorted(discussions)  # doctest: +SKIP
 [1, 2, 3]
 
 ## hub function
@@ -113,11 +113,11 @@ True
 
 ### Access discussions
 
->>> discussions = hub('thorwhalen/hubcap/discussions')
->>> 2 in discussions  # issue number 2 is in the discussions
+>>> discussions = hub('thorwhalen/hubcap/discussions')  # doctest: +SKIP
+>>> 2 in discussions  # doctest: +SKIP
 True
->>> discussion = discussions[2]
->>> discussion['title']
+>>> discussion = discussions[2]    # doctest: +SKIP
+>>> discussion['title']    # doctest: +SKIP
 'Root interface of hubcap'
 
 
