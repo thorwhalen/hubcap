@@ -322,3 +322,25 @@ class Discussions(KvReader):
             'title': discussion.get('title', ''),
             'body': discussion.get('body', ''),
         }
+
+
+def create_markdown_from_jdict(jdict: dict):
+    """
+    This function takes a discussion JSON and creates a markdown representation.
+    Headers are used to separate the different sections.
+
+    This is meant to be applied to json exports of github discussions or issues.
+    """
+    markdown = f"# {jdict['title']}\n\n{jdict['body']}\n\n"
+
+    # Process comments
+    if jdict.get('comments'):
+        for comment in jdict['comments']:
+            markdown += f"## Comment\n\n{comment['body']}\n\n"
+
+            # Process replies to comments
+            if comment.get('replies'):
+                for reply in comment['replies']:
+                    markdown += f"### Reply\n\n{reply['body']}\n\n"
+
+    return markdown
