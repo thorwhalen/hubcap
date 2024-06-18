@@ -170,7 +170,6 @@ You also have other useful objects, like `Issues`, `IssueComments`, `Discussions
 
 """
 
-
 from github import GithubException, Github, ContentFile
 from hubcap.base import (
     RepoReader,
@@ -182,5 +181,10 @@ from hubcap.base import (
     IssueComments,
     GitHubReader,  # backcompatibility alias of GithubReader
 )
-from hubcap.util import get_repository_info, cached_github_object, Discussions
+from hubcap.util import (
+    get_repository_info,
+    cached_github_object,
+    Discussions,
+    create_markdown_from_jdict,  # 
+)
 from hubcap.tools import hub

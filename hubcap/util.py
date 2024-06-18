@@ -172,6 +172,7 @@ def ensure_repo_obj(repo: RepoSpec) -> Repository:
 
 
 # --------------------------------------------------------------------------------------
+# DISCUSSIONS
 # At the time of writing this, python's github API doesn't provide discussions info
 # so we're using the graphQL github API here, directly, using requests
 
@@ -181,6 +182,7 @@ from functools import cached_property, partial
 import json
 from warnings import warn
 from importlib.resources import files
+from typing import Tuple, Optional
 from dol import KvReader, path_get
 from config2py import simple_config_getter
 
@@ -205,6 +207,9 @@ def github_token(token=None):
             'GITHUB_TOKEN'
         )  # ask get_config for it (triggering user prompt and file persistence of it)
     )
+    if not token:
+        raise ValueError("GitHub token not provided")
+    return token
 
 
 if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
@@ -229,43 +234,48 @@ def _raise_if_error(data):
     return data
 
 
+DFLT_DISCUSSION_FIELDS = (
+    'number',
+    'title',
+    'body',
+    'author',
+    'createdAt',
+    'updatedAt',
+    'comments',
+)
+
+
 # TODO: Pack the graphQL query logic further using template-enabled function
 class Discussions(KvReader):
     get_value = partial(path_get, get_value=partial(defaulted_itemgetter, default={}))
-    _max_discussions = 100
 
-    def __init__(self, repo: RepoSpec, token=None):
+    def __init__(
+        self,
+        repo: RepoSpec,
+        *,
+        token: Optional[str] = None,
+        discussion_fields: Tuple[str] = DFLT_DISCUSSION_FIELDS,
+        _max_discussions: int = 100,
+        _max_comments: int = 100,
+        _max_replies: int = 100,
+    ):
         repo = ensure_repo_obj(repo)
         self.owner, self.repo_name = ensure_full_name(repo).split('/')
         self.repo = repo
         self.token = github_token(token)
-        self.headers = {'Authorization': f'Bearer {self.token}'}
+        self.headers = {
+            'Authorization': f'Bearer {self.token}',
+            "Accept": "application/vnd.github.squirrel-girl-preview",
+        }
         self.url = 'https://api.github.com/graphql'
+        self.discussion_fields = discussion_fields
+        self._max_discussions = _max_discussions
+        self._max_comments = _max_comments
+        self._max_replies = _max_replies
 
     @cached_property
     def _discussions(self):
-        query = f'''
-        query {{
-          repository(owner: "{self.owner}", name: "{self.repo_name}") {{
-            discussions(first: {self._max_discussions}) {{
-              nodes {{
-                number
-              }}
-              totalCount
-            }}
-          }}
-        }}
-        '''
-        response = requests.post(self.url, headers=self.headers, json={'query': query})
-        response.raise_for_status()
-        data = _raise_if_error(json.loads(response.text))
-        return self.get_value(data, 'data.repository.discussions')
-
-    # TODO: Should get rid of this and replace uses with use of _discussions
-    @cached_property
-    def _discussion_numbers(self):
-        headers = {'Authorization': f'Bearer {self.token}'}
-        url = 'https://api.github.com/graphql'
+        """The discussions metadata of the repository."""
         query = f'''
         query {{
         repository(owner: "{self.owner}", name: "{self.repo_name}") {{
@@ -273,60 +283,107 @@ class Discussions(KvReader):
             nodes {{
                 number
             }}
+            totalCount
             }}
         }}
-        }}
-        '''
-        response = requests.post(url, headers=headers, json={'query': query})
-        response.raise_for_status()
-        data = response.json()
-        if errors := data.get('errors'):
-            msg = '\n'.join([e['message'] for e in errors])
-            raise RuntimeError(msg)
-        return tuple(
-            [
-                node['number']
-                for node in self.get_value(data, 'data.repository.discussions.nodes')
-            ]
-        )
-
-    def __iter__(self):
-        yield from self._discussion_numbers
-        # nodes = self._discussions.get('nodes', ())
-        # return (node["number"] for node in nodes)
-
-    def __len__(self):
-        return len(self._discussion_numbers)
-        # return self._discussions.get('totalCount', 0)
-
-    def __contains__(self, key):
-        nodes = self._discussions.get('nodes', ())
-        return key in (node['number'] for node in nodes)
-
-    def __getitem__(self, key):
-        query = f'''
-        query {{
-          repository(owner: "{self.owner}", name: "{self.repo_name}") {{
-            discussion(number: {key}) {{
-              title
-              body
-            }}
-          }}
         }}
         '''
         response = requests.post(self.url, headers=self.headers, json={'query': query})
         response.raise_for_status()
         data = _raise_if_error(response.json())
-        discussion = self.get_value(data, 'data.repository.discussion')
-        return {
-            'title': discussion.get('title', ''),
-            'body': discussion.get('body', ''),
-        }
+        return self.get_value(data, 'data.repository.discussions', {})
+
+    @cached_property
+    def _discussion_numbers(self):
+        """The discussion numbers (keys) of the repository."""
+        discussions = self._discussions.get('nodes', [])
+        return tuple(node['number'] for node in discussions)
+
+    def __iter__(self):
+        """Iterates over the discussion numbers (keys of the mapping)."""
+        return iter(self._discussion_numbers)
+
+    def __len__(self):
+        """Returns the number of discussions."""
+        return self._discussions.get('totalCount', 0)
+
+    def __contains__(self, key):
+        """Checks if a discussion number (key) is in the mapping."""
+        return key in self._discussion_numbers
+
+    def __getitem__(self, key):
+        """Gets the discussion data for a given discussion number (key)."""
+        query = self._build_query(key)
+        response = requests.post(self.url, headers=self.headers, json={'query': query})
+        response.raise_for_status()
+        data = _raise_if_error(response.json())
+        return self._process_discussion_data(data)
+
+    def _build_query(self, key):
+        """Builds the graphQL query for a discussion."""
+        fields_query = "\n".join(self.discussion_fields)
+        if "author" in self.discussion_fields:
+            fields_query = fields_query.replace("author", "author { login }")
+        if "comments" in self.discussion_fields:
+            fields_query = fields_query.replace(
+                "comments",
+                f"""
+            comments(first: {self._max_comments}) {{
+                edges {{
+                    node {{
+                        body
+                        author {{ login }}
+                        replies(first: {self._max_replies}) {{
+                            edges {{
+                                node {{
+                                    body
+                                    author {{ login }}
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }}""",
+            )
+        return f'''
+        query {{
+          repository(owner: "{self.owner}", name: "{self.repo_name}") {{
+            discussion(number: {key}) {{
+              {fields_query}
+            }}
+          }}
+        }}
+        '''
+
+    def _process_discussion_data(self, data):
+        """Processes the discussion data."""
+        discussion = self.get_value(data, 'data.repository.discussion', {})
+
+        comments = [
+            {
+                'body': comment['node']['body'],
+                'author': comment['node']['author']['login'],
+                'replies': [
+                    {
+                        'body': reply['node']['body'],
+                        'author': reply['node']['author']['login'],
+                    }
+                    for reply in comment['node']['replies']['edges']
+                ],
+            }
+            for comment in discussion.get('comments', {}).get('edges', [])
+        ]
+
+        result = {field: discussion.get(field, '') for field in self.discussion_fields}
+        result['comments'] = comments
+        return result
 
 
+# TODO: Perculate more control to the arguments
 def create_markdown_from_jdict(jdict: dict):
     """
-    This function takes a discussion JSON and creates a markdown representation.
+    Creates a markdown representation of a discussion (metadata json-dict).
+
     Headers are used to separate the different sections.
 
     This is meant to be applied to json exports of github discussions or issues.
