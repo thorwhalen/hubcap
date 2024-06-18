@@ -343,3 +343,10 @@ True
 
 You also have other useful objects, like `Issues`, `IssueComments`, `Discussions`, etc.   
 
+
+## github_repo_text_aggregate
+
+```python
+>>> owner_repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +SKIP
+>>> markdown_output = github_repo_text_aggregate(owner_repo_files)  # doctest: +SKIP
+```

@@ -185,6 +185,7 @@ from hubcap.util import (
     get_repository_info,
     cached_github_object,
     Discussions,
-    create_markdown_from_jdict,  # 
+    create_markdown_from_jdict,  #
 )
 from hubcap.tools import hub
+from hubcap.repo_slurp import github_repo_text_aggregate
