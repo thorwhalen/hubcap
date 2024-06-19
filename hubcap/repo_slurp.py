@@ -179,7 +179,7 @@ def github_repo_mapping(
     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
     extra_key_filter=None,
 ):
-    """
+    r"""
     Clone a git repository and make a mapping of the files in the repository.
 
     Args:
@@ -190,7 +190,10 @@ def github_repo_mapping(
         Mapping: A mapping of the files in the repository.
 
 
-    >>> owner_repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +SKIP
+    >>> owner_repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +ELLIPSIS
+    >>> print(owner_repo_files[:100])  # doctest: +ELLIPSIS
+    ## README.md\n\n# hubcap
+    A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...
 
     """
     # If no clone_to_folder is provided, create a temporary folder
