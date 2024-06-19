@@ -3,6 +3,9 @@
 from typing import Union, Dict
 from functools import lru_cache
 from operator import attrgetter
+import os
+import subprocess
+import tempfile
 
 from github import Github, GithubException
 from github.Repository import Repository
@@ -80,6 +83,26 @@ def cached_github_object():
 # TODO: Could make it more robust by defining github url regexes
 #  (or perhaps github package has some utils for this already?)
 
+# standard_lib_dir = os.path.dirname(os.__file__)
+path_sep = os.path.sep
+
+
+def ensure_folder_to_clone_into(folder_to_clone_into: str = None):
+    """Return a folder to clone into. If not provided, create a temporary folder."""
+    if folder_to_clone_into is None:
+        folder_to_clone_into = tempfile.mkdtemp()
+    return folder_to_clone_into
+
+
+def ensure_slash_suffix(s: str):
+    if not s.endswith(path_sep):
+        s += path_sep
+    return s
+
+
+def ensure_no_slash_suffix(s: str):
+    return s.rstrip(path_sep)
+
 
 def _ensure_repo_func(prop_spec: RepoPropSpec) -> RepoFunc:
     """Ensure callable (convert strings to attribute getters)"""
@@ -105,7 +128,7 @@ def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, Re
 
 
 def ensure_url_suffix(url: Union[str, Repository]) -> str:
-    """Ensure a url suffix, that is, get rid of the (...)www.github.com prefix.
+    """Ensure a url suffix, that is, get rid of the (...)github.com prefix.
 
     >>> ensure_url_suffix('https://www.github.com/thorwhalen/hubcap/README.md')
     'thorwhalen/hubcap/README.md'
@@ -137,13 +160,13 @@ def ensure_full_name(repo: RepoSpec) -> str:
         raise ValueError(f"Couldn't (safely) parse {repo} as a repo full name")
 
 
-def ensure_github_url(user_repo_str: str, prefix='https://www.github.com/') -> str:
+def ensure_github_url(user_repo_str: str, prefix='https://github.com/') -> str:
     """Ensure a string to a github url
 
     >>> ensure_github_url('https://www.github.com/thorwhalen/hubcap')
-    'https://www.github.com/thorwhalen/hubcap'
-    >>> ensure_github_url('https://www.github.com/github.com/thorwhalen/hubcap/')
-    'https://www.github.com/thorwhalen/hubcap'
+    'https://github.com/thorwhalen/hubcap'
+    >>> ensure_github_url('https://github.com/github.com/thorwhalen/hubcap/')
+    'https://github.com/thorwhalen/hubcap'
     """
     user_repo_str = ensure_full_name(user_repo_str)
     return f"{prefix.strip('/')}/{user_repo_str.strip('/')}"
@@ -154,7 +177,7 @@ def ensure_repo_obj(repo: RepoSpec) -> Repository:
 
     >>> ensure_repo_obj('thorwhalen/hubcap')
     Repository(full_name="thorwhalen/hubcap")
-    >>> repo = ensure_repo_obj('https://www.github.com/thorwhalen/hubcap')
+    >>> repo = ensure_repo_obj('https://github.com/thorwhalen/hubcap')
     >>> repo
     Repository(full_name="thorwhalen/hubcap")
 
@@ -169,6 +192,96 @@ def ensure_repo_obj(repo: RepoSpec) -> Repository:
     else:
         g = cached_github_object()
         return g.get_repo(ensure_full_name(repo))
+
+
+# --------------------------------------------------------------------------------------
+# GIT FUNCTIONS
+
+from warnings import warn
+import os
+import subprocess
+
+
+DFLT_GIT_COMMAND: str = 'status'
+
+DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'version')
+
+
+# Note: Stems, but diverged from the git function of i2mint/wads project
+def _build_git_command(
+    command: str = DFLT_GIT_COMMAND,
+    work_tree=None,
+    git_dir=None,
+):
+    if command.startswith('git '):
+        warn(
+            "You don't need to start your command with 'git '. I know it's a git command. Removing that prefix"
+        )
+        command = command[len('git ') :]
+    if work_tree is not None:
+        work_tree = os.path.abspath(os.path.expanduser(work_tree))
+        if git_dir is None:
+            git_dir = os.path.join(work_tree, '.git')
+    if git_dir is not None:
+        assert os.path.isdir(git_dir), f"Didn't find the git_dir: {git_dir}"
+        git_dir = ensure_no_slash_suffix(git_dir)
+        if not git_dir.endswith('.git'):
+            warn(f"git_dir doesn't end with `.git`: {git_dir}")
+
+    # Commands that should not include --work-tree or --git-dir
+    full_command = f'git'
+    if work_tree is not None:
+        full_command += f' --work-tree="{work_tree}"'
+    if git_dir is not None:
+        full_command += f' --git-dir="{git_dir}"'
+
+    full_command += f' {command}'
+
+    return full_command
+
+
+def git(command: str = DFLT_GIT_COMMAND, *, work_tree=None, git_dir=None):
+    """Launch git commands.
+
+    :param command: git command (e.g. 'status', 'branch', 'commit -m "blah"', 'push', etc.)
+    :param work_tree: The work_tree directory (i.e. where the project is)
+    :param git_dir: The .git directory (usually, and by default, will be taken to be "{work_tree}/.git/"
+    :return: What ever the command line returns (decoded to string)
+    """
+
+    """
+
+    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ add myFile
+    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ commit -m 'something'
+
+    """
+    command_str = _build_git_command(command, work_tree, git_dir)
+    r = subprocess.check_output(command_str, shell=True)
+    if isinstance(r, bytes):
+        r = r.decode()
+    return r.strip()
+
+
+def _prep_git_clone_args(repo, clone_to_folder=None):
+    return (ensure_github_url(repo), ensure_folder_to_clone_into(clone_to_folder))
+
+
+def git_clone(repo, clone_to_folder=None):
+    repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
+    git(f'clone {repo_url} {clone_to_folder}')
+    return clone_to_folder
+
+
+def git_wiki_clone(repo, clone_to_folder=None):
+    repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
+    try:
+        git(f'clone {repo_url}.wiki.git {clone_to_folder}')
+    except subprocess.CalledProcessError as e:
+        if next(iter(e.args), None) == 128:
+            warn(f"It's possible that the repository doesn't have a wiki. Error: {e}")
+        raise e
+
+    return clone_to_folder
 
 
 # --------------------------------------------------------------------------------------

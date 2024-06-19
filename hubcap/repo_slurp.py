@@ -1,66 +1,11 @@
 """Tools to slurp a repo's information """
 
-from typing import Mapping, Union
-
-# -------------------------------------------------------------------------------------
-# git utils
-
-from warnings import warn
-import os
-import subprocess
-
-
-# standard_lib_dir = os.path.dirname(os.__file__)
-path_sep = os.path.sep
-
-
-def ensure_slash_suffix(s: str):
-    if not s.endswith(path_sep):
-        s += path_sep
-    return s
-
-
-def ensure_no_slash_suffix(s: str):
-    return s.rstrip(path_sep)
-
-
-def _build_git_command(command: str = 'status', work_tree='.', git_dir=None):
-    if command.startswith('git '):
-        warn(
-            "You don't need to start your command with 'git '. I know it's a git command. Removing that prefix"
-        )
-        command = command[len('git ') :]
-    work_tree = os.path.abspath(os.path.expanduser(work_tree))
-    if git_dir is None:
-        git_dir = os.path.join(work_tree, '.git')
-    assert os.path.isdir(git_dir), f"Didn't find the git_dir: {git_dir}"
-    git_dir = ensure_no_slash_suffix(git_dir)
-    if not git_dir.endswith('.git'):
-        warn(f"git_dir doesn't end with `.git`: {git_dir}")
-    return f'git --git-dir="{git_dir}" --work-tree="{work_tree}" {command}'
-
-
-def git(command: str = 'status', work_tree='.', git_dir=None):
-    """Launch git commands.
-
-    :param command: git command (e.g. 'status', 'branch', 'commit -m "blah"', 'push', etc.)
-    :param work_tree: The work_tree directory (i.e. where the project is)
-    :param git_dir: The .git directory (usually, and by default, will be taken to be "{work_tree}/.git/"
-    :return: What ever the command line returns (decoded to string)
-    """
-
-    """
-
-    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ add myFile
-    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ commit -m 'something'
-
-    """
-    command_str = _build_git_command(command, work_tree, git_dir)
-    r = subprocess.check_output(command_str, shell=True)
-    if isinstance(r, bytes):
-        r = r.decode()
-    return r.strip()
-
+from typing import Mapping, Union, Literal
+from hubcap.util import (
+    ensure_github_url,
+    git_clone,
+    git_wiki_clone,
+)
 
 # -------------------------------------------------------------------------------------
 # markdown utils
@@ -172,26 +117,29 @@ def _does_not_start_with_docsrc_or_setup(key: KT):
     return not key.startswith('docsrc/') and not key.startswith('setup.')
 
 
+CloneKinds = Literal['files', 'wiki']
+
 def github_repo_mapping(
-    owner_repo,
+    repo: str,
     clone_to_folder=None,
     *,
     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
     extra_key_filter=None,
+    kind: CloneKinds = 'files',
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
 
     Args:
-        owner_repo (str): The GitHub repository in the format 'owner/repo'.
+        repo (str): The GitHub repository in the format 'owner/repo' or github url.
         clone_to_folder (str, optional): The target folder to clone the repository into. Defaults to a temporary folder.
 
     Returns:
         Mapping: A mapping of the files in the repository.
 
 
-    >>> owner_repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +ELLIPSIS
-    >>> print(owner_repo_files[:100])  # doctest: +ELLIPSIS
+    >>> repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +ELLIPSIS
+    >>> print(repo_files[:100])  # doctest: +ELLIPSIS
     ## README.md\n\n# hubcap
     A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...
 
@@ -200,10 +148,20 @@ def github_repo_mapping(
     if clone_to_folder is None:
         clone_to_folder = tempfile.mkdtemp()
 
+    repo = ensure_github_url(repo)
+
     # Construct the git clone command
     # TODO: Use the git function?
-    clone_command = f"git clone https://github.com/{owner_repo}.git {clone_to_folder}"
-    subprocess.check_call(clone_command, shell=True)
+    # clone_command = f"git clone {repo} {clone_to_folder}"
+    # import subprocess
+
+    # subprocess.check_call(clone_command, shell=True)
+    if kind == 'files':
+        git_clone(repo, clone_to_folder)
+    elif kind == 'wiki':
+        git_wiki_clone(repo, clone_to_folder)
+    else:
+        raise ValueError(f"kind must be 'files' or 'wiki', not {kind}")
 
     # If the folder_to_mapping is a string, use the key_filtered_text_files function
     # with the string as the key pattern
@@ -224,8 +182,37 @@ def github_repo_mapping(
     return mapping
 
 
+# def github_wiki_mapping(
+#     repo,
+#     clone_to_folder=None,
+#     *,
+#     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
+#     extra_key_filter=None,
+# ):
+#     r"""
+#     Clone a git repository's wiki and make a mapping of the files in the repository.
+
+#     Args:
+#         repo (str): The GitHub repository in the format 'owner/repo'.
+#         clone_to_folder (str, optional): The target folder to clone the repository into. Defaults to a temporary folder.
+
+#     Returns:
+#         Mapping: A mapping of the files in the repository.
+
+
+#     """
+#     # If no clone_to_folder is provided, create a temporary folder
+#     if clone_to_folder is None:
+#         clone_to_folder = tempfile.mkdtemp()
+
+#     # Construct the git clone command
+
+#     clone_command = f"git clone"
+#     "git clone https://github.com/alice/my-project.wiki.git"
+
+
 def github_repo_text_aggregate(
-    owner_repo,
+    repo,
     clone_to_folder=None,
     *,
     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
@@ -236,7 +223,7 @@ def github_repo_text_aggregate(
     Clone a git repository and aggregate all file contents into a string.
 
     Args:
-        owner_repo (str): The GitHub repository in the format 'owner/repo'.
+        repo (str): The GitHub repository in the format 'owner/repo' or github url.
         clone_to_folder (str, optional): The target folder to clone the repository into. Defaults to a temporary folder.
 
     Returns:
@@ -248,7 +235,7 @@ def github_repo_text_aggregate(
     """
     # Create the mapping from the repository
     mapping = github_repo_mapping(
-        owner_repo,
+        repo,
         clone_to_folder=clone_to_folder,
         folder_to_mapping=folder_to_mapping,
         extra_key_filter=extra_key_filter,

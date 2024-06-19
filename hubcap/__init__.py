@@ -185,6 +185,8 @@ from hubcap.util import (
     get_repository_info,
     cached_github_object,
     Discussions,
+    git_clone,
+    git_wiki_clone,
     create_markdown_from_jdict,  #
 )
 from hubcap.tools import hub

@@ -350,3 +350,33 @@ You also have other useful objects, like `Issues`, `IssueComments`, `Discussions
 >>> owner_repo_files = github_repo_text_aggregate('thorwhalen/hubcap')  # doctest: +SKIP
 >>> markdown_output = github_repo_text_aggregate(owner_repo_files)  # doctest: +SKIP
 ```
+
+
+# Recipes
+
+## Clone to temp folder and get store (mapping) of files
+
+```python
+from hubcap import git_clone, git_wiki_clone
+from dol import TextFiles, filt_iter, Pipe
+
+repo_py_files = Pipe(
+    git_clone, TextFiles, filt_iter(filt=lambda x: x.endswith('.py'))
+)
+repo_wiki_files = Pipe(git_wiki_clone, TextFiles)
+```
+
+```python
+py_files = repo_py_files('i2mint/dol')
+len(py_files)
+# 37
+```
+
+```python
+wiki_files = repo_wiki_files('i2mint/dol')
+list(wiki_files)
+# ['Recipes.md',
+#  'Critiques-and-their-comebacks.md',
+#  'Home.md',
+#  'Mapping-Views.md']
+```
