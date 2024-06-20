@@ -1,12 +1,13 @@
 """Base objects"""
+
 from functools import cached_property, partial
 from operator import attrgetter
 from typing import Mapping
-from dol import KvReader
-from dol.signatures import Sig
+from dol import KvReader, wrap_kvs
+from dol.util import format_invocation
+
 import github
 
-from dol.util import format_invocation
 from hubcap.util import (
     RepoSpec,
     ensure_repo_obj,
@@ -19,6 +20,10 @@ from hubcap.constants import repo_collection_names
 
 
 NotSet = github.GithubObject.NotSet
+
+
+class RepositoryNotFound(github.UnknownObjectException):
+    """Raised when a repository is not found"""
 
 
 def decoded_contents(content_file):
@@ -106,14 +111,16 @@ dflt_repo_kwargs['issues']['get_objs_kwargs'] = (('state', 'open'),)
 
 
 def repo_objects_instance(repo, object_name: str) -> Mapping:
-    if object_name in repo_collection_names:
+    if object_name == 'issues':
+        return Issues(repo)
+    elif object_name == 'discussions':
+        return Discussions(repo)
+    elif object_name in repo_collection_names:
         return RepoObjects(
             repo,
             get_objs=getattr(Repository, f'get_{object_name}'),
             **dflt_repo_kwargs.get(object_name, {}),
         )
-    elif object_name == 'discussions':
-        return Discussions(repo)
     else:
         raise KeyError(f'Unknown object name: {object_name}')
 
@@ -121,8 +128,15 @@ def repo_objects_instance(repo, object_name: str) -> Mapping:
 class RepoReader(KvReader):
     repo_collection_names = sorted(set(repo_collection_names) | {'discussions'})
 
+    # TODO: Separate error handling concern: https://github.com/i2mint/i2/issues/45
     def __init__(self, repo: RepoSpec):
-        self.repo = ensure_repo_obj(repo)
+        try:
+            self.repo = ensure_repo_obj(repo)
+        except github.UnknownObjectException as e:
+            if next(iter(e.args), None) == 404:
+                raise RepositoryNotFound(f"Repository not found: {repo}")
+            else:
+                raise
 
     def __getitem__(self, k):
         return repo_objects_instance(self.repo, k)
@@ -140,16 +154,70 @@ class RepoReader(KvReader):
 # Extras -----------------------------------------------------------------------------
 
 
+class IssueCommentsBase(KvReader):
+    """Base Mapping interface to repository issue comments (object)"""
+
+    _comment_key = enumerate
+
+    def __init__(self, issue_obj):
+        self.src = issue_obj
+
+    @cached_property
+    def _comments(self):
+        return {k: v for k, v in self._comment_key(self.src.get_comments())}
+
+    def __iter__(self):
+        yield from self._comments
+
+    def __getitem__(self, k):
+        return self._comments[k]
+    
+
+@wrap_kvs(obj_of_data=attrgetter('body'))
+class IssueComments(IssueCommentsBase):
+    """Mapping interface to repository issue comments' body"""
+
+
+class IssueContents(KvReader):
+    """Mapping interface to repository issue contents"""
+
+    def __init__(self, issue_obj):
+        self.src = issue_obj
+
+    def __iter__(self):
+        yield from ('body', 'comments')
+
+    def __getitem__(self, k):
+        if k == 'comments':
+            return IssueComments(self.src)
+        else:
+            return self.src.body
+
+
 # TODO: Figure out how to make Issues and Workflows (pickable) classes automatically
 #   (The instances can be made from repo_objects_instance)
 class Issues(RepoObjects):
+    """
+    Mapping interface to repository issues.
+
+    :param repo: The repository to get issues from
+    :param get_objs: The function to get the issues
+    :param objs_to_items: A function to get the key-value pairs from the issue objects
+    :param data_of_obj: A function to get the data from the issue object.
+        Default is attrgetter('body'). Use identity to get the whole issue object.
+    :param get_objs_kwargs: The keyword arguments to pass to the get_objs function
+
+    The default of data_of_obj is `IssueContents`, which will give a mapping 
+    interface to the body and comments of the issue.
+    """
+
     def __init__(
         self,
         repo: RepoSpec,
         get_objs=Repository.get_issues,
         *,
         objs_to_items='number',
-        data_of_obj=identity,
+        data_of_obj=IssueContents,
         get_objs_kwargs=(('state', 'open'),),
     ):
         super().__init__(
@@ -180,23 +248,7 @@ class Workflows(RepoObjects):
         )
 
 
-class IssueComments(KvReader):
-    """Mapping interface to repository issue comments"""
 
-    _comment_key = enumerate
-
-    def __init__(self, issue_obj):
-        self.src = issue_obj
-
-    @cached_property
-    def _comments(self):
-        return {k: v for k, v in self._comment_key(self.src.get_comments())}
-
-    def __iter__(self):
-        yield from self._comments
-
-    def __getitem__(self, k):
-        return self._comments[k]
 
 
 # --------------------------------------------------------------------------------------
@@ -278,7 +330,8 @@ class GithubReader(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self.src, self.content_file_extractor),
+            self.__class__.__name__,
+            (self.src, self.content_file_extractor),
         )
 
 
@@ -306,7 +359,8 @@ class Branches(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self.src, self.content_file_extractor),
+            self.__class__.__name__,
+            (self.src, self.content_file_extractor),
         )
 
 
@@ -339,7 +393,10 @@ class BranchDir(KvReader):
             t, list
         ):  # TODO: ... you already have the content_files in t, so don't need to call API again.
             return self.__class__(
-                self.src, self.branch_name, k, self.content_file_extractor,
+                self.src,
+                self.branch_name,
+                k,
+                self.content_file_extractor,
             )
         else:
             return self.content_file_extractor(t)
@@ -347,7 +404,12 @@ class BranchDir(KvReader):
     def __repr__(self):
         return format_invocation(
             self.__class__.__name__,
-            (self.src, self.branch_name, self.path, self.content_file_extractor,),
+            (
+                self.src,
+                self.branch_name,
+                self.path,
+                self.content_file_extractor,
+            ),
         )
         # return f"{self.__class__.__name__}({self.src}, {self.branch_name})"
 
@@ -455,5 +517,6 @@ class GitHubDol(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__, (self.src, self.content_file_extractor),
+            self.__class__.__name__,
+            (self.src, self.content_file_extractor),
         )

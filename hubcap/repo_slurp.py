@@ -119,6 +119,7 @@ def _does_not_start_with_docsrc_or_setup(key: KT):
 
 CloneKinds = Literal['files', 'wiki']
 
+
 def github_repo_mapping(
     repo: str,
     clone_to_folder=None,
@@ -211,6 +212,7 @@ def github_repo_mapping(
 #     "git clone https://github.com/alice/my-project.wiki.git"
 
 
+# TODO: Take care of kinds
 def github_repo_text_aggregate(
     repo,
     clone_to_folder=None,
@@ -218,6 +220,7 @@ def github_repo_text_aggregate(
     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
     extra_key_filter=_does_not_start_with_docsrc_or_setup,
     kv_to_text: KvToText = kv_to_python_aware_markdown,
+    kinds: Union[CloneKinds, Iterable[CloneKinds]] = ('files', 'wiki'),
 ):
     """
     Clone a git repository and aggregate all file contents into a string.
