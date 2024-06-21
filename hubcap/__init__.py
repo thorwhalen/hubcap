@@ -190,4 +190,4 @@ from hubcap.util import (
     create_markdown_from_jdict,  #
 )
 from hubcap.tools import hub
-from hubcap.repo_slurp import github_repo_text_aggregate
+from hubcap.repo_slurp import repo_text_aggregate

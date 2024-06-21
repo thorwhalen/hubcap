@@ -4,13 +4,9 @@ from typing import Iterable, Literal
 import time
 from functools import partial
 
-from dol import KvReader
-from i2 import Sig
-from github.Repository import Repository
-
 from hubcap.base import GithubReader, RepoReader
 from hubcap.constants import repo_collection_names
-from hubcap.util import RepoSpec, ensure_url_suffix
+from hubcap.util import RepoSpec, ensure_url_suffix, _prep_git_clone_args
 
 
 # TODO: Design horribly unclean. Once RepoReader is finished, this should become
