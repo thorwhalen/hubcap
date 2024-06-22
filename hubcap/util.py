@@ -7,7 +7,7 @@ import os
 import subprocess
 import tempfile
 
-from github import Github, GithubException
+from github import Github
 from github.Repository import Repository
 
 from hubcap.constants import (
@@ -15,7 +15,6 @@ from hubcap.constants import (
     RepoPropSpec,
     RepoFunc,
     RepoInfo,
-    repo_props,
 )
 
 RepoSpec = Union[str, Repository]

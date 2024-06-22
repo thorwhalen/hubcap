@@ -15,7 +15,7 @@ from hubcap.util import (
     git_clone,
     git_wiki_clone,
 )
-from hubcap.base import RepoReader
+from hubcap.base import RepoReader, ResourceNotFound, NotSet
 
 
 # -------------------------------------------------------------------------------------
@@ -256,6 +256,7 @@ def notebook_to_markdown(
 import tempfile
 import re
 from functools import partial
+from subprocess import CalledProcessError
 from dol import TextFiles, wrap_kvs, filt_iter, Files
 
 
@@ -271,11 +272,16 @@ def ensure_repo_folder(repo: str, clone_func=git_clone):
     if os.path.isdir(repo):
         return repo
     elif ensure_github_url(repo):
-        local_folder = tempfile.mkdtemp()
-        clone_func(repo, local_folder)
-        return local_folder
+        try:
+            local_folder = tempfile.mkdtemp()
+            clone_func(repo, local_folder)
+            return local_folder
+        except CalledProcessError:
+            raise ResourceNotFound(
+                f"Couldn't find a (or error cloning with {clone_func}) a resource at {repo}"
+            )
     else:
-        raise ValueError(f"Couldn't find a local git repo at {repo}")
+        raise ResourceNotFound(f"Couldn't find a local git repo at {repo}")
 
 
 def _decode_to_text_or_skip(obj, log_error_function=False):
@@ -353,15 +359,15 @@ def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
     return dict(_gen())
 
 
-def wiki_mapping(repo, local_repo_folder=None):
-    # if os.path.isdir(repo):
-    #     local_repo_folder = repo
-    # elif local_repo_folder is None:
-    #     local_repo_folder = tempfile.mkdtemp()
-    #     git_wiki_clone(repo, local_repo_folder)
-    local_repo_folder = ensure_repo_folder(repo, clone_func=git_wiki_clone)
-    s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r".*\.md$").search)
-    return s
+def wiki_mapping(repo, local_repo_folder=None, default=NotSet):
+    try:
+        local_repo_folder = ensure_repo_folder(repo, clone_func=git_wiki_clone)
+        s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r".*\.md$").search)
+        return s
+    except ResourceNotFound:
+        if default is NotSet:
+            raise
+        return default
 
 
 def repo_files_mapping(
@@ -369,7 +375,7 @@ def repo_files_mapping(
     *,
     kv_to_text: KvToText = kv_to_python_aware_markdown,
     folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
-    extra_key_filter=None,
+    extra_key_filter=_does_not_start_with_docsrc_or_setup,
 ):
     local_repo_folder = ensure_repo_folder(repo)
 
@@ -423,7 +429,7 @@ def github_repo_mapping(
     if kind == 'discussions':
         return discussions_mapping(repo)
     elif kind == 'wiki':
-        return wiki_mapping(repo)
+        return wiki_mapping(repo, default={})
     elif kind == 'files':
         return repo_files_mapping(repo)
     else:

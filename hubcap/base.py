@@ -7,11 +7,11 @@ from dol import KvReader, wrap_kvs
 from dol.util import format_invocation
 
 import github
+from github import GithubException
 
 from hubcap.util import (
     RepoSpec,
     ensure_repo_obj,
-    GithubException,
     Github,
     Repository,
     Discussions,
@@ -22,7 +22,11 @@ from hubcap.constants import repo_collection_names
 NotSet = github.GithubObject.NotSet
 
 
-class RepositoryNotFound(github.UnknownObjectException):
+class ResourceNotFound(Exception):
+    """Raised when a resource is not found"""
+
+
+class RepositoryNotFound(github.UnknownObjectException, ResourceNotFound):
     """Raised when a repository is not found"""
 
 
@@ -171,7 +175,7 @@ class IssueCommentsBase(KvReader):
 
     def __getitem__(self, k):
         return self._comments[k]
-    
+
 
 @wrap_kvs(obj_of_data=attrgetter('body'))
 class IssueComments(IssueCommentsBase):
@@ -207,7 +211,7 @@ class Issues(RepoObjects):
         Default is attrgetter('body'). Use identity to get the whole issue object.
     :param get_objs_kwargs: The keyword arguments to pass to the get_objs function
 
-    The default of data_of_obj is `IssueContents`, which will give a mapping 
+    The default of data_of_obj is `IssueContents`, which will give a mapping
     interface to the body and comments of the issue.
     """
 
@@ -246,9 +250,6 @@ class Workflows(RepoObjects):
             data_of_obj=data_of_obj,
             get_objs_kwargs=get_objs_kwargs,
         )
-
-
-
 
 
 # --------------------------------------------------------------------------------------
