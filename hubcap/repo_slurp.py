@@ -208,17 +208,23 @@ def _markdown_lines(notebook, process_code, process_markdown, process_output):
                     yield f"```\n{processed_output}\n```"
 
 
+# TODO: Move to markdown utils module or package
 # TODO: Write a few useful process_* functions to get useful markdown from code and output cells
 #   For example, not including traceback in error outputs, or only including the last line of
 #   output cells -- or not including scrap sections of code cells.
 def notebook_to_markdown(
-    notebook, *, process_code=True, process_markdown=True, process_output=True
+    notebook: Union[str, bytes],
+    *,
+    process_code=True,
+    process_markdown=True,
+    process_output=True,
+    encoding='utf-8',
 ):
     """
     Transforms a Jupyter notebook into a markdown string with control over cell processing.
 
     Args:
-        notebook (str): Path to the Jupyter notebook file.
+        notebook: Path to (or bytes or str contents of) the Jupyter notebook.
         process_code (bool or callable): Whether to include code cells or a callable to process them.
                                          Default is True.
         process_markdown (bool or callable): Whether to include markdown cells or a callable to process them.
@@ -234,11 +240,16 @@ def notebook_to_markdown(
 
     # Make a notebook object
     if os.path.isfile(notebook):
-        with open(notebook, 'r', encoding='utf-8') as f:
+        with open(notebook, 'r', encoding=encoding) as f:
             notebook = nbformat.read(f, as_version=4)
-    if isinstance(notebook, str):
-
-        notebook = nbformat.read(io.StringIO(notebook), as_version=4)
+    if isinstance(notebook, (bytes, str)):
+        if isinstance(notebook, str):
+            notebook = io.StringIO(notebook)
+        elif isinstance(notebook, bytes):
+            notebook = io.BytesIO(notebook)
+        else:
+            raise ValueError(f"Unsupported type for notebook: {type(notebook)}")
+        notebook = nbformat.read(notebook, as_version=4)
     else:
         assert isinstance(notebook, nbformat.NotebookNode)
 
