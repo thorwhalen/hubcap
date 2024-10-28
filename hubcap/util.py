@@ -75,6 +75,58 @@ def cached_github_object():
     return Github()
 
 
+def replace_image_links(
+    markdown_str,
+    repo_root_url,
+    branch="main",
+    *,
+    image_pattern=r"!\[([^\]]+)\]\(([^)]+)\)",
+    url_template="{repo_root_url}/raw/{branch}/{image_path}",
+):
+    """
+    Replace relative image paths in a markdown string with absolute URLs for PyPI.
+
+    Parameters:
+    - markdown_str (str): The input markdown text containing relative image links.
+    - repo_root_url (str): The root URL of the repository (e.g., "https://github.com/user/repo").
+    - branch (str): The branch name in the repository where images are stored.
+    - image_pattern (str, optional): The regex pattern to match markdown image syntax.
+    - url_template (str, optional): The template for generating absolute image URLs.
+
+    Returns:
+    - str: The markdown string with absolute URLs for images.
+
+    Example:
+
+    >>> markdown_str = "![image1](images/image1.png) ![image2](images/image2.png)"
+    >>> repo_root_url = "https://github.com/thorwhalen/hubcap"
+    >>> branch = "main"
+    >>> replace_image_links(markdown_str, repo_root_url, branch)
+    '![image1](https://github.com/thorwhalen/hubcap/raw/main/images/image1.png) ![image2](https://github.com/thorwhalen/hubcap/raw/main/images/image2.png)'
+
+    """
+
+    import re
+
+    def replacement(match):
+        # Extract image kind and relative path from the regex match groups
+        image_kind = match.group(1)
+        relative_path = match.group(2)
+
+        # Format the new URL using the provided template
+        absolute_url = url_template.format(
+            repo_root_url=repo_root_url, branch=branch, image_path=relative_path
+        )
+
+        # Return the replaced markdown image syntax with the absolute URL
+        return f"![{image_kind}]({absolute_url})"
+
+    # Substitute all matched patterns in the markdown string
+    updated_markdown = re.sub(image_pattern, replacement, markdown_str)
+
+    return updated_markdown
+
+
 # --------------------------------------------------------------------------- #
 # Ensure functions
 
