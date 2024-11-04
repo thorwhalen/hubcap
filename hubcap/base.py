@@ -8,6 +8,7 @@ from dol.util import format_invocation
 
 import github
 from github import GithubException
+from github.Auth import Token, Login
 
 from hubcap.util import (
     RepoSpec,
@@ -263,7 +264,13 @@ class Workflows(RepoObjects):
 # @kv_decorator
 class GithubReader(KvReader):
     """
-    a Store that can access a GitHub account
+    a Store that can access a GitHub account.
+
+    You need to specify a token in auth, or in the environment variable 
+    HUBCAP_GITHUB_TOKEN or GITHUB_TOKEN.
+
+    The iteration is defined to be the repositories of the account_name 
+    (could be organization name). 
     """
 
     def __init__(
@@ -271,8 +278,7 @@ class GithubReader(KvReader):
         account_name: str = None,
         content_file_extractor=decoded_contents,
         *,
-        login_or_token=None,
-        password=None,
+        auth=None,
         jwt=None,
         base_url='https://api.github.com',
         timeout=15,
@@ -281,18 +287,32 @@ class GithubReader(KvReader):
         verify=True,
         retry=None,
         get_repos_kwargs=(),
+        login_or_token=None,  # deprecated
+        password=None,  # deprecated
     ):
         # TODO: Not sure what the rules are with account_name and login_or_token
         #  So only using a search-if-not-given strategy if account_name is None
         # account_name = account_name or find_user_name()
 
-        login_or_token = login_or_token or find_github_token()
-        if login_or_token is None:
+        if auth is None and login_or_token is not None:
+            if password is not None:
+                auth = Login(login_or_token, password)
+            else:
+                token = login_or_token
+                auth = Token(token)
+        else:
+            auth = auth or find_github_token()
+
+        if auth is not None:
+            # TODO: This forces token use. Should we allow for login/password use?
+            auth = Token(auth)
+        else:
             assert isinstance(
                 account_name, str
             ), 'account_name must be given (and a str)'
 
         _github = Github(
+            auth=auth,
             login_or_token=login_or_token,
             password=password,
             jwt=jwt,
