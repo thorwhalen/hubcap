@@ -2,8 +2,10 @@
 
 from typing import Union, Dict
 from functools import lru_cache
+from urllib.parse import urljoin
 from operator import attrgetter
 import os
+import re
 import subprocess
 import tempfile
 
@@ -75,69 +77,67 @@ def cached_github_object():
     return Github()
 
 
-def replace_image_links(
-    markdown_str,
-    repo_root_url,
-    branch="main",
+from lkj import enable_sourcing_from_file
+
+
+DFLT_RELATIVE_URL_PATTERN = (
+    r'(!?\[.*?\]\()'  # Matches the opening part of markdown link or image
+    r'((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)'  # Matches relative URLs
+    r'(\))'  # Matches the closing parenthesis
+)
+
+
+@enable_sourcing_from_file
+def replace_relative_urls(
+    markdown_str: str,
+    root_url,
     *,
-    image_pattern=r"!\[([^\]]+)\]\(([^)]+)\)",
-    url_template="{repo_root_url}/raw/{branch}/{image_path}",
+    relative_url_pattern: str = DFLT_RELATIVE_URL_PATTERN,
 ):
     """
-    Replace relative image paths in a markdown string with absolute URLs for PyPI.
+    Replace relative URLs in a markdown string with absolute URLs based on the root_url.
 
-    Parameters:
-    - markdown_str (str): The input markdown text containing relative image links.
-    - repo_root_url (str): The root URL of the repository (e.g., "https://github.com/user/repo").
-    - branch (str): The branch name in the repository where images are stored.
-    - image_pattern (str, optional): The regex pattern to match markdown image syntax.
-    - url_template (str, optional): The template for generating absolute image URLs.
+    This is useful, for example, to solve problems like when pypi renders markdown and
+    images are not shown because they are relative URLs.
+    See [issue]()
+
+    Args:
+        markdown_str (str): The markdown content containing URLs.
+        root_url (str): The base URL to resolve relative URLs against.
 
     Returns:
-    - str: The markdown string with absolute URLs for images.
+        str: The markdown content with relative URLs replaced by absolute URLs.
 
-    Example:
-
-    >>> markdown_str = "![image1](images/image1.png) ![image2](images/image2.png)"
-    >>> repo_root_url = "https://github.com/thorwhalen/hubcap"
-    >>> branch = "main"
-    >>> replace_image_links(markdown_str, repo_root_url, branch)
-    '![image1](https://github.com/thorwhalen/hubcap/raw/main/images/image1.png) ![image2](https://github.com/thorwhalen/hubcap/raw/main/images/image2.png)'
-
+    Examples:
+        >>> markdown_str = '''
+        ... [With dot](./page)
+        ... ![With double dot](../image.png)
+        ... ![](relative/path/to/image.png)
+        ... [Absolute Link](http://example.com)
+        ... '''
+        >>> root_url = 'http://mysite.com/docs'
+        >>> print(replace_relative_urls(markdown_str, root_url))
+        <BLANKLINE>
+        [With dot](http://mysite.com/docs/page)
+        ![With double dot](http://mysite.com/image.png)
+        ![](http://mysite.com/docs/relative/path/to/image.png)
+        [Absolute Link](http://example.com)
+        <BLANKLINE>
     """
+    # Define a pattern to match markdown links and images with relative URLs
+    relative_url_pattern = re.compile(relative_url_pattern)
 
-    import re
-    import os
-    from pathlib import Path
+    if not root_url.endswith('/'):
+        root_url += '/'
 
     def replacement(match):
-        # Extract image kind and relative path from the regex match groups
-        image_kind = match.group(1)
+        prefix = match.group(1)
         relative_path = match.group(2)
+        suffix = match.group(3)
+        absolute_url = urljoin(root_url, relative_path)
+        return f'{prefix}{absolute_url}{suffix}'
 
-        # Format the new URL using the provided template
-        absolute_url = url_template.format(
-            repo_root_url=repo_root_url, branch=branch, image_path=relative_path
-        )
-
-        # Return the replaced markdown image syntax with the absolute URL
-        return f"![{image_kind}]({absolute_url})"
-
-    save_to_file = False
-
-    if '\n' not in markdown_str and os.path.isfile(markdown_str):
-        save_to_file = markdown_str
-        # If the markdown string is a file path, read the file content
-        with open(markdown_str, "r") as f:
-            markdown_str = f.read()
-
-    # Substitute all matched patterns in the markdown string
-    updated_markdown = re.sub(image_pattern, replacement, markdown_str)
-
-    if save_to_file:
-        with open(save_to_file, "w") as f:
-            f.write(updated_markdown)
-
+    updated_markdown = relative_url_pattern.sub(replacement, markdown_str)
     return updated_markdown
 
 

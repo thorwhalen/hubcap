@@ -188,7 +188,7 @@ from hubcap.util import (
     git_clone,
     git_wiki_clone,
     create_markdown_from_jdict,  #
-    replace_image_links,  # replace relative image links with absolute ones
+    replace_relative_urls,  # replace relative urls with absolute ones
 )
 from hubcap.tools import hub
 from hubcap.repo_slurp import repo_text_aggregate
