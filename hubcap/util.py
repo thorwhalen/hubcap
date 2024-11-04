@@ -107,6 +107,8 @@ def replace_image_links(
     """
 
     import re
+    import os
+    from pathlib import Path
 
     def replacement(match):
         # Extract image kind and relative path from the regex match groups
@@ -121,8 +123,20 @@ def replace_image_links(
         # Return the replaced markdown image syntax with the absolute URL
         return f"![{image_kind}]({absolute_url})"
 
+    save_to_file = False
+
+    if '\n' not in markdown_str and os.path.isfile(markdown_str):
+        save_to_file = markdown_str
+        # If the markdown string is a file path, read the file content
+        with open(markdown_str, "r") as f:
+            markdown_str = f.read()
+
     # Substitute all matched patterns in the markdown string
     updated_markdown = re.sub(image_pattern, replacement, markdown_str)
+
+    if save_to_file:
+        with open(save_to_file, "w") as f:
+            f.write(updated_markdown)
 
     return updated_markdown
 

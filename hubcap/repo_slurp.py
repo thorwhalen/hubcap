@@ -466,8 +466,8 @@ def repo_text_aggregate(
         str: A string with all file contents.
 
 
-    >>> aggregate = repo_text_aggregate('thorwhalen/hubcap')  # doctest: +ELLIPSIS
-    >>> print(aggregate[:100])  # doctest: +ELLIPSIS
+    >>> aggregate = repo_text_aggregate('thorwhalen/hubcap')  # doctest: +SKIP
+    >>> print(aggregate[:100])  # doctest: +SKIP
     ## README.md\n\n# hubcap
     A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...
 

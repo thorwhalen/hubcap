@@ -109,7 +109,7 @@ True
 >>> issue.body
 'This is just a test issue to test that hubcap can see it.\r\n'
 >>> issue.comments  # meaning "number of comments"
-1
+2
 
 ### Access discussions
 

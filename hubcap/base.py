@@ -197,6 +197,9 @@ class IssueContents(KvReader):
         else:
             return self.src.body
 
+    def __repr__(self):
+        return format_invocation(self.__class__.__name__, (self.src,))
+
 
 # TODO: Figure out how to make Issues and Workflows (pickable) classes automatically
 #   (The instances can be made from repo_objects_instance)
@@ -221,7 +224,7 @@ class Issues(RepoObjects):
         get_objs=Repository.get_issues,
         *,
         objs_to_items='number',
-        data_of_obj=IssueContents,
+        data_of_obj=identity,  # IssueContents,
         get_objs_kwargs=(('state', 'open'),),
     ):
         super().__init__(
