@@ -82,12 +82,15 @@ from lkj import enable_sourcing_from_file
 
 DFLT_RELATIVE_URL_PATTERN = (
     r'(!?\[.*?\]\()'  # Matches the opening part of markdown link or image
-    r'((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)'  # Matches relative URLs
+    r'((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)'  # Matches relative URLs in markdown
     r'(\))'  # Matches the closing parenthesis
+    r'|(<img\s+[^>]*src=")'  # Matches the opening part of HTML img tag
+    r'((?!http[s]?://|ftp://|mailto:|#|/)[^"]*)'  # Matches relative URLs in HTML img tag
+    r'(")'  # Matches the closing quote of the src attribute
 )
 
 
-@enable_sourcing_from_file
+@enable_sourcing_from_file(write_output=True)
 def replace_relative_urls(
     markdown_str: str,
     root_url,
@@ -114,6 +117,7 @@ def replace_relative_urls(
         ... ![With double dot](../image.png)
         ... ![](relative/path/to/image.png)
         ... [Absolute Link](http://example.com)
+        ... <img src="path/to/image" width="320">
         ... '''
         >>> root_url = 'http://mysite.com/docs'
         >>> print(replace_relative_urls(markdown_str, root_url))
@@ -122,6 +126,7 @@ def replace_relative_urls(
         ![With double dot](http://mysite.com/image.png)
         ![](http://mysite.com/docs/relative/path/to/image.png)
         [Absolute Link](http://example.com)
+        <img src="http://mysite.com/docs/path/to/image" width="320">
         <BLANKLINE>
     """
     # Define a pattern to match markdown links and images with relative URLs
@@ -131,9 +136,9 @@ def replace_relative_urls(
         root_url += '/'
 
     def replacement(match):
-        prefix = match.group(1)
-        relative_path = match.group(2)
-        suffix = match.group(3)
+        prefix = match.group(1) or match.group(4)
+        relative_path = match.group(2) or match.group(5)
+        suffix = match.group(3) or match.group(6)
         absolute_url = urljoin(root_url, relative_path)
         return f'{prefix}{absolute_url}{suffix}'
 
