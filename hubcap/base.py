@@ -139,7 +139,7 @@ class RepoReader(KvReader):
             self.repo = ensure_repo_obj(repo)
         except github.UnknownObjectException as e:
             if next(iter(e.args), None) == 404:
-                raise RepositoryNotFound(f"Repository not found: {repo}")
+                raise RepositoryNotFound(f'Repository not found: {repo}')
             else:
                 raise
 
@@ -354,8 +354,7 @@ class GithubReader(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__,
-            (self.src, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )
 
 
@@ -383,8 +382,7 @@ class Branches(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__,
-            (self.src, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )
 
 
@@ -417,10 +415,7 @@ class BranchDir(KvReader):
             t, list
         ):  # TODO: ... you already have the content_files in t, so don't need to call API again.
             return self.__class__(
-                self.src,
-                self.branch_name,
-                k,
-                self.content_file_extractor,
+                self.src, self.branch_name, k, self.content_file_extractor,
             )
         else:
             return self.content_file_extractor(t)
@@ -428,12 +423,7 @@ class BranchDir(KvReader):
     def __repr__(self):
         return format_invocation(
             self.__class__.__name__,
-            (
-                self.src,
-                self.branch_name,
-                self.path,
-                self.content_file_extractor,
-            ),
+            (self.src, self.branch_name, self.path, self.content_file_extractor,),
         )
         # return f"{self.__class__.__name__}({self.src}, {self.branch_name})"
 
@@ -541,6 +531,5 @@ class GitHubDol(KvReader):
 
     def __repr__(self):
         return format_invocation(
-            self.__class__.__name__,
-            (self.src, self.content_file_extractor),
+            self.__class__.__name__, (self.src, self.content_file_extractor),
         )

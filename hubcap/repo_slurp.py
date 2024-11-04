@@ -30,8 +30,8 @@ def kv_to_python_aware_markdown(k, v):
     """Puts .py content in a code block, and returns a markdown formatted string."""
     if k.endswith('.py'):
         # if it's a python file, we'll put it in a code block
-        v = f"```python\n{v}\n```\n"
-    return f"## {k}\\n\\n{v}\\n\\n"
+        v = f'```python\n{v}\n```\n'
+    return f'## {k}\\n\\n{v}\\n\\n'
 
 
 def _text_segments_from_mapping(
@@ -86,7 +86,7 @@ def text_from_mapping(
     Of the art.
     ```
     """
-    return "\n".join(_text_segments_from_mapping(mapping, kv_to_text))
+    return '\n'.join(_text_segments_from_mapping(mapping, kv_to_text))
 
 
 def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
@@ -128,7 +128,7 @@ def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
     def _result_lines():
         nonlocal in_code_block
         for line in markdown_text.split('\n'):
-            if line.startswith("```"):
+            if line.startswith('```'):
                 in_code_block = not in_code_block
                 yield line
             elif in_code_block:
@@ -176,7 +176,7 @@ def _ensure_callable_processor(processor, if_true=lambda x: x, if_false=lambda x
     elif callable(processor):
         return processor
     else:
-        raise ValueError(f"{processor} is not a callable")
+        raise ValueError(f'{processor} is not a callable')
 
 
 def _markdown_lines(notebook, process_code, process_markdown, process_output):
@@ -193,7 +193,7 @@ def _markdown_lines(notebook, process_code, process_markdown, process_output):
         elif cell.cell_type == 'code':
             processed_code = process_code(cell.source)
             if processed_code is not None:
-                yield f"```python\n{processed_code}\n```"
+                yield f'```python\n{processed_code}\n```'
             for output in cell.get('outputs', []):
                 if output.output_type == 'stream':
                     text = output.text
@@ -205,7 +205,7 @@ def _markdown_lines(notebook, process_code, process_markdown, process_output):
                     continue
                 processed_output = process_output(text)
                 if processed_output is not None:
-                    yield f"```\n{processed_output}\n```"
+                    yield f'```\n{processed_output}\n```'
 
 
 # TODO: Move to markdown utils module or package
@@ -248,7 +248,7 @@ def notebook_to_markdown(
         elif isinstance(notebook, bytes):
             notebook = io.BytesIO(notebook)
         else:
-            raise ValueError(f"Unsupported type for notebook: {type(notebook)}")
+            raise ValueError(f'Unsupported type for notebook: {type(notebook)}')
         notebook = nbformat.read(notebook, as_version=4)
     else:
         assert isinstance(notebook, nbformat.NotebookNode)
@@ -301,7 +301,7 @@ def _decode_to_text_or_skip(obj, log_error_function=False):
     except UnicodeDecodeError:
         if log_error_function:
             # if log_error_function
-            print(f"Error decoding {obj}")
+            print(f'Error decoding {obj}')
         return None  # Note: None values will be skipped in text_from_mapping
 
 
@@ -314,7 +314,7 @@ def key_filtered_text_files(folder, key_pattern):
     return filt_iter(TextFiles(folder), filt=re.compile(key_pattern).search)
 
 
-_pattern_for_python_and_markdown_files = r".*\.(py|md)$"
+_pattern_for_python_and_markdown_files = r'.*\.(py|md)$'
 
 _filtered_py_and_md_files = partial(
     key_filtered_text_files, key_pattern=_pattern_for_python_and_markdown_files
@@ -340,7 +340,7 @@ def __discussion_json_to_text_segments(
             offset = offset_headers
         else:
             raise ValueError(
-                f"offset_headers must be an int or True, not {offset_headers}"
+                f'offset_headers must be an int or True, not {offset_headers}'
             )
         _offset_headers = partial(add_offset_to_headers, offset=offset)
     else:
@@ -348,15 +348,15 @@ def __discussion_json_to_text_segments(
 
     yield _offset_headers(d['body']) + '\n\n'
     for comment_num, comment in enumerate(d['comments'], 1):
-        yield "#" * (header_level + 1) + f" Comment {comment_num}\n\n"
+        yield '#' * (header_level + 1) + f' Comment {comment_num}\n\n'
         yield _offset_headers(comment['body']) + '\n\n'
         for reply in comment.get('replies', []):
-            yield "#" * (header_level + 2) + f" Reply\n\n"
+            yield '#' * (header_level + 2) + f' Reply\n\n'
             yield _offset_headers(reply['body'] + '\n\n')
 
 
 def _discussion_json_to_text(d: dict, header_level=2):
-    return "".join(__discussion_json_to_text_segments(d, header_level))
+    return ''.join(__discussion_json_to_text_segments(d, header_level))
 
 
 def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
@@ -373,7 +373,7 @@ def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
 def wiki_mapping(repo, local_repo_folder=None, default=NotSet):
     try:
         local_repo_folder = ensure_repo_folder(repo, clone_func=git_wiki_clone)
-        s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r".*\.md$").search)
+        s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r'.*\.md$').search)
         return s
     except ResourceNotFound:
         if default is NotSet:
@@ -415,10 +415,7 @@ CloneKinds = Literal['files', 'wiki', 'discussions']
 
 
 def github_repo_mapping(
-    repo: str,
-    *,
-    kind: CloneKinds = 'files',
-    repo_files_mapping=repo_files_mapping,
+    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
@@ -472,7 +469,7 @@ def repo_text_aggregate(
     A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...
 
     """
-    text = ""
+    text = ''
     for kind in kinds:
         mapping = github_repo_mapping(repo, kind=kind)
         text += text_from_mapping(mapping)

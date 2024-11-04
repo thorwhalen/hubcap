@@ -9,6 +9,7 @@
    module_docs/hubcap/examples/diagnose_repositories
    module_docs/hubcap/examples/get_discussions
    module_docs/hubcap/examples/get_wikis
+   module_docs/hubcap/repo_slurp
    module_docs/hubcap/scrap
    module_docs/hubcap/scrap/direct_github_api
    module_docs/hubcap/tools
