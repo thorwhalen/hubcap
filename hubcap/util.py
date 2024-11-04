@@ -279,9 +279,7 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND,
-    work_tree=None,
-    git_dir=None,
+    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -391,7 +389,7 @@ def github_token(token=None):
         )  # ask get_config for it (triggering user prompt and file persistence of it)
     )
     if not token:
-        raise ValueError("GitHub token not provided")
+        raise ValueError('GitHub token not provided')
     return token
 
 
@@ -448,7 +446,7 @@ class Discussions(KvReader):
         self.token = github_token(token)
         self.headers = {
             'Authorization': f'Bearer {self.token}',
-            "Accept": "application/vnd.github.squirrel-girl-preview",
+            'Accept': 'application/vnd.github.squirrel-girl-preview',
         }
         self.url = 'https://api.github.com/graphql'
         self.discussion_fields = discussion_fields
@@ -504,13 +502,13 @@ class Discussions(KvReader):
 
     def _build_query(self, key):
         """Builds the graphQL query for a discussion."""
-        fields_query = "\n".join(self.discussion_fields)
-        if "author" in self.discussion_fields:
-            fields_query = fields_query.replace("author", "author { login }")
-        if "comments" in self.discussion_fields:
+        fields_query = '\n'.join(self.discussion_fields)
+        if 'author' in self.discussion_fields:
+            fields_query = fields_query.replace('author', 'author { login }')
+        if 'comments' in self.discussion_fields:
             fields_query = fields_query.replace(
-                "comments",
-                f"""
+                'comments',
+                f'''
             comments(first: {self._max_comments}) {{
                 edges {{
                     node {{
@@ -526,7 +524,7 @@ class Discussions(KvReader):
                         }}
                     }}
                 }}
-            }}""",
+            }}''',
             )
         return f'''
         query {{
