@@ -1,6 +1,6 @@
 """Utils for hubcap."""
 
-from typing import Union, Dict
+from typing import Union, Dict, Literal
 from functools import lru_cache
 from urllib.parse import urljoin
 from operator import attrgetter
@@ -75,6 +75,122 @@ def get_repository_info(repo: Repository, repo_info: RepoInfo = DFLT_REPO_INFO):
 @lru_cache(maxsize=1)
 def cached_github_object():
     return Github()
+
+
+# Define or modify the base patterns with their corresponding URL patterns here:
+github_url_patterns = {
+    'https://github.com/': {
+        'pattern': r'^https://github\.com/',
+        'url_patterns': [
+            # Repository URL
+            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/?$', 'repository'),
+            # Branch URL
+            (
+                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/tree/(?P<branch>[^/]+)/?$',
+                'branch',
+            ),
+            # File or Directory URL
+            (
+                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/blob/(?P<branch>[^/]+)/(?P<path>.+)$',
+                'file',
+            ),
+            # Issues URL
+            (
+                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/issues/(?P<issue_number>\d+)$',
+                'issue',
+            ),
+            # Pull Request URL
+            (
+                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/pull/(?P<pr_number>\d+)$',
+                'pull_request',
+            ),
+            # Releases URL
+            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/releases/?$', 'releases'),
+        ],
+    },
+    'https://raw.githubusercontent.com/': {
+        'pattern': r'^https://raw\.githubusercontent\.com/',
+        'url_patterns': [
+            # Raw file URL
+            (
+                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/(?P<branch>[^/]+)/(?P<path>.+)$',
+                'raw_file',
+            ),
+        ],
+    },
+    'git@github.com:': {
+        'pattern': r'^git@github\.com:',
+        'url_patterns': [
+            # Clone URL
+            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+?)(?:\.git)?$', 'clone_url'),
+        ],
+    },
+}
+
+
+# TODO: Use dol.KeyTemplate to implement parsing and generation of github URLs?
+def parse_github_url(url: str) -> dict:
+    """
+    Parses a GitHub URL and returns a dictionary of its components.
+
+    The returned dict includes a "base" field that indicates the base URL.
+
+    Parameters:
+        url (str): The GitHub URL to parse.
+
+    Returns:
+        dict: A dictionary containing the parsed components.
+
+    Raises:
+        ValueError: If the URL cannot be parsed.
+
+    Examples:
+
+        >>> parse_github_url('https://github.com/torvalds/linux')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'type': 'repository'}
+        >>> parse_github_url('https://github.com/torvalds/linux/tree/master')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'type': 'branch'}
+        >>> parse_github_url('https://github.com/torvalds/linux/blob/master/README.md')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'path': 'README.md', 'type': 'file'}
+        >>> parse_github_url('https://raw.githubusercontent.com/torvalds/linux/master/README.md')
+        {'base': 'https://raw.githubusercontent.com/', 'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'path': 'README.md', 'type': 'raw_file'}
+        >>> parse_github_url('https://github.com/torvalds/linux/issues/1')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'issue_number': '1', 'type': 'issue'}
+        >>> parse_github_url('https://github.com/torvalds/linux/pull/1')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'pr_number': '1', 'type': 'pull_request'}
+        >>> parse_github_url('https://github.com/torvalds/linux/releases')
+        {'base': 'https://github.com/', 'username': 'torvalds', 'repository': 'linux', 'type': 'releases'}
+        >>> parse_github_url('git@github.com:username/repo.git')
+        {'base': 'git@github.com:', 'username': 'username', 'repository': 'repo', 'type': 'clone_url'}
+
+    """
+
+    # Determine the base
+    base = None
+    for key, value in github_url_patterns.items():
+        if re.match(value['pattern'], url):
+            base = key
+            patterns = value['url_patterns']
+            break
+    if not base:
+        raise ValueError("URL does not match any known GitHub URL patterns.")
+
+    result = {'base': base}
+
+    # Remove the base from the URL
+    rest = re.sub(github_url_patterns[base]['pattern'], '', url)
+
+    # Attempt to match the rest of the URL with the patterns
+    for pattern, url_type in patterns:
+        m = re.match(pattern, rest)
+        if m:
+            result.update(m.groupdict())
+            result['type'] = url_type
+            break
+    else:
+        raise ValueError("Invalid GitHub URL")
+
+    return result
 
 
 from lkj import enable_sourcing_from_file
@@ -279,7 +395,9 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
+    command: str = DFLT_GIT_COMMAND,
+    work_tree=None,
+    git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -582,3 +700,290 @@ def create_markdown_from_jdict(jdict: dict):
                     markdown += f"### Reply\n\n{reply['body']}\n\n"
 
     return markdown
+
+
+# --------------------------------------------------------------------------------------
+# Parse and general github URLS
+
+import re
+from functools import partial
+from dol import KeyTemplate
+
+# Import KeyTemplate from your module
+# from your_module import KeyTemplate
+
+# For this example, we'll assume KeyTemplate is defined as per your module
+
+# Define mk_key_template to adjust defaults as needed
+mk_key_template = partial(KeyTemplate, dflt_pattern='[^/]+')
+
+
+def _key_templates(github_url_templates):
+    """Create KeyTemplate instances for each URL type of github_url_templates"""
+    for url_template in github_url_templates:
+        yield (
+            url_template['name'],
+            mk_key_template(
+                url_template['template'],
+                field_patterns=url_template.get('field_patterns', {}),
+                from_str_funcs=url_template.get('from_str_funcs', {}),
+            ),
+        )
+
+
+_github_url_templates = [
+    {
+        'name': 'file',
+        'template': 'https://github.com/{username}/{repository}/blob/{branch}/{path}',
+        'field_patterns': {'path': '.+'},
+    },
+    {
+        'name': 'raw_file',
+        'template': 'https://raw.githubusercontent.com/{username}/{repository}/{branch}/{path}',
+        'field_patterns': {'path': '.+'},
+    },
+    {
+        'name': 'branch',
+        'template': 'https://github.com/{username}/{repository}/tree/{branch}',
+    },
+    {
+        'name': 'issue',
+        'template': 'https://github.com/{username}/{repository}/issues/{issue_number}',
+    },
+    {
+        'name': 'pull_request',
+        'template': 'https://github.com/{username}/{repository}/pull/{pr_number}',
+    },
+    {
+        'name': 'releases',
+        'template': 'https://github.com/{username}/{repository}/releases',
+    },
+    {
+        'name': 'repository',
+        'template': 'https://github.com/{username}/{repository}',
+    },
+    {
+        'name': 'clone_url',
+        'template': 'git@github.com:{username}/{repository}.git',
+    },
+]
+
+
+key_templates = dict(_key_templates(_github_url_templates))
+
+_github_url_templates_names = [x['name'] for x in _github_url_templates]
+
+# TODO: Get GithubUrlType from _github_url_templates_names dynamically
+GithubUrlType = Literal[
+    'file',
+    'raw_file',
+    'branch',
+    'issue',
+    'pull_request',
+    'releases',
+    'repository',
+    'clone_url',
+]
+
+DFLT_GITHUB_URL_TYPE = 'raw_file'
+
+
+def parse_github_url(url: str) -> dict:
+    """
+    Parses a GitHub URL and returns a dictionary of its components.
+
+    The returned dict includes a "url_type" field that indicates the type of the URL.
+
+    Parameters:
+        url (str): The GitHub URL to parse.
+
+    Returns:
+        dict: A dictionary containing the parsed components.
+
+    Raises:
+        ValueError: If the URL cannot be parsed.
+
+    Examples:
+
+        >>> parse_github_url('https://github.com/torvalds/linux')
+        {'username': 'torvalds', 'repository': 'linux', 'url_type': 'repository'}
+        >>> parse_github_url('https://github.com/torvalds/linux/tree/master')
+        {'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'url_type': 'branch'}
+        >>> parse_github_url('https://github.com/torvalds/linux/blob/master/README.md')
+        {'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'path': 'README.md', 'url_type': 'file'}
+        >>> parse_github_url('https://raw.githubusercontent.com/torvalds/linux/master/README.md')
+        {'username': 'torvalds', 'repository': 'linux', 'branch': 'master', 'path': 'README.md', 'url_type': 'raw_file'}
+        >>> parse_github_url('https://github.com/torvalds/linux/issues/1')
+        {'username': 'torvalds', 'repository': 'linux', 'issue_number': '1', 'url_type': 'issue'}
+        >>> parse_github_url('https://github.com/torvalds/linux/pull/1')
+        {'username': 'torvalds', 'repository': 'linux', 'pr_number': '1', 'url_type': 'pull_request'}
+        >>> parse_github_url('https://github.com/torvalds/linux/releases')
+        {'username': 'torvalds', 'repository': 'linux', 'url_type': 'releases'}
+        >>> parse_github_url('git@github.com:username/repo.git')
+        {'username': 'username', 'repository': 'repo', 'url_type': 'clone_url'}
+    """
+    for name in key_templates:
+        key_template = key_templates[name]
+        try:
+            components = key_template.str_to_dict(url)
+            components['url_type'] = name
+            return components
+        except ValueError:
+            continue
+    raise ValueError("Invalid GitHub URL")
+
+
+def generate_github_url(
+    components: dict, url_type: GithubUrlType = DFLT_GITHUB_URL_TYPE, *, ignore_extra_keys=True
+) -> str:
+    """
+    Generates a GitHub URL from the provided components dictionary.
+
+    Parameters:
+        components (dict): A dictionary containing the URL components.
+
+    Returns:
+        str: The generated GitHub URL.
+
+    Raises:
+        ValueError: If the components are insufficient to generate a URL.
+
+    Examples:
+
+        >>> components = {
+        ...     'url_type': 'repository',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux'
+
+        >>> components = {
+        ...     'url_type': 'branch',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ...     'branch': 'master',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux/tree/master'
+
+        >>> components = {
+        ...     'url_type': 'file',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ...     'branch': 'master',
+        ...     'path': 'README.md',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux/blob/master/README.md'
+
+        >>> components = {
+        ...     'url_type': 'raw_file',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ...     'branch': 'master',
+        ...     'path': 'README.md',
+        ... }
+        >>> generate_github_url(components)
+        'https://raw.githubusercontent.com/torvalds/linux/master/README.md'
+
+        >>> components = {
+        ...     'url_type': 'issue',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ...     'issue_number': '1',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux/issues/1'
+
+        >>> components = {
+        ...     'url_type': 'pull_request',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ...     'pr_number': '1',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux/pull/1'
+
+        >>> components = {
+        ...     'url_type': 'releases',
+        ...     'username': 'torvalds',
+        ...     'repository': 'linux',
+        ... }
+        >>> generate_github_url(components)
+        'https://github.com/torvalds/linux/releases'
+
+        >>> components = {
+        ...     'url_type': 'clone_url',
+        ...     'username': 'username',
+        ...     'repository': 'repo',
+        ... }
+        >>> generate_github_url(components)
+        'git@github.com:username/repo.git'
+    """
+    url_type = url_type or components.get('url_type', None)
+    if not url_type:
+        raise ValueError(
+            "You must specify a url_type, or components must include 'url_type' key."
+        )
+    key_template = key_templates.get(url_type)
+    if not key_template:
+        raise ValueError(f"Unknown URL type '{url_type}'")
+
+    if ignore_extra_keys:
+        try:
+            # Get only the fields needed for this template
+            _components = {k: components[k] for k in key_template._fields}
+        except KeyError as e:
+            missing_key = e.args[0]
+            raise ValueError(
+                f"Missing component '{missing_key}' for URL type '{url_type}'."
+            )
+    else:
+        _components = components
+
+    try:
+        url = key_template.dict_to_str(_components)
+        return url
+    except KeyError as e:
+        missing_key = e.args[0]
+        raise ValueError(
+            f"Missing component '{missing_key}' for URL type '{url_type}'."
+        )
+
+
+def transform_github_url(
+    url: str, target_url_type: GithubUrlType = DFLT_GITHUB_URL_TYPE, **extras
+) -> str:
+    """
+    Transforms a GitHub URL to another type, updating components as needed.
+
+    Parameters:
+        url (str): The original GitHub URL.
+        target_url_type (str): The desired URL type.
+        **extras: Additional components to update in the URL.
+
+    Returns:
+        str: The transformed GitHub URL.
+
+    Raises:
+        ValueError: If the URL cannot be parsed or transformed.
+
+    Examples:
+
+        >>> transform_github_url('https://github.com/torvalds/linux', 'clone_url')
+        'git@github.com:torvalds/linux.git'
+
+        >>> transform_github_url('https://github.com/torvalds/linux/blob/master/README.md', 'raw_file')
+        'https://raw.githubusercontent.com/torvalds/linux/master/README.md'
+
+        >>> transform_github_url('https://github.com/torvalds/linux/issues/1', 'pull_request', pr_number='42')
+        'https://github.com/torvalds/linux/pull/42'
+
+        >>> transform_github_url('git@github.com:torvalds/linux.git', 'file', branch='master', path='README.md')
+        'https://github.com/torvalds/linux/blob/master/README.md'
+    """
+    components = parse_github_url(url)
+    components['url_type'] = target_url_type
+    components.update(extras)
+    return generate_github_url(components)

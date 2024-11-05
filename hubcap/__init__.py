@@ -187,8 +187,11 @@ from hubcap.util import (
     Discussions,
     git_clone,
     git_wiki_clone,
-    create_markdown_from_jdict,  #
+    create_markdown_from_jdict,  # Creates a markdown representation of a discussion (metadata json-dict).
     replace_relative_urls,  # replace relative urls with absolute ones
+    parse_github_url,  #  parse a GitHub URL and returns a dict of its components
+    generate_github_url,  # generate a GitHub URL from the provided components dict.
+    transform_github_url,  # transform a GitHub URL to another type, updating components as needed.
 )
 from hubcap.tools import hub
 from hubcap.repo_slurp import repo_text_aggregate
