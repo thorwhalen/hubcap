@@ -417,10 +417,7 @@ CloneKinds = Literal['files', 'wiki', 'discussions']
 
 
 def github_repo_mapping(
-    repo: str,
-    *,
-    kind: CloneKinds = 'files',
-    repo_files_mapping=repo_files_mapping,
+    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.

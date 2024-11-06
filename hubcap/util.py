@@ -395,9 +395,7 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND,
-    work_tree=None,
-    git_dir=None,
+    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -454,7 +452,7 @@ def git(
         return r.strip()
     except subprocess.CalledProcessError as e:
         if suppress_errors:
-            return ""
+            return ''
         else:
             raise e
 
@@ -772,14 +770,8 @@ _github_url_templates = [
         'name': 'releases',
         'template': 'https://github.com/{username}/{repository}/releases',
     },
-    {
-        'name': 'repository',
-        'template': 'https://github.com/{username}/{repository}',
-    },
-    {
-        'name': 'clone_url',
-        'template': 'git@github.com:{username}/{repository}.git',
-    },
+    {'name': 'repository', 'template': 'https://github.com/{username}/{repository}',},
+    {'name': 'clone_url', 'template': 'git@github.com:{username}/{repository}.git',},
 ]
 
 
