@@ -173,7 +173,7 @@ def parse_github_url(url: str) -> dict:
             patterns = value['url_patterns']
             break
     if not base:
-        raise ValueError("URL does not match any known GitHub URL patterns.")
+        raise ValueError('URL does not match any known GitHub URL patterns.')
 
     result = {'base': base}
 
@@ -188,7 +188,7 @@ def parse_github_url(url: str) -> dict:
             result['type'] = url_type
             break
     else:
-        raise ValueError("Invalid GitHub URL")
+        raise ValueError('Invalid GitHub URL')
 
     return result
 
@@ -395,9 +395,7 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND,
-    work_tree=None,
-    git_dir=None,
+    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -758,14 +756,8 @@ _github_url_templates = [
         'name': 'releases',
         'template': 'https://github.com/{username}/{repository}/releases',
     },
-    {
-        'name': 'repository',
-        'template': 'https://github.com/{username}/{repository}',
-    },
-    {
-        'name': 'clone_url',
-        'template': 'git@github.com:{username}/{repository}.git',
-    },
+    {'name': 'repository', 'template': 'https://github.com/{username}/{repository}',},
+    {'name': 'clone_url', 'template': 'git@github.com:{username}/{repository}.git',},
 ]
 
 
@@ -830,7 +822,7 @@ def parse_github_url(url: str) -> dict:
             return components
         except ValueError:
             continue
-    raise ValueError("Invalid GitHub URL")
+    raise ValueError('Invalid GitHub URL')
 
 
 def generate_github_url(
@@ -924,7 +916,7 @@ def generate_github_url(
     components_url_type = components.get('url_type', None)
     if components_url_type and url_type:
         raise ValueError(
-            "You must specify either url_type in components or as an argument, "
+            'You must specify either url_type in components or as an argument, '
             f"but not both: Here you had url_type='{url_type}' "
             f"and url_type in components='{components_url_type}'"
         )
