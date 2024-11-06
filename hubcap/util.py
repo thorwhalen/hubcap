@@ -834,7 +834,7 @@ def parse_github_url(url: str) -> dict:
 
 
 def generate_github_url(
-    components: dict, url_type: GithubUrlType = DFLT_GITHUB_URL_TYPE, *, ignore_extra_keys=True
+    components: dict, url_type: GithubUrlType = None, *, ignore_extra_keys=True
 ) -> str:
     """
     Generates a GitHub URL from the provided components dictionary.
@@ -921,7 +921,14 @@ def generate_github_url(
         >>> generate_github_url(components)
         'git@github.com:username/repo.git'
     """
-    url_type = url_type or components.get('url_type', None)
+    components_url_type = components.get('url_type', None)
+    if components_url_type and url_type:
+        raise ValueError(
+            "You must specify either url_type in components or as an argument, "
+            f"but not both: Here you had url_type='{url_type}' "
+            f"and url_type in components='{components_url_type}'"
+        )
+    url_type = url_type or components_url_type
     if not url_type:
         raise ValueError(
             "You must specify a url_type, or components must include 'url_type' key."
