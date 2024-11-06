@@ -395,7 +395,9 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
+    command: str = DFLT_GIT_COMMAND,
+    work_tree=None,
+    git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -424,26 +426,37 @@ def _build_git_command(
     return full_command
 
 
-def git(command: str = DFLT_GIT_COMMAND, *, work_tree=None, git_dir=None):
+def git(
+    command: str = DFLT_GIT_COMMAND,
+    *,
+    work_tree=None,
+    git_dir=None,
+    suppress_errors=False,
+):
     """Launch git commands.
 
     :param command: git command (e.g. 'status', 'branch', 'commit -m "blah"', 'push', etc.)
     :param work_tree: The work_tree directory (i.e. where the project is)
     :param git_dir: The .git directory (usually, and by default, will be taken to be "{work_tree}/.git/"
-    :return: What ever the command line returns (decoded to string)
+    :param suppress_errors: If True, suppress errors and return an empty string or None.
+    :return: What ever the command line returns (decoded to string), or an empty string/None if errors are suppressed.
     """
 
     """
-
     git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ add myFile
     git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ commit -m 'something'
-
     """
     command_str = _build_git_command(command, work_tree, git_dir)
-    r = subprocess.check_output(command_str, shell=True)
-    if isinstance(r, bytes):
-        r = r.decode()
-    return r.strip()
+    try:
+        r = subprocess.check_output(command_str, shell=True)
+        if isinstance(r, bytes):
+            r = r.decode()
+        return r.strip()
+    except subprocess.CalledProcessError as e:
+        if suppress_errors:
+            return ""
+        else:
+            raise e
 
 
 def _prep_git_clone_args(repo, clone_to_folder=None):
@@ -456,10 +469,13 @@ def git_clone(repo, clone_to_folder=None):
     return clone_to_folder
 
 
-def git_wiki_clone(repo, clone_to_folder=None):
+def git_wiki_clone(repo, clone_to_folder=None, *, suppress_errors=False):
     repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
     try:
-        git(f'clone {repo_url}.wiki.git {clone_to_folder}')
+        git(
+            f'clone {repo_url}.wiki.git {clone_to_folder}',
+            suppress_errors=suppress_errors,
+        )
     except subprocess.CalledProcessError as e:
         if next(iter(e.args), None) == 128:
             warn(f"It's possible that the repository doesn't have a wiki. Error: {e}")
@@ -756,8 +772,14 @@ _github_url_templates = [
         'name': 'releases',
         'template': 'https://github.com/{username}/{repository}/releases',
     },
-    {'name': 'repository', 'template': 'https://github.com/{username}/{repository}',},
-    {'name': 'clone_url', 'template': 'git@github.com:{username}/{repository}.git',},
+    {
+        'name': 'repository',
+        'template': 'https://github.com/{username}/{repository}',
+    },
+    {
+        'name': 'clone_url',
+        'template': 'git@github.com:{username}/{repository}.git',
+    },
 ]
 
 

@@ -370,9 +370,11 @@ def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
     return dict(_gen())
 
 
-def wiki_mapping(repo, local_repo_folder=None, default=NotSet):
+def wiki_mapping(repo, local_repo_folder=None, default=NotSet, suppress_errors=True):
     try:
-        local_repo_folder = ensure_repo_folder(repo, clone_func=git_wiki_clone)
+        local_repo_folder = ensure_repo_folder(
+            repo, clone_func=partial(git_wiki_clone, suppress_errors=suppress_errors)
+        )
         s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r'.*\.md$').search)
         return s
     except ResourceNotFound:
@@ -415,7 +417,10 @@ CloneKinds = Literal['files', 'wiki', 'discussions']
 
 
 def github_repo_mapping(
-    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
+    repo: str,
+    *,
+    kind: CloneKinds = 'files',
+    repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
