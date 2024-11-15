@@ -192,6 +192,7 @@ from hubcap.util import (
     parse_github_url,  #  parse a GitHub URL and returns a dict of its components
     generate_github_url,  # generate a GitHub URL from the provided components dict.
     transform_github_url,  # transform a GitHub URL to another type, updating components as needed.
+    replace_image_links,  # replace image links with absolute ones
 )
 from hubcap.tools import hub
 from hubcap.repo_slurp import repo_text_aggregate
