@@ -193,5 +193,5 @@ from hubcap.util import (
     generate_github_url,  # generate a GitHub URL from the provided components dict.
     transform_github_url,  # transform a GitHub URL to another type, updating components as needed.
 )
-from hubcap.tools import hub
+from hubcap.tools import hub, notebook_to_markdown
 from hubcap.repo_slurp import repo_text_aggregate
