@@ -91,7 +91,7 @@ from hubcap.util import replace_relative_urls
 
 
 # TODO: See if there's alread hubcap function that does this
-def _raw_url(repo_stub, branch="main", relpath=''):
+def _raw_url(repo_stub, branch='main', relpath=''):
     return f"'https://raw.githubusercontent.com/{repo_stub}/{branch}/{relpath}/'"
 
 
@@ -137,7 +137,7 @@ def notebook_to_markdown(
     # Ensure the notebook file exists
     notebook_path = Path(notebook_path)
     if not notebook_path.exists():
-        raise FileNotFoundError(f"Notebook not found: {notebook_path}")
+        raise FileNotFoundError(f'Notebook not found: {notebook_path}')
 
     # Load and convert the notebook to Markdown
     markdown_exporter = MarkdownExporter()
@@ -152,14 +152,14 @@ def notebook_to_markdown(
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Save images to the directory specified in `resources`
-        resource_dir = output_dir / resources["output_files_dir"]
+        resource_dir = output_dir / resources['output_files_dir']
         resource_dir.mkdir(parents=True, exist_ok=True)
 
-        for filename, content in resources.get("outputs", {}).items():
+        for filename, content in resources.get('outputs', {}).items():
             (resource_dir / filename).write_bytes(content)
 
         # Write the Markdown file
-        output_filename = output_dir / f"{notebook_path.stem}.md"
+        output_filename = output_dir / f'{notebook_path.stem}.md'
         output_filename.write_text(markdown_content)
     else:
         # If no output directory is specified, images are not saved to disk.
@@ -186,7 +186,7 @@ def postprocess_markdown_from_notebook(
     """
     if '\n' not in md_src and Path(md_src).exists():
         file_path = Path(md_src)
-        if file_path.suffix == ".ipynb":
+        if file_path.suffix == '.ipynb':
             # If the source is an ipynb file, convert it to Markdown
             md_src = notebook_to_markdown(file_path, output_dir=None)
         else:
