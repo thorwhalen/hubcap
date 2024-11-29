@@ -87,18 +87,48 @@ rm_repos_from_team = partial(team_repositories_action, action='remove_from_repos
 from typing import Optional, Union
 from pathlib import Path
 import re
+from warnings import warn
+
 from hubcap.util import replace_relative_urls
 
 
 # TODO: See if there's alread hubcap function that does this
 def _raw_url(repo_stub, branch='main', relpath=''):
-    return f"'https://raw.githubusercontent.com/{repo_stub}/{branch}/{relpath}/'"
+    return f"https://raw.githubusercontent.com/{repo_stub}/{branch}/{relpath}/"
+
+
+def _handle_repo_root_url(repo_root_url, image_relative_dir=''):
+    # url join repo_root_url and image_relative_dir
+    if image_relative_dir:
+        repo_root_url = f"{repo_root_url.rstrip('/')}/{image_relative_dir.lstrip('/')}"
+
+    if isinstance(repo_root_url, dict):
+        return _raw_url(**repo_root_url)
+    if not repo_root_url.startswith('http'):
+        repo_sub, branch, *relpath = repo_root_url.split('/')
+        return _raw_url(repo_sub, branch, '/'.join(relpath))
+    else:
+        protocol, simple_url = repo_root_url.split('://')
+        if simple_url.startswith('github.com') or simple_url.startswith(
+            'www.github.com'
+        ):
+            warn(
+                f'Your repo_root_url is: {repo_root_url}. I do the work anyway, '
+                'but you may want to consider that usually the URL should be a raw '
+                'github URL like this: '
+                'https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. '
+                'Verify that the root URL you chose does work on the pypi readme page '
+                'if that is what you are targeting.'
+            )
+        return repo_root_url
 
 
 def notebook_to_markdown(
     notebook_path: str,
     output_dir: Optional[str] = None,
     repo_root_url: Optional[Union[dict, str]] = None,
+    *,
+    image_relative_dir: str = '',
 ):
     """
     Convert a Jupyter notebook to Markdown and optionally post-process the output.
@@ -108,6 +138,7 @@ def notebook_to_markdown(
         output_dir (str, optional): Directory where the Markdown file will be written.
                                     If None, the Markdown is returned as a string.
         repo_root_url (str, optional): Root URL for replacing relative paths in the Markdown.
+        image_relative_dir (str, optional): The (relative) directory where the images should be saved.
 
     Returns:
         str: The Markdown content, optionally post-processed.
@@ -119,7 +150,8 @@ def notebook_to_markdown(
     >>> markdown_string = notebook_to_markdown(  # doctest: +SKIP
         notebook_path="example_notebook.ipynb",
         output_dir=None,  # Do not save to a file
-        repo_root_url="https://github.com/username/repo/blob/main/"
+        repo_root_url="https://github.com/username/repo/blob/main/",
+        image_relative_dir="images"
     )
 
     ### Post-process directly from a notebook file
@@ -130,9 +162,6 @@ def notebook_to_markdown(
     )
     """
     from nbconvert import MarkdownExporter
-
-    if isinstance(repo_root_url, dict):
-        repo_root_url = _raw_url(**repo_root_url)
 
     # Ensure the notebook file exists
     notebook_path = Path(notebook_path)
@@ -146,13 +175,19 @@ def notebook_to_markdown(
     )
     markdown_content, resources = markdown_exporter.from_filename(notebook_path)
 
+    if repo_root_url:
+        repo_root_url = _handle_repo_root_url(repo_root_url, image_relative_dir)
+        markdown_content = postprocess_markdown_from_notebook(
+            markdown_content, repo_root_url=repo_root_url
+        )
+
     # Save resources (like images) to the output directory if specified
     if output_dir is not None:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Save images to the directory specified in `resources`
-        resource_dir = output_dir / resources['output_files_dir']
+        resource_dir = output_dir / image_relative_dir
         resource_dir.mkdir(parents=True, exist_ok=True)
 
         for filename, content in resources.get('outputs', {}).items():
