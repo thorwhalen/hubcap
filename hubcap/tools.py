@@ -94,7 +94,7 @@ from hubcap.util import replace_relative_urls
 
 # TODO: See if there's alread hubcap function that does this
 def _raw_url(repo_stub, branch='main', relpath=''):
-    return f"https://raw.githubusercontent.com/{repo_stub}/{branch}/{relpath}/"
+    return f'https://raw.githubusercontent.com/{repo_stub}/{branch}/{relpath}/'
 
 
 def _handle_repo_root_url(repo_root_url, image_relative_dir=''):
