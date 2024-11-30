@@ -1,6 +1,6 @@
 """Utils for hubcap."""
 
-from typing import Union, Dict, Literal
+from typing import Union, Dict, Literal, get_args
 from functools import lru_cache
 from urllib.parse import urljoin
 from operator import attrgetter
@@ -8,6 +8,8 @@ import os
 import re
 import subprocess
 import tempfile
+
+from lkj import fields_of_string_formats
 
 from github import Github
 from github.Repository import Repository
@@ -395,7 +397,9 @@ DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'versi
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
+    command: str = DFLT_GIT_COMMAND,
+    work_tree=None,
+    git_dir=None,
 ):
     if command.startswith('git '):
         warn(
@@ -715,7 +719,7 @@ def create_markdown_from_jdict(jdict: dict):
 
 
 # --------------------------------------------------------------------------------------
-# Parse and general github URLS
+# Parse and generate github URLS
 
 import re
 from functools import partial
@@ -743,7 +747,13 @@ def _key_templates(github_url_templates):
         )
 
 
+# TODO: Order counts in matching, so should be tested and re-ordered automatically before making key_templates
 _github_url_templates = [
+    {
+        'name': 'fully_qualified_raw',
+        'template': 'https://raw.githubusercontent.com/{username}/{repository}/refs/heads/{branch}/{path}',
+        'field_patterns': {'path': '.+'},
+    },
     {
         'name': 'file',
         'template': 'https://github.com/{username}/{repository}/blob/{branch}/{path}',
@@ -770,31 +780,45 @@ _github_url_templates = [
         'name': 'releases',
         'template': 'https://github.com/{username}/{repository}/releases',
     },
-    {'name': 'repository', 'template': 'https://github.com/{username}/{repository}',},
-    {'name': 'clone_url', 'template': 'git@github.com:{username}/{repository}.git',},
+    {
+        'name': 'repository',
+        'template': 'https://github.com/{username}/{repository}',
+    },
+    {
+        'name': 'clone_url',
+        'template': 'git@github.com:{username}/{repository}.git',
+    },
 ]
 
+# extract all {template_names} from the templates of _github_url_templates_names to
+# make a list of valid components fields
+from lkj import fields_of_string_formats
+
+url_template_fields = tuple(
+    sorted(
+        fields_of_string_formats(
+            map(lambda d: d.get('template', ''), _github_url_templates)
+        )
+    )
+)
+
+UrlTemplateField = Literal[url_template_fields]
+UrlComponents = Dict[UrlTemplateField, str]
+
+def is_url_components(d: dict):
+    return all(k in d for k in url_template_fields)
 
 key_templates = dict(_key_templates(_github_url_templates))
 
-_github_url_templates_names = [x['name'] for x in _github_url_templates]
+_github_url_templates_names = tuple([x['name'] for x in _github_url_templates])
 
 # TODO: Get GithubUrlType from _github_url_templates_names dynamically
-GithubUrlType = Literal[
-    'file',
-    'raw_file',
-    'branch',
-    'issue',
-    'pull_request',
-    'releases',
-    'repository',
-    'clone_url',
-]
+GithubUrlType = Literal[_github_url_templates_names]
 
 DFLT_GITHUB_URL_TYPE = 'raw_file'
 
 
-def parse_github_url(url: str) -> dict:
+def parse_github_url(url: str, *, include_url_type: bool = True) -> dict:
     """
     Parses a GitHub URL and returns a dictionary of its components.
 
@@ -832,7 +856,8 @@ def parse_github_url(url: str) -> dict:
         key_template = key_templates[name]
         try:
             components = key_template.str_to_dict(url)
-            components['url_type'] = name
+            if include_url_type:
+                components['url_type'] = name
             return components
         except ValueError:
             continue
@@ -840,13 +865,25 @@ def parse_github_url(url: str) -> dict:
 
 
 def generate_github_url(
-    components: dict, url_type: GithubUrlType = None, *, ignore_extra_keys=True
+    components: UrlComponents,
+    url_type: GithubUrlType = None,
+    *,
+    prefer_explicit_url_type: bool = True,
+    ignore_extra_keys=True,
 ) -> str:
     """
     Generates a GitHub URL from the provided components dictionary.
 
     Parameters:
         components (dict): A dictionary containing the URL components.
+        url_type (str): The type of the URL to generate.
+        prefer_explicit_url_type (bool): If True, the url_type argument takes
+            precedence over the 'url_type' key in components.
+            This is needed because by default, `parse_github_url` includes the
+            'url_type' key, so if you want to easily generate a URL from its
+            components, you need an easy way to tell the function to ignore that
+            particular key, overriding it with the `url_type` argument.
+        ignore_extra_keys (bool): If True, extra keys in the components dictionary
 
     Returns:
         str: The generated GitHub URL.
@@ -929,11 +966,12 @@ def generate_github_url(
     """
     components_url_type = components.get('url_type', None)
     if components_url_type and url_type:
-        raise ValueError(
-            'You must specify either url_type in components or as an argument, '
-            f"but not both: Here you had url_type='{url_type}' "
-            f"and url_type in components='{components_url_type}'"
-        )
+        if not prefer_explicit_url_type:
+            raise ValueError(
+                'You must specify either url_type in components or as an argument, '
+                f"but not both: Here you had url_type='{url_type}' "
+                f"and url_type in components='{components_url_type}'"
+            )
     url_type = url_type or components_url_type
     if not url_type:
         raise ValueError(

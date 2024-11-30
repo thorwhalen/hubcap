@@ -89,11 +89,12 @@ from pathlib import Path
 import re
 from warnings import warn
 
-from hubcap.util import replace_relative_urls
+from hubcap.util import replace_relative_urls, generate_github_url
 
 
 # TODO: See if there's alread hubcap function that does this
 def _raw_url(repo_stub, branch='main', relpath=''):
+    generate_github_url({'repo_stub': repo_stub, 'branch': branch, 'relpath': relpath})
     return f"https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}"
 
 
