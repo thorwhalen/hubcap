@@ -92,11 +92,17 @@ from warnings import warn
 from hubcap.util import replace_relative_urls, generate_github_url
 
 
-# TODO: See if there's alread hubcap function that does this
-def _raw_url(repo_stub, branch='main', relpath=''):
-    return (
-        f'https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}'
-    )
+def _raw_url(org, repo, branch='main', path=''):
+    components = {
+        'username': org,
+        'repository': repo,
+        'branch': branch,
+        'path': relpath,
+    }
+    return generate_github_url(components, 'fully_qualified_raw')
+    # return (
+    #     f'https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}'
+    # )
 
 
 def _handle_repo_root_url(repo_root_url, image_relative_dir=''):
@@ -109,7 +115,7 @@ def _handle_repo_root_url(repo_root_url, image_relative_dir=''):
     if not repo_root_url.startswith('http'):
         org, repo, branch, *relpath = repo_root_url.split('/')
         repo_stub = f'{org}/{repo}'
-        return _raw_url(repo_stub, branch, '/'.join(relpath))
+        return _raw_url(org, repo, branch, '/'.join(relpath))
     else:
         protocol, simple_url = repo_root_url.split('://')
         if simple_url.startswith('github.com') or simple_url.startswith(
