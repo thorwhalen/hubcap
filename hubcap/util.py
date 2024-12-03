@@ -24,6 +24,84 @@ from hubcap.constants import (
 RepoSpec = Union[str, Repository]
 
 
+# --------------------------------------------------------------------------------------
+# Fundemental functions
+
+
+@lru_cache(maxsize=3)
+def github_token(token=None) -> str:
+    token = (
+        token
+        or os.environ.get('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
+        or os.environ.get('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
+        or get_config(  # look under GITHUB_TOKEN env var
+            'GITHUB_TOKEN'
+        )  # ask get_config for it (triggering user prompt and file persistence of it)
+    )
+    if not token:
+        raise ValueError('GitHub token not provided')
+    return token
+
+
+@lru_cache(maxsize=3)
+def github_object(token=None) -> Github:
+    return Github(github_token(token))
+
+
+@lru_cache(maxsize=10)
+def github_repo_object(repo_stub: str, *, token=None) -> Repository:
+    """ """
+    g = github_object(token)
+    try:
+        # Get the repository
+        return g.get_repo(repo_stub)
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch the repo: {repo_stub}. Error: {e}")
+
+
+# --------------------------------------------------------------------------------------
+# Get content
+
+
+def github_file_contents(file_url: str) -> str:
+    """
+    Fetches the contents of a file from a GitHub repository.
+
+    Args:
+        file_url: The URL of the file to fetch (doesn't have to be a raw file!)
+
+    Returns:
+        str: The contents of the file as a string.
+
+    Raises:
+        Exception: If the repository, file, or branch does not exist, or access is denied.
+    """
+    necessary_parts = ['username', 'repository', 'branch', 'path']
+    url_parts = parse_github_url(file_url)
+    if not set(url_parts).issuperset(necessary_parts):
+        missing_parts = ', '.join(set(url_parts) - set(necessary_parts))
+        raise ValueError(
+            'Your URL is missing the following parts: '
+            + missing_parts
+            + f'Your URL was: {file_url}'
+        )
+
+    org, repo, ref, path = map(
+        url_parts.get, ['username', 'repository', 'branch', 'path']
+    )
+    repo_stub = f'{org}/{repo}'
+
+    repo = github_repo_object(repo_stub)
+
+    try:
+        file_content = repo.get_contents(path, ref=ref)
+        return file_content.decoded_content.decode('utf-8')
+
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch the file from {file_url}: {e}")
+
+
+# --------------------------------------------------------------------------------------
 def get_repository_info(repo: Repository, repo_info: RepoInfo = DFLT_REPO_INFO):
     """Get info about a repository.
 
@@ -513,20 +591,6 @@ repo_collections_configs = json.loads(
 )
 
 
-def github_token(token=None):
-    token = (
-        token
-        or os.environ.get('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
-        or os.environ.get('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
-        or get_config(  # look under GITHUB_TOKEN env var
-            'GITHUB_TOKEN'
-        )  # ask get_config for it (triggering user prompt and file persistence of it)
-    )
-    if not token:
-        raise ValueError('GitHub token not provided')
-    return token
-
-
 if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
     configs[USER_REPO_COLLECTION_KEY_PROPS_FILE] = '{}'
 
@@ -805,8 +869,10 @@ url_template_fields = tuple(
 UrlTemplateField = Literal[url_template_fields]
 UrlComponents = Dict[UrlTemplateField, str]
 
+
 def is_url_components(d: dict):
     return all(k in d for k in url_template_fields)
+
 
 key_templates = dict(_key_templates(_github_url_templates))
 

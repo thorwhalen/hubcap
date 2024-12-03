@@ -182,6 +182,10 @@ from hubcap.base import (
     GitHubReader,  # backcompatibility alias of GithubReader
 )
 from hubcap.util import (
+    github_token,
+    github_object,
+    github_repo_object,
+    github_file_contents,
     get_repository_info,
     cached_github_object,
     Discussions,
