@@ -1,6 +1,6 @@
 """Utils for hubcap."""
 
-from typing import Union, Dict, Literal, get_args
+from typing import Union, Dict, Literal, get_args, Callable
 from functools import lru_cache
 from urllib.parse import urljoin
 from operator import attrgetter
@@ -63,18 +63,33 @@ def github_repo_object(repo_stub: str, *, token=None) -> Repository:
 # Get content
 
 
-def github_file_contents(file_url: str) -> str:
+def github_file_contents(
+    file_url: str,
+    *,
+    egress: Callable = lambda file_obj: file_obj.decoded_content.decode('utf-8'),
+) -> str:
     """
     Fetches the contents of a file from a GitHub repository.
 
     Args:
         file_url: The URL of the file to fetch (doesn't have to be a raw file!)
+        egress: A function to extract the contents of the file object. By default, it
+            decodes the file object's content as UTF-8, but if it's bytes you want,
+            don't decode those bytes, and if it's the "file object" you want, just
+            use `egress=lambda x: x`.
 
     Returns:
         str: The contents of the file as a string.
 
     Raises:
         Exception: If the repository, file, or branch does not exist, or access is denied.
+
+
+    >>> file_string = github_file_contents('https://github.com/thorwhalen/hubcap/blob/master/setup.cfg')
+    >>> print(file_string[:24])
+    [metadata]
+    name = hubcap
+
     """
     necessary_parts = ['username', 'repository', 'branch', 'path']
     url_parts = parse_github_url(file_url)
@@ -94,11 +109,11 @@ def github_file_contents(file_url: str) -> str:
     repo = github_repo_object(repo_stub)
 
     try:
-        file_content = repo.get_contents(path, ref=ref)
-        return file_content.decoded_content.decode('utf-8')
-
+        file_obj = repo.get_contents(path, ref=ref)
     except Exception as e:
         raise RuntimeError(f"Failed to fetch the file from {file_url}: {e}")
+
+    return egress(file_obj)
 
 
 # --------------------------------------------------------------------------------------
