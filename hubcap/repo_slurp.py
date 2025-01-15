@@ -266,16 +266,21 @@ def notebook_to_markdown(
 
 import tempfile
 import re
+from typing import Optional
 from functools import partial
 from subprocess import CalledProcessError
 from dol import TextFiles, wrap_kvs, filt_iter, Files
+
+DirPathString = str
 
 
 def _is_local_git_repo(repo: str):
     return os.path.isdir(repo) and os.path.isdir(os.path.join(repo, '.git'))
 
 
-def ensure_repo_folder(repo: str, clone_func=git_clone):
+def ensure_repo_folder(
+    repo: str, clone_func=git_clone, local_folder: Optional[DirPathString] =None
+) -> DirPathString:
     """Returns a local repo folder.
     Either the input repo is already a local "git" folder (which we return as is),
     or a temporary folder to clone the repo into is returned.
@@ -284,7 +289,8 @@ def ensure_repo_folder(repo: str, clone_func=git_clone):
         return repo
     elif ensure_github_url(repo):
         try:
-            local_folder = tempfile.mkdtemp()
+            if local_folder is None:
+                local_folder = tempfile.mkdtemp()
             clone_func(repo, local_folder)
             return local_folder
         except CalledProcessError:
@@ -359,6 +365,8 @@ def _discussion_json_to_text(d: dict, header_level=2):
     return ''.join(__discussion_json_to_text_segments(d, header_level))
 
 
+# TODO: A lot of this mapping (discussions, wikie, repo_files) stuff is remeniscent of
+#       dol.store_aggregate. Maybe we should integrate that here.
 def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
     repo_url = ensure_github_url(repo)
     discussions = RepoReader(repo_url)['discussions']
@@ -417,7 +425,10 @@ CloneKinds = Literal['files', 'wiki', 'discussions']
 
 
 def github_repo_mapping(
-    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
+    repo: str,
+    *,
+    kind: CloneKinds = 'files',
+    repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
