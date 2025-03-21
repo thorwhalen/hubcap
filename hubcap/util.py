@@ -1,6 +1,6 @@
 """Utils for hubcap."""
 
-from typing import Union, Dict, Literal, get_args, Callable
+from typing import Union, Dict, Literal, get_args, Callable, Iterable
 from functools import lru_cache
 from urllib.parse import urljoin
 from operator import attrgetter
@@ -774,7 +774,7 @@ class Discussions(KvReader):
 
 
 # TODO: Perculate more control to the arguments
-def create_markdown_from_jdict(jdict: dict):
+def create_markdown_from_jdict(jdict: Union[dict, Iterable[dict]]):
     """
     Creates a markdown representation of a discussion (metadata json-dict).
 
@@ -782,19 +782,27 @@ def create_markdown_from_jdict(jdict: dict):
 
     This is meant to be applied to json exports of github discussions or issues.
     """
-    markdown = f"# {jdict['title']}\n\n{jdict['body']}\n\n"
+    if isinstance(jdict, dict) and {'title', 'body'} <= jdict.keys():
+        markdown = f"# {jdict['title']}\n\n{jdict['body']}\n\n"
 
-    # Process comments
-    if jdict.get('comments'):
-        for comment in jdict['comments']:
-            markdown += f"## Comment\n\n{comment['body']}\n\n"
+        # Process comments
+        if jdict.get('comments'):
+            for comment in jdict['comments']:
+                markdown += f"## Comment\n\n{comment['body']}\n\n"
 
-            # Process replies to comments
-            if comment.get('replies'):
-                for reply in comment['replies']:
-                    markdown += f"### Reply\n\n{reply['body']}\n\n"
+                # Process replies to comments
+                if comment.get('replies'):
+                    for reply in comment['replies']:
+                        markdown += f"### Reply\n\n{reply['body']}\n\n"
 
-    return markdown
+        return markdown
+    else:
+        assert isinstance(
+            jdict, Iterable
+        ), f"Expected dict or Iterable, got {type(jdict)}"
+        if isinstance(jdict, dict):
+            jdict = jdict.values()
+        return '\n\n'.join(create_markdown_from_jdict(d) for d in jdict)
 
 
 # --------------------------------------------------------------------------------------
