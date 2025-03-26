@@ -818,16 +818,18 @@ from dol import KeyTemplate
 # For this example, we'll assume KeyTemplate is defined as per your module
 
 # Define mk_key_template to adjust defaults as needed
-mk_key_template = partial(KeyTemplate, dflt_pattern='[^/]+')
+mk_key_template = partial(KeyTemplate, dflt_pattern='[^/]+', normalize_paths=False)
 
 
 def _key_templates(github_url_templates):
     """Create KeyTemplate instances for each URL type of github_url_templates"""
     for url_template in github_url_templates:
+        # Original template without modifying the slashes
+        template = url_template['template']
         yield (
             url_template['name'],
             mk_key_template(
-                url_template['template'],
+                template,
                 field_patterns=url_template.get('field_patterns', {}),
                 from_str_funcs=url_template.get('from_str_funcs', {}),
             ),
