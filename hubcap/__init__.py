@@ -200,5 +200,5 @@ from hubcap.util import (
 from hubcap.tools import hub, notebook_to_markdown
 from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.
-    ensure_repo_folder  # Clone a git repository to a folder (default is a temporary folder() and return the path to that folder.
+    ensure_repo_folder,  # Clone a git repository to a folder (default is a temporary folder() and return the path to that folder.
 )

@@ -279,7 +279,7 @@ def _is_local_git_repo(repo: str):
 
 
 def ensure_repo_folder(
-    repo: str, clone_func=git_clone, local_folder: Optional[DirPathString] =None
+    repo: str, clone_func=git_clone, local_folder: Optional[DirPathString] = None
 ) -> DirPathString:
     """Returns a local repo folder.
     Either the input repo is already a local "git" folder (which we return as is),
@@ -425,10 +425,7 @@ CloneKinds = Literal['files', 'wiki', 'discussions']
 
 
 def github_repo_mapping(
-    repo: str,
-    *,
-    kind: CloneKinds = 'files',
-    repo_files_mapping=repo_files_mapping,
+    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
