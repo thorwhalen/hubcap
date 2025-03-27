@@ -141,8 +141,8 @@ False
 >>> 'hubcap' in s  # of course, this will be true, it's what you're using now!
 True
 >>> repo = s['hubcap']
->>> list(repo)
-['master']
+>>> sorted(repo)
+['gh-page', 'master']
 >>> branch = repo['master']
 >>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
 ['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE',
