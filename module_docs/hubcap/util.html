@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.util &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="hubcap.tools" href="tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.util</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.Discussions"><code class="docutils literal notranslate"><span class="pre">Discussions</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hubcap.util.Discussions.get_value"><code class="docutils literal notranslate"><span class="pre">Discussions.get_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.create_markdown_from_jdict"><code class="docutils literal notranslate"><span class="pre">create_markdown_from_jdict()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.ensure_folder_to_clone_into"><code class="docutils literal notranslate"><span class="pre">ensure_folder_to_clone_into()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.ensure_full_name"><code class="docutils literal notranslate"><span class="pre">ensure_full_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.ensure_github_url"><code class="docutils literal notranslate"><span class="pre">ensure_github_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.ensure_repo_obj"><code class="docutils literal notranslate"><span class="pre">ensure_repo_obj()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.ensure_url_suffix"><code class="docutils literal notranslate"><span class="pre">ensure_url_suffix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.generate_github_url"><code class="docutils literal notranslate"><span class="pre">generate_github_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.get_repository_info"><code class="docutils literal notranslate"><span class="pre">get_repository_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.git"><code class="docutils literal notranslate"><span class="pre">git()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.github_file_contents"><code class="docutils literal notranslate"><span class="pre">github_file_contents()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.parse_github_url"><code class="docutils literal notranslate"><span class="pre">parse_github_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.replace_relative_urls"><code class="docutils literal notranslate"><span class="pre">replace_relative_urls()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.util.transform_github_url"><code class="docutils literal notranslate"><span class="pre">transform_github_url()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.util</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/util.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.util">
+<span id="hubcap-util"></span><h1>hubcap.util<a class="headerlink" href="#module-hubcap.util" title="Link to this heading"></a></h1>
+<p>Utils for hubcap.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.util.Discussions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">Discussions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discussion_fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('number',</span> <span class="pre">'title',</span> <span class="pre">'body',</span> <span class="pre">'author',</span> <span class="pre">'createdAt',</span> <span class="pre">'updatedAt',</span> <span class="pre">'comments')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_max_discussions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_max_comments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_max_replies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#Discussions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.Discussions" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="hubcap.util.Discussions.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">path,</span> <span class="pre">on_error:</span> <span class="pre">~typing.Callable[[dict],</span> <span class="pre">~typing.Any]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">raise_on_error&gt;,</span> <span class="pre">*,</span> <span class="pre">sep:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.Callable</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">key_transformer=None,</span> <span class="pre">get_value:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">functools.partial(&lt;function</span> <span class="pre">defaulted_itemgetter&gt;,</span> <span class="pre">default={}),</span> <span class="pre">caught_errors=(&lt;class</span> <span class="pre">'Exception'&gt;,)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#hubcap.util.Discussions.get_value" title="Link to this definition"></a></dt>
+<dd><p>Get elements of a mapping through a path to be called recursively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> – The object to get the path from</p></li>
+<li><p><strong>path</strong> – The path to get</p></li>
+<li><p><strong>on_error</strong> – The error handler to use (default: raise_on_error)</p></li>
+<li><p><strong>sep</strong> – Determines a path is transforms into a tuple of keys.
+If it’s a string, <code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">path:</span> <span class="pre">path.split(sep)</span></code> is used.
+If not, it should be a function which takes in a path object and returns an iterable of keys.</p></li>
+<li><p><strong>key_transformer</strong> – A function to transform the keys of the path</p></li>
+<li><p><strong>get_value</strong> – A function to get the value of a key in a mapping</p></li>
+<li><p><strong>caught_errors</strong> – The errors to catch (default: Exception)</p></li>
+</ul>
+</dd>
+</dl>
+<p>It will</p>
+<ul class="simple">
+<li><p>split a path into keys (if sep is given, or if path is a string, will use ‘.’ as a separator by default)</p></li>
+<li><p>if key_transformer is given, apply to each key</p></li>
+<li><p>consider string keys that are numeric as ints (convenient for lists)</p></li>
+<li><p>get items also as attributes (attributes are checked for first for string keys)</p></li>
+<li><p>catch all exceptions (that are subclasses of <code class="docutils literal notranslate"><span class="pre">Exception</span></code>)</p></li>
+</ul>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">A</span><span class="p">:</span>
+<span class="gp">... </span>     <span class="n">an_attribute</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path_get</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">A</span><span class="p">}],</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;an_attribute&#39;</span><span class="p">])</span>
+<span class="go">42</span>
+</pre></div>
+</div>
+<p>By default, if <code class="docutils literal notranslate"><span class="pre">path</span></code> is a string, it will be split on <code class="docutils literal notranslate"><span class="pre">sep</span></code>,
+which is <code class="docutils literal notranslate"><span class="pre">'.'</span></code> by default.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">path_get</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">A</span><span class="p">}],</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;1.2.a.an_attribute&#39;</span><span class="p">)</span>
+<span class="go">42</span>
+</pre></div>
+</div>
+<p>Note: The underlying function is <code class="docutils literal notranslate"><span class="pre">_path_get</span></code>, but <cite>path_get</cite> has defaults and
+flexible input processing for more convenience.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">path_get</span></code> contains some ready-made <code class="docutils literal notranslate"><span class="pre">OnErrorType</span></code> functions in its
+attributes. For example, see how we can make <code class="docutils literal notranslate"><span class="pre">path_get</span></code> have the same behavior
+as <code class="docutils literal notranslate"><span class="pre">dict.get</span></code> by passing <code class="docutils literal notranslate"><span class="pre">path_get.return_none_on_error</span></code> as <code class="docutils literal notranslate"><span class="pre">on_error</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dd</span> <span class="o">=</span> <span class="n">path_get</span><span class="p">({},</span> <span class="s1">&#39;no.keys&#39;</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="n">path_get</span><span class="o">.</span><span class="n">return_none_on_error</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dd</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">path_get.raise_on_error</span></code>,
+<code class="docutils literal notranslate"><span class="pre">path_get.return_none_on_error</span></code>, and <code class="docutils literal notranslate"><span class="pre">path_get.return_empty_tuple_on_error</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.create_markdown_from_jdict">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">create_markdown_from_jdict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jdict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#create_markdown_from_jdict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.create_markdown_from_jdict" title="Link to this definition"></a></dt>
+<dd><p>Creates a markdown representation of a discussion (metadata json-dict).</p>
+<p>Headers are used to separate the different sections.</p>
+<p>This is meant to be applied to json exports of github discussions or issues.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.ensure_folder_to_clone_into">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">ensure_folder_to_clone_into</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_to_clone_into</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#ensure_folder_to_clone_into"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.ensure_folder_to_clone_into" title="Link to this definition"></a></dt>
+<dd><p>Return a folder to clone into. If not provided, create a temporary folder.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.ensure_full_name">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">ensure_full_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#ensure_full_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.ensure_full_name" title="Link to this definition"></a></dt>
+<dd><p>Ensure we have a full name (user/repo string)</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_full_name</span><span class="p">(</span><span class="s1">&#39;https://www.github.com/thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_full_name</span><span class="p">(</span><span class="s1">&#39;github.com/thorwhalen/hubcap/&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_full_name</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.ensure_github_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">ensure_github_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_repo_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://github.com/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#ensure_github_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.ensure_github_url" title="Link to this definition"></a></dt>
+<dd><p>Ensure a string to a github url</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_github_url</span><span class="p">(</span><span class="s1">&#39;https://www.github.com/thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/github.com/thorwhalen/hubcap/&#39;</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/thorwhalen/hubcap&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.ensure_repo_obj">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">ensure_repo_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Repository</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#ensure_repo_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.ensure_repo_obj" title="Link to this definition"></a></dt>
+<dd><p>Ensure a Repository object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_repo_obj</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="go">Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">ensure_repo_obj</span><span class="p">(</span><span class="s1">&#39;https://github.com/thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span>
+<span class="go">Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+</pre></div>
+</div>
+<p>And if we pass in a <code class="docutils literal notranslate"><span class="pre">Repository</span></code> object, we just get it back:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="go">Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.ensure_url_suffix">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">ensure_url_suffix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#ensure_url_suffix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.ensure_url_suffix" title="Link to this definition"></a></dt>
+<dd><p>Ensure a url suffix, that is, get rid of the (…)github.com prefix.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_url_suffix</span><span class="p">(</span><span class="s1">&#39;https://www.github.com/thorwhalen/hubcap/README.md&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap/README.md&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_url_suffix</span><span class="p">(</span><span class="s1">&#39;www.github.com/thorwhalen/hubcap/README.md&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap/README.md&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ensure_url_suffix</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/README.md&#39;</span><span class="p">)</span>
+<span class="go">&#39;thorwhalen/hubcap/README.md&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.generate_github_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">generate_github_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'branch'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'issue_number'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'path'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pr_number'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'repository'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'username'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'fully_qualified_raw'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'file'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw_file'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'branch'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'issue'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pull_request'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'releases'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'repository'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clone_url'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_explicit_url_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_extra_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#generate_github_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.generate_github_url" title="Link to this definition"></a></dt>
+<dd><p>Generates a GitHub URL from the provided components dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>components</strong> (<em>dict</em>) – A dictionary containing the URL components.</p></li>
+<li><p><strong>url_type</strong> (<em>str</em>) – The type of the URL to generate.</p></li>
+<li><p><strong>prefer_explicit_url_type</strong> (<em>bool</em>) – If True, the url_type argument takes
+precedence over the ‘url_type’ key in components.
+This is needed because by default, <cite>parse_github_url</cite> includes the
+‘url_type’ key, so if you want to easily generate a URL from its
+components, you need an easy way to tell the function to ignore that
+particular key, overriding it with the <cite>url_type</cite> argument.</p></li>
+<li><p><strong>ignore_extra_keys</strong> (<em>bool</em>) – If True, extra keys in the components dictionary</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The generated GitHub URL.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the components are insufficient to generate a URL.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;repository&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;branch&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/tree/master&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;README.md&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;raw_file&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;README.md&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;issue&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;issue_number&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/issues/1&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pull_request&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;pr_number&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/pull/1&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;releases&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;torvalds&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;linux&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/releases&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;url_type&#39;</span><span class="p">:</span> <span class="s1">&#39;clone_url&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="s1">&#39;repo&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+<span class="go">&#39;git@github.com:username/repo.git&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.get_repository_info">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">get_repository_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_info:</span> <span class="pre">~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Literal['CHECK_AFTER_INIT_FLAG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_auto_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_forking'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_merge_commit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_rebase_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_squash_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_update_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'anonymous_access_enabled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'archive_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'archived'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'assignees_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'blobs_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'branches_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'clone_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'code_of_conduct'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'collaborators_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'comments_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'commits_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'compare_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'completed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'contents_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'contributors_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'created_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'custom_properties'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'default_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'delete_branch_on_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'deployments_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'description'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'disabled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'downloads_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'etag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'events_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'fork'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'full_name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_commits_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_refs_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_tags_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_discussions'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_downloads'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_issues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_pages'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_projects'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'homepage'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'hooks_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'html_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'is_template'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issue_comment_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issue_events_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issues_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'keys_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'labels_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'language'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'languages_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'last_modified'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'last_modified_datetime'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'license'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'master_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merge_commit_message'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merge_commit_title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merges_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'milestones_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'mirror_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'network_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'node_id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'notifications_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'open_issues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'open_issues_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'organization'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'owner'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'parent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'permissions'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'private'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'pulls_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'pushed_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'raw_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'raw_headers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'releases_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'requester'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'role_name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'security_and_analysis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'size'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'squash_merge_commit_message'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'squash_merge_commit_title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ssh_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'stargazers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'stargazers_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'starred_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'statuses_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscribers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscribers_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscription_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'svn_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'tags_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'teams_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'temp_clone_token'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'template_repository'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'topics'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'trees_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'updated_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'use_squash_pr_title_as_default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'visibility'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'watchers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'watchers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'web_commit_signoff_required']]</span> <span class="pre">|</span> <span class="pre">~typing.Iterable[~typing.Tuple[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.Literal['CHECK_AFTER_INIT_FLAG'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_auto_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_forking'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_merge_commit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_rebase_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_squash_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'allow_update_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'anonymous_access_enabled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'archive_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'archived'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'assignees_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'blobs_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'branches_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'clone_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'code_of_conduct'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'collaborators_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'comments_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'commits_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'compare_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'completed'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'contents_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'contributors_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'created_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'custom_properties'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'default_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'delete_branch_on_merge'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'deployments_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'description'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'disabled'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'downloads_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'etag'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'events_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'fork'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'full_name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_commits_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_refs_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_tags_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'git_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_discussions'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_downloads'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_issues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_pages'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_projects'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'has_wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'homepage'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'hooks_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'html_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'is_template'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issue_comment_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issue_events_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'issues_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'keys_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'labels_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'language'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'languages_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'last_modified'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'last_modified_datetime'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'license'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'master_branch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merge_commit_message'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merge_commit_title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'merges_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'milestones_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'mirror_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'network_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'node_id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'notifications_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'open_issues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'open_issues_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'organization'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'owner'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'parent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'permissions'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'private'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'pulls_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'pushed_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'raw_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'raw_headers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'releases_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'requester'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'role_name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'security_and_analysis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'size'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'squash_merge_commit_message'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'squash_merge_commit_title'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ssh_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'stargazers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'stargazers_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'starred_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'statuses_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscribers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscribers_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'subscription_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'svn_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'tags_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'teams_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'temp_clone_token'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'template_repository'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'topics'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'trees_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'updated_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'use_squash_pr_title_as_default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'visibility'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'watchers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'watchers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'web_commit_signoff_required']]]</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">(('name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'name')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('full_name'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'full_name')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('description'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'description')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('stargazers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'stargazers_count')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('forks_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'forks_count')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('watchers_count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'watchers_count')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('html_url'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'html_url')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">('last_commit_date'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;function</span> <span class="pre">_last_commit_date&gt;))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#get_repository_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.get_repository_info" title="Link to this definition"></a></dt>
+<dd><p>Get info about a repository.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This gives us a <code class="docutils literal notranslate"><span class="pre">dict</span></code> with default info fields:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>  
+<span class="go">[&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, &#39;stargazers_count&#39;,</span>
+<span class="go">&#39;forks_count&#39;, &#39;watchers_count&#39;, &#39;html_url&#39;, &#39;last_commit_date&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="go">&#39;hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;html_url&#39;</span><span class="p">]</span>
+<span class="go">&#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;stargazers_count&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>We can also specify a custom <code class="docutils literal notranslate"><span class="pre">repo_info</span></code> get different info.</p>
+<p>You can specify a space separated string of repo properties:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_repository_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">,</span> <span class="s1">&#39;name html_url&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;hubcap&#39;, &#39;html_url&#39;: &#39;https://github.com/thorwhalen/hubcap&#39;}</span>
+</pre></div>
+</div>
+<p>Note that you have a list of valid repo properties in <code class="docutils literal notranslate"><span class="pre">constants.repo_props</span></code>,
+which is dynamically generated from the <code class="docutils literal notranslate"><span class="pre">github.Repository.Repository</span></code> class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_props</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">repo_props</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">90</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If you want to give the fields different names, or use a function to compute some
+custom information based on the repo you can specify a  dict of
+<code class="docutils literal notranslate"><span class="pre">{field:</span> <span class="pre">prop_spec,</span> <span class="pre">...}</span></code> values where <code class="docutils literal notranslate"><span class="pre">prop_spec</span></code> is either a valid repo
+property or a function to compute the value (the function needs to take a
+<code class="docutils literal notranslate"><span class="pre">Repository</span></code> as its first and only required argument).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_repository_info</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;has stars&#39;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">repo</span><span class="p">:</span> <span class="n">repo</span><span class="o">.</span><span class="n">stargazers_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;hubcap&#39;, &#39;has stars&#39;: True}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.git">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">git</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'status'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">work_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">git_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#git"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.git" title="Link to this definition"></a></dt>
+<dd><p>Launch git commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> – git command (e.g. ‘status’, ‘branch’, ‘commit -m “blah”’, ‘push’, etc.)</p></li>
+<li><p><strong>work_tree</strong> – The work_tree directory (i.e. where the project is)</p></li>
+<li><p><strong>git_dir</strong> – The .git directory (usually, and by default, will be taken to be “{work_tree}/.git/”</p></li>
+<li><p><strong>suppress_errors</strong> – If True, suppress errors and return an empty string or None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>What ever the command line returns (decoded to string), or an empty string/None if errors are suppressed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.github_file_contents">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">github_file_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_url:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">egress:</span> <span class="pre">~typing.Callable</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#github_file_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.github_file_contents" title="Link to this definition"></a></dt>
+<dd><p>Fetches the contents of a file from a GitHub repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_url</strong> – The URL of the file to fetch (doesn’t have to be a raw file!)</p></li>
+<li><p><strong>egress</strong> – A function to extract the contents of the file object. By default, it
+decodes the file object’s content as UTF-8, but if it’s bytes you want,
+don’t decode those bytes, and if it’s the “file object” you want, just
+use <cite>egress=lambda x: x</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The contents of the file as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If the repository, file, or branch does not exist, or access is denied.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file_string</span> <span class="o">=</span> <span class="n">github_file_contents</span><span class="p">(</span><span class="s1">&#39;https://github.com/thorwhalen/hubcap/blob/master/setup.cfg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">file_string</span><span class="p">[:</span><span class="mi">24</span><span class="p">])</span>
+<span class="go">[metadata]</span>
+<span class="go">name = hubcap</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.parse_github_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">parse_github_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_url_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#parse_github_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.parse_github_url" title="Link to this definition"></a></dt>
+<dd><p>Parses a GitHub URL and returns a dictionary of its components.</p>
+<p>The returned dict includes a “url_type” field that indicates the type of the URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – The GitHub URL to parse.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the parsed components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the URL cannot be parsed.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;url_type&#39;: &#39;repository&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/tree/master&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;url_type&#39;: &#39;branch&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;url_type&#39;: &#39;file&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;url_type&#39;: &#39;raw_file&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/issues/1&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;issue_number&#39;: &#39;1&#39;, &#39;url_type&#39;: &#39;issue&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/pull/1&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;pr_number&#39;: &#39;1&#39;, &#39;url_type&#39;: &#39;pull_request&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/releases&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;url_type&#39;: &#39;releases&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parse_github_url</span><span class="p">(</span><span class="s1">&#39;git@github.com:username/repo.git&#39;</span><span class="p">)</span>
+<span class="go">{&#39;username&#39;: &#39;username&#39;, &#39;repository&#39;: &#39;repo&#39;, &#39;url_type&#39;: &#39;clone_url&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.replace_relative_urls">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">replace_relative_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markdown_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_url_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'(!?\\[.*?\\]\\()((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)(\\))|(&lt;img\\s+[^&gt;]*src=&quot;)((?!http[s]?://|ftp://|mailto:|#|/)[^&quot;]*)(&quot;)'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/util.html#replace_relative_urls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.replace_relative_urls" title="Link to this definition"></a></dt>
+<dd><p>Replace relative URLs in a markdown string with absolute URLs based on the root_url.</p>
+<p>This is useful, for example, to solve problems like when pypi renders markdown and
+images are not shown because they are relative URLs.
+See [issue]()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>markdown_str</strong> (<em>str</em>) – The markdown content containing URLs.</p></li>
+<li><p><strong>root_url</strong> (<em>str</em>) – The base URL to resolve relative URLs against.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The markdown content with relative URLs replaced by absolute URLs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="gp">... </span><span class="s1">[With dot](./page)</span>
+<span class="gp">... </span><span class="s1">![With double dot](../image.png)</span>
+<span class="gp">... </span><span class="s1">![](relative/path/to/image.png)</span>
+<span class="gp">... </span><span class="s1">[Absolute Link](http://example.com)</span>
+<span class="gp">... </span><span class="s1">&lt;img src=&quot;path/to/image&quot; width=&quot;320&quot;&gt;</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root_url</span> <span class="o">=</span> <span class="s1">&#39;http://mysite.com/docs&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">replace_relative_urls</span><span class="p">(</span><span class="n">markdown_str</span><span class="p">,</span> <span class="n">root_url</span><span class="p">))</span>
+
+<span class="go">[With dot](http://mysite.com/docs/page)</span>
+<span class="go">![With double dot](http://mysite.com/image.png)</span>
+<span class="go">![](http://mysite.com/docs/relative/path/to/image.png)</span>
+<span class="go">[Absolute Link](http://example.com)</span>
+<span class="go">&lt;img src=&quot;http://mysite.com/docs/path/to/image&quot; width=&quot;320&quot;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.util.transform_github_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.util.</span></span><span class="sig-name descname"><span class="pre">transform_github_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_url_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'fully_qualified_raw'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'file'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw_file'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'branch'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'issue'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pull_request'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'releases'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'repository'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'clone_url'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'raw_file'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extras</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/util.html#transform_github_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.util.transform_github_url" title="Link to this definition"></a></dt>
+<dd><p>Transforms a GitHub URL to another type, updating components as needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – The original GitHub URL.</p></li>
+<li><p><strong>target_url_type</strong> (<em>str</em>) – The desired URL type.</p></li>
+<li><p><strong>**extras</strong> – Additional components to update in the URL.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed GitHub URL.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the URL cannot be parsed or transformed.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux&#39;</span><span class="p">,</span> <span class="s1">&#39;clone_url&#39;</span><span class="p">)</span>
+<span class="go">&#39;git@github.com:torvalds/linux.git&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span><span class="p">,</span> <span class="s1">&#39;raw_file&#39;</span><span class="p">)</span>
+<span class="go">&#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform_github_url</span><span class="p">(</span><span class="s1">&#39;https://github.com/torvalds/linux/issues/1&#39;</span><span class="p">,</span> <span class="s1">&#39;pull_request&#39;</span><span class="p">,</span> <span class="n">pr_number</span><span class="o">=</span><span class="s1">&#39;42&#39;</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/pull/42&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transform_github_url</span><span class="p">(</span><span class="s1">&#39;git@github.com:torvalds/linux.git&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;README.md&#39;</span><span class="p">)</span>
+<span class="go">&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tools.html" class="btn btn-neutral float-left" title="hubcap.tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

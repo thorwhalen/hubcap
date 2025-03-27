@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.scrap.direct_github_api &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.scrap.direct_github_api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.scrap.direct_github_api</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Functions that talk directly to api</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">DFLT_GITHUB_TOKEN_ENVIRON_NAME</span> <span class="o">=</span> <span class="s1">&#39;GITHUB_TOKEN&#39;</span>
+<span class="n">DFLT_USER</span> <span class="o">=</span> <span class="s1">&#39;thorwhalen&#39;</span>
+<span class="n">DFLT_REPO</span> <span class="o">=</span> <span class="s1">&#39;thorwhalen/graze&#39;</span>
+
+
+<div class="viewcode-block" id="get_token">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_token</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">environ_name</span><span class="o">=</span><span class="n">DFLT_GITHUB_TOKEN_ENVIRON_NAME</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolves token&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">token</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">environ_name</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/vnd.github.v3+json&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_repos_info</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">DFLT_USER</span><span class="p">,</span>
+    <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;updated&#39;</span><span class="p">,</span>
+    <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;desc&#39;</span><span class="p">,</span>
+    <span class="n">per_page</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">params</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List repos and their info: raw response object&quot;&quot;&quot;</span>
+
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;https://api.github.com/users/</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1">/repos&#39;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span>
+
+
+<div class="viewcode-block" id="repos_info">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.repos_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">repos_info</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">DFLT_USER</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List repos and their info: dataframe&quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_repos_info</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_actions_info</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">DFLT_REPO</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Github actions runs info: raw response object&quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;https://api.github.com/repos/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">/actions/runs&#39;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="actions_info">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.actions_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">actions_info</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">DFLT_REPO</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Github actions runs info: dataframe of workflow runs sorted by last updated&quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_actions_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">workflow_runs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;workflow_runs&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">workflow_runs</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;updated_at&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="get_last_build_status">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_last_build_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">DFLT_REPO</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check on github actions status of a repo &quot;&quot;&quot;</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">_actions_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">runs_docs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;workflow_runs&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="c1"># no suitable status was found for a previous build, so the status is &quot;None&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">runs_docs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">conclusion</span> <span class="o">=</span> <span class="n">runs_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;conclusion&#39;</span><span class="p">]</span>
+    <span class="c1">#     print(f&quot;&gt;&gt;&gt; previous run found with conclusion={conclusion}&quot;)</span>
+    <span class="k">return</span> <span class="n">conclusion</span></div>
+
+
+
+<div class="viewcode-block" id="get_action_ci_status">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_action_ci_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_action_ci_status</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">365</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a table of CI status (failure or success or None) for some repositories&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+    <span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)]</span>
+    <span class="n">cis</span> <span class="o">=</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]}</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">cis</span><span class="p">)</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">gt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">date_selection_lidx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">date_column</span><span class="o">=</span><span class="s1">&#39;updated_at&#39;</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">gt</span><span class="p">):</span>
+    <span class="n">thresh_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">date_column</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_column</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">thresh_date</span><span class="p">))</span><span class="o">.</span><span class="n">values</span>
+
+
+<div class="viewcode-block" id="ci_status">
+<a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.ci_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ci_status</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">DFLT_USER</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a dict of CI &quot;conclusions&quot; for all recently updated repos for a user/org&quot;&quot;&quot;</span>
+    <span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">updated_recently_lidx</span> <span class="o">=</span> <span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)</span>
+    <span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">updated_recently_lidx</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]}</span></div>
+
+
+
+<span class="c1"># def check_status_changed(status):</span>
+<span class="c1">#     # NOTE: last_status==None is always considered a change. This is intentional</span>
+<span class="c1">#     last_status = get_last_build_status()</span>
+<span class="c1">#     res = last_status != status</span>
+<span class="c1">#     if res:</span>
+<span class="c1">#         print(f&#39;status change detected (old={last_status}, new={status})&#39;)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         print(f&#39;no status change detected (old={last_status}, new={status})&#39;)</span>
+<span class="c1">#     return res</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

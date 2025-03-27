@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.examples &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hubcap.examples.diagnose_repositories" href="examples/diagnose_repositories.html" />
+    <link rel="prev" title="hubcap.constants" href="constants.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.examples">
+<span id="hubcap-examples"></span><h1>hubcap.examples<a class="headerlink" href="#module-hubcap.examples" title="Link to this heading"></a></h1>
+<p>Useful examples of code using hubcap behind the scenes.</p>
+<p>THe functions herein could be useful to you, but their intended purpose is to demo
+how you can use <code class="docutils literal notranslate"><span class="pre">hubcap</span></code>, so we suggest you look at their code.</p>
+<p>List repositories for a given user or organization, along with 78 fields of info.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">repos_info</span><span class="p">,</span> <span class="n">actions_info</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">repos</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   
+<span class="go">(60, 78)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>  
+<span class="go">                         id                           node_id       name  ... watchers  default_branch                                        permissions</span>
+<span class="go">full_name                                                                 ...</span>
+<span class="go">i2mint/py2mqtt    425694616                      R_kgDOGV-VmA    py2mqtt  ...        0            main  {&#39;admin&#39;: True, &#39;maintain&#39;: True, &#39;push&#39;: True...</span>
+<span class="go">i2mint/mongodol   341721959  MDEwOlJlcG9zaXRvcnkzNDE3MjE5NTk=   mongodol  ...        0          master  {&#39;admin&#39;: True, &#39;maintain&#39;: True, &#39;push&#39;: True...</span>
+<span class="go">i2mint/dol        299438731  MDEwOlJlcG9zaXRvcnkyOTk0Mzg3MzE=        dol  ...        4          master  {&#39;admin&#39;: True, &#39;maintain&#39;: True, &#39;push&#39;: True...</span>
+<span class="go">i2mint/stream2py  238989487  MDEwOlJlcG9zaXRvcnkyMzg5ODk0ODc=  stream2py  ...        2          master  {&#39;admin&#39;: True, &#39;maintain&#39;: True, &#39;push&#39;: True...</span>
+<span class="go">i2mint/creek      321448350  MDEwOlJlcG9zaXRvcnkzMjE0NDgzNTA=      creek  ...        0          master  {&#39;admin&#39;: True, &#39;maintain&#39;: True, &#39;push&#39;: True...</span>
+</pre></div>
+</div>
+<p>[5 rows x 78 columns]
+&gt;&gt;&gt; list(repos.columns)   # doctest: +SKIP
+[‘id’, ‘node_id’, ‘name’, ‘full_name’, ‘private’, ‘owner’, ‘html_url’, ‘description’,
+‘fork’, ‘url’, ‘forks_url’, ‘keys_url’, ‘collaborators_url’, ‘teams_url’, ‘hooks_url
+‘, ‘issue_events_url’, ‘events_url’, ‘assignees_url’, ‘branches_url’, ‘tags_url’,
+‘blobs_url’, ‘git_tags_url’, ‘git_refs_url’, ‘trees_url’, ‘statuses_url’, ‘languages_url
+‘, ‘stargazers_url’, ‘contributors_url’, ‘subscribers_url’, ‘subscription_url’,
+‘commits_url’, ‘git_commits_url’, ‘comments_url’, ‘issue_comment_url’, ‘contents_url’,
+‘compare_url’, ‘merges_url’, ‘archive_url’, ‘downloads_url’, ‘issues_url’, ‘pulls_url’,
+‘milestones_url’, ‘notifications_url’, ‘labels_url’, ‘releases_url’, ‘deployments_url
+‘, ‘created_at’, ‘updated_at’, ‘pushed_at’, ‘git_url’, ‘ssh_url’, ‘clone_url’, ‘svn_url’,
+‘homepage’, ‘size’, ‘stargazers_count’, ‘watchers_count’, ‘language’, ‘has_issue
+s’, ‘has_projects’, ‘has_downloads’, ‘has_wiki’, ‘has_pages’, ‘forks_count’,
+‘mirror_url’, ‘archived’, ‘disabled’, ‘open_issues_count’, ‘license’, ‘allow_forking’,
+‘is_template’, ‘topics’, ‘visibility’, ‘forks’, ‘open_issues’, ‘watchers’,
+‘default_branch’, ‘permissions’]</p>
+<p>Get info about github actions for a given repository.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions_info</span><span class="p">(</span><span class="s1">&#39;i2mint/mongodol&#39;</span><span class="p">)</span>   
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">actions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   
+<span class="go">(10, 30)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>    
+<span class="go">           id                    name  ...                                         repository                                    head_repository</span>
+<span class="go">0  1468986198  Continuous Integration  ...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span>
+<span class="go">1  1445456774  Continuous Integration  ...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span>
+<span class="go">2  1437461380  Continuous Integration  ...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span>
+<span class="go">3  1343133456  Continuous Integration  ...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span>
+<span class="go">4  1262878182  Continuous Integration  ...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...  {&#39;id&#39;: 341721959, &#39;node_id&#39;: &#39;MDEwOlJlcG9zaXRv...</span>
+</pre></div>
+</div>
+<p>[5 rows x 30 columns]
+&gt;&gt;&gt;
+&gt;&gt;&gt; list(actions.columns)   # doctest: +SKIP
+[‘id’, ‘name’, ‘node_id’, ‘head_branch’, ‘head_sha’, ‘run_number’, ‘event’, ‘status’,
+‘conclusion’, ‘workflow_id’, ‘check_suite_id’, ‘check_suite_node_id’, ‘url’, ‘html_url’,
+‘pull_requests’, ‘created_at’, ‘updated_at’, ‘run_attempt’, ‘run_started_at’,
+‘jobs_url’, ‘logs_url’, ‘check_suite_url’, ‘artifacts_url’, ‘cancel_url’, ‘rerun_url’,
+‘previous_attempt_url’, ‘workflow_url’, ‘head_commit’, ‘repository’, ‘head_repository’]
+&gt;&gt;&gt;</p>
+<p>Find most recently changed repositories and check if their CI failed or not.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">date_selection_lidx</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]}</span>  
+<span class="go">{&#39;i2mint/py2mqtt&#39;: &#39;failure&#39;,</span>
+<span class="go"> &#39;i2mint/mongodol&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/dol&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/stream2py&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/creek&#39;: &#39;success&#39;}</span>
+</pre></div>
+</div>
+<p>Note: You can get this directly using the <cite>ci_status</cite> function</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">ci_status</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_status</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>  
+<span class="go">{&#39;i2mint/py2mqtt&#39;: &#39;failure&#39;,</span>
+<span class="go"> &#39;i2mint/mongodol&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/dol&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/stream2py&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/creek&#39;: &#39;success&#39;}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="constants.html" class="btn btn-neutral float-left" title="hubcap.constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples/diagnose_repositories.html" class="btn btn-neutral float-right" title="hubcap.examples.diagnose_repositories" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

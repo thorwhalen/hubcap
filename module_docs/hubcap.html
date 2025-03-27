@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hubcap.base" href="hubcap/base.html" />
+    <link rel="prev" title="Welcome to hubcap’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/module_docs/hubcap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap">
+<span id="hubcap"></span><h1>hubcap<a class="headerlink" href="#module-hubcap" title="Link to this heading"></a></h1>
+<p>The simplest facade to github data.</p>
+<p>Warning: You’ll need to have a github api token (google it if you don’t have one;
+it’s easy to get). You’ll have to specify this token when making hubcap objects,
+or put it in an environmental variable under the name <cite>HUBCAP_GITHUB_TOKEN</cite> or
+<cite>GITHUB_TOKEN</cite></p>
+<p># Example usage</p>
+<p>## RepoReader</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="s1">&#39;thorwhalen/test_repo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>  
+<span class="go">[&#39;artifacts&#39;, &#39;assignees&#39;, &#39;autolinks&#39;, &#39;branches&#39;, &#39;codescan_alerts&#39;, &#39;collaborators&#39;,</span>
+<span class="go">&#39;comments&#39;, &#39;commits&#39;, &#39;contributors&#39;, &#39;deployments&#39;, &#39;discussions&#39;, &#39;downloads&#39;,</span>
+<span class="go">&#39;environments&#39;, &#39;events&#39;, &#39;forks&#39;, &#39;git_refs&#39;, &#39;hooks&#39;, &#39;issues&#39;, &#39;issues_comments&#39;,</span>
+<span class="go">&#39;issues_events&#39;, &#39;labels&#39;, &#39;languages&#39;, &#39;milestones&#39;, &#39;network_events&#39;,</span>
+<span class="go">&#39;notifications&#39;, &#39;pending_invitations&#39;, &#39;projects&#39;, &#39;pulls&#39;, &#39;pulls_comments&#39;,</span>
+<span class="go">&#39;pulls_review_comments&#39;, &#39;releases&#39;, &#39;repository_advisories&#39;, &#39;secrets&#39;,</span>
+<span class="go">&#39;self_hosted_runners&#39;, &#39;stargazers&#39;, &#39;stargazers_with_dates&#39;, &#39;stats_contributors&#39;,</span>
+<span class="go">&#39;subscribers&#39;, &#39;tags&#39;, &#39;teams&#39;, &#39;top_paths&#39;, &#39;top_referrers&#39;, &#39;topics&#39;, &#39;variables&#39;,</span>
+<span class="go">&#39;watchers&#39;, &#39;workflow_runs&#39;, &#39;workflows&#39;]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;issues&#39;</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">issues</span><span class="p">)</span>
+<span class="go">[4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span>
+<span class="go">Issue(title=&quot;Test Issue A&quot;, number=4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)])</span>  
+<span class="go">[&#39;CHECK_AFTER_INIT_FLAG&#39;, &#39;active_lock_reason&#39;, &#39;add_to_assignees&#39;, &#39;add_to_labels&#39;,</span>
+<span class="go">&#39;as_pull_request&#39;, &#39;assignee&#39;, &#39;assignees&#39;, &#39;body&#39;, &#39;closed_at&#39;, &#39;closed_by&#39;,</span>
+<span class="go">&#39;comments&#39;, &#39;comments_url&#39;, &#39;create_comment&#39;, &#39;create_reaction&#39;, &#39;created_at&#39;,</span>
+<span class="go">&#39;delete_labels&#39;, &#39;delete_reaction&#39;, &#39;edit&#39;, &#39;etag&#39;, &#39;events_url&#39;, &#39;get__repr__&#39;,</span>
+<span class="go">&#39;get_comment&#39;, &#39;get_comments&#39;, &#39;get_events&#39;, &#39;get_labels&#39;, &#39;get_reactions&#39;,</span>
+<span class="go">&#39;get_timeline&#39;, &#39;html_url&#39;, &#39;id&#39;, &#39;labels&#39;, &#39;labels_url&#39;, &#39;last_modified&#39;, &#39;lock&#39;,</span>
+<span class="go">&#39;locked&#39;, &#39;milestone&#39;, &#39;number&#39;, &#39;pull_request&#39;, &#39;raw_data&#39;, &#39;raw_headers&#39;,</span>
+<span class="go">&#39;remove_from_assignees&#39;, &#39;remove_from_labels&#39;, &#39;repository&#39;, &#39;setCheckAfterInitFlag&#39;,</span>
+<span class="go">&#39;set_labels&#39;, &#39;state&#39;, &#39;state_reason&#39;, &#39;title&#39;, &#39;unlock&#39;, &#39;update&#39;, &#39;updated_at&#39;,</span>
+<span class="go">&#39;url&#39;, &#39;user&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">number</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">state</span>
+<span class="go">&#39;open&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">labels</span>
+<span class="go">[Label(name=&quot;documentation&quot;), Label(name=&quot;enhancement&quot;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># title of issue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">title</span>
+<span class="go">&#39;Test Issue A&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># content of issue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">body</span>
+<span class="go">&#39;Contents of Test Issue A&#39;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">comments</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comments</span><span class="p">())</span>  
+<span class="go">[IssueComment(user=NamedUser(login=&quot;thorwhalen&quot;), id=1801792378),</span>
+<span class="go">IssueComment(user=NamedUser(login=&quot;thorwhalen&quot;), id=1801792855)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span> <span class="o">=</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comment</span><span class="p">(</span><span class="mi">1801792378</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span><span class="o">.</span><span class="n">body</span>
+<span class="go">&#39;Comment 1 of Test Issue A&#39;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;discussions&#39;</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;discussions&#39;</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">discussions</span><span class="p">)</span>  
+<span class="go">[1, 2, 3]</span>
+</pre></div>
+</div>
+<p>## hub function</p>
+<p>The high level function <cite>hub</cite> is the simplest way to get started. It’s a
+function that takes a path to a github resource and returns a mapping to that
+resource. The mapping is lazy, so it’s only when you access a key that the
+resource is actually fetched from github.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repositories</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hubcap&#39;</span> <span class="ow">in</span> <span class="n">repositories</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_repo</span> <span class="o">=</span> <span class="n">repositories</span><span class="p">[</span><span class="s1">&#39;hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;master&#39;</span> <span class="ow">in</span> <span class="n">repo</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">master_files</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/master&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/README.md&#39;</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/hubcap/&#39;</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="s1">&#39;/hubcap/&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/hubcap/base.py&#39;</span> <span class="ow">in</span> <span class="n">hubcap_files</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>### Access issues</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/issues&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">issues</span>  <span class="c1"># there&#39;s a &quot;number 3&quot; issue</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">title</span>
+<span class="go">&#39;Test Issue&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">body</span>
+<span class="go">&#39;This is just a test issue to test that hubcap can see it.\r\n&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">comments</span>  <span class="c1"># meaning &quot;number of comments&quot;</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>### Access discussions</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/discussions&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">in</span> <span class="n">discussions</span>  
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>    
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>    
+<span class="go">&#39;Root interface of hubcap&#39;</span>
+</pre></div>
+</div>
+<p>## GithubReader</p>
+<p>One of the main classes is <cite>GithubReader</cite>. It’s a mapping that connects to a
+github user or organization, and returns a mapping of repositories. The
+repositories are also mappings, that return mappings of branches, and so on.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="s1">&#39;thorwhalen&#39;</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  
+<span class="go">[&#39;agen&#39;,</span>
+<span class="go"> &#39;aix&#39;,</span>
+<span class="go"> ...</span>
+<span class="go"> &#39;viral&#39;,</span>
+<span class="go"> &#39;wealth&#39;,</span>
+<span class="go"> &#39;wrapt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;a_non_existing_repository_name&#39;</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hubcap&#39;</span> <span class="ow">in</span> <span class="n">s</span>  <span class="c1"># of course, this will be true, it&#39;s what you&#39;re using now!</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="go">[&#39;gh-page&#39;, &#39;master&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>  
+<span class="go">[&#39;/.gitattributes&#39;, &#39;/.github/&#39;, &#39;/.gitignore&#39;, &#39;/LICENSE&#39;,</span>
+<span class="go">&#39;/README.md&#39;, &#39;/docsrc/&#39;, &#39;/hubcap/&#39;, &#39;/misc/&#39;, &#39;/setup.cfg&#39;, &#39;/setup.py&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[</span><span class="s1">&#39;/setup.cfg&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">32</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="go">[metadata]</span>
+<span class="go">name = hubcap</span>
+<span class="go">version</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_repository_info</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>  
+<span class="go">[&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, &#39;stargazers_count&#39;,</span>
+<span class="go">&#39;forks_count&#39;, &#39;watchers_count&#39;, &#39;html_url&#39;, &#39;last_commit_date&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="go">&#39;hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;html_url&#39;</span><span class="p">]</span>
+<span class="go">&#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;stargazers_count&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>You also have other useful objects, like <cite>Issues</cite>, <cite>IssueComments</cite>, <cite>Discussions</cite>, etc.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to hubcap’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hubcap/base.html" class="btn btn-neutral float-right" title="hubcap.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

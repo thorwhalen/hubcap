@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.examples.get_wikis &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.examples.get_wikis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.examples.get_wikis</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Download wikis from github&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+
+<div class="viewcode-block" id="download_github_wiki">
+<a class="viewcode-back" href="../../../module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.download_github_wiki">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">download_github_wiki</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">download_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download the wiki associated with a given GitHub repository.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    repo_id : str</span>
+<span class="sd">        The GitHub repository identifier in the format &quot;owner/repository_name&quot;.</span>
+<span class="sd">    download_dir : str</span>
+<span class="sd">        The path of the directory where the wiki will be downloaded.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        If the download_dir does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">download_dir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">download_dir</span><span class="p">)</span>
+
+    <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">repo_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">download_dir</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+
+    <span class="c1"># GitHub stores wiki content in a separate git repository appended with &quot;.wiki&quot;</span>
+    <span class="n">wiki_repo</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://github.com/</span><span class="si">{</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">.wiki.git&#39;</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;git&#39;</span><span class="p">,</span> <span class="s1">&#39;clone&#39;</span><span class="p">,</span> <span class="n">wiki_repo</span><span class="p">,</span> <span class="n">tmpdir</span><span class="p">])</span>
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+            <span class="c1"># If git clone fails, wiki probably does not exist, so return</span>
+            <span class="k">return</span>
+
+        <span class="c1"># If we get here, wiki exists and we&#39;ve cloned it successfully to a temporary directory.</span>
+        <span class="c1"># Now we move the wiki files to the destination directory.</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">destination</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span> <span class="n">destination</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># def download_github_wiki(repo_id: str, download_dir: str):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Download all wikis of a GitHub repository to a specific directory.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     repo_id : str</span>
+<span class="c1">#         Identifier of the repository in &quot;owner/repository_name&quot; format.</span>
+<span class="c1">#     download_dir : str</span>
+<span class="c1">#         Directory where wikis will be downloaded.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     owner, repo_name = repo_id.split(&quot;/&quot;)</span>
+<span class="c1">#     dest_dir = os.path.join(download_dir, owner, repo_name)</span>
+
+<span class="c1">#     # Create the destination directory if it doesn&#39;t exist</span>
+<span class="c1">#     os.makedirs(dest_dir, exist_ok=True)</span>
+
+<span class="c1">#     # URL of the wiki&#39;s Git repository</span>
+<span class="c1">#     wiki_git_url = f&quot;https://github.com/{repo_id}.wiki.git&quot;</span>
+
+<span class="c1">#     try:</span>
+<span class="c1">#         # Clone the wiki Git repository</span>
+<span class="c1">#         subprocess.run(</span>
+<span class="c1">#             [&quot;git&quot;, &quot;clone&quot;, wiki_git_url, dest_dir],</span>
+<span class="c1">#             stderr=subprocess.DEVNULL,</span>
+<span class="c1">#             check=True,</span>
+<span class="c1">#         )</span>
+<span class="c1">#     except subprocess.CalledProcessError:</span>
+<span class="c1">#         # If the repository doesn&#39;t have a wiki, remove the created directory</span>
+<span class="c1">#         os.rmdir(dest_dir)</span>
+<span class="c1">#     except Exception as e:</span>
+<span class="c1">#         print(f&quot;An error occurred when downloading the wiki of {repo_id}: {e}&quot;)</span>
+
+
+<div class="viewcode-block" id="url_of_git_directory">
+<a class="viewcode-back" href="../../../module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.url_of_git_directory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">url_of_git_directory</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a directory is a git repository and return its remote URL.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The path of the directory to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The remote URL if the directory is a git repository, None otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get the URL of the &#39;origin&#39; remote</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">devnull</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+                <span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">,</span> <span class="s1">&#39;-C&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">,</span> <span class="s1">&#39;get-url&#39;</span><span class="p">,</span> <span class="s1">&#39;origin&#39;</span><span class="p">],</span>
+                <span class="n">stderr</span><span class="o">=</span><span class="n">devnull</span><span class="p">,</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">url</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;An error occurred when checking if </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1"> is a git directory: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="repository_identifiers">
+<a class="viewcode-back" href="../../../module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.repository_identifiers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">repository_identifiers</span><span class="p">(</span><span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">recursive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield GitHub repository URLs for all git repositories under a given directory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rootdir : str</span>
+<span class="sd">        The root directory from where to start the search.</span>
+<span class="sd">    recursive : bool, optional</span>
+<span class="sd">        If True, search recursively in all subdirectories.</span>
+<span class="sd">        If False, search only in the root directory.</span>
+<span class="sd">        By default, True.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    str</span>
+<span class="sd">        The GitHub repository URL for each git repository.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">rootdir</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">url_of_git_directory</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># This is a git repository, yield the repository URL</span>
+            <span class="c1"># and stop exploring this directory further</span>
+            <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">url_to_repository_identifier</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">dirnames</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># This will prevent os.walk from exploring subdirectories</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">recursive</span><span class="p">:</span>
+            <span class="c1"># If we are not searching recursively, clear the dirnames list</span>
+            <span class="c1"># so os.walk does not explore subdirectories</span>
+            <span class="n">dirnames</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">url_to_repository_identifier</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.git&#39;</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># Remove .git from the end</span>
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">)</span> <span class="p">:]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1282 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.util &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.util</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utils for hubcap.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lkj</span><span class="w"> </span><span class="kn">import</span> <span class="n">fields_of_string_formats</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">github</span><span class="w"> </span><span class="kn">import</span> <span class="n">Github</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">github.Repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repository</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.constants</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DFLT_REPO_INFO</span><span class="p">,</span>
+    <span class="n">RepoPropSpec</span><span class="p">,</span>
+    <span class="n">RepoFunc</span><span class="p">,</span>
+    <span class="n">RepoInfo</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">RepoSpec</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Repository</span><span class="p">]</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Fundemental functions</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_token</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">token</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HUBCAP_GITHUB_TOKEN&#39;</span><span class="p">)</span>  <span class="c1"># If token not provided, will</span>
+        <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;GITHUB_TOKEN&#39;</span><span class="p">)</span>  <span class="c1"># look under HUBCAP_GITHUB_TOKEN env var</span>
+        <span class="ow">or</span> <span class="n">get_config</span><span class="p">(</span>  <span class="c1"># look under GITHUB_TOKEN env var</span>
+            <span class="s1">&#39;GITHUB_TOKEN&#39;</span>
+        <span class="p">)</span>  <span class="c1"># ask get_config for it (triggering user prompt and file persistence of it)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GitHub token not provided&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">token</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_object</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Github</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Github</span><span class="p">(</span><span class="n">github_token</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_repo_object</span><span class="p">(</span><span class="n">repo_stub</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Repository</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">github_object</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get the repository</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">repo_stub</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to fetch the repo: </span><span class="si">{</span><span class="n">repo_stub</span><span class="si">}</span><span class="s1">. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Get content</span>
+
+
+<div class="viewcode-block" id="github_file_contents">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.github_file_contents">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_file_contents</span><span class="p">(</span>
+    <span class="n">file_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">egress</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">file_obj</span><span class="p">:</span> <span class="n">file_obj</span><span class="o">.</span><span class="n">decoded_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches the contents of a file from a GitHub repository.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_url: The URL of the file to fetch (doesn&#39;t have to be a raw file!)</span>
+<span class="sd">        egress: A function to extract the contents of the file object. By default, it</span>
+<span class="sd">            decodes the file object&#39;s content as UTF-8, but if it&#39;s bytes you want,</span>
+<span class="sd">            don&#39;t decode those bytes, and if it&#39;s the &quot;file object&quot; you want, just</span>
+<span class="sd">            use `egress=lambda x: x`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The contents of the file as a string.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: If the repository, file, or branch does not exist, or access is denied.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; file_string = github_file_contents(&#39;https://github.com/thorwhalen/hubcap/blob/master/setup.cfg&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(file_string[:24])</span>
+<span class="sd">    [metadata]</span>
+<span class="sd">    name = hubcap</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">necessary_parts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;repository&#39;</span><span class="p">,</span> <span class="s1">&#39;branch&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="n">url_parts</span> <span class="o">=</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">url_parts</span><span class="p">)</span><span class="o">.</span><span class="n">issuperset</span><span class="p">(</span><span class="n">necessary_parts</span><span class="p">):</span>
+        <span class="n">missing_parts</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">url_parts</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">necessary_parts</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Your URL is missing the following parts: &#39;</span>
+            <span class="o">+</span> <span class="n">missing_parts</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;Your URL was: </span><span class="si">{</span><span class="n">file_url</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
+        <span class="n">url_parts</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;repository&#39;</span><span class="p">,</span> <span class="s1">&#39;branch&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">repo_stub</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">github_repo_object</span><span class="p">(</span><span class="n">repo_stub</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">file_obj</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Failed to fetch the file from </span><span class="si">{</span><span class="n">file_url</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">egress</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="get_repository_info">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.get_repository_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_repository_info</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Repository</span><span class="p">,</span> <span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span> <span class="o">=</span> <span class="n">DFLT_REPO_INFO</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get info about a repository.</span>
+
+<span class="sd">    &gt;&gt;&gt; info = get_repository_info(&#39;thorwhalen/hubcap&#39;)</span>
+
+<span class="sd">    This gives us a ``dict`` with default info fields:</span>
+
+<span class="sd">    &gt;&gt;&gt; list(info)  # doctest: +NORMALIZE_WHITESPACE</span>
+<span class="sd">    [&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, &#39;stargazers_count&#39;,</span>
+<span class="sd">    &#39;forks_count&#39;, &#39;watchers_count&#39;, &#39;html_url&#39;, &#39;last_commit_date&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; info[&#39;name&#39;]</span>
+<span class="sd">    &#39;hubcap&#39;</span>
+<span class="sd">    &gt;&gt;&gt; info[&#39;html_url&#39;]</span>
+<span class="sd">    &#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="sd">    &gt;&gt;&gt; info[&#39;stargazers_count&#39;] &gt;= 1</span>
+<span class="sd">    True</span>
+
+<span class="sd">    We can also specify a custom ``repo_info`` get different info.</span>
+
+<span class="sd">    You can specify a space separated string of repo properties:</span>
+
+<span class="sd">    &gt;&gt;&gt; get_repository_info(&#39;thorwhalen/hubcap&#39;, &#39;name html_url&#39;)</span>
+<span class="sd">    {&#39;name&#39;: &#39;hubcap&#39;, &#39;html_url&#39;: &#39;https://github.com/thorwhalen/hubcap&#39;}</span>
+
+<span class="sd">    Note that you have a list of valid repo properties in ``constants.repo_props``,</span>
+<span class="sd">    which is dynamically generated from the ``github.Repository.Repository`` class:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hubcap.constants import repo_props</span>
+<span class="sd">    &gt;&gt;&gt; len(repo_props) &gt;= 90</span>
+<span class="sd">    True</span>
+
+<span class="sd">    If you want to give the fields different names, or use a function to compute some</span>
+<span class="sd">    custom information based on the repo you can specify a  dict of</span>
+<span class="sd">    ``{field: prop_spec, ...}`` values where ``prop_spec`` is either a valid repo</span>
+<span class="sd">    property or a function to compute the value (the function needs to take a</span>
+<span class="sd">    ``Repository`` as its first and only required argument).</span>
+
+<span class="sd">    &gt;&gt;&gt; get_repository_info(</span>
+<span class="sd">    ...     &#39;thorwhalen/hubcap&#39;,</span>
+<span class="sd">    ...     {&#39;name&#39;: &#39;name&#39;, &#39;has stars&#39;: lambda repo: repo.stargazers_count &gt; 0}</span>
+<span class="sd">    ... )</span>
+<span class="sd">    {&#39;name&#39;: &#39;hubcap&#39;, &#39;has stars&#39;: True}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">repo_info</span> <span class="o">=</span> <span class="n">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">cached_github_object</span><span class="p">()</span>
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cached_github_object</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Github</span><span class="p">()</span>
+
+
+<span class="c1"># Define or modify the base patterns with their corresponding URL patterns here:</span>
+<span class="n">github_url_patterns</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;https://github.com/&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;^https://github\.com/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url_patterns&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1"># Repository URL</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/?$&#39;</span><span class="p">,</span> <span class="s1">&#39;repository&#39;</span><span class="p">),</span>
+            <span class="c1"># Branch URL</span>
+            <span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/tree/(?P&lt;branch&gt;[^/]+)/?$&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;branch&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># File or Directory URL</span>
+            <span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/blob/(?P&lt;branch&gt;[^/]+)/(?P&lt;path&gt;.+)$&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;file&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Issues URL</span>
+            <span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/issues/(?P&lt;issue_number&gt;\d+)$&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;issue&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Pull Request URL</span>
+            <span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/pull/(?P&lt;pr_number&gt;\d+)$&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;pull_request&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Releases URL</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/releases/?$&#39;</span><span class="p">,</span> <span class="s1">&#39;releases&#39;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;https://raw.githubusercontent.com/&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;^https://raw\.githubusercontent\.com/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url_patterns&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1"># Raw file URL</span>
+            <span class="p">(</span>
+                <span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+)/(?P&lt;branch&gt;[^/]+)/(?P&lt;path&gt;.+)$&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;raw_file&#39;</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;git@github.com:&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s1">&#39;^git@github\.com:&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url_patterns&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="c1"># Clone URL</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^(?P&lt;username&gt;[^/]+)/(?P&lt;repository&gt;[^/]+?)(?:\.git)?$&#39;</span><span class="p">,</span> <span class="s1">&#39;clone_url&#39;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># TODO: Use dol.KeyTemplate to implement parsing and generation of github URLs?</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_github_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a GitHub URL and returns a dictionary of its components.</span>
+
+<span class="sd">    The returned dict includes a &quot;base&quot; field that indicates the base URL.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url (str): The GitHub URL to parse.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing the parsed components.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the URL cannot be parsed.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;type&#39;: &#39;repository&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/tree/master&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;type&#39;: &#39;branch&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;type&#39;: &#39;file&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://raw.githubusercontent.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;type&#39;: &#39;raw_file&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/issues/1&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;issue_number&#39;: &#39;1&#39;, &#39;type&#39;: &#39;issue&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/pull/1&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;pr_number&#39;: &#39;1&#39;, &#39;type&#39;: &#39;pull_request&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/releases&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;https://github.com/&#39;, &#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;type&#39;: &#39;releases&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;git@github.com:username/repo.git&#39;)</span>
+<span class="sd">        {&#39;base&#39;: &#39;git@github.com:&#39;, &#39;username&#39;: &#39;username&#39;, &#39;repository&#39;: &#39;repo&#39;, &#39;type&#39;: &#39;clone_url&#39;}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Determine the base</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">github_url_patterns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;pattern&#39;</span><span class="p">],</span> <span class="n">url</span><span class="p">):</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">patterns</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;url_patterns&#39;</span><span class="p">]</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;URL does not match any known GitHub URL patterns.&#39;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;base&#39;</span><span class="p">:</span> <span class="n">base</span><span class="p">}</span>
+
+    <span class="c1"># Remove the base from the URL</span>
+    <span class="n">rest</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">github_url_patterns</span><span class="p">[</span><span class="n">base</span><span class="p">][</span><span class="s1">&#39;pattern&#39;</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># Attempt to match the rest of the URL with the patterns</span>
+    <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">url_type</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">rest</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">groupdict</span><span class="p">())</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url_type</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid GitHub URL&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lkj</span><span class="w"> </span><span class="kn">import</span> <span class="n">enable_sourcing_from_file</span>
+
+
+<span class="n">DFLT_RELATIVE_URL_PATTERN</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;(!?\[.*?\]\()&#39;</span>  <span class="c1"># Matches the opening part of markdown link or image</span>
+    <span class="sa">r</span><span class="s1">&#39;((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)&#39;</span>  <span class="c1"># Matches relative URLs in markdown</span>
+    <span class="sa">r</span><span class="s1">&#39;(\))&#39;</span>  <span class="c1"># Matches the closing parenthesis</span>
+    <span class="sa">r</span><span class="s1">&#39;|(&lt;img\s+[^&gt;]*src=&quot;)&#39;</span>  <span class="c1"># Matches the opening part of HTML img tag</span>
+    <span class="sa">r</span><span class="s1">&#39;((?!http[s]?://|ftp://|mailto:|#|/)[^&quot;]*)&#39;</span>  <span class="c1"># Matches relative URLs in HTML img tag</span>
+    <span class="sa">r</span><span class="s1">&#39;(&quot;)&#39;</span>  <span class="c1"># Matches the closing quote of the src attribute</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="replace_relative_urls">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.replace_relative_urls">[docs]</a>
+<span class="nd">@enable_sourcing_from_file</span><span class="p">(</span><span class="n">write_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_relative_urls</span><span class="p">(</span>
+    <span class="n">markdown_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">root_url</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">relative_url_pattern</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_RELATIVE_URL_PATTERN</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace relative URLs in a markdown string with absolute URLs based on the root_url.</span>
+
+<span class="sd">    This is useful, for example, to solve problems like when pypi renders markdown and</span>
+<span class="sd">    images are not shown because they are relative URLs.</span>
+<span class="sd">    See [issue]()</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        markdown_str (str): The markdown content containing URLs.</span>
+<span class="sd">        root_url (str): The base URL to resolve relative URLs against.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The markdown content with relative URLs replaced by absolute URLs.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; markdown_str = &#39;&#39;&#39;</span>
+<span class="sd">        ... [With dot](./page)</span>
+<span class="sd">        ... ![With double dot](../image.png)</span>
+<span class="sd">        ... ![](relative/path/to/image.png)</span>
+<span class="sd">        ... [Absolute Link](http://example.com)</span>
+<span class="sd">        ... &lt;img src=&quot;path/to/image&quot; width=&quot;320&quot;&gt;</span>
+<span class="sd">        ... &#39;&#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; root_url = &#39;http://mysite.com/docs&#39;</span>
+<span class="sd">        &gt;&gt;&gt; print(replace_relative_urls(markdown_str, root_url))</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        [With dot](http://mysite.com/docs/page)</span>
+<span class="sd">        ![With double dot](http://mysite.com/image.png)</span>
+<span class="sd">        ![](http://mysite.com/docs/relative/path/to/image.png)</span>
+<span class="sd">        [Absolute Link](http://example.com)</span>
+<span class="sd">        &lt;img src=&quot;http://mysite.com/docs/path/to/image&quot; width=&quot;320&quot;&gt;</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define a pattern to match markdown links and images with relative URLs</span>
+    <span class="n">relative_url_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">relative_url_pattern</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">root_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="n">root_url</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">replacement</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="n">absolute_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">root_url</span><span class="p">,</span> <span class="n">relative_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">absolute_url</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="n">updated_markdown</span> <span class="o">=</span> <span class="n">relative_url_pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">markdown_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">updated_markdown</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------- #</span>
+<span class="c1"># Ensure functions</span>
+
+<span class="c1"># TODO: Add validation to all the &quot;ensure&quot; functions:</span>
+<span class="c1"># TODO: Could make it more robust by defining github url regexes</span>
+<span class="c1">#  (or perhaps github package has some utils for this already?)</span>
+
+<span class="c1"># standard_lib_dir = os.path.dirname(os.__file__)</span>
+<span class="n">path_sep</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+
+
+<div class="viewcode-block" id="ensure_folder_to_clone_into">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_folder_to_clone_into">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_folder_to_clone_into</span><span class="p">(</span><span class="n">folder_to_clone_into</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a folder to clone into. If not provided, create a temporary folder.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">folder_to_clone_into</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">folder_to_clone_into</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">folder_to_clone_into</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_slash_suffix</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">path_sep</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">path_sep</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_no_slash_suffix</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">path_sep</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_repo_func</span><span class="p">(</span><span class="n">prop_spec</span><span class="p">:</span> <span class="n">RepoPropSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RepoFunc</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure callable (convert strings to attribute getters)&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">attrgetter</span><span class="p">(</span><span class="n">prop_spec</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prop_spec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prop_spec</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RepoFunc</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a dict of repo info.</span>
+
+<span class="sd">    &gt;&gt;&gt; d = _ensure_repo_info_dict_with_func_values(&#39;name html_url&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; all(callable(x) for x in d.values())</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo_info</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">prop_names</span> <span class="o">=</span> <span class="n">repo_info</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">repo_info</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prop_names</span><span class="p">}</span>
+    <span class="n">repo_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">repo_info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">_ensure_repo_func</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+
+<div class="viewcode-block" id="ensure_url_suffix">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_url_suffix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_url_suffix</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Repository</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a url suffix, that is, get rid of the (...)github.com prefix.</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_url_suffix(&#39;https://www.github.com/thorwhalen/hubcap/README.md&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap/README.md&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ensure_url_suffix(&#39;www.github.com/thorwhalen/hubcap/README.md&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap/README.md&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ensure_url_suffix(&#39;thorwhalen/hubcap/README.md&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap/README.md&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">Repository</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">full_name</span>
+    <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;github.com/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_full_name">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_full_name">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure we have a full name (user/repo string)</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_full_name(&#39;https://www.github.com/thorwhalen/hubcap&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ensure_full_name(&#39;github.com/thorwhalen/hubcap/&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ensure_full_name(&#39;thorwhalen/hubcap&#39;)</span>
+<span class="sd">    &#39;thorwhalen/hubcap&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">ensure_url_suffix</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">slash_seperated</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">slash_seperated</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">suffix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t (safely) parse </span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2"> as a repo full name&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_github_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_github_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_github_url</span><span class="p">(</span><span class="n">user_repo_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a string to a github url</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_github_url(&#39;https://www.github.com/thorwhalen/hubcap&#39;)</span>
+<span class="sd">    &#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="sd">    &gt;&gt;&gt; ensure_github_url(&#39;https://github.com/github.com/thorwhalen/hubcap/&#39;)</span>
+<span class="sd">    &#39;https://github.com/thorwhalen/hubcap&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_repo_str</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">user_repo_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">user_repo_str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ensure_repo_obj">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_repo_obj">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Repository</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a Repository object.</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_repo_obj(&#39;thorwhalen/hubcap&#39;)</span>
+<span class="sd">    Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; repo = ensure_repo_obj(&#39;https://github.com/thorwhalen/hubcap&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; repo</span>
+<span class="sd">    Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+
+<span class="sd">    And if we pass in a ``Repository`` object, we just get it back:</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_repo_obj(repo)</span>
+<span class="sd">    Repository(full_name=&quot;thorwhalen/hubcap&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">Repository</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">repo</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">cached_github_object</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># GIT FUNCTIONS</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+
+<span class="n">DFLT_GIT_COMMAND</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;status&#39;</span>
+
+<span class="n">DFLT_PURE_COMMAND_OPTIONS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;clone&#39;</span><span class="p">,</span> <span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="s1">&#39;remote&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Note: Stems, but diverged from the git function of i2mint/wads project</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_git_command</span><span class="p">(</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_GIT_COMMAND</span><span class="p">,</span> <span class="n">work_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">git_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;git &#39;</span><span class="p">):</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;You don&#39;t need to start your command with &#39;git &#39;. I know it&#39;s a git command. Removing that prefix&quot;</span>
+        <span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="n">command</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;git &#39;</span><span class="p">)</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="n">work_tree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">work_tree</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">work_tree</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">git_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">git_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">work_tree</span><span class="p">,</span> <span class="s1">&#39;.git&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">git_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">git_dir</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Didn&#39;t find the git_dir: </span><span class="si">{</span><span class="n">git_dir</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">git_dir</span> <span class="o">=</span> <span class="n">ensure_no_slash_suffix</span><span class="p">(</span><span class="n">git_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">git_dir</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.git&#39;</span><span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;git_dir doesn&#39;t end with `.git`: </span><span class="si">{</span><span class="n">git_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Commands that should not include --work-tree or --git-dir</span>
+    <span class="n">full_command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;git&#39;</span>
+    <span class="k">if</span> <span class="n">work_tree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">full_command</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; --work-tree=&quot;</span><span class="si">{</span><span class="n">work_tree</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+    <span class="k">if</span> <span class="n">git_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">full_command</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; --git-dir=&quot;</span><span class="si">{</span><span class="n">git_dir</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+
+    <span class="n">full_command</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">return</span> <span class="n">full_command</span>
+
+
+<div class="viewcode-block" id="git">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.git">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">git</span><span class="p">(</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DFLT_GIT_COMMAND</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">work_tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">git_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">suppress_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Launch git commands.</span>
+
+<span class="sd">    :param command: git command (e.g. &#39;status&#39;, &#39;branch&#39;, &#39;commit -m &quot;blah&quot;&#39;, &#39;push&#39;, etc.)</span>
+<span class="sd">    :param work_tree: The work_tree directory (i.e. where the project is)</span>
+<span class="sd">    :param git_dir: The .git directory (usually, and by default, will be taken to be &quot;{work_tree}/.git/&quot;</span>
+<span class="sd">    :param suppress_errors: If True, suppress errors and return an empty string or None.</span>
+<span class="sd">    :return: What ever the command line returns (decoded to string), or an empty string/None if errors are suppressed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ add myFile</span>
+<span class="sd">    git --git-dir=/path/to/my/directory/.git/ --work-tree=/path/to/my/directory/ commit -m &#39;something&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">command_str</span> <span class="o">=</span> <span class="n">_build_git_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">work_tree</span><span class="p">,</span> <span class="n">git_dir</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command_str</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">suppress_errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">e</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">),</span> <span class="n">ensure_folder_to_clone_into</span><span class="p">(</span><span class="n">clone_to_folder</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">git_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">)</span>
+    <span class="n">git</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;clone </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clone_to_folder</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">git_wiki_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">git</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;clone </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s1">.wiki.git </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">suppress_errors</span><span class="o">=</span><span class="n">suppress_errors</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">128</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;It&#39;s possible that the repository doesn&#39;t have a wiki. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+
+    <span class="k">return</span> <span class="n">clone_to_folder</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># DISCUSSIONS</span>
+<span class="c1"># At the time of writing this, python&#39;s github API doesn&#39;t provide discussions info</span>
+<span class="c1"># so we&#39;re using the graphQL github API here, directly, using requests</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">path_get</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">simple_config_getter</span>
+
+<span class="n">APP_NAME</span> <span class="o">=</span> <span class="s1">&#39;hubcap&#39;</span>
+<span class="n">REPO_COLLECTION_CONFIGS</span> <span class="o">=</span> <span class="s1">&#39;REPO_COLLECTION_CONFIGS&#39;</span>
+<span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span> <span class="o">=</span> <span class="s1">&#39;repo_collections_key_props.json&#39;</span>
+
+<span class="n">get_config</span> <span class="o">=</span> <span class="n">simple_config_getter</span><span class="p">(</span><span class="n">APP_NAME</span><span class="p">)</span>
+<span class="n">configs</span> <span class="o">=</span> <span class="n">get_config</span><span class="o">.</span><span class="n">configs</span>
+<span class="n">data_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="s1">&#39;hubcap.data&#39;</span><span class="p">)</span>
+<span class="n">repo_collections_configs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+    <span class="n">data_files</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;dflt_repo_collections_key_props.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
+    <span class="n">configs</span><span class="p">[</span><span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">user_key_props</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">configs</span><span class="p">[</span><span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span><span class="p">])</span>
+    <span class="n">repo_collections_configs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">user_key_props</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error loading user repo_collections_key_props.json: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">defaulted_itemgetter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_raise_if_error</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raises an error if the data has errors&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">errors</span> <span class="o">:=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="n">DFLT_DISCUSSION_FIELDS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;number&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;body&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;author&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;createdAt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;updatedAt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;comments&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># TODO: Pack the graphQL query logic further using template-enabled function</span>
+<div class="viewcode-block" id="Discussions">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.Discussions">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Discussions</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+    <span class="n">get_value</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">path_get</span><span class="p">,</span> <span class="n">get_value</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">defaulted_itemgetter</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{}))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">discussion_fields</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_DISCUSSION_FIELDS</span><span class="p">,</span>
+        <span class="n">_max_discussions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">_max_comments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">_max_replies</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repo</span> <span class="o">=</span> <span class="n">repo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">github_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/vnd.github.squirrel-girl-preview&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://api.github.com/graphql&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discussion_fields</span> <span class="o">=</span> <span class="n">discussion_fields</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_discussions</span> <span class="o">=</span> <span class="n">_max_discussions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_comments</span> <span class="o">=</span> <span class="n">_max_comments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_replies</span> <span class="o">=</span> <span class="n">_max_replies</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The discussions metadata of the repository.&quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        query </span><span class="se">{{</span>
+<span class="s1">        repository(owner: &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="si">}</span><span class="s1">&quot;, name: &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_name</span><span class="si">}</span><span class="s1">&quot;) </span><span class="se">{{</span>
+<span class="s1">            discussions(first: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_discussions</span><span class="si">}</span><span class="s1">) </span><span class="se">{{</span>
+<span class="s1">            nodes </span><span class="se">{{</span>
+<span class="s1">                number</span>
+<span class="s1">            </span><span class="se">}}</span>
+<span class="s1">            totalCount</span>
+<span class="s1">            </span><span class="se">}}</span>
+<span class="s1">        </span><span class="se">}}</span>
+<span class="s1">        </span><span class="se">}}</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_raise_if_error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;data.repository.discussions&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_discussion_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The discussion numbers (keys) of the repository.&quot;&quot;&quot;</span>
+        <span class="n">discussions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discussions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodes&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">discussions</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over the discussion numbers (keys of the mapping).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_discussion_numbers</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of discussions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discussions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalCount&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if a discussion number (key) is in the mapping.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discussion_numbers</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the discussion data for a given discussion number (key).&quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_query</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_raise_if_error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_discussion_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the graphQL query for a discussion.&quot;&quot;&quot;</span>
+        <span class="n">fields_query</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">discussion_fields</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;author&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussion_fields</span><span class="p">:</span>
+            <span class="n">fields_query</span> <span class="o">=</span> <span class="n">fields_query</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;author { login }&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;comments&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussion_fields</span><span class="p">:</span>
+            <span class="n">fields_query</span> <span class="o">=</span> <span class="n">fields_query</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="s1">&#39;comments&#39;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            comments(first: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_comments</span><span class="si">}</span><span class="s1">) </span><span class="se">{{</span>
+<span class="s1">                edges </span><span class="se">{{</span>
+<span class="s1">                    node </span><span class="se">{{</span>
+<span class="s1">                        body</span>
+<span class="s1">                        author </span><span class="se">{{</span><span class="s1"> login </span><span class="se">}}</span>
+<span class="s1">                        replies(first: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_replies</span><span class="si">}</span><span class="s1">) </span><span class="se">{{</span>
+<span class="s1">                            edges </span><span class="se">{{</span>
+<span class="s1">                                node </span><span class="se">{{</span>
+<span class="s1">                                    body</span>
+<span class="s1">                                    author </span><span class="se">{{</span><span class="s1"> login </span><span class="se">}}</span>
+<span class="s1">                                </span><span class="se">}}</span>
+<span class="s1">                            </span><span class="se">}}</span>
+<span class="s1">                        </span><span class="se">}}</span>
+<span class="s1">                    </span><span class="se">}}</span>
+<span class="s1">                </span><span class="se">}}</span>
+<span class="s1">            </span><span class="se">}}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        query </span><span class="se">{{</span>
+<span class="s1">          repository(owner: &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="si">}</span><span class="s1">&quot;, name: &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_name</span><span class="si">}</span><span class="s1">&quot;) </span><span class="se">{{</span>
+<span class="s1">            discussion(number: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">) </span><span class="se">{{</span>
+<span class="s1">              </span><span class="si">{</span><span class="n">fields_query</span><span class="si">}</span>
+<span class="s1">            </span><span class="se">}}</span>
+<span class="s1">          </span><span class="se">}}</span>
+<span class="s1">        </span><span class="se">}}</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_discussion_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processes the discussion data.&quot;&quot;&quot;</span>
+        <span class="n">discussion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;data.repository.discussion&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+        <span class="n">comments</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">comment</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">comment</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="s1">&#39;login&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;replies&#39;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">reply</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="s1">&#39;body&#39;</span><span class="p">],</span>
+                        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">reply</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="s1">&#39;author&#39;</span><span class="p">][</span><span class="s1">&#39;login&#39;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                    <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">comment</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="s1">&#39;replies&#39;</span><span class="p">][</span><span class="s1">&#39;edges&#39;</span><span class="p">]</span>
+                <span class="p">],</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">discussion</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edges&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">]</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">discussion</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussion_fields</span><span class="p">}</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comments</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="c1"># TODO: Perculate more control to the arguments</span>
+<div class="viewcode-block" id="create_markdown_from_jdict">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.create_markdown_from_jdict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_markdown_from_jdict</span><span class="p">(</span><span class="n">jdict</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a markdown representation of a discussion (metadata json-dict).</span>
+
+<span class="sd">    Headers are used to separate the different sections.</span>
+
+<span class="sd">    This is meant to be applied to json exports of github discussions or issues.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">}</span> <span class="o">&lt;=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">markdown</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;# </span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Process comments</span>
+        <span class="k">if</span> <span class="n">jdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;comments&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">]:</span>
+                <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;## Comment</span><span class="se">\n\n</span><span class="si">{</span><span class="n">comment</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+                <span class="c1"># Process replies to comments</span>
+                <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;replies&#39;</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">comment</span><span class="p">[</span><span class="s1">&#39;replies&#39;</span><span class="p">]:</span>
+                        <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;### Reply</span><span class="se">\n\n</span><span class="si">{</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">markdown</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">jdict</span><span class="p">,</span> <span class="n">Iterable</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">jdict</span> <span class="o">=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Parse and generate github URLS</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeyTemplate</span>
+
+<span class="c1"># Import KeyTemplate from your module</span>
+<span class="c1"># from your_module import KeyTemplate</span>
+
+<span class="c1"># For this example, we&#39;ll assume KeyTemplate is defined as per your module</span>
+
+<span class="c1"># Define mk_key_template to adjust defaults as needed</span>
+<span class="n">mk_key_template</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">KeyTemplate</span><span class="p">,</span> <span class="n">dflt_pattern</span><span class="o">=</span><span class="s1">&#39;[^/]+&#39;</span><span class="p">,</span> <span class="n">normalize_paths</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_key_templates</span><span class="p">(</span><span class="n">github_url_templates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create KeyTemplate instances for each URL type of github_url_templates&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">url_template</span> <span class="ow">in</span> <span class="n">github_url_templates</span><span class="p">:</span>
+        <span class="c1"># Original template without modifying the slashes</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="n">url_template</span><span class="p">[</span><span class="s1">&#39;template&#39;</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="p">(</span>
+            <span class="n">url_template</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="n">mk_key_template</span><span class="p">(</span>
+                <span class="n">template</span><span class="p">,</span>
+                <span class="n">field_patterns</span><span class="o">=</span><span class="n">url_template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;field_patterns&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+                <span class="n">from_str_funcs</span><span class="o">=</span><span class="n">url_template</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;from_str_funcs&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+
+<span class="c1"># TODO: Order counts in matching, so should be tested and re-ordered automatically before making key_templates</span>
+<span class="n">_github_url_templates</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;fully_qualified_raw&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://raw.githubusercontent.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/refs/heads/</span><span class="si">{branch}</span><span class="s1">/</span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;field_patterns&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;.+&#39;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;file&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/blob/</span><span class="si">{branch}</span><span class="s1">/</span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;field_patterns&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;.+&#39;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;raw_file&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://raw.githubusercontent.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/</span><span class="si">{branch}</span><span class="s1">/</span><span class="si">{path}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;field_patterns&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;.+&#39;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;branch&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/tree/</span><span class="si">{branch}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;issue&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/issues/</span><span class="si">{issue_number}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;pull_request&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/pull/</span><span class="si">{pr_number}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;releases&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">/releases&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;repository&#39;</span><span class="p">,</span> <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;https://github.com/</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">&#39;</span><span class="p">,},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;clone_url&#39;</span><span class="p">,</span> <span class="s1">&#39;template&#39;</span><span class="p">:</span> <span class="s1">&#39;git@github.com:</span><span class="si">{username}</span><span class="s1">/</span><span class="si">{repository}</span><span class="s1">.git&#39;</span><span class="p">,},</span>
+<span class="p">]</span>
+
+<span class="c1"># extract all {template_names} from the templates of _github_url_templates_names to</span>
+<span class="c1"># make a list of valid components fields</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lkj</span><span class="w"> </span><span class="kn">import</span> <span class="n">fields_of_string_formats</span>
+
+<span class="n">url_template_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+    <span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">fields_of_string_formats</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">_github_url_templates</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">UrlTemplateField</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="n">url_template_fields</span><span class="p">]</span>
+<span class="n">UrlComponents</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">UrlTemplateField</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_url_components</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">d</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">url_template_fields</span><span class="p">)</span>
+
+
+<span class="n">key_templates</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_key_templates</span><span class="p">(</span><span class="n">_github_url_templates</span><span class="p">))</span>
+
+<span class="n">_github_url_templates_names</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_github_url_templates</span><span class="p">])</span>
+
+<span class="c1"># TODO: Get GithubUrlType from _github_url_templates_names dynamically</span>
+<span class="n">GithubUrlType</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="n">_github_url_templates_names</span><span class="p">]</span>
+
+<span class="n">DFLT_GITHUB_URL_TYPE</span> <span class="o">=</span> <span class="s1">&#39;raw_file&#39;</span>
+
+
+<div class="viewcode-block" id="parse_github_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.parse_github_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_github_url</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">include_url_type</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a GitHub URL and returns a dictionary of its components.</span>
+
+<span class="sd">    The returned dict includes a &quot;url_type&quot; field that indicates the type of the URL.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url (str): The GitHub URL to parse.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing the parsed components.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the URL cannot be parsed.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;url_type&#39;: &#39;repository&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/tree/master&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;url_type&#39;: &#39;branch&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;url_type&#39;: &#39;file&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;branch&#39;: &#39;master&#39;, &#39;path&#39;: &#39;README.md&#39;, &#39;url_type&#39;: &#39;raw_file&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/issues/1&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;issue_number&#39;: &#39;1&#39;, &#39;url_type&#39;: &#39;issue&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/pull/1&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;pr_number&#39;: &#39;1&#39;, &#39;url_type&#39;: &#39;pull_request&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;https://github.com/torvalds/linux/releases&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;torvalds&#39;, &#39;repository&#39;: &#39;linux&#39;, &#39;url_type&#39;: &#39;releases&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_github_url(&#39;git@github.com:username/repo.git&#39;)</span>
+<span class="sd">        {&#39;username&#39;: &#39;username&#39;, &#39;repository&#39;: &#39;repo&#39;, &#39;url_type&#39;: &#39;clone_url&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">key_templates</span><span class="p">:</span>
+        <span class="n">key_template</span> <span class="o">=</span> <span class="n">key_templates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">key_template</span><span class="o">.</span><span class="n">str_to_dict</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">include_url_type</span><span class="p">:</span>
+                <span class="n">components</span><span class="p">[</span><span class="s1">&#39;url_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">return</span> <span class="n">components</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">continue</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid GitHub URL&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="generate_github_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.generate_github_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_github_url</span><span class="p">(</span>
+    <span class="n">components</span><span class="p">:</span> <span class="n">UrlComponents</span><span class="p">,</span>
+    <span class="n">url_type</span><span class="p">:</span> <span class="n">GithubUrlType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">prefer_explicit_url_type</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">ignore_extra_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a GitHub URL from the provided components dictionary.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        components (dict): A dictionary containing the URL components.</span>
+<span class="sd">        url_type (str): The type of the URL to generate.</span>
+<span class="sd">        prefer_explicit_url_type (bool): If True, the url_type argument takes</span>
+<span class="sd">            precedence over the &#39;url_type&#39; key in components.</span>
+<span class="sd">            This is needed because by default, `parse_github_url` includes the</span>
+<span class="sd">            &#39;url_type&#39; key, so if you want to easily generate a URL from its</span>
+<span class="sd">            components, you need an easy way to tell the function to ignore that</span>
+<span class="sd">            particular key, overriding it with the `url_type` argument.</span>
+<span class="sd">        ignore_extra_keys (bool): If True, extra keys in the components dictionary</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The generated GitHub URL.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the components are insufficient to generate a URL.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;repository&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;branch&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ...     &#39;branch&#39;: &#39;master&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/tree/master&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;file&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ...     &#39;branch&#39;: &#39;master&#39;,</span>
+<span class="sd">        ...     &#39;path&#39;: &#39;README.md&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;raw_file&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ...     &#39;branch&#39;: &#39;master&#39;,</span>
+<span class="sd">        ...     &#39;path&#39;: &#39;README.md&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;issue&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ...     &#39;issue_number&#39;: &#39;1&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/issues/1&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;pull_request&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ...     &#39;pr_number&#39;: &#39;1&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/pull/1&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;releases&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;torvalds&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;linux&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/releases&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; components = {</span>
+<span class="sd">        ...     &#39;url_type&#39;: &#39;clone_url&#39;,</span>
+<span class="sd">        ...     &#39;username&#39;: &#39;username&#39;,</span>
+<span class="sd">        ...     &#39;repository&#39;: &#39;repo&#39;,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; generate_github_url(components)</span>
+<span class="sd">        &#39;git@github.com:username/repo.git&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">components_url_type</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url_type&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">components_url_type</span> <span class="ow">and</span> <span class="n">url_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefer_explicit_url_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;You must specify either url_type in components or as an argument, &#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;but not both: Here you had url_type=&#39;</span><span class="si">{</span><span class="n">url_type</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and url_type in components=&#39;</span><span class="si">{</span><span class="n">components_url_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+    <span class="n">url_type</span> <span class="o">=</span> <span class="n">url_type</span> <span class="ow">or</span> <span class="n">components_url_type</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">url_type</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;You must specify a url_type, or components must include &#39;url_type&#39; key.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">key_template</span> <span class="o">=</span> <span class="n">key_templates</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">key_template</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown URL type &#39;</span><span class="si">{</span><span class="n">url_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ignore_extra_keys</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Get only the fields needed for this template</span>
+            <span class="n">_components</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">components</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key_template</span><span class="o">.</span><span class="n">_fields</span><span class="p">}</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">missing_key</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Missing component &#39;</span><span class="si">{</span><span class="n">missing_key</span><span class="si">}</span><span class="s2">&#39; for URL type &#39;</span><span class="si">{</span><span class="n">url_type</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_components</span> <span class="o">=</span> <span class="n">components</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">key_template</span><span class="o">.</span><span class="n">dict_to_str</span><span class="p">(</span><span class="n">_components</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">url</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">missing_key</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Missing component &#39;</span><span class="si">{</span><span class="n">missing_key</span><span class="si">}</span><span class="s2">&#39; for URL type &#39;</span><span class="si">{</span><span class="n">url_type</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="transform_github_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.transform_github_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">transform_github_url</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_url_type</span><span class="p">:</span> <span class="n">GithubUrlType</span> <span class="o">=</span> <span class="n">DFLT_GITHUB_URL_TYPE</span><span class="p">,</span> <span class="o">**</span><span class="n">extras</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a GitHub URL to another type, updating components as needed.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url (str): The original GitHub URL.</span>
+<span class="sd">        target_url_type (str): The desired URL type.</span>
+<span class="sd">        **extras: Additional components to update in the URL.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The transformed GitHub URL.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the URL cannot be parsed or transformed.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt; transform_github_url(&#39;https://github.com/torvalds/linux&#39;, &#39;clone_url&#39;)</span>
+<span class="sd">        &#39;git@github.com:torvalds/linux.git&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; transform_github_url(&#39;https://github.com/torvalds/linux/blob/master/README.md&#39;, &#39;raw_file&#39;)</span>
+<span class="sd">        &#39;https://raw.githubusercontent.com/torvalds/linux/master/README.md&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; transform_github_url(&#39;https://github.com/torvalds/linux/issues/1&#39;, &#39;pull_request&#39;, pr_number=&#39;42&#39;)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/pull/42&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; transform_github_url(&#39;git@github.com:torvalds/linux.git&#39;, &#39;file&#39;, branch=&#39;master&#39;, path=&#39;README.md&#39;)</span>
+<span class="sd">        &#39;https://github.com/torvalds/linux/blob/master/README.md&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">components</span><span class="p">[</span><span class="s1">&#39;url_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_url_type</span>
+    <span class="n">components</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

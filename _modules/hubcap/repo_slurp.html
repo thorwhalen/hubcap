@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.repo_slurp &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.repo_slurp</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.repo_slurp</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Tools to slurp a repo&#39;s information &quot;&quot;&quot;</span>
+
+<span class="c1"># TODO: This module is a bit of a mess. It should be cleaned up and reorganized.</span>
+<span class="c1">#  It should also be tested.</span>
+<span class="c1">#  There&#39;s some light caching functionality for files and wiki</span>
+<span class="c1">#  (via explicitly giving a folder as the repo) but it is not consistent.</span>
+<span class="c1">#  Better use graze, or something like it, for cachine.</span>
+<span class="c1">#  What we&#39;d want is to be able to just speak the language of urls, and let the module</span>
+<span class="c1">#  take care of caching what it clones (or in the case of discussions, downloads)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ensure_github_url</span><span class="p">,</span>
+    <span class="n">git_clone</span><span class="p">,</span>
+    <span class="n">git_wiki_clone</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoReader</span><span class="p">,</span> <span class="n">ResourceNotFound</span><span class="p">,</span> <span class="n">NotSet</span>
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1"># markdown utils</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="n">KvToText</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="kv_to_python_aware_markdown">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.kv_to_python_aware_markdown">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kv_to_python_aware_markdown</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Puts .py content in a code block, and returns a markdown formatted string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">):</span>
+        <span class="c1"># if it&#39;s a python file, we&#39;ll put it in a code block</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s1">```</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;## </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\\</span><span class="s1">n</span><span class="se">\\</span><span class="s1">n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\\</span><span class="s1">n</span><span class="se">\\</span><span class="s1">n&#39;</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_text_segments_from_mapping</span><span class="p">(</span>
+    <span class="n">store</span><span class="p">,</span> <span class="n">kv_to_text</span><span class="p">:</span> <span class="n">KvToText</span> <span class="o">=</span> <span class="n">kv_to_python_aware_markdown</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates text segments from a given store (mapping) using a formatting function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        store (dict): A mapping with string keys and values.</span>
+<span class="sd">        kv_to_text (callable): A function that takes a key and value and returns a formatted string.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        str: Text for each kv item</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">store</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># None values are skipped (can use None as sentinel)</span>
+            <span class="k">yield</span> <span class="n">kv_to_text</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="text_from_mapping">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.text_from_mapping">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">text_from_mapping</span><span class="p">(</span>
+    <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">kv_to_text</span><span class="p">:</span> <span class="n">KvToText</span> <span class="o">=</span> <span class="n">kv_to_python_aware_markdown</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a string from a given mapping with string keys and values using a formatting function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mapping (dict): A mapping with string keys and values.</span>
+<span class="sd">        kv_to_text (callable): Function that takes a key and value and returns a string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A string aggregate of the values of the mapping.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; example_mapping = {</span>
+<span class="sd">    ...     &quot;apple.txt&quot;: &quot;Crumble&quot;,</span>
+<span class="sd">    ...     &quot;tit.md&quot;: &quot;For tat.&quot;,</span>
+<span class="sd">    ...     &quot;state.cfg&quot;: &quot;Of the art.&quot;</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; example_kv_to_text = lambda k, v: f&quot;## {k}\\n```\\n{v}\\n```&quot;</span>
+<span class="sd">    &gt;&gt;&gt; print(text_from_mapping(example_mapping, example_kv_to_text))</span>
+<span class="sd">    ## apple.txt</span>
+<span class="sd">    ```</span>
+<span class="sd">    Crumble</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## tit.md</span>
+<span class="sd">    ```</span>
+<span class="sd">    For tat.</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## state.cfg</span>
+<span class="sd">    ```</span>
+<span class="sd">    Of the art.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_text_segments_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">kv_to_text</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="add_offset_to_headers">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.add_offset_to_headers">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_offset_to_headers</span><span class="p">(</span><span class="n">markdown_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the same text but where the (markdown) headers have been offset by `offset`.</span>
+
+<span class="sd">    It works by adding `offset` number of &#39;#&#39; to the start of each header line.</span>
+
+<span class="sd">    If the offset causes a header level to become zero or negative, it is ignored (remains the same).</span>
+
+<span class="sd">    Comments (lines starting with &#39;#&#39;) in code blocks are not affected by the offset.</span>
+
+<span class="sd">    &gt;&gt;&gt; add_offset_to_headers(&quot;## Header 1\n\n### Header 2\n\n#### Header 3&quot;, 1)</span>
+<span class="sd">    &#39;### Header 1\n\n#### Header 2\n\n##### Header 3&#39;</span>
+<span class="sd">    &gt;&gt;&gt; add_offset_to_headers(&quot;## Header 1\n\n### Header 2\n\n#### Header 3&quot;, -1)</span>
+<span class="sd">    &#39;# Header 1\n\n## Header 2\n\n### Header 3&#39;</span>
+
+<span class="sd">    Note that comments in code blocks are not affected:</span>
+
+<span class="sd">    &gt;&gt;&gt; add_offset_to_headers(&quot;```\n# Not a header\n```&quot;, 1)</span>
+<span class="sd">    &#39;```\n# Not a header\n```&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; add_offset_to_headers(&quot;## Header 1\n\n```\n# Not a header\n```\n\n### Header 2&quot;, 1)</span>
+<span class="sd">    &#39;### Header 1\n\n```\n# Not a header\n```\n\n#### Header 2&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">offset_header_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
+            <span class="n">header_level</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+            <span class="n">new_level</span> <span class="o">=</span> <span class="n">header_level</span> <span class="o">+</span> <span class="n">offset</span>
+            <span class="k">if</span> <span class="n">new_level</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="n">new_level</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">header_level</span><span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="n">line</span>
+
+    <span class="n">in_code_block</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_result_lines</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">in_code_block</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">markdown_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;```&#39;</span><span class="p">):</span>
+                <span class="n">in_code_block</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_code_block</span>
+                <span class="k">yield</span> <span class="n">line</span>
+            <span class="k">elif</span> <span class="n">in_code_block</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">line</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">offset_header_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_result_lines</span><span class="p">())</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_callable_processor</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">if_true</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">if_false</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures that the given processor is a callable. If the processor is a boolean,</span>
+<span class="sd">    it returns a default callable based on the boolean value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        processor (bool or callable): The processor to ensure is callable.</span>
+<span class="sd">        if_true (callable): The callable to use if the processor is True.</span>
+<span class="sd">        if_false (callable): The callable to use if the processor is False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        callable: The ensured callable processor.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the processor is neither a boolean nor a callable.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; _ensure_callable_processor(True)(&quot;test&quot;)</span>
+<span class="sd">        &#39;test&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; _ensure_callable_processor(False)(&quot;test&quot;)</span>
+
+<span class="sd">        &gt;&gt;&gt; _ensure_callable_processor(lambda x: x.upper())(&quot;test&quot;)</span>
+<span class="sd">        &#39;TEST&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; _ensure_callable_processor(&quot;not callable&quot;)</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">            ...</span>
+<span class="sd">        ValueError: not callable is not a callable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">processor</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">if_true</span>
+    <span class="k">elif</span> <span class="n">processor</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">if_false</span>
+    <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">processor</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">processor</span><span class="si">}</span><span class="s1"> is not a callable&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_markdown_lines</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">process_code</span><span class="p">,</span> <span class="n">process_markdown</span><span class="p">,</span> <span class="n">process_output</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to yield markdown lines from a notebook.&quot;&quot;&quot;</span>
+    <span class="n">process_code</span> <span class="o">=</span> <span class="n">_ensure_callable_processor</span><span class="p">(</span><span class="n">process_code</span><span class="p">)</span>
+    <span class="n">process_markdown</span> <span class="o">=</span> <span class="n">_ensure_callable_processor</span><span class="p">(</span><span class="n">process_markdown</span><span class="p">)</span>
+    <span class="n">process_output</span> <span class="o">=</span> <span class="n">_ensure_callable_processor</span><span class="p">(</span><span class="n">process_output</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">notebook</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+            <span class="n">processed</span> <span class="o">=</span> <span class="n">process_markdown</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">processed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">processed</span>
+        <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s1">&#39;code&#39;</span><span class="p">:</span>
+            <span class="n">processed_code</span> <span class="o">=</span> <span class="n">process_code</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">processed_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_code</span><span class="si">}</span><span class="se">\n</span><span class="s1">```&#39;</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;stream&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;execute_result&#39;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">processed_output</span> <span class="o">=</span> <span class="n">process_output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">processed_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;```</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_output</span><span class="si">}</span><span class="se">\n</span><span class="s1">```&#39;</span>
+
+
+<span class="c1"># TODO: Move to markdown utils module or package</span>
+<span class="c1"># TODO: Write a few useful process_* functions to get useful markdown from code and output cells</span>
+<span class="c1">#   For example, not including traceback in error outputs, or only including the last line of</span>
+<span class="c1">#   output cells -- or not including scrap sections of code cells.</span>
+<div class="viewcode-block" id="notebook_to_markdown">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.notebook_to_markdown">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">notebook_to_markdown</span><span class="p">(</span>
+    <span class="n">notebook</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">process_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">process_markdown</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">process_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a Jupyter notebook into a markdown string with control over cell processing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        notebook: Path to (or bytes or str contents of) the Jupyter notebook.</span>
+<span class="sd">        process_code (bool or callable): Whether to include code cells or a callable to process them.</span>
+<span class="sd">                                         Default is True.</span>
+<span class="sd">        process_markdown (bool or callable): Whether to include markdown cells or a callable to process them.</span>
+<span class="sd">                                             Default is True.</span>
+<span class="sd">        process_output (bool or callable): Whether to include the output of code cells or a callable to process them.</span>
+<span class="sd">                                           Default is True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The notebook content as a markdown string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">nbformat</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+
+    <span class="c1"># Make a notebook object</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">notebook</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">as_version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">notebook</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="n">notebook</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupported type for notebook: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">as_version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">NotebookNode</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="nb">filter</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="n">_markdown_lines</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">process_code</span><span class="p">,</span> <span class="n">process_markdown</span><span class="p">,</span> <span class="n">process_output</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># -------------------------------------------------------------------------------------</span>
+<span class="c1"># github_repo_text_aggregate</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalledProcessError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextFiles</span><span class="p">,</span> <span class="n">wrap_kvs</span><span class="p">,</span> <span class="n">filt_iter</span><span class="p">,</span> <span class="n">Files</span>
+
+<span class="n">DirPathString</span> <span class="o">=</span> <span class="nb">str</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_local_git_repo</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s1">&#39;.git&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="ensure_repo_folder">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.ensure_repo_folder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_repo_folder</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clone_func</span><span class="o">=</span><span class="n">git_clone</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DirPathString</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DirPathString</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a local repo folder.</span>
+<span class="sd">    Either the input repo is already a local &quot;git&quot; folder (which we return as is),</span>
+<span class="sd">    or a temporary folder to clone the repo into is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">repo</span>
+    <span class="k">elif</span> <span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">local_folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">local_folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+            <span class="n">clone_func</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">local_folder</span>
+        <span class="k">except</span> <span class="n">CalledProcessError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ResourceNotFound</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Couldn&#39;t find a (or error cloning with </span><span class="si">{</span><span class="n">clone_func</span><span class="si">}</span><span class="s2">) a resource at </span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ResourceNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t find a local git repo at </span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_decode_to_text_or_skip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">log_error_function</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log_error_function</span><span class="p">:</span>
+            <span class="c1"># if log_error_function</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error decoding </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Note: None values will be skipped in text_from_mapping</span>
+
+
+<div class="viewcode-block" id="all_decodable_text_folder_to_mapping">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.all_decodable_text_folder_to_mapping">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">all_decodable_text_folder_to_mapping</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A folder_to_mapping function that takes&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">Files</span><span class="p">(</span><span class="n">folder</span><span class="p">),</span> <span class="n">obj_of_data</span><span class="o">=</span><span class="n">_decode_to_text_or_skip</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">key_filtered_text_files</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">key_pattern</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">folder</span><span class="p">),</span> <span class="n">filt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">key_pattern</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
+
+
+<span class="n">_pattern_for_python_and_markdown_files</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;.*\.(py|md)$&#39;</span>
+
+<span class="n">_filtered_py_and_md_files</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+    <span class="n">key_filtered_text_files</span><span class="p">,</span> <span class="n">key_pattern</span><span class="o">=</span><span class="n">_pattern_for_python_and_markdown_files</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_does_not_start_with_docsrc_or_setup</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">):</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;docsrc/&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;setup.&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># TODO: A lot more can be done to parametrize the construction of a discussion text</span>
+<span class="c1">#   if and when more format flexibility is needed (for example, to enable parsing</span>
+<span class="c1">#  (text-back-to-json) or a nicer text rendering of the discussion)</span>
+<span class="c1">#  For formatting, may want to detect headers in content and modify according to</span>
+<span class="c1">#  header_level.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">__discussion_json_to_text_segments</span><span class="p">(</span>
+    <span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">header_level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">offset_headers</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">offset_headers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">offset_headers</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">header_level</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">offset_headers</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">offset_headers</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;offset_headers must be an int or True, not </span><span class="si">{</span><span class="n">offset_headers</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="n">_offset_headers</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">add_offset_to_headers</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_offset_headers</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+
+    <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="k">for</span> <span class="n">comment_num</span><span class="p">,</span> <span class="n">comment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Comment </span><span class="si">{</span><span class="n">comment_num</span><span class="si">}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">comment</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+        <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">comment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;replies&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">yield</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Reply</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+            <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_discussion_json_to_text</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">header_level</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__discussion_json_to_text_segments</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">header_level</span><span class="p">))</span>
+
+
+<span class="c1"># TODO: A lot of this mapping (discussions, wikie, repo_files) stuff is remeniscent of</span>
+<span class="c1">#       dol.store_aggregate. Maybe we should integrate that here.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">discussions_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">discussion_json_to_text</span><span class="o">=</span><span class="n">_discussion_json_to_text</span><span class="p">):</span>
+    <span class="n">repo_url</span> <span class="o">=</span> <span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">discussions</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)[</span><span class="s1">&#39;discussions&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gen</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">discussions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;Discussion </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">discussion_json_to_text</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_gen</span><span class="p">())</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">wiki_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">local_repo_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NotSet</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">local_repo_folder</span> <span class="o">=</span> <span class="n">ensure_repo_folder</span><span class="p">(</span>
+            <span class="n">repo</span><span class="p">,</span> <span class="n">clone_func</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">git_wiki_clone</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="n">suppress_errors</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">local_repo_folder</span><span class="p">),</span> <span class="n">filt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*\.md$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">except</span> <span class="n">ResourceNotFound</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">NotSet</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">return</span> <span class="n">default</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">repo_files_mapping</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">kv_to_text</span><span class="p">:</span> <span class="n">KvToText</span> <span class="o">=</span> <span class="n">kv_to_python_aware_markdown</span><span class="p">,</span>
+    <span class="n">folder_to_mapping</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_filtered_py_and_md_files</span><span class="p">,</span>
+    <span class="n">extra_key_filter</span><span class="o">=</span><span class="n">_does_not_start_with_docsrc_or_setup</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">local_repo_folder</span> <span class="o">=</span> <span class="n">ensure_repo_folder</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="c1"># If the folder_to_mapping is a string, use the key_filtered_text_files function</span>
+    <span class="c1"># with the string as the key pattern</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">folder_to_mapping</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">key_filter_pattern</span> <span class="o">=</span> <span class="n">folder_to_mapping</span>
+        <span class="n">folder_to_mapping</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">key_filtered_text_files</span><span class="p">,</span> <span class="n">key_pattern</span><span class="o">=</span><span class="n">key_filter_pattern</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Create a mapping for the files in the target folder</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="n">folder_to_mapping</span><span class="p">(</span><span class="n">local_repo_folder</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">extra_key_filter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_key_filter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">extra_key_filter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">extra_key_filter</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">filt</span><span class="o">=</span><span class="n">extra_key_filter</span><span class="p">)</span>
+
+    <span class="n">mapping</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">postget</span><span class="o">=</span><span class="n">kv_to_text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mapping</span>
+
+
+<span class="n">CloneKinds</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;discussions&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="github_repo_mapping">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.github_repo_mapping">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_repo_mapping</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="n">CloneKinds</span> <span class="o">=</span> <span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">repo_files_mapping</span><span class="o">=</span><span class="n">repo_files_mapping</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clone a git repository and make a mapping of the files in the repository.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (str): The GitHub repository in the format &#39;owner/repo&#39; or github url.</span>
+<span class="sd">        clone_to_folder (str, optional): The target folder to clone the repository into. Defaults to a temporary folder.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Mapping: A mapping of the files in the repository.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; repo_files = github_repo_mapping(&#39;thorwhalen/hubcap&#39;)  # doctest: +SKIP</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># repo = ensure_github_url(repo)</span>
+
+    <span class="c1"># subprocess.check_call(clone_command, shell=True)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;discussions&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">discussions_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;wiki&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wiki_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;files&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">repo_files_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kind must be &#39;files&#39; or &#39;wiki&#39;, not </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="repo_text_aggregate">
+<a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.repo_text_aggregate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">repo_text_aggregate</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">,</span>
+    <span class="n">kinds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;discussions&#39;</span><span class="p">),</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">github_repo_mapping</span><span class="o">=</span><span class="n">github_repo_mapping</span><span class="p">,</span>
+    <span class="n">text_from_mapping</span><span class="o">=</span><span class="n">text_from_mapping</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clone a git repository and aggregate all file contents into a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (str): The GitHub repository in the format &#39;owner/repo&#39; or github url.</span>
+<span class="sd">        kinds (Union[CloneKinds, Iterable[CloneKinds]], optional):</span>
+<span class="sd">            The kinds of content to aggregate. Defaults to (&#39;files&#39;, &#39;wiki&#39;, &#39;discussions&#39;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A string with all file contents.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; aggregate = repo_text_aggregate(&#39;thorwhalen/hubcap&#39;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; print(aggregate[:100])  # doctest: +SKIP</span>
+<span class="sd">    ## README.md\n\n# hubcap</span>
+<span class="sd">    A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">kinds</span><span class="p">:</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">text_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

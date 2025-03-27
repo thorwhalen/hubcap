@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.tools &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.tools</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A medley of tools for Hubcap.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubReader</span><span class="p">,</span> <span class="n">RepoReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_collection_names</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoSpec</span><span class="p">,</span> <span class="n">ensure_url_suffix</span><span class="p">,</span> <span class="n">_prep_git_clone_args</span>
+
+
+<span class="c1"># TODO: Design horribly unclean. Once RepoReader is finished, this should become</span>
+<span class="c1"># cleaner to write.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hub</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">ensure_url_suffix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">org</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="k">return</span> <span class="n">GithubReader</span><span class="p">(</span><span class="n">org</span><span class="p">)</span>
+    <span class="c1"># at this point we have at least org/repo/...</span>
+    <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="o">*</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">GithubReader</span><span class="p">(</span><span class="n">org</span><span class="p">)[</span><span class="n">repo</span><span class="p">]</span>
+
+    <span class="c1"># If not, use RepoReader as the base object  # TODO: Finish RepoReader</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">path_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_path</span><span class="p">)</span>
+    <span class="c1"># TODO: Temporarily commented out -- if not needed, remove</span>
+    <span class="c1"># if (repo := next(path_iter, None)) is not None:</span>
+    <span class="c1">#     s = s[repo]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">resource</span> <span class="o">:=</span> <span class="nb">next</span><span class="p">(</span><span class="n">path_iter</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">repo_collection_names</span> <span class="ow">or</span> <span class="n">resource</span> <span class="o">==</span> <span class="s1">&#39;discussions&#39;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">repo</span><span class="p">)[</span><span class="n">resource</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># From now we assume the intent is to get a specific branch...</span>
+            <span class="k">if</span> <span class="n">resource</span> <span class="o">==</span> <span class="s1">&#39;tree&#39;</span><span class="p">:</span>  <span class="c1"># this is to be consistent with browser url access</span>
+                <span class="c1"># then consider this to be a request for branches</span>
+                <span class="n">resource</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">path_iter</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># TODO: Change what s is suddenly: Terrible design</span>
+                <span class="c1"># The point here is that the following instance will then work for</span>
+                <span class="c1"># getting the branch</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="n">org</span><span class="p">)[</span><span class="n">repo</span><span class="p">]</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">resource</span><span class="p">]</span>
+
+    <span class="c1"># Process the rest of the path with the s mapping</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">path_iter</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">part</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<div class="viewcode-block" id="team_repositories_action">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.team_repositories_action">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">team_repositories_action</span><span class="p">(</span>
+    <span class="n">repositories</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">team</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;add_to_repo&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_from_repos&#39;</span><span class="p">],</span>
+    <span class="n">org</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">wait_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a list of repositories to a team with read permission</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a GitHub instance using an access token</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">()</span><span class="o">.</span><span class="n">_github</span>
+
+    <span class="c1"># Get the organization object by name</span>
+    <span class="n">org_</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_organization</span><span class="p">(</span><span class="n">org</span><span class="p">)</span>
+
+    <span class="c1"># Get the team object by name</span>
+    <span class="n">team_</span> <span class="o">=</span> <span class="n">org_</span><span class="o">.</span><span class="n">get_team_by_slug</span><span class="p">(</span><span class="n">team</span><span class="p">)</span>
+    <span class="n">action_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">team_</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repositories</span><span class="p">:</span>
+        <span class="c1"># Get the repository object by name</span>
+        <span class="n">repo_</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="c1"># Carry out the action</span>
+        <span class="n">action_</span><span class="p">(</span><span class="n">repo_</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_s</span><span class="p">)</span></div>
+
+
+
+<span class="n">add_repos_to_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;add_to_repo&#39;</span><span class="p">)</span>
+<span class="n">rm_repos_from_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;remove_from_repos&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Converting notebooks to Markdown and cleaning them up</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">replace_relative_urls</span><span class="p">,</span> <span class="n">generate_github_url</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">org</span><span class="p">,</span>
+        <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="n">repo</span><span class="p">,</span>
+        <span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="p">,</span>
+        <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">relpath</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="s1">&#39;fully_qualified_raw&#39;</span><span class="p">)</span>
+    <span class="c1"># return (</span>
+    <span class="c1">#     f&#39;https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}&#39;</span>
+    <span class="c1"># )</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_handle_repo_root_url</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="n">image_relative_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="c1"># url join repo_root_url and image_relative_dir</span>
+    <span class="k">if</span> <span class="n">image_relative_dir</span><span class="p">:</span>
+        <span class="n">repo_root_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_root_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">image_relative_dir</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_raw_url</span><span class="p">(</span><span class="o">**</span><span class="n">repo_root_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
+        <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="o">*</span><span class="n">relpath</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">repo_stub</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relpath</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">protocol</span><span class="p">,</span> <span class="n">simple_url</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;github.com&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+            <span class="s1">&#39;www.github.com&#39;</span>
+        <span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Your repo_root_url is: </span><span class="si">{</span><span class="n">repo_root_url</span><span class="si">}</span><span class="s1">. I do the work anyway, &#39;</span>
+                <span class="s1">&#39;but you may want to consider that usually the URL should be a raw &#39;</span>
+                <span class="s1">&#39;github URL like this: &#39;</span>
+                <span class="s1">&#39;https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. &#39;</span>
+                <span class="s1">&#39;Verify that the root URL you chose does work on the pypi readme page &#39;</span>
+                <span class="s1">&#39;if that is what you are targeting.&#39;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">repo_root_url</span>
+
+
+<div class="viewcode-block" id="notebook_to_markdown">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.notebook_to_markdown">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">notebook_to_markdown</span><span class="p">(</span>
+    <span class="n">notebook_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">repo_root_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">image_relative_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a Jupyter notebook to Markdown and optionally post-process the output.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        notebook_path (str): Path to the Jupyter notebook.</span>
+<span class="sd">        output_dir (str, optional): Directory where the Markdown file will be written.</span>
+<span class="sd">                                    If None, the Markdown is returned as a string.</span>
+<span class="sd">        repo_root_url (str, optional): Root URL for replacing relative paths in the Markdown.</span>
+<span class="sd">        image_relative_dir (str, optional): The (relative) directory where the images should be saved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The Markdown content, optionally post-processed.</span>
+
+<span class="sd">    Usage Examples</span>
+
+<span class="sd">    ### Convert a notebook to Markdown and return as a string</span>
+
+<span class="sd">    &gt;&gt;&gt; markdown_string = notebook_to_markdown(  # doctest: +SKIP</span>
+<span class="sd">        notebook_path=&quot;example_notebook.ipynb&quot;,</span>
+<span class="sd">        output_dir=None,  # Do not save to a file</span>
+<span class="sd">        repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;,</span>
+<span class="sd">        image_relative_dir=&quot;images&quot;</span>
+<span class="sd">    )</span>
+
+<span class="sd">    ### Post-process directly from a notebook file</span>
+
+<span class="sd">    &gt;&gt;&gt; notebook_to_markdown = post_process_markdown_generated_from_notebook(  # doctest: +SKIP</span>
+<span class="sd">        md_src=&quot;example_notebook.ipynb&quot;,</span>
+<span class="sd">        repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;</span>
+<span class="sd">    )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">nbconvert</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkdownExporter</span>
+
+    <span class="c1"># Ensure the notebook file exists</span>
+    <span class="n">notebook_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">notebook_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Notebook not found: </span><span class="si">{</span><span class="n">notebook_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Load and convert the notebook to Markdown</span>
+    <span class="n">markdown_exporter</span> <span class="o">=</span> <span class="n">MarkdownExporter</span><span class="p">()</span>
+    <span class="n">markdown_exporter</span><span class="o">.</span><span class="n">exclude_input_prompt</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">True</span>  <span class="c1"># Optional: exclude input prompts like In[1]:</span>
+    <span class="p">)</span>
+    <span class="n">markdown_content</span><span class="p">,</span> <span class="n">resources</span> <span class="o">=</span> <span class="n">markdown_exporter</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">repo_root_url</span><span class="p">:</span>
+        <span class="n">repo_root_url</span> <span class="o">=</span> <span class="n">_handle_repo_root_url</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="n">image_relative_dir</span><span class="p">)</span>
+        <span class="n">markdown_content</span> <span class="o">=</span> <span class="n">postprocess_markdown_from_notebook</span><span class="p">(</span>
+            <span class="n">markdown_content</span><span class="p">,</span> <span class="n">repo_root_url</span><span class="o">=</span><span class="n">repo_root_url</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Save resources (like images) to the output directory if specified</span>
+    <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+        <span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Save images to the directory specified in `resources`</span>
+        <span class="n">resource_dir</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">image_relative_dir</span>
+        <span class="n">resource_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="p">(</span><span class="n">resource_dir</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+        <span class="c1"># Write the Markdown file</span>
+        <span class="n">output_filename</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.md&#39;</span>
+        <span class="n">output_filename</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">markdown_content</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If no output directory is specified, images are not saved to disk.</span>
+        <span class="c1"># You can optionally return the resources dictionary for manual handling.</span>
+        <span class="k">return</span> <span class="n">markdown_content</span><span class="p">,</span> <span class="n">resources</span>
+
+    <span class="k">return</span> <span class="n">markdown_content</span></div>
+
+
+
+<div class="viewcode-block" id="postprocess_markdown_from_notebook">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.postprocess_markdown_from_notebook">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">postprocess_markdown_from_notebook</span><span class="p">(</span>
+    <span class="n">md_src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repo_root_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">md_trg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process Markdown content generated from a notebook.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        md_src (str): Markdown content, path to a Markdown file, or path to an ipynb file.</span>
+<span class="sd">        repo_root_url (str): Root URL for replacing relative paths.</span>
+<span class="sd">        md_trg (str, optional): Path to save the post-processed Markdown.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The post-processed Markdown content.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">md_src</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">md_src</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">md_src</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.ipynb&#39;</span><span class="p">:</span>
+            <span class="c1"># If the source is an ipynb file, convert it to Markdown</span>
+            <span class="n">md_src</span> <span class="o">=</span> <span class="n">notebook_to_markdown</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the source is a Markdown file, read its contents</span>
+            <span class="n">md_src</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+
+    <span class="c1"># Replace relative URLs with absolute raw URLs</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">replace_relative_urls</span><span class="p">(</span><span class="n">md_src</span><span class="p">,</span> <span class="n">root_url</span><span class="o">=</span><span class="n">repo_root_url</span><span class="p">)</span>
+
+    <span class="c1"># Remove unwanted artifacts</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;style scoped&gt;(.*?)&lt;/style&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;```python\s*```&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+
+    <span class="c1"># Save to the target file if specified</span>
+    <span class="k">if</span> <span class="n">md_trg</span><span class="p">:</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">md_trg</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">trg_str</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">trg_str</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

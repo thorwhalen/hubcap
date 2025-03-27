@@ -1,0 +1,4 @@
+hubcap.repo_slurp
+=================
+.. automodule:: hubcap.repo_slurp
+   :members:

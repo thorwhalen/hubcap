@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.repo_slurp &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hubcap.scrap" href="scrap.html" />
+    <link rel="prev" title="hubcap.examples.get_wikis" href="examples/get_wikis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.repo_slurp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.add_offset_to_headers"><code class="docutils literal notranslate"><span class="pre">add_offset_to_headers()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.all_decodable_text_folder_to_mapping"><code class="docutils literal notranslate"><span class="pre">all_decodable_text_folder_to_mapping()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.ensure_repo_folder"><code class="docutils literal notranslate"><span class="pre">ensure_repo_folder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.github_repo_mapping"><code class="docutils literal notranslate"><span class="pre">github_repo_mapping()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.kv_to_python_aware_markdown"><code class="docutils literal notranslate"><span class="pre">kv_to_python_aware_markdown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.notebook_to_markdown"><code class="docutils literal notranslate"><span class="pre">notebook_to_markdown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.repo_text_aggregate"><code class="docutils literal notranslate"><span class="pre">repo_text_aggregate()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.repo_slurp.text_from_mapping"><code class="docutils literal notranslate"><span class="pre">text_from_mapping()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.repo_slurp</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/repo_slurp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.repo_slurp">
+<span id="hubcap-repo-slurp"></span><h1>hubcap.repo_slurp<a class="headerlink" href="#module-hubcap.repo_slurp" title="Link to this heading"></a></h1>
+<p>Tools to slurp a repo’s information</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.add_offset_to_headers">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">add_offset_to_headers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markdown_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#add_offset_to_headers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.add_offset_to_headers" title="Link to this definition"></a></dt>
+<dd><p>Returns the same text but where the (markdown) headers have been offset by <cite>offset</cite>.</p>
+<p>It works by adding <cite>offset</cite> number of ‘#’ to the start of each header line.</p>
+<p>If the offset causes a header level to become zero or negative, it is ignored (remains the same).</p>
+<p>Comments (lines starting with ‘#’) in code blocks are not affected by the offset.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;### Header 1\n\n#### Header 2\n\n##### Header 3&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;# Header 1\n\n## Header 2\n\n### Header 3&#39;</span>
+</pre></div>
+</div>
+<p>Note that comments in code blocks are not affected:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;```\n# Not a header\n```&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n\n</span><span class="s2">### Header 2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;### Header 1\n\n```\n# Not a header\n```\n\n#### Header 2&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.all_decodable_text_folder_to_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">all_decodable_text_folder_to_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#all_decodable_text_folder_to_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.all_decodable_text_folder_to_mapping" title="Link to this definition"></a></dt>
+<dd><p>A folder_to_mapping function that takes</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.ensure_repo_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">ensure_repo_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clone_func=&lt;function</span> <span class="pre">git_clone&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_folder:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#ensure_repo_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.ensure_repo_folder" title="Link to this definition"></a></dt>
+<dd><p>Returns a local repo folder.
+Either the input repo is already a local “git” folder (which we return as is),
+or a temporary folder to clone the repo into is returned.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.github_repo_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">github_repo_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind:</span> <span class="pre">~typing.Literal['files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'discussions']</span> <span class="pre">=</span> <span class="pre">'files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_files_mapping=&lt;function</span> <span class="pre">repo_files_mapping&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#github_repo_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.github_repo_mapping" title="Link to this definition"></a></dt>
+<dd><p>Clone a git repository and make a mapping of the files in the repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>str</em>) – The GitHub repository in the format ‘owner/repo’ or github url.</p></li>
+<li><p><strong>clone_to_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – The target folder to clone the repository into. Defaults to a temporary folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A mapping of the files in the repository.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mapping</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repo_files</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>  
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.kv_to_python_aware_markdown">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">kv_to_python_aware_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#kv_to_python_aware_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.kv_to_python_aware_markdown" title="Link to this definition"></a></dt>
+<dd><p>Puts .py content in a code block, and returns a markdown formatted string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.notebook_to_markdown">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">notebook_to_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notebook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_markdown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#notebook_to_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.notebook_to_markdown" title="Link to this definition"></a></dt>
+<dd><p>Transforms a Jupyter notebook into a markdown string with control over cell processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>notebook</strong> – Path to (or bytes or str contents of) the Jupyter notebook.</p></li>
+<li><p><strong>process_code</strong> (<em>bool</em><em> or </em><em>callable</em>) – Whether to include code cells or a callable to process them.
+Default is True.</p></li>
+<li><p><strong>process_markdown</strong> (<em>bool</em><em> or </em><em>callable</em>) – Whether to include markdown cells or a callable to process them.
+Default is True.</p></li>
+<li><p><strong>process_output</strong> (<em>bool</em><em> or </em><em>callable</em>) – Whether to include the output of code cells or a callable to process them.
+Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The notebook content as a markdown string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.repo_text_aggregate">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">repo_text_aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinds:</span> <span class="pre">~typing.Literal['files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'discussions']</span> <span class="pre">|</span> <span class="pre">~typing.Iterable[~typing.Literal['files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'discussions']]</span> <span class="pre">=</span> <span class="pre">('files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'discussions')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">github_repo_mapping=&lt;function</span> <span class="pre">github_repo_mapping&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_from_mapping=&lt;function</span> <span class="pre">text_from_mapping&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#repo_text_aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.repo_text_aggregate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Clone a git repository and aggregate all file contents into a string.</p>
+<dl>
+<dt>Args:</dt><dd><p>repo (str): The GitHub repository in the format ‘owner/repo’ or github url.
+kinds (Union[CloneKinds, Iterable[CloneKinds]], optional):</p>
+<blockquote>
+<div><p>The kinds of content to aggregate. Defaults to (‘files’, ‘wiki’, ‘discussions’).</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>str: A string with all file contents.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">repo_text_aggregate</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aggregate</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>  
+<span class="go">## README.md</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt># hubcap</dt><dd><p>A [dol](<a class="reference external" href="https://github.com/i2mint/dol">https://github.com/i2mint/dol</a>) (i.e. dict-like) interface to github…</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.text_from_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">text_from_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mapping:</span> <span class="pre">~typing.Mapping,</span> <span class="pre">kv_to_text:</span> <span class="pre">~typing.Callable[[KT,</span> <span class="pre">VT],</span> <span class="pre">str]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">kv_to_python_aware_markdown&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/repo_slurp.html#text_from_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.text_from_mapping" title="Link to this definition"></a></dt>
+<dd><p>Creates a string from a given mapping with string keys and values using a formatting function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapping</strong> (<em>dict</em>) – A mapping with string keys and values.</p></li>
+<li><p><strong>kv_to_text</strong> (<em>callable</em>) – Function that takes a key and value and returns a string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string aggregate of the values of the mapping.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt; example_mapping = {
+…     “apple.txt”: “Crumble”,
+…     “tit.md”: “For tat.”,
+…     “state.cfg”: “Of the art.”
+… }
+&gt;&gt;&gt; example_kv_to_text = lambda k, v: f”## {k}n```n{v}n```”
+&gt;&gt;&gt; print(text_from_mapping(example_mapping, example_kv_to_text))
+## apple.txt
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">Crumble</span>
+<span class="pre">`</span></code>
+## tit.md
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">For</span> <span class="pre">tat.</span>
+<span class="pre">`</span></code>
+## state.cfg
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">Of</span> <span class="pre">the</span> <span class="pre">art.</span>
+<span class="pre">`</span></code></p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples/get_wikis.html" class="btn btn-neutral float-left" title="hubcap.examples.get_wikis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scrap.html" class="btn btn-neutral float-right" title="hubcap.scrap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.base &mdash; hubcap 0.1.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hubcap.constants" href="constants.html" />
+    <link rel="prev" title="hubcap" href="../hubcap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.BranchDir"><code class="docutils literal notranslate"><span class="pre">BranchDir</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.Branches"><code class="docutils literal notranslate"><span class="pre">Branches</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.GitHubDol"><code class="docutils literal notranslate"><span class="pre">GitHubDol</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.GitHubReader"><code class="docutils literal notranslate"><span class="pre">GitHubReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.GithubReader"><code class="docutils literal notranslate"><span class="pre">GithubReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.IssueComments"><code class="docutils literal notranslate"><span class="pre">IssueComments</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.IssueCommentsBase"><code class="docutils literal notranslate"><span class="pre">IssueCommentsBase</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.IssueContents"><code class="docutils literal notranslate"><span class="pre">IssueContents</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.Issues"><code class="docutils literal notranslate"><span class="pre">Issues</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.PaginatedListDol"><code class="docutils literal notranslate"><span class="pre">PaginatedListDol</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.RepoObjects"><code class="docutils literal notranslate"><span class="pre">RepoObjects</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.RepoReader"><code class="docutils literal notranslate"><span class="pre">RepoReader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.RepositoryNotFound"><code class="docutils literal notranslate"><span class="pre">RepositoryNotFound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.ResourceNotFound"><code class="docutils literal notranslate"><span class="pre">ResourceNotFound</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.base.Workflows"><code class="docutils literal notranslate"><span class="pre">Workflows</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.base</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/base.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.base">
+<span id="hubcap-base"></span><h1>hubcap.base<a class="headerlink" href="#module-hubcap.base" title="Link to this heading"></a></h1>
+<p>Base objects</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.BranchDir">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">BranchDir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_file_extractor=&lt;function</span> <span class="pre">decoded_contents&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#BranchDir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.BranchDir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.Branches">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">Branches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_file_extractor=&lt;function</span> <span class="pre">decoded_contents&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#Branches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.Branches" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.GitHubDol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">GitHubDol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">account_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_file_extractor=&lt;function</span> <span class="pre">decoded_contents&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_or_token=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jwt=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url='https://api.github.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent='PyGithub/Python'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_page=30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool_size=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#GitHubDol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.GitHubDol" title="Link to this definition"></a></dt>
+<dd><p>a Store that can access a GitHub account</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hubcap.base.GitHubReader">
+<span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">GitHubReader</span></span><a class="headerlink" href="#hubcap.base.GitHubReader" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#hubcap.base.GithubReader" title="hubcap.base.GithubReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GithubReader</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.GithubReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">GithubReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">account_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_file_extractor=&lt;function</span> <span class="pre">decoded_contents&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jwt=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_url='https://api.github.com'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout=15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_agent='PyGithub/Python'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_page=30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_repos_kwargs=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">login_or_token=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#GithubReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.GithubReader" title="Link to this definition"></a></dt>
+<dd><p>a Store that can access a GitHub account.</p>
+<p>You need to specify a token in auth, or in the environment variable
+HUBCAP_GITHUB_TOKEN or GITHUB_TOKEN.</p>
+<p>The iteration is defined to be the repositories of the account_name
+(could be organization name).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.IssueComments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">IssueComments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">issue_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#IssueComments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.IssueComments" title="Link to this definition"></a></dt>
+<dd><p>Mapping interface to repository issue comments’ body</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.IssueCommentsBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">IssueCommentsBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">issue_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#IssueCommentsBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.IssueCommentsBase" title="Link to this definition"></a></dt>
+<dd><p>Base Mapping interface to repository issue comments (object)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.IssueContents">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">IssueContents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">issue_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#IssueContents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.IssueContents" title="Link to this definition"></a></dt>
+<dd><p>Mapping interface to repository issue contents</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.Issues">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">Issues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs=&lt;function</span> <span class="pre">Repository.get_issues&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objs_to_items='number'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_of_obj=&lt;function</span> <span class="pre">identity&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs_kwargs=(('state'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'open')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#Issues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.Issues" title="Link to this definition"></a></dt>
+<dd><p>Mapping interface to repository issues.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – The repository to get issues from</p></li>
+<li><p><strong>get_objs</strong> – The function to get the issues</p></li>
+<li><p><strong>objs_to_items</strong> – A function to get the key-value pairs from the issue objects</p></li>
+<li><p><strong>data_of_obj</strong> – A function to get the data from the issue object.
+Default is attrgetter(‘body’). Use identity to get the whole issue object.</p></li>
+<li><p><strong>get_objs_kwargs</strong> – The keyword arguments to pass to the get_objs function</p></li>
+</ul>
+</dd>
+</dl>
+<p>The default of data_of_obj is <cite>IssueContents</cite>, which will give a mapping
+interface to the body and comments of the issue.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.PaginatedListDol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">PaginatedListDol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paginated_list:</span> <span class="pre">&lt;module</span> <span class="pre">'github.PaginatedList'</span> <span class="pre">from</span> <span class="pre">'/opt/hostedtoolcache/Python/3.10.16/x64/lib/python3.10/site-packages/github/PaginatedList.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#PaginatedListDol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.PaginatedListDol" title="Link to this definition"></a></dt>
+<dd><p>Gives a Sized &amp; Iterable &amp; Reversible view of a paginated_list.
+That is, iterating over a PaginatedListDol</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.RepoObjects">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">RepoObjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objs_to_items=&lt;class</span> <span class="pre">'enumerate'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_of_obj=&lt;function</span> <span class="pre">identity&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs_kwargs=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#RepoObjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.RepoObjects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.RepoReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">RepoReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Repository</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#RepoReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.RepoReader" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="hubcap.base.RepositoryNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">RepositoryNotFound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#RepositoryNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.RepositoryNotFound" title="Link to this definition"></a></dt>
+<dd><p>Raised when a repository is not found</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="hubcap.base.ResourceNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">ResourceNotFound</span></span><a class="reference internal" href="../../_modules/hubcap/base.html#ResourceNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.ResourceNotFound" title="Link to this definition"></a></dt>
+<dd><p>Raised when a resource is not found</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="hubcap.base.Workflows">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.base.</span></span><span class="sig-name descname"><span class="pre">Workflows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~github.Repository.Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs=&lt;function</span> <span class="pre">Repository.get_workflows&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objs_to_items='id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_of_obj=&lt;function</span> <span class="pre">identity&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_objs_kwargs=()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/base.html#Workflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.base.Workflows" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../hubcap.html" class="btn btn-neutral float-left" title="hubcap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="constants.html" class="btn btn-neutral float-right" title="hubcap.constants" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
