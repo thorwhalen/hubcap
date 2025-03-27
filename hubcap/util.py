@@ -32,14 +32,14 @@ RepoSpec = Union[str, Repository]
 def github_token(token=None) -> str:
     token = (
         token
-        or os.environ.get('HUBCAP_GITHUB_TOKEN')  # If token not provided, will
-        or os.environ.get('GITHUB_TOKEN')  # look under HUBCAP_GITHUB_TOKEN env var
+        or os.environ.get("HUBCAP_GITHUB_TOKEN")  # If token not provided, will
+        or os.environ.get("GITHUB_TOKEN")  # look under HUBCAP_GITHUB_TOKEN env var
         or get_config(  # look under GITHUB_TOKEN env var
-            'GITHUB_TOKEN'
+            "GITHUB_TOKEN"
         )  # ask get_config for it (triggering user prompt and file persistence of it)
     )
     if not token:
-        raise ValueError('GitHub token not provided')
+        raise ValueError("GitHub token not provided")
     return token
 
 
@@ -56,7 +56,7 @@ def github_repo_object(repo_stub: str, *, token=None) -> Repository:
         # Get the repository
         return g.get_repo(repo_stub)
     except Exception as e:
-        raise RuntimeError(f'Failed to fetch the repo: {repo_stub}. Error: {e}')
+        raise RuntimeError(f"Failed to fetch the repo: {repo_stub}. Error: {e}")
 
 
 # --------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ def github_repo_object(repo_stub: str, *, token=None) -> Repository:
 def github_file_contents(
     file_url: str,
     *,
-    egress: Callable = lambda file_obj: file_obj.decoded_content.decode('utf-8'),
+    egress: Callable = lambda file_obj: file_obj.decoded_content.decode("utf-8"),
 ) -> str:
     """
     Fetches the contents of a file from a GitHub repository.
@@ -91,27 +91,27 @@ def github_file_contents(
     name = hubcap
 
     """
-    necessary_parts = ['username', 'repository', 'branch', 'path']
+    necessary_parts = ["username", "repository", "branch", "path"]
     url_parts = parse_github_url(file_url)
     if not set(url_parts).issuperset(necessary_parts):
-        missing_parts = ', '.join(set(url_parts) - set(necessary_parts))
+        missing_parts = ", ".join(set(url_parts) - set(necessary_parts))
         raise ValueError(
-            'Your URL is missing the following parts: '
+            "Your URL is missing the following parts: "
             + missing_parts
-            + f'Your URL was: {file_url}'
+            + f"Your URL was: {file_url}"
         )
 
     org, repo, ref, path = map(
-        url_parts.get, ['username', 'repository', 'branch', 'path']
+        url_parts.get, ["username", "repository", "branch", "path"]
     )
-    repo_stub = f'{org}/{repo}'
+    repo_stub = f"{org}/{repo}"
 
     repo = github_repo_object(repo_stub)
 
     try:
         file_obj = repo.get_contents(path, ref=ref)
     except Exception as e:
-        raise RuntimeError(f'Failed to fetch the file from {file_url}: {e}')
+        raise RuntimeError(f"Failed to fetch the file from {file_url}: {e}")
 
     return egress(file_obj)
 
@@ -174,50 +174,50 @@ def cached_github_object():
 
 # Define or modify the base patterns with their corresponding URL patterns here:
 github_url_patterns = {
-    'https://github.com/': {
-        'pattern': r'^https://github\.com/',
-        'url_patterns': [
+    "https://github.com/": {
+        "pattern": r"^https://github\.com/",
+        "url_patterns": [
             # Repository URL
-            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/?$', 'repository'),
+            (r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/?$", "repository"),
             # Branch URL
             (
-                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/tree/(?P<branch>[^/]+)/?$',
-                'branch',
+                r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/tree/(?P<branch>[^/]+)/?$",
+                "branch",
             ),
             # File or Directory URL
             (
-                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/blob/(?P<branch>[^/]+)/(?P<path>.+)$',
-                'file',
+                r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/blob/(?P<branch>[^/]+)/(?P<path>.+)$",
+                "file",
             ),
             # Issues URL
             (
-                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/issues/(?P<issue_number>\d+)$',
-                'issue',
+                r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/issues/(?P<issue_number>\d+)$",
+                "issue",
             ),
             # Pull Request URL
             (
-                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/pull/(?P<pr_number>\d+)$',
-                'pull_request',
+                r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/pull/(?P<pr_number>\d+)$",
+                "pull_request",
             ),
             # Releases URL
-            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/releases/?$', 'releases'),
+            (r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/releases/?$", "releases"),
         ],
     },
-    'https://raw.githubusercontent.com/': {
-        'pattern': r'^https://raw\.githubusercontent\.com/',
-        'url_patterns': [
+    "https://raw.githubusercontent.com/": {
+        "pattern": r"^https://raw\.githubusercontent\.com/",
+        "url_patterns": [
             # Raw file URL
             (
-                r'^(?P<username>[^/]+)/(?P<repository>[^/]+)/(?P<branch>[^/]+)/(?P<path>.+)$',
-                'raw_file',
+                r"^(?P<username>[^/]+)/(?P<repository>[^/]+)/(?P<branch>[^/]+)/(?P<path>.+)$",
+                "raw_file",
             ),
         ],
     },
-    'git@github.com:': {
-        'pattern': r'^git@github\.com:',
-        'url_patterns': [
+    "git@github.com:": {
+        "pattern": r"^git@github\.com:",
+        "url_patterns": [
             # Clone URL
-            (r'^(?P<username>[^/]+)/(?P<repository>[^/]+?)(?:\.git)?$', 'clone_url'),
+            (r"^(?P<username>[^/]+)/(?P<repository>[^/]+?)(?:\.git)?$", "clone_url"),
         ],
     },
 }
@@ -263,27 +263,27 @@ def parse_github_url(url: str) -> dict:
     # Determine the base
     base = None
     for key, value in github_url_patterns.items():
-        if re.match(value['pattern'], url):
+        if re.match(value["pattern"], url):
             base = key
-            patterns = value['url_patterns']
+            patterns = value["url_patterns"]
             break
     if not base:
-        raise ValueError('URL does not match any known GitHub URL patterns.')
+        raise ValueError("URL does not match any known GitHub URL patterns.")
 
-    result = {'base': base}
+    result = {"base": base}
 
     # Remove the base from the URL
-    rest = re.sub(github_url_patterns[base]['pattern'], '', url)
+    rest = re.sub(github_url_patterns[base]["pattern"], "", url)
 
     # Attempt to match the rest of the URL with the patterns
     for pattern, url_type in patterns:
         m = re.match(pattern, rest)
         if m:
             result.update(m.groupdict())
-            result['type'] = url_type
+            result["type"] = url_type
             break
     else:
-        raise ValueError('Invalid GitHub URL')
+        raise ValueError("Invalid GitHub URL")
 
     return result
 
@@ -292,9 +292,9 @@ from lkj import enable_sourcing_from_file
 
 
 DFLT_RELATIVE_URL_PATTERN = (
-    r'(!?\[.*?\]\()'  # Matches the opening part of markdown link or image
-    r'((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)'  # Matches relative URLs in markdown
-    r'(\))'  # Matches the closing parenthesis
+    r"(!?\[.*?\]\()"  # Matches the opening part of markdown link or image
+    r"((?!http[s]?://|ftp://|mailto:|#|/)[^)]*)"  # Matches relative URLs in markdown
+    r"(\))"  # Matches the closing parenthesis
     r'|(<img\s+[^>]*src=")'  # Matches the opening part of HTML img tag
     r'((?!http[s]?://|ftp://|mailto:|#|/)[^"]*)'  # Matches relative URLs in HTML img tag
     r'(")'  # Matches the closing quote of the src attribute
@@ -343,15 +343,15 @@ def replace_relative_urls(
     # Define a pattern to match markdown links and images with relative URLs
     relative_url_pattern = re.compile(relative_url_pattern)
 
-    if not root_url.endswith('/'):
-        root_url += '/'
+    if not root_url.endswith("/"):
+        root_url += "/"
 
     def replacement(match):
         prefix = match.group(1) or match.group(4)
         relative_path = match.group(2) or match.group(5)
         suffix = match.group(3) or match.group(6)
         absolute_url = urljoin(root_url, relative_path)
-        return f'{prefix}{absolute_url}{suffix}'
+        return f"{prefix}{absolute_url}{suffix}"
 
     updated_markdown = relative_url_pattern.sub(replacement, markdown_str)
     return updated_markdown
@@ -420,7 +420,7 @@ def ensure_url_suffix(url: Union[str, Repository]) -> str:
     """
     if isinstance(url, Repository):
         return url.full_name
-    return url.split('github.com/')[-1].strip('/')
+    return url.split("github.com/")[-1].strip("/")
 
 
 def ensure_full_name(repo: RepoSpec) -> str:
@@ -434,14 +434,14 @@ def ensure_full_name(repo: RepoSpec) -> str:
     'thorwhalen/hubcap'
     """
     suffix = ensure_url_suffix(repo)
-    slash_seperated = suffix.strip('/').split('/')
+    slash_seperated = suffix.strip("/").split("/")
     if len(slash_seperated) == 2:
-        return suffix.strip('/')
+        return suffix.strip("/")
     else:
         raise ValueError(f"Couldn't (safely) parse {repo} as a repo full name")
 
 
-def ensure_github_url(user_repo_str: str, prefix='https://github.com/') -> str:
+def ensure_github_url(user_repo_str: str, prefix="https://github.com/") -> str:
     """Ensure a string to a github url
 
     >>> ensure_github_url('https://www.github.com/thorwhalen/hubcap')
@@ -483,38 +483,40 @@ import os
 import subprocess
 
 
-DFLT_GIT_COMMAND: str = 'status'
+DFLT_GIT_COMMAND: str = "status"
 
-DFLT_PURE_COMMAND_OPTIONS = ('clone', 'init', 'remote', 'config', 'help', 'version')
+DFLT_PURE_COMMAND_OPTIONS = ("clone", "init", "remote", "config", "help", "version")
 
 
 # Note: Stems, but diverged from the git function of i2mint/wads project
 def _build_git_command(
-    command: str = DFLT_GIT_COMMAND, work_tree=None, git_dir=None,
+    command: str = DFLT_GIT_COMMAND,
+    work_tree=None,
+    git_dir=None,
 ):
-    if command.startswith('git '):
+    if command.startswith("git "):
         warn(
             "You don't need to start your command with 'git '. I know it's a git command. Removing that prefix"
         )
-        command = command[len('git ') :]
+        command = command[len("git ") :]
     if work_tree is not None:
         work_tree = os.path.abspath(os.path.expanduser(work_tree))
         if git_dir is None:
-            git_dir = os.path.join(work_tree, '.git')
+            git_dir = os.path.join(work_tree, ".git")
     if git_dir is not None:
         assert os.path.isdir(git_dir), f"Didn't find the git_dir: {git_dir}"
         git_dir = ensure_no_slash_suffix(git_dir)
-        if not git_dir.endswith('.git'):
+        if not git_dir.endswith(".git"):
             warn(f"git_dir doesn't end with `.git`: {git_dir}")
 
     # Commands that should not include --work-tree or --git-dir
-    full_command = f'git'
+    full_command = f"git"
     if work_tree is not None:
         full_command += f' --work-tree="{work_tree}"'
     if git_dir is not None:
         full_command += f' --git-dir="{git_dir}"'
 
-    full_command += f' {command}'
+    full_command += f" {command}"
 
     return full_command
 
@@ -547,7 +549,7 @@ def git(
         return r.strip()
     except subprocess.CalledProcessError as e:
         if suppress_errors:
-            return ''
+            return ""
         else:
             raise e
 
@@ -558,7 +560,7 @@ def _prep_git_clone_args(repo, clone_to_folder=None):
 
 def git_clone(repo, clone_to_folder=None):
     repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
-    git(f'clone {repo_url} {clone_to_folder}')
+    git(f"clone {repo_url} {clone_to_folder}")
     return clone_to_folder
 
 
@@ -566,7 +568,7 @@ def git_wiki_clone(repo, clone_to_folder=None, *, suppress_errors=False):
     repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
     try:
         git(
-            f'clone {repo_url}.wiki.git {clone_to_folder}',
+            f"clone {repo_url}.wiki.git {clone_to_folder}",
             suppress_errors=suppress_errors,
         )
     except subprocess.CalledProcessError as e:
@@ -592,26 +594,26 @@ from typing import Tuple, Optional
 from dol import KvReader, path_get
 from config2py import simple_config_getter
 
-APP_NAME = 'hubcap'
-REPO_COLLECTION_CONFIGS = 'REPO_COLLECTION_CONFIGS'
-USER_REPO_COLLECTION_KEY_PROPS_FILE = 'repo_collections_key_props.json'
+APP_NAME = "hubcap"
+REPO_COLLECTION_CONFIGS = "REPO_COLLECTION_CONFIGS"
+USER_REPO_COLLECTION_KEY_PROPS_FILE = "repo_collections_key_props.json"
 
 get_config = simple_config_getter(APP_NAME)
 configs = get_config.configs
-data_files = files('hubcap.data')
+data_files = files("hubcap.data")
 repo_collections_configs = json.loads(
-    data_files.joinpath('dflt_repo_collections_key_props.json').read_text()
+    data_files.joinpath("dflt_repo_collections_key_props.json").read_text()
 )
 
 
 if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
-    configs[USER_REPO_COLLECTION_KEY_PROPS_FILE] = '{}'
+    configs[USER_REPO_COLLECTION_KEY_PROPS_FILE] = "{}"
 
 try:
     user_key_props = json.loads(configs[USER_REPO_COLLECTION_KEY_PROPS_FILE])
     repo_collections_configs.update(user_key_props)
 except Exception as e:
-    warn(f'Error loading user repo_collections_key_props.json: {e}', UserWarning)
+    warn(f"Error loading user repo_collections_key_props.json: {e}", UserWarning)
 
 
 def defaulted_itemgetter(d, k, default):
@@ -620,20 +622,20 @@ def defaulted_itemgetter(d, k, default):
 
 def _raise_if_error(data):
     """Raises an error if the data has errors"""
-    if errors := data.get('errors'):
-        msg = '\n'.join([e['message'] for e in errors])
+    if errors := data.get("errors"):
+        msg = "\n".join([e["message"] for e in errors])
         raise RuntimeError(msg)
     return data
 
 
 DFLT_DISCUSSION_FIELDS = (
-    'number',
-    'title',
-    'body',
-    'author',
-    'createdAt',
-    'updatedAt',
-    'comments',
+    "number",
+    "title",
+    "body",
+    "author",
+    "createdAt",
+    "updatedAt",
+    "comments",
 )
 
 
@@ -652,14 +654,14 @@ class Discussions(KvReader):
         _max_replies: int = 100,
     ):
         repo = ensure_repo_obj(repo)
-        self.owner, self.repo_name = ensure_full_name(repo).split('/')
+        self.owner, self.repo_name = ensure_full_name(repo).split("/")
         self.repo = repo
         self.token = github_token(token)
         self.headers = {
-            'Authorization': f'Bearer {self.token}',
-            'Accept': 'application/vnd.github.squirrel-girl-preview',
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/vnd.github.squirrel-girl-preview",
         }
-        self.url = 'https://api.github.com/graphql'
+        self.url = "https://api.github.com/graphql"
         self.discussion_fields = discussion_fields
         self._max_discussions = _max_discussions
         self._max_comments = _max_comments
@@ -668,7 +670,7 @@ class Discussions(KvReader):
     @cached_property
     def _discussions(self):
         """The discussions metadata of the repository."""
-        query = f'''
+        query = f"""
         query {{
         repository(owner: "{self.owner}", name: "{self.repo_name}") {{
             discussions(first: {self._max_discussions}) {{
@@ -679,17 +681,17 @@ class Discussions(KvReader):
             }}
         }}
         }}
-        '''
-        response = requests.post(self.url, headers=self.headers, json={'query': query})
+        """
+        response = requests.post(self.url, headers=self.headers, json={"query": query})
         response.raise_for_status()
         data = _raise_if_error(response.json())
-        return self.get_value(data, 'data.repository.discussions', {})
+        return self.get_value(data, "data.repository.discussions", {})
 
     @cached_property
     def _discussion_numbers(self):
         """The discussion numbers (keys) of the repository."""
-        discussions = self._discussions.get('nodes', [])
-        return tuple(node['number'] for node in discussions)
+        discussions = self._discussions.get("nodes", [])
+        return tuple(node["number"] for node in discussions)
 
     def __iter__(self):
         """Iterates over the discussion numbers (keys of the mapping)."""
@@ -697,7 +699,7 @@ class Discussions(KvReader):
 
     def __len__(self):
         """Returns the number of discussions."""
-        return self._discussions.get('totalCount', 0)
+        return self._discussions.get("totalCount", 0)
 
     def __contains__(self, key):
         """Checks if a discussion number (key) is in the mapping."""
@@ -706,20 +708,20 @@ class Discussions(KvReader):
     def __getitem__(self, key):
         """Gets the discussion data for a given discussion number (key)."""
         query = self._build_query(key)
-        response = requests.post(self.url, headers=self.headers, json={'query': query})
+        response = requests.post(self.url, headers=self.headers, json={"query": query})
         response.raise_for_status()
         data = _raise_if_error(response.json())
         return self._process_discussion_data(data)
 
     def _build_query(self, key):
         """Builds the graphQL query for a discussion."""
-        fields_query = '\n'.join(self.discussion_fields)
-        if 'author' in self.discussion_fields:
-            fields_query = fields_query.replace('author', 'author { login }')
-        if 'comments' in self.discussion_fields:
+        fields_query = "\n".join(self.discussion_fields)
+        if "author" in self.discussion_fields:
+            fields_query = fields_query.replace("author", "author { login }")
+        if "comments" in self.discussion_fields:
             fields_query = fields_query.replace(
-                'comments',
-                f'''
+                "comments",
+                f"""
             comments(first: {self._max_comments}) {{
                 edges {{
                     node {{
@@ -735,9 +737,9 @@ class Discussions(KvReader):
                         }}
                     }}
                 }}
-            }}''',
+            }}""",
             )
-        return f'''
+        return f"""
         query {{
           repository(owner: "{self.owner}", name: "{self.repo_name}") {{
             discussion(number: {key}) {{
@@ -745,29 +747,29 @@ class Discussions(KvReader):
             }}
           }}
         }}
-        '''
+        """
 
     def _process_discussion_data(self, data):
         """Processes the discussion data."""
-        discussion = self.get_value(data, 'data.repository.discussion', {})
+        discussion = self.get_value(data, "data.repository.discussion", {})
 
         comments = [
             {
-                'body': comment['node']['body'],
-                'author': comment['node']['author']['login'],
-                'replies': [
+                "body": comment["node"]["body"],
+                "author": comment["node"]["author"]["login"],
+                "replies": [
                     {
-                        'body': reply['node']['body'],
-                        'author': reply['node']['author']['login'],
+                        "body": reply["node"]["body"],
+                        "author": reply["node"]["author"]["login"],
                     }
-                    for reply in comment['node']['replies']['edges']
+                    for reply in comment["node"]["replies"]["edges"]
                 ],
             }
-            for comment in discussion.get('comments', {}).get('edges', [])
+            for comment in discussion.get("comments", {}).get("edges", [])
         ]
 
-        result = {field: discussion.get(field, '') for field in self.discussion_fields}
-        result['comments'] = comments
+        result = {field: discussion.get(field, "") for field in self.discussion_fields}
+        result["comments"] = comments
         return result
 
 
@@ -780,27 +782,27 @@ def create_markdown_from_jdict(jdict: Union[dict, Iterable[dict]]):
 
     This is meant to be applied to json exports of github discussions or issues.
     """
-    if isinstance(jdict, dict) and {'title', 'body'} <= jdict.keys():
+    if isinstance(jdict, dict) and {"title", "body"} <= jdict.keys():
         markdown = f"# {jdict['title']}\n\n{jdict['body']}\n\n"
 
         # Process comments
-        if jdict.get('comments'):
-            for comment in jdict['comments']:
+        if jdict.get("comments"):
+            for comment in jdict["comments"]:
                 markdown += f"## Comment\n\n{comment['body']}\n\n"
 
                 # Process replies to comments
-                if comment.get('replies'):
-                    for reply in comment['replies']:
+                if comment.get("replies"):
+                    for reply in comment["replies"]:
                         markdown += f"### Reply\n\n{reply['body']}\n\n"
 
         return markdown
     else:
         assert isinstance(
             jdict, Iterable
-        ), f'Expected dict or Iterable, got {type(jdict)}'
+        ), f"Expected dict or Iterable, got {type(jdict)}"
         if isinstance(jdict, dict):
             jdict = jdict.values()
-        return '\n\n'.join(create_markdown_from_jdict(d) for d in jdict)
+        return "\n\n".join(create_markdown_from_jdict(d) for d in jdict)
 
 
 # --------------------------------------------------------------------------------------
@@ -816,20 +818,20 @@ from dol import KeyTemplate
 # For this example, we'll assume KeyTemplate is defined as per your module
 
 # Define mk_key_template to adjust defaults as needed
-mk_key_template = partial(KeyTemplate, dflt_pattern='[^/]+', normalize_paths=False)
+mk_key_template = partial(KeyTemplate, dflt_pattern="[^/]+", normalize_paths=False)
 
 
 def _key_templates(github_url_templates):
     """Create KeyTemplate instances for each URL type of github_url_templates"""
     for url_template in github_url_templates:
         # Original template without modifying the slashes
-        template = url_template['template']
+        template = url_template["template"]
         yield (
-            url_template['name'],
+            url_template["name"],
             mk_key_template(
                 template,
-                field_patterns=url_template.get('field_patterns', {}),
-                from_str_funcs=url_template.get('from_str_funcs', {}),
+                field_patterns=url_template.get("field_patterns", {}),
+                from_str_funcs=url_template.get("from_str_funcs", {}),
             ),
         )
 
@@ -837,38 +839,44 @@ def _key_templates(github_url_templates):
 # TODO: Order counts in matching, so should be tested and re-ordered automatically before making key_templates
 _github_url_templates = [
     {
-        'name': 'fully_qualified_raw',
-        'template': 'https://raw.githubusercontent.com/{username}/{repository}/refs/heads/{branch}/{path}',
-        'field_patterns': {'path': '.+'},
+        "name": "fully_qualified_raw",
+        "template": "https://raw.githubusercontent.com/{username}/{repository}/refs/heads/{branch}/{path}",
+        "field_patterns": {"path": ".+"},
     },
     {
-        'name': 'file',
-        'template': 'https://github.com/{username}/{repository}/blob/{branch}/{path}',
-        'field_patterns': {'path': '.+'},
+        "name": "file",
+        "template": "https://github.com/{username}/{repository}/blob/{branch}/{path}",
+        "field_patterns": {"path": ".+"},
     },
     {
-        'name': 'raw_file',
-        'template': 'https://raw.githubusercontent.com/{username}/{repository}/{branch}/{path}',
-        'field_patterns': {'path': '.+'},
+        "name": "raw_file",
+        "template": "https://raw.githubusercontent.com/{username}/{repository}/{branch}/{path}",
+        "field_patterns": {"path": ".+"},
     },
     {
-        'name': 'branch',
-        'template': 'https://github.com/{username}/{repository}/tree/{branch}',
+        "name": "branch",
+        "template": "https://github.com/{username}/{repository}/tree/{branch}",
     },
     {
-        'name': 'issue',
-        'template': 'https://github.com/{username}/{repository}/issues/{issue_number}',
+        "name": "issue",
+        "template": "https://github.com/{username}/{repository}/issues/{issue_number}",
     },
     {
-        'name': 'pull_request',
-        'template': 'https://github.com/{username}/{repository}/pull/{pr_number}',
+        "name": "pull_request",
+        "template": "https://github.com/{username}/{repository}/pull/{pr_number}",
     },
     {
-        'name': 'releases',
-        'template': 'https://github.com/{username}/{repository}/releases',
+        "name": "releases",
+        "template": "https://github.com/{username}/{repository}/releases",
     },
-    {'name': 'repository', 'template': 'https://github.com/{username}/{repository}',},
-    {'name': 'clone_url', 'template': 'git@github.com:{username}/{repository}.git',},
+    {
+        "name": "repository",
+        "template": "https://github.com/{username}/{repository}",
+    },
+    {
+        "name": "clone_url",
+        "template": "git@github.com:{username}/{repository}.git",
+    },
 ]
 
 # extract all {template_names} from the templates of _github_url_templates_names to
@@ -878,7 +886,7 @@ from lkj import fields_of_string_formats
 url_template_fields = tuple(
     sorted(
         fields_of_string_formats(
-            map(lambda d: d.get('template', ''), _github_url_templates)
+            map(lambda d: d.get("template", ""), _github_url_templates)
         )
     )
 )
@@ -893,12 +901,12 @@ def is_url_components(d: dict):
 
 key_templates = dict(_key_templates(_github_url_templates))
 
-_github_url_templates_names = tuple([x['name'] for x in _github_url_templates])
+_github_url_templates_names = tuple([x["name"] for x in _github_url_templates])
 
 # TODO: Get GithubUrlType from _github_url_templates_names dynamically
 GithubUrlType = Literal[_github_url_templates_names]
 
-DFLT_GITHUB_URL_TYPE = 'raw_file'
+DFLT_GITHUB_URL_TYPE = "raw_file"
 
 
 def parse_github_url(url: str, *, include_url_type: bool = True) -> dict:
@@ -940,11 +948,11 @@ def parse_github_url(url: str, *, include_url_type: bool = True) -> dict:
         try:
             components = key_template.str_to_dict(url)
             if include_url_type:
-                components['url_type'] = name
+                components["url_type"] = name
             return components
         except ValueError:
             continue
-    raise ValueError('Invalid GitHub URL')
+    raise ValueError("Invalid GitHub URL")
 
 
 def generate_github_url(
@@ -1047,11 +1055,11 @@ def generate_github_url(
         >>> generate_github_url(components)
         'git@github.com:username/repo.git'
     """
-    components_url_type = components.get('url_type', None)
+    components_url_type = components.get("url_type", None)
     if components_url_type and url_type:
         if not prefer_explicit_url_type:
             raise ValueError(
-                'You must specify either url_type in components or as an argument, '
+                "You must specify either url_type in components or as an argument, "
                 f"but not both: Here you had url_type='{url_type}' "
                 f"and url_type in components='{components_url_type}'"
             )
@@ -1118,6 +1126,6 @@ def transform_github_url(
         'https://github.com/torvalds/linux/blob/master/README.md'
     """
     components = parse_github_url(url)
-    components['url_type'] = target_url_type
+    components["url_type"] = target_url_type
     components.update(extras)
     return generate_github_url(components)

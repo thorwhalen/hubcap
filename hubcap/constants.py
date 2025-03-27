@@ -1,6 +1,5 @@
 """A place to put constants, defaults, types..."""
 
-
 from typing import Any, Literal, Tuple, Dict, Iterable, Union, Callable, NewType
 from datetime import datetime
 
@@ -13,7 +12,7 @@ from dol.signatures import Sig
 
 def _non_callable_non_dundered_attrs(obj: Any) -> Tuple[str]:
     return tuple(
-        x for x in dir(obj) if not x.startswith('_') and not callable(getattr(obj, x))
+        x for x in dir(obj) if not x.startswith("_") and not callable(getattr(obj, x))
     )
 
 
@@ -24,7 +23,7 @@ def _non_callable_non_dundered_attrs_of_repo_type() -> Tuple[str]:
 def _last_commit_date(repo: Repository):
     return (
         datetime.strptime(
-            repo.updated_at.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S'
+            repo.updated_at.strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"
         )
         .date()
         .isoformat()
@@ -46,10 +45,10 @@ RepoInfo = Union[
     str,  # "prop1 prop2 ..."
 ]
 
-_dflt_repo_props = 'name full_name description stargazers_count forks_count watchers_count html_url'.split()
+_dflt_repo_props = "name full_name description stargazers_count forks_count watchers_count html_url".split()
 
 DFLT_REPO_INFO = tuple(
-    [*zip(_dflt_repo_props, _dflt_repo_props), ('last_commit_date', _last_commit_date)]
+    [*zip(_dflt_repo_props, _dflt_repo_props), ("last_commit_date", _last_commit_date)]
 )
 
 
@@ -62,10 +61,10 @@ def repo_collection_names_():
     and removing the `get_` prefix.
     """
     repo_object_names = {
-        k for k in dir(Repository) if k.startswith('get_') and k.endswith('s')
+        k for k in dir(Repository) if k.startswith("get_") and k.endswith("s")
     }
     repo_object_names = {
-        k[len('get_') :]
+        k[len("get_") :]
         for k in repo_object_names
         if Sig(getattr(Repository, k)).n_required == 1
     }
@@ -73,7 +72,7 @@ def repo_collection_names_():
 
 
 # tuple.__doc__ is read-only, so had to subclass to give my variable a doc
-_tuple = type('_tuple', (tuple,), {'__doc__': repo_collection_names_.__doc__})
+_tuple = type("_tuple", (tuple,), {"__doc__": repo_collection_names_.__doc__})
 repo_collection_names = _tuple(sorted(repo_collection_names_()))
 
 # TODO: When in 3.11, change to Literal[*repo_collection_names]

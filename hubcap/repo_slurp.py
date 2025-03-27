@@ -1,4 +1,4 @@
-"""Tools to slurp a repo's information """
+"""Tools to slurp a repo's information"""
 
 # TODO: This module is a bit of a mess. It should be cleaned up and reorganized.
 #  It should also be tested.
@@ -28,10 +28,10 @@ KvToText = Callable[[KT, VT], str]
 
 def kv_to_python_aware_markdown(k, v):
     """Puts .py content in a code block, and returns a markdown formatted string."""
-    if k.endswith('.py'):
+    if k.endswith(".py"):
         # if it's a python file, we'll put it in a code block
-        v = f'```python\n{v}\n```\n'
-    return f'## {k}\\n\\n{v}\\n\\n'
+        v = f"```python\n{v}\n```\n"
+    return f"## {k}\\n\\n{v}\\n\\n"
 
 
 def _text_segments_from_mapping(
@@ -86,7 +86,7 @@ def text_from_mapping(
     Of the art.
     ```
     """
-    return '\n'.join(_text_segments_from_mapping(mapping, kv_to_text))
+    return "\n".join(_text_segments_from_mapping(mapping, kv_to_text))
 
 
 def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
@@ -114,11 +114,11 @@ def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
     """
 
     def offset_header_line(line: str):
-        if line.startswith('#'):
-            header_level = line.count('#', 0, line.find(' '))
+        if line.startswith("#"):
+            header_level = line.count("#", 0, line.find(" "))
             new_level = header_level + offset
             if new_level > 0:
-                return '#' * new_level + line[header_level:]
+                return "#" * new_level + line[header_level:]
             else:
                 return line
         return line
@@ -127,8 +127,8 @@ def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
 
     def _result_lines():
         nonlocal in_code_block
-        for line in markdown_text.split('\n'):
-            if line.startswith('```'):
+        for line in markdown_text.split("\n"):
+            if line.startswith("```"):
                 in_code_block = not in_code_block
                 yield line
             elif in_code_block:
@@ -136,7 +136,7 @@ def add_offset_to_headers(markdown_text: str, offset: int = 0) -> str:
             else:
                 yield offset_header_line(line)
 
-    return '\n'.join(_result_lines())
+    return "\n".join(_result_lines())
 
 
 def _ensure_callable_processor(processor, if_true=lambda x: x, if_false=lambda x: None):
@@ -176,7 +176,7 @@ def _ensure_callable_processor(processor, if_true=lambda x: x, if_false=lambda x
     elif callable(processor):
         return processor
     else:
-        raise ValueError(f'{processor} is not a callable')
+        raise ValueError(f"{processor} is not a callable")
 
 
 def _markdown_lines(notebook, process_code, process_markdown, process_output):
@@ -186,26 +186,26 @@ def _markdown_lines(notebook, process_code, process_markdown, process_output):
     process_output = _ensure_callable_processor(process_output)
 
     for cell in notebook.cells:
-        if cell.cell_type == 'markdown':
+        if cell.cell_type == "markdown":
             processed = process_markdown(cell.source)
             if processed is not None:
                 yield processed
-        elif cell.cell_type == 'code':
+        elif cell.cell_type == "code":
             processed_code = process_code(cell.source)
             if processed_code is not None:
-                yield f'```python\n{processed_code}\n```'
-            for output in cell.get('outputs', []):
-                if output.output_type == 'stream':
+                yield f"```python\n{processed_code}\n```"
+            for output in cell.get("outputs", []):
+                if output.output_type == "stream":
                     text = output.text
-                elif output.output_type == 'error':
-                    text = ''.join(output.traceback)
-                elif output.output_type == 'execute_result':
-                    text = output.data.get('text/plain', '')
+                elif output.output_type == "error":
+                    text = "".join(output.traceback)
+                elif output.output_type == "execute_result":
+                    text = output.data.get("text/plain", "")
                 else:
                     continue
                 processed_output = process_output(text)
                 if processed_output is not None:
-                    yield f'```\n{processed_output}\n```'
+                    yield f"```\n{processed_output}\n```"
 
 
 # TODO: Move to markdown utils module or package
@@ -218,7 +218,7 @@ def notebook_to_markdown(
     process_code=True,
     process_markdown=True,
     process_output=True,
-    encoding='utf-8',
+    encoding="utf-8",
 ):
     """
     Transforms a Jupyter notebook into a markdown string with control over cell processing.
@@ -240,7 +240,7 @@ def notebook_to_markdown(
 
     # Make a notebook object
     if os.path.isfile(notebook):
-        with open(notebook, 'r', encoding=encoding) as f:
+        with open(notebook, "r", encoding=encoding) as f:
             notebook = nbformat.read(f, as_version=4)
     if isinstance(notebook, (bytes, str)):
         if isinstance(notebook, str):
@@ -248,12 +248,12 @@ def notebook_to_markdown(
         elif isinstance(notebook, bytes):
             notebook = io.BytesIO(notebook)
         else:
-            raise ValueError(f'Unsupported type for notebook: {type(notebook)}')
+            raise ValueError(f"Unsupported type for notebook: {type(notebook)}")
         notebook = nbformat.read(notebook, as_version=4)
     else:
         assert isinstance(notebook, nbformat.NotebookNode)
 
-    return '\n\n'.join(
+    return "\n\n".join(
         filter(
             None,
             _markdown_lines(notebook, process_code, process_markdown, process_output),
@@ -275,7 +275,7 @@ DirPathString = str
 
 
 def _is_local_git_repo(repo: str):
-    return os.path.isdir(repo) and os.path.isdir(os.path.join(repo, '.git'))
+    return os.path.isdir(repo) and os.path.isdir(os.path.join(repo, ".git"))
 
 
 def ensure_repo_folder(
@@ -303,11 +303,11 @@ def ensure_repo_folder(
 
 def _decode_to_text_or_skip(obj, log_error_function=False):
     try:
-        return obj.decode('utf-8')
+        return obj.decode("utf-8")
     except UnicodeDecodeError:
         if log_error_function:
             # if log_error_function
-            print(f'Error decoding {obj}')
+            print(f"Error decoding {obj}")
         return None  # Note: None values will be skipped in text_from_mapping
 
 
@@ -320,7 +320,7 @@ def key_filtered_text_files(folder, key_pattern):
     return filt_iter(TextFiles(folder), filt=re.compile(key_pattern).search)
 
 
-_pattern_for_python_and_markdown_files = r'.*\.(py|md)$'
+_pattern_for_python_and_markdown_files = r".*\.(py|md)$"
 
 _filtered_py_and_md_files = partial(
     key_filtered_text_files, key_pattern=_pattern_for_python_and_markdown_files
@@ -328,7 +328,7 @@ _filtered_py_and_md_files = partial(
 
 
 def _does_not_start_with_docsrc_or_setup(key: KT):
-    return not key.startswith('docsrc/') and not key.startswith('setup.')
+    return not key.startswith("docsrc/") and not key.startswith("setup.")
 
 
 # TODO: A lot more can be done to parametrize the construction of a discussion text
@@ -346,30 +346,30 @@ def __discussion_json_to_text_segments(
             offset = offset_headers
         else:
             raise ValueError(
-                f'offset_headers must be an int or True, not {offset_headers}'
+                f"offset_headers must be an int or True, not {offset_headers}"
             )
         _offset_headers = partial(add_offset_to_headers, offset=offset)
     else:
         _offset_headers = lambda x: x
 
-    yield _offset_headers(d['body']) + '\n\n'
-    for comment_num, comment in enumerate(d['comments'], 1):
-        yield '#' * (header_level + 1) + f' Comment {comment_num}\n\n'
-        yield _offset_headers(comment['body']) + '\n\n'
-        for reply in comment.get('replies', []):
-            yield '#' * (header_level + 2) + f' Reply\n\n'
-            yield _offset_headers(reply['body'] + '\n\n')
+    yield _offset_headers(d["body"]) + "\n\n"
+    for comment_num, comment in enumerate(d["comments"], 1):
+        yield "#" * (header_level + 1) + f" Comment {comment_num}\n\n"
+        yield _offset_headers(comment["body"]) + "\n\n"
+        for reply in comment.get("replies", []):
+            yield "#" * (header_level + 2) + f" Reply\n\n"
+            yield _offset_headers(reply["body"] + "\n\n")
 
 
 def _discussion_json_to_text(d: dict, header_level=2):
-    return ''.join(__discussion_json_to_text_segments(d, header_level))
+    return "".join(__discussion_json_to_text_segments(d, header_level))
 
 
 # TODO: A lot of this mapping (discussions, wikie, repo_files) stuff is remeniscent of
 #       dol.store_aggregate. Maybe we should integrate that here.
 def discussions_mapping(repo, discussion_json_to_text=_discussion_json_to_text):
     repo_url = ensure_github_url(repo)
-    discussions = RepoReader(repo_url)['discussions']
+    discussions = RepoReader(repo_url)["discussions"]
 
     def _gen():
         for key, d in discussions.items():
@@ -383,7 +383,7 @@ def wiki_mapping(repo, local_repo_folder=None, default=NotSet, suppress_errors=T
         local_repo_folder = ensure_repo_folder(
             repo, clone_func=partial(git_wiki_clone, suppress_errors=suppress_errors)
         )
-        s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r'.*\.md$').search)
+        s = filt_iter(TextFiles(local_repo_folder), filt=re.compile(r".*\.md$").search)
         return s
     except ResourceNotFound:
         if default is NotSet:
@@ -421,11 +421,14 @@ def repo_files_mapping(
     return mapping
 
 
-CloneKinds = Literal['files', 'wiki', 'discussions']
+CloneKinds = Literal["files", "wiki", "discussions"]
 
 
 def github_repo_mapping(
-    repo: str, *, kind: CloneKinds = 'files', repo_files_mapping=repo_files_mapping,
+    repo: str,
+    *,
+    kind: CloneKinds = "files",
+    repo_files_mapping=repo_files_mapping,
 ):
     r"""
     Clone a git repository and make a mapping of the files in the repository.
@@ -444,11 +447,11 @@ def github_repo_mapping(
     # repo = ensure_github_url(repo)
 
     # subprocess.check_call(clone_command, shell=True)
-    if kind == 'discussions':
+    if kind == "discussions":
         return discussions_mapping(repo)
-    elif kind == 'wiki':
+    elif kind == "wiki":
         return wiki_mapping(repo, default={})
-    elif kind == 'files':
+    elif kind == "files":
         return repo_files_mapping(repo)
     else:
         raise ValueError(f"kind must be 'files' or 'wiki', not {kind}")
@@ -456,7 +459,7 @@ def github_repo_mapping(
 
 def repo_text_aggregate(
     repo,
-    kinds: Union[CloneKinds, Iterable[CloneKinds]] = ('files', 'wiki', 'discussions'),
+    kinds: Union[CloneKinds, Iterable[CloneKinds]] = ("files", "wiki", "discussions"),
     *,
     github_repo_mapping=github_repo_mapping,
     text_from_mapping=text_from_mapping,
@@ -479,7 +482,7 @@ def repo_text_aggregate(
     A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...
 
     """
-    text = ''
+    text = ""
     for kind in kinds:
         mapping = github_repo_mapping(repo, kind=kind)
         text += text_from_mapping(mapping)

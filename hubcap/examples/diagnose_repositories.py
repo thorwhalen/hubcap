@@ -10,21 +10,21 @@ Url = str
 Urls = Iterable[Url]
 Table = Union[pd.DataFrame, Url, Urls]
 
-github_url_p = re.compile(r'https?://github.com/(?P<org>[^/]+)/(?P<repo>[^/]+).*?')
+github_url_p = re.compile(r"https?://github.com/(?P<org>[^/]+)/(?P<repo>[^/]+).*?")
 
 # TODO: Make the following particulars controllable from outside module
 DFLT_URL_TABLE_SOURCE = (
-    'https://raw.githubusercontent.com/otosense/content/main/tables/projects.csv'
+    "https://raw.githubusercontent.com/otosense/content/main/tables/projects.csv"
 )
-docs_url_template = 'https://{org}.github.io/{repo}'
-repo_docs_url_template = 'https://github.com/{org}/{repo}/tree/master/docs'
+docs_url_template = "https://{org}.github.io/{repo}"
+repo_docs_url_template = "https://github.com/{org}/{repo}/tree/master/docs"
 
 
-def get_doc_state_for_oto_repos(df: Table = DFLT_URL_TABLE_SOURCE, url_column='url'):
+def get_doc_state_for_oto_repos(df: Table = DFLT_URL_TABLE_SOURCE, url_column="url"):
     df = _get_table(df)
-    df['doc_page_url'] = df[url_column].apply(repo_url_to_docs_url)
-    df['doc_page_exists'] = df['doc_page_url'].apply(url_exists)
-    df['repo_has_docs_folder'] = df[url_column].apply(
+    df["doc_page_url"] = df[url_column].apply(repo_url_to_docs_url)
+    df["doc_page_exists"] = df["doc_page_url"].apply(url_exists)
+    df["repo_has_docs_folder"] = df[url_column].apply(
         lambda url: url_exists(repo_url_to_repo_docs_url(url))
     )
     return df
@@ -36,7 +36,7 @@ def _get_table(df):
         df = table_url_to_df(url)
     elif not isinstance(df, pd.DataFrame) and isinstance(df, Iterable):
         urls = df
-        df = pd.DataFrame({'url': urls})
+        df = pd.DataFrame({"url": urls})
     return df
 
 

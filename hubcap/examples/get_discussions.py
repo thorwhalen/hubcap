@@ -1,4 +1,4 @@
-"""Discussions acquisition 
+"""Discussions acquisition
 
 Usage
 *****
@@ -19,9 +19,9 @@ import requests
 LocalDillStore = wrap_kvs(Files, data_of_obj=dill.dumps, obj_of_data=dill.loads)
 LocalJsonStore = wrap_kvs(TextFiles, data_of_obj=json.dumps, obj_of_data=json.loads)
 
-APP_NAME = 'hubcap'
+APP_NAME = "hubcap"
 get_config = simple_config_getter(APP_NAME)
-data_folder = os.path.join(get_app_data_folder(APP_NAME), 'data')
+data_folder = os.path.join(get_app_data_folder(APP_NAME), "data")
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
 from dol import path_get
@@ -31,11 +31,11 @@ get_value = partial(path_get, get_value=lambda d, k: d.get(k, {}))
 
 
 def get_discussion_numbers(repo, token=None):
-    token = token or get_config('GITHUB_TOKEN')
-    owner, repository = repo.split('/')
-    headers = {'Authorization': f'Bearer {token}'}
-    url = 'https://api.github.com/graphql'
-    query = f'''
+    token = token or get_config("GITHUB_TOKEN")
+    owner, repository = repo.split("/")
+    headers = {"Authorization": f"Bearer {token}"}
+    url = "https://api.github.com/graphql"
+    query = f"""
     query {{
       repository(owner: "{owner}", name: "{repository}") {{
         discussions(first: 150) {{
@@ -45,21 +45,21 @@ def get_discussion_numbers(repo, token=None):
         }}
       }}
     }}
-    '''
-    response = requests.post(url, headers=headers, json={'query': query})
+    """
+    response = requests.post(url, headers=headers, json={"query": query})
     response.raise_for_status()
     data = response.json()
-    if errors := data.get('errors'):
-        msg = '\n'.join([e['message'] for e in errors])
+    if errors := data.get("errors"):
+        msg = "\n".join([e["message"] for e in errors])
         raise RuntimeError(msg)
     return [
-        node['number'] for node in get_value(data, 'data.repository.discussions.nodes')
+        node["number"] for node in get_value(data, "data.repository.discussions.nodes")
     ]
 
 
 async def discussion_data(repo, discussion_number, token=None):
-    token = token or get_config('GITHUB_TOKEN')
-    owner, repository = repo.split('/')
+    token = token or get_config("GITHUB_TOKEN")
+    owner, repository = repo.split("/")
     async with aiohttp.ClientSession(trust_env=True) as session:
         discussion_data = await fetch_discussion_data(
             session, token, owner, repository, discussion_number
@@ -70,13 +70,13 @@ async def discussion_data(repo, discussion_number, token=None):
 async def download_and_save_discussion_data(
     repo, discussion_number, *, token=None, store=data_folder
 ):
-    owner, repository = repo.split('/')
+    owner, repository = repo.split("/")
     if isinstance(discussion_number, int):
-        discussion_number_str = f'{discussion_number:03.0f}'
+        discussion_number_str = f"{discussion_number:03.0f}"
     else:
         discussion_number_str = discussion_number
-    save_filename = f'{owner}__{repository}__{discussion_number_str}.json'
-    d = await discussion_data(f'{owner}/{repository}', discussion_number, token)
+    save_filename = f"{owner}__{repository}__{discussion_number_str}.json"
+    d = await discussion_data(f"{owner}/{repository}", discussion_number, token)
     if d is not None:
         if isinstance(store, str):
             rootdir = store
@@ -115,15 +115,15 @@ class Discussion:
 LocalDiscussionsStore = wrap_kvs(
     LocalJsonStore,
     obj_of_data=lambda d: Discussion(
-        body=d['body'], title=d['title'], comments=d['comments']
+        body=d["body"], title=d["title"], comments=d["comments"]
     ),
 )
 
 
 async def fetch_discussion_data(session, token, owner, repository, discussion_number):
-    headers = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'}
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
-    query = '''
+    query = """
     query($owner: String!, $repository: String!, $discussionNumber: Int!, $commentsCursor: String, $repliesCursor: String) {
       repository(owner: $owner, name: $repository) {
         discussion(number: $discussionNumber) {
@@ -151,7 +151,7 @@ async def fetch_discussion_data(session, token, owner, repository, discussion_nu
       }
     }
 
-    '''
+    """
 
     # overwritting Discussion, Comment, Reply to dict to make json serializable
     Discussion = dict
@@ -159,9 +159,9 @@ async def fetch_discussion_data(session, token, owner, repository, discussion_nu
     Reply = dict
 
     variables = {
-        'owner': owner,
-        'repository': repository,
-        'discussionNumber': discussion_number,
+        "owner": owner,
+        "repository": repository,
+        "discussionNumber": discussion_number,
     }
 
     discussion_data = []
@@ -169,48 +169,48 @@ async def fetch_discussion_data(session, token, owner, repository, discussion_nu
     comments_cursor = None
 
     while has_next_page:
-        variables['commentsCursor'] = comments_cursor
+        variables["commentsCursor"] = comments_cursor
         response = await session.post(
-            'https://api.github.com/graphql',
+            "https://api.github.com/graphql",
             headers=headers,
-            json={'query': query, 'variables': variables},
+            json={"query": query, "variables": variables},
         )
         result = await response.json()
 
         # print(f"{result=}")
 
-        discussion = result.get('data', {}).get('repository', {}).get('discussion', {})
+        discussion = result.get("data", {}).get("repository", {}).get("discussion", {})
         if discussion is None:
             return None
 
-        discussion_title = discussion['title']
-        discussion_body = discussion['body']
-        comments = discussion['comments']['nodes']
-        has_next_page = discussion['comments']['pageInfo']['hasNextPage']
-        comments_cursor = discussion['comments']['pageInfo']['endCursor']
+        discussion_title = discussion["title"]
+        discussion_body = discussion["body"]
+        comments = discussion["comments"]["nodes"]
+        has_next_page = discussion["comments"]["pageInfo"]["hasNextPage"]
+        comments_cursor = discussion["comments"]["pageInfo"]["endCursor"]
 
         for comment in comments:
-            comment_body = comment['body']
+            comment_body = comment["body"]
             replies = []
 
             has_next_reply_page = True
             replies_cursor = None
 
             while has_next_reply_page:
-                variables['repliesCursor'] = replies_cursor
+                variables["repliesCursor"] = replies_cursor
                 response = await session.post(
-                    'https://api.github.com/graphql',
+                    "https://api.github.com/graphql",
                     headers=headers,
-                    json={'query': query, 'variables': variables},
+                    json={"query": query, "variables": variables},
                 )
                 reply_result = await response.json()
 
-                reply_nodes = comment['replies']['nodes']
-                has_next_reply_page = comment['replies']['pageInfo']['hasNextPage']
-                replies_cursor = comment['replies']['pageInfo']['endCursor']
+                reply_nodes = comment["replies"]["nodes"]
+                has_next_reply_page = comment["replies"]["pageInfo"]["hasNextPage"]
+                replies_cursor = comment["replies"]["pageInfo"]["endCursor"]
 
                 for reply in reply_nodes:
-                    replies.append(Reply(body=reply['body']))
+                    replies.append(Reply(body=reply["body"]))
 
             discussion_data.append(Comment(body=comment_body, replies=replies))
 
@@ -220,12 +220,12 @@ async def fetch_discussion_data(session, token, owner, repository, discussion_nu
 
 
 async def main():
-    parser = argparse.ArgumentParser(description='Fetch GitHub discussion data')
-    parser.add_argument('--token', help='GitHub Access Token')
-    parser.add_argument('--owner', help='GitHub Repository Owner')
-    parser.add_argument('--repository', help='GitHub Repository Name')
+    parser = argparse.ArgumentParser(description="Fetch GitHub discussion data")
+    parser.add_argument("--token", help="GitHub Access Token")
+    parser.add_argument("--owner", help="GitHub Repository Owner")
+    parser.add_argument("--repository", help="GitHub Repository Name")
     parser.add_argument(
-        '--discussion-number', type=int, help='GitHub Discussion Number'
+        "--discussion-number", type=int, help="GitHub Discussion Number"
     )
     args = parser.parse_args()
 
@@ -239,7 +239,7 @@ async def main():
     #     print(json.dumps(discussion_data, default=lambda x: x.__dict__, indent=2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())
     # from argh import dispatch_command
     # dispatch_command(download_and_save_discussion_data)

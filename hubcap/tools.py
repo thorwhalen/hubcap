@@ -13,26 +13,26 @@ from hubcap.util import RepoSpec, ensure_url_suffix, _prep_git_clone_args
 # cleaner to write.
 def hub(path: RepoSpec):
     path = ensure_url_suffix(path)
-    if '/' not in path:
+    if "/" not in path:
         org = path
         return GithubReader(org)
     # at this point we have at least org/repo/...
-    org, repo, *_path = path.split('/')
+    org, repo, *_path = path.split("/")
     if not _path:
         return GithubReader(org)[repo]
 
     # If not, use RepoReader as the base object  # TODO: Finish RepoReader
-    s = RepoReader(f'{org}/{repo}')
+    s = RepoReader(f"{org}/{repo}")
     path_iter = iter(_path)
     # TODO: Temporarily commented out -- if not needed, remove
     # if (repo := next(path_iter, None)) is not None:
     #     s = s[repo]
     if (resource := next(path_iter, None)) is not None:
-        if resource in repo_collection_names or resource == 'discussions':
+        if resource in repo_collection_names or resource == "discussions":
             s = RepoReader(s.repo)[resource]
         else:
             # From now we assume the intent is to get a specific branch...
-            if resource == 'tree':  # this is to be consistent with browser url access
+            if resource == "tree":  # this is to be consistent with browser url access
                 # then consider this to be a request for branches
                 resource = next(path_iter)
             else:
@@ -52,7 +52,7 @@ def team_repositories_action(
     repositories: Iterable[str],
     team: str,
     *,
-    action: Literal['add_to_repo', 'remove_from_repos'],
+    action: Literal["add_to_repo", "remove_from_repos"],
     org: str,
     wait_s: int = 1,
 ):
@@ -77,8 +77,8 @@ def team_repositories_action(
         time.sleep(wait_s)
 
 
-add_repos_to_team = partial(team_repositories_action, action='add_to_repo')
-rm_repos_from_team = partial(team_repositories_action, action='remove_from_repos')
+add_repos_to_team = partial(team_repositories_action, action="add_to_repo")
+rm_repos_from_team = partial(team_repositories_action, action="remove_from_repos")
 
 
 # --------------------------------------------------------------------------------------
@@ -92,42 +92,42 @@ from warnings import warn
 from hubcap.util import replace_relative_urls, generate_github_url
 
 
-def _raw_url(org, repo, branch='main', path=''):
+def _raw_url(org, repo, branch="main", path=""):
     components = {
-        'username': org,
-        'repository': repo,
-        'branch': branch,
-        'path': relpath,
+        "username": org,
+        "repository": repo,
+        "branch": branch,
+        "path": relpath,
     }
-    return generate_github_url(components, 'fully_qualified_raw')
+    return generate_github_url(components, "fully_qualified_raw")
     # return (
     #     f'https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}'
     # )
 
 
-def _handle_repo_root_url(repo_root_url, image_relative_dir=''):
+def _handle_repo_root_url(repo_root_url, image_relative_dir=""):
     # url join repo_root_url and image_relative_dir
     if image_relative_dir:
         repo_root_url = f"{repo_root_url.rstrip('/')}/{image_relative_dir.lstrip('/')}"
 
     if isinstance(repo_root_url, dict):
         return _raw_url(**repo_root_url)
-    if not repo_root_url.startswith('http'):
-        org, repo, branch, *relpath = repo_root_url.split('/')
-        repo_stub = f'{org}/{repo}'
-        return _raw_url(org, repo, branch, '/'.join(relpath))
+    if not repo_root_url.startswith("http"):
+        org, repo, branch, *relpath = repo_root_url.split("/")
+        repo_stub = f"{org}/{repo}"
+        return _raw_url(org, repo, branch, "/".join(relpath))
     else:
-        protocol, simple_url = repo_root_url.split('://')
-        if simple_url.startswith('github.com') or simple_url.startswith(
-            'www.github.com'
+        protocol, simple_url = repo_root_url.split("://")
+        if simple_url.startswith("github.com") or simple_url.startswith(
+            "www.github.com"
         ):
             warn(
-                f'Your repo_root_url is: {repo_root_url}. I do the work anyway, '
-                'but you may want to consider that usually the URL should be a raw '
-                'github URL like this: '
-                'https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. '
-                'Verify that the root URL you chose does work on the pypi readme page '
-                'if that is what you are targeting.'
+                f"Your repo_root_url is: {repo_root_url}. I do the work anyway, "
+                "but you may want to consider that usually the URL should be a raw "
+                "github URL like this: "
+                "https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. "
+                "Verify that the root URL you chose does work on the pypi readme page "
+                "if that is what you are targeting."
             )
         return repo_root_url
 
@@ -137,7 +137,7 @@ def notebook_to_markdown(
     output_dir: Optional[str] = None,
     repo_root_url: Optional[Union[dict, str]] = None,
     *,
-    image_relative_dir: str = '',
+    image_relative_dir: str = "",
 ):
     """
     Convert a Jupyter notebook to Markdown and optionally post-process the output.
@@ -175,7 +175,7 @@ def notebook_to_markdown(
     # Ensure the notebook file exists
     notebook_path = Path(notebook_path)
     if not notebook_path.exists():
-        raise FileNotFoundError(f'Notebook not found: {notebook_path}')
+        raise FileNotFoundError(f"Notebook not found: {notebook_path}")
 
     # Load and convert the notebook to Markdown
     markdown_exporter = MarkdownExporter()
@@ -199,11 +199,11 @@ def notebook_to_markdown(
         resource_dir = output_dir / image_relative_dir
         resource_dir.mkdir(parents=True, exist_ok=True)
 
-        for filename, content in resources.get('outputs', {}).items():
+        for filename, content in resources.get("outputs", {}).items():
             (resource_dir / filename).write_bytes(content)
 
         # Write the Markdown file
-        output_filename = output_dir / f'{notebook_path.stem}.md'
+        output_filename = output_dir / f"{notebook_path.stem}.md"
         output_filename.write_text(markdown_content)
     else:
         # If no output directory is specified, images are not saved to disk.
@@ -228,9 +228,9 @@ def postprocess_markdown_from_notebook(
         str: The post-processed Markdown content.
 
     """
-    if '\n' not in md_src and Path(md_src).exists():
+    if "\n" not in md_src and Path(md_src).exists():
         file_path = Path(md_src)
-        if file_path.suffix == '.ipynb':
+        if file_path.suffix == ".ipynb":
             # If the source is an ipynb file, convert it to Markdown
             md_src = notebook_to_markdown(file_path, output_dir=None)
         else:
@@ -241,8 +241,8 @@ def postprocess_markdown_from_notebook(
     trg_str = replace_relative_urls(md_src, root_url=repo_root_url)
 
     # Remove unwanted artifacts
-    trg_str = re.sub('<style scoped>(.*?)</style>', '', trg_str, flags=re.DOTALL)
-    trg_str = re.sub('```python\s*```', '', trg_str, flags=re.DOTALL)
+    trg_str = re.sub("<style scoped>(.*?)</style>", "", trg_str, flags=re.DOTALL)
+    trg_str = re.sub("```python\s*```", "", trg_str, flags=re.DOTALL)
 
     # Save to the target file if specified
     if md_trg:

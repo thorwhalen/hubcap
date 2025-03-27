@@ -26,15 +26,15 @@ def download_github_wiki(repo_id: str, download_dir: str):
     if not os.path.isdir(download_dir):
         os.makedirs(download_dir)
 
-    owner, repo_name = repo_id.split('/')
+    owner, repo_name = repo_id.split("/")
     destination = os.path.join(download_dir, owner, repo_name)
 
     # GitHub stores wiki content in a separate git repository appended with ".wiki"
-    wiki_repo = f'https://github.com/{repo_id}.wiki.git'
+    wiki_repo = f"https://github.com/{repo_id}.wiki.git"
 
     with tempfile.TemporaryDirectory() as tmpdir:
         try:
-            subprocess.check_call(['git', 'clone', wiki_repo, tmpdir])
+            subprocess.check_call(["git", "clone", wiki_repo, tmpdir])
         except subprocess.CalledProcessError:
             # If git clone fails, wiki probably does not exist, so return
             return
@@ -97,17 +97,17 @@ def url_of_git_directory(path: str) -> str:
     """
     try:
         # Get the URL of the 'origin' remote
-        with open(os.devnull, 'w') as devnull:
+        with open(os.devnull, "w") as devnull:
             url = subprocess.check_output(
-                ['git', '-C', path, 'remote', 'get-url', 'origin'],
+                ["git", "-C", path, "remote", "get-url", "origin"],
                 stderr=devnull,
-                encoding='utf-8',
+                encoding="utf-8",
             ).strip()
         return url
     except subprocess.CalledProcessError:
         return None
     except Exception as e:
-        print(f'An error occurred when checking if {path} is a git directory: {e}')
+        print(f"An error occurred when checking if {path} is a git directory: {e}")
         return None
 
 
@@ -145,7 +145,7 @@ def repository_identifiers(rootdir: str, recursive: bool = True):
 
 def url_to_repository_identifier(url: str):
     if isinstance(url, str):
-        if url.endswith('.git'):
+        if url.endswith(".git"):
             url = url[:-4]  # Remove .git from the end
-        if url.startswith('https://github.com/'):
-            return url[len('https://github.com/') :]
+        if url.startswith("https://github.com/"):
+            return url[len("https://github.com/") :]
