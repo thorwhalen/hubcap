@@ -1,4 +1,0 @@
-hubcap
-======
-.. automodule:: hubcap
-   :members:
