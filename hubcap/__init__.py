@@ -142,7 +142,7 @@ False
 True
 >>> repo = s['hubcap']
 >>> sorted(repo)
-['gh-page', 'master']
+['gh-pages', 'master']
 >>> branch = repo['master']
 >>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
 ['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE',
