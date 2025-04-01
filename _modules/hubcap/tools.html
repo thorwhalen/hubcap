@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.11 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -100,26 +100,26 @@
 <span class="c1"># cleaner to write.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">hub</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">):</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">ensure_url_suffix</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
         <span class="n">org</span> <span class="o">=</span> <span class="n">path</span>
         <span class="k">return</span> <span class="n">GithubReader</span><span class="p">(</span><span class="n">org</span><span class="p">)</span>
     <span class="c1"># at this point we have at least org/repo/...</span>
-    <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="o">*</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="o">*</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_path</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">GithubReader</span><span class="p">(</span><span class="n">org</span><span class="p">)[</span><span class="n">repo</span><span class="p">]</span>
 
     <span class="c1"># If not, use RepoReader as the base object  # TODO: Finish RepoReader</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">path_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_path</span><span class="p">)</span>
     <span class="c1"># TODO: Temporarily commented out -- if not needed, remove</span>
     <span class="c1"># if (repo := next(path_iter, None)) is not None:</span>
     <span class="c1">#     s = s[repo]</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">resource</span> <span class="o">:=</span> <span class="nb">next</span><span class="p">(</span><span class="n">path_iter</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">repo_collection_names</span> <span class="ow">or</span> <span class="n">resource</span> <span class="o">==</span> <span class="s1">&#39;discussions&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">repo_collection_names</span> <span class="ow">or</span> <span class="n">resource</span> <span class="o">==</span> <span class="s2">&quot;discussions&quot;</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">repo</span><span class="p">)[</span><span class="n">resource</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># From now we assume the intent is to get a specific branch...</span>
-            <span class="k">if</span> <span class="n">resource</span> <span class="o">==</span> <span class="s1">&#39;tree&#39;</span><span class="p">:</span>  <span class="c1"># this is to be consistent with browser url access</span>
+            <span class="k">if</span> <span class="n">resource</span> <span class="o">==</span> <span class="s2">&quot;tree&quot;</span><span class="p">:</span>  <span class="c1"># this is to be consistent with browser url access</span>
                 <span class="c1"># then consider this to be a request for branches</span>
                 <span class="n">resource</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">path_iter</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -141,7 +141,7 @@
     <span class="n">repositories</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">team</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">action</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;add_to_repo&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_from_repos&#39;</span><span class="p">],</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;add_to_repo&quot;</span><span class="p">,</span> <span class="s2">&quot;remove_from_repos&quot;</span><span class="p">],</span>
     <span class="n">org</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">wait_s</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">):</span>
@@ -167,8 +167,8 @@
 
 
 
-<span class="n">add_repos_to_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;add_to_repo&#39;</span><span class="p">)</span>
-<span class="n">rm_repos_from_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;remove_from_repos&#39;</span><span class="p">)</span>
+<span class="n">add_repos_to_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;add_to_repo&quot;</span><span class="p">)</span>
+<span class="n">rm_repos_from_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;remove_from_repos&quot;</span><span class="p">)</span>
 
 
 <span class="c1"># --------------------------------------------------------------------------------------</span>
@@ -182,42 +182,42 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">replace_relative_urls</span><span class="p">,</span> <span class="n">generate_github_url</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="n">components</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">org</span><span class="p">,</span>
-        <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="n">repo</span><span class="p">,</span>
-        <span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="n">branch</span><span class="p">,</span>
-        <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">relpath</span><span class="p">,</span>
+        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">org</span><span class="p">,</span>
+        <span class="s2">&quot;repository&quot;</span><span class="p">:</span> <span class="n">repo</span><span class="p">,</span>
+        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">branch</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">relpath</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="s1">&#39;fully_qualified_raw&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="s2">&quot;fully_qualified_raw&quot;</span><span class="p">)</span>
     <span class="c1"># return (</span>
     <span class="c1">#     f&#39;https://raw.githubusercontent.com/{repo_stub}/refs/heads/{branch}/{relpath}&#39;</span>
     <span class="c1"># )</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_handle_repo_root_url</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="n">image_relative_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_handle_repo_root_url</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="n">image_relative_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="c1"># url join repo_root_url and image_relative_dir</span>
     <span class="k">if</span> <span class="n">image_relative_dir</span><span class="p">:</span>
         <span class="n">repo_root_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_root_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">image_relative_dir</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo_root_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_raw_url</span><span class="p">(</span><span class="o">**</span><span class="n">repo_root_url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
-        <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="o">*</span><span class="n">relpath</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="n">repo_stub</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="n">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relpath</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="o">*</span><span class="n">relpath</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">repo_stub</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">_raw_url</span><span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">repo</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relpath</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">protocol</span><span class="p">,</span> <span class="n">simple_url</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;github.com&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
-            <span class="s1">&#39;www.github.com&#39;</span>
+        <span class="n">protocol</span><span class="p">,</span> <span class="n">simple_url</span> <span class="o">=</span> <span class="n">repo_root_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;github.com&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">simple_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+            <span class="s2">&quot;www.github.com&quot;</span>
         <span class="p">):</span>
             <span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Your repo_root_url is: </span><span class="si">{</span><span class="n">repo_root_url</span><span class="si">}</span><span class="s1">. I do the work anyway, &#39;</span>
-                <span class="s1">&#39;but you may want to consider that usually the URL should be a raw &#39;</span>
-                <span class="s1">&#39;github URL like this: &#39;</span>
-                <span class="s1">&#39;https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. &#39;</span>
-                <span class="s1">&#39;Verify that the root URL you chose does work on the pypi readme page &#39;</span>
-                <span class="s1">&#39;if that is what you are targeting.&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;Your repo_root_url is: </span><span class="si">{</span><span class="n">repo_root_url</span><span class="si">}</span><span class="s2">. I do the work anyway, &quot;</span>
+                <span class="s2">&quot;but you may want to consider that usually the URL should be a raw &quot;</span>
+                <span class="s2">&quot;github URL like this: &quot;</span>
+                <span class="s2">&quot;https://raw.githubusercontent.com/REPO_STUB/BRANCH/RELPATH/. &quot;</span>
+                <span class="s2">&quot;Verify that the root URL you chose does work on the pypi readme page &quot;</span>
+                <span class="s2">&quot;if that is what you are targeting.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">repo_root_url</span>
 
@@ -229,7 +229,7 @@
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">repo_root_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">image_relative_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">image_relative_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a Jupyter notebook to Markdown and optionally post-process the output.</span>
@@ -267,7 +267,7 @@
     <span class="c1"># Ensure the notebook file exists</span>
     <span class="n">notebook_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">notebook_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Notebook not found: </span><span class="si">{</span><span class="n">notebook_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Notebook not found: </span><span class="si">{</span><span class="n">notebook_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Load and convert the notebook to Markdown</span>
     <span class="n">markdown_exporter</span> <span class="o">=</span> <span class="n">MarkdownExporter</span><span class="p">()</span>
@@ -291,11 +291,11 @@
         <span class="n">resource_dir</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">image_relative_dir</span>
         <span class="n">resource_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outputs&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="p">(</span><span class="n">resource_dir</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
         <span class="c1"># Write the Markdown file</span>
-        <span class="n">output_filename</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">.md&#39;</span>
+        <span class="n">output_filename</span> <span class="o">=</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.md&quot;</span>
         <span class="n">output_filename</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">markdown_content</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># If no output directory is specified, images are not saved to disk.</span>
@@ -323,9 +323,9 @@
 <span class="sd">        str: The post-processed Markdown content.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">md_src</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">md_src</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">md_src</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">md_src</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">md_src</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.ipynb&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.ipynb&quot;</span><span class="p">:</span>
             <span class="c1"># If the source is an ipynb file, convert it to Markdown</span>
             <span class="n">md_src</span> <span class="o">=</span> <span class="n">notebook_to_markdown</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -336,8 +336,8 @@
     <span class="n">trg_str</span> <span class="o">=</span> <span class="n">replace_relative_urls</span><span class="p">(</span><span class="n">md_src</span><span class="p">,</span> <span class="n">root_url</span><span class="o">=</span><span class="n">repo_root_url</span><span class="p">)</span>
 
     <span class="c1"># Remove unwanted artifacts</span>
-    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;style scoped&gt;(.*?)&lt;/style&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
-    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;```python\s*```&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&lt;style scoped&gt;(.*?)&lt;/style&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;```python\s*```&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 
     <span class="c1"># Save to the target file if specified</span>
     <span class="k">if</span> <span class="n">md_trg</span><span class="p">:</span>

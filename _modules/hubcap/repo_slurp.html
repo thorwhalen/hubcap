@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.repo_slurp &mdash; hubcap 0.1.11 documentation</title>
+  <title>hubcap.repo_slurp &mdash; hubcap 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -85,7 +85,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for hubcap.repo_slurp</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Tools to slurp a repo&#39;s information &quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Tools to slurp a repo&#39;s information&quot;&quot;&quot;</span>
 
 <span class="c1"># TODO: This module is a bit of a mess. It should be cleaned up and reorganized.</span>
 <span class="c1">#  It should also be tested.</span>
@@ -117,10 +117,10 @@
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.kv_to_python_aware_markdown">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">kv_to_python_aware_markdown</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Puts .py content in a code block, and returns a markdown formatted string.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">):</span>
         <span class="c1"># if it&#39;s a python file, we&#39;ll put it in a code block</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s1">```</span><span class="se">\n</span><span class="s1">&#39;</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;## </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\\</span><span class="s1">n</span><span class="se">\\</span><span class="s1">n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\\</span><span class="s1">n</span><span class="se">\\</span><span class="s1">n&#39;</span></div>
+        <span class="n">v</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;## </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\\</span><span class="s2">n</span><span class="se">\\</span><span class="s2">n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\\</span><span class="s2">n</span><span class="se">\\</span><span class="s2">n&quot;</span></div>
 
 
 
@@ -178,7 +178,7 @@
 <span class="sd">    Of the art.</span>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_text_segments_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">kv_to_text</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_text_segments_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">kv_to_text</span><span class="p">))</span></div>
 
 
 
@@ -209,11 +209,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">offset_header_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
-            <span class="n">header_level</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+            <span class="n">header_level</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
             <span class="n">new_level</span> <span class="o">=</span> <span class="n">header_level</span> <span class="o">+</span> <span class="n">offset</span>
             <span class="k">if</span> <span class="n">new_level</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="n">new_level</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">header_level</span><span class="p">:]</span>
+                <span class="k">return</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="n">new_level</span> <span class="o">+</span> <span class="n">line</span><span class="p">[</span><span class="n">header_level</span><span class="p">:]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">line</span>
         <span class="k">return</span> <span class="n">line</span>
@@ -222,8 +222,8 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_result_lines</span><span class="p">():</span>
         <span class="k">nonlocal</span> <span class="n">in_code_block</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">markdown_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;```&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">markdown_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;```&quot;</span><span class="p">):</span>
                 <span class="n">in_code_block</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_code_block</span>
                 <span class="k">yield</span> <span class="n">line</span>
             <span class="k">elif</span> <span class="n">in_code_block</span><span class="p">:</span>
@@ -231,7 +231,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">offset_header_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_result_lines</span><span class="p">())</span></div>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_result_lines</span><span class="p">())</span></div>
 
 
 
@@ -272,7 +272,7 @@
     <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">processor</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">processor</span><span class="si">}</span><span class="s1"> is not a callable&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">processor</span><span class="si">}</span><span class="s2"> is not a callable&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_markdown_lines</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">process_code</span><span class="p">,</span> <span class="n">process_markdown</span><span class="p">,</span> <span class="n">process_output</span><span class="p">):</span>
@@ -282,26 +282,26 @@
     <span class="n">process_output</span> <span class="o">=</span> <span class="n">_ensure_callable_processor</span><span class="p">(</span><span class="n">process_output</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">notebook</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s2">&quot;markdown&quot;</span><span class="p">:</span>
             <span class="n">processed</span> <span class="o">=</span> <span class="n">process_markdown</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">processed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">processed</span>
-        <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s1">&#39;code&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_type</span> <span class="o">==</span> <span class="s2">&quot;code&quot;</span><span class="p">:</span>
             <span class="n">processed_code</span> <span class="o">=</span> <span class="n">process_code</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">processed_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_code</span><span class="si">}</span><span class="se">\n</span><span class="s1">```&#39;</span>
-            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-                <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;stream&#39;</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;```python</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_code</span><span class="si">}</span><span class="se">\n</span><span class="s2">```&quot;</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;outputs&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;stream&quot;</span><span class="p">:</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">text</span>
-                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s1">&#39;execute_result&#39;</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">traceback</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">output</span><span class="o">.</span><span class="n">output_type</span> <span class="o">==</span> <span class="s2">&quot;execute_result&quot;</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text/plain&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">processed_output</span> <span class="o">=</span> <span class="n">process_output</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">processed_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="sa">f</span><span class="s1">&#39;```</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_output</span><span class="si">}</span><span class="se">\n</span><span class="s1">```&#39;</span>
+                    <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;```</span><span class="se">\n</span><span class="si">{</span><span class="n">processed_output</span><span class="si">}</span><span class="se">\n</span><span class="s2">```&quot;</span>
 
 
 <span class="c1"># TODO: Move to markdown utils module or package</span>
@@ -316,7 +316,7 @@
     <span class="n">process_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">process_markdown</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">process_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transforms a Jupyter notebook into a markdown string with control over cell processing.</span>
@@ -338,7 +338,7 @@
 
     <span class="c1"># Make a notebook object</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">notebook</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">as_version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -346,12 +346,12 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="n">notebook</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unsupported type for notebook: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported type for notebook: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">as_version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">NotebookNode</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
         <span class="nb">filter</span><span class="p">(</span>
             <span class="kc">None</span><span class="p">,</span>
             <span class="n">_markdown_lines</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">process_code</span><span class="p">,</span> <span class="n">process_markdown</span><span class="p">,</span> <span class="n">process_output</span><span class="p">),</span>
@@ -374,7 +374,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_local_git_repo</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s1">&#39;.git&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="ensure_repo_folder">
@@ -405,11 +405,11 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_decode_to_text_or_skip</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">log_error_function</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">log_error_function</span><span class="p">:</span>
             <span class="c1"># if log_error_function</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error decoding </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error decoding </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Note: None values will be skipped in text_from_mapping</span>
 
 
@@ -425,7 +425,7 @@
     <span class="k">return</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">folder</span><span class="p">),</span> <span class="n">filt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">key_pattern</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
 
 
-<span class="n">_pattern_for_python_and_markdown_files</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;.*\.(py|md)$&#39;</span>
+<span class="n">_pattern_for_python_and_markdown_files</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;.*\.(py|md)$&quot;</span>
 
 <span class="n">_filtered_py_and_md_files</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
     <span class="n">key_filtered_text_files</span><span class="p">,</span> <span class="n">key_pattern</span><span class="o">=</span><span class="n">_pattern_for_python_and_markdown_files</span>
@@ -433,7 +433,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_does_not_start_with_docsrc_or_setup</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">KT</span><span class="p">):</span>
-    <span class="k">return</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;docsrc/&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;setup.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;docsrc/&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;setup.&quot;</span><span class="p">)</span>
 
 
 <span class="c1"># TODO: A lot more can be done to parametrize the construction of a discussion text</span>
@@ -451,30 +451,30 @@
             <span class="n">offset</span> <span class="o">=</span> <span class="n">offset_headers</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;offset_headers must be an int or True, not </span><span class="si">{</span><span class="n">offset_headers</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s2">&quot;offset_headers must be an int or True, not </span><span class="si">{</span><span class="n">offset_headers</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="n">_offset_headers</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">add_offset_to_headers</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">_offset_headers</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
 
-    <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-    <span class="k">for</span> <span class="n">comment_num</span><span class="p">,</span> <span class="n">comment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Comment </span><span class="si">{</span><span class="n">comment_num</span><span class="si">}</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-        <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">comment</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-        <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">comment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;replies&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="k">yield</span> <span class="s1">&#39;#&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39; Reply</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-            <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">comment_num</span><span class="p">,</span> <span class="n">comment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; Comment </span><span class="si">{</span><span class="n">comment_num</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">comment</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">reply</span> <span class="ow">in</span> <span class="n">comment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;replies&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">yield</span> <span class="s2">&quot;#&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="n">header_level</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; Reply</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="k">yield</span> <span class="n">_offset_headers</span><span class="p">(</span><span class="n">reply</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_discussion_json_to_text</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">header_level</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__discussion_json_to_text_segments</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">header_level</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__discussion_json_to_text_segments</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">header_level</span><span class="p">))</span>
 
 
 <span class="c1"># TODO: A lot of this mapping (discussions, wikie, repo_files) stuff is remeniscent of</span>
 <span class="c1">#       dol.store_aggregate. Maybe we should integrate that here.</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">discussions_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">discussion_json_to_text</span><span class="o">=</span><span class="n">_discussion_json_to_text</span><span class="p">):</span>
     <span class="n">repo_url</span> <span class="o">=</span> <span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
-    <span class="n">discussions</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)[</span><span class="s1">&#39;discussions&#39;</span><span class="p">]</span>
+    <span class="n">discussions</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)[</span><span class="s2">&quot;discussions&quot;</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_gen</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">discussions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -488,7 +488,7 @@
         <span class="n">local_repo_folder</span> <span class="o">=</span> <span class="n">ensure_repo_folder</span><span class="p">(</span>
             <span class="n">repo</span><span class="p">,</span> <span class="n">clone_func</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">git_wiki_clone</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="n">suppress_errors</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">local_repo_folder</span><span class="p">),</span> <span class="n">filt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*\.md$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">TextFiles</span><span class="p">(</span><span class="n">local_repo_folder</span><span class="p">),</span> <span class="n">filt</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.*\.md$&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span>
     <span class="k">except</span> <span class="n">ResourceNotFound</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="n">NotSet</span><span class="p">:</span>
@@ -526,13 +526,16 @@
     <span class="k">return</span> <span class="n">mapping</span>
 
 
-<span class="n">CloneKinds</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;discussions&#39;</span><span class="p">]</span>
+<span class="n">CloneKinds</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;discussions&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="github_repo_mapping">
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.github_repo_mapping">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">github_repo_mapping</span><span class="p">(</span>
-    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">kind</span><span class="p">:</span> <span class="n">CloneKinds</span> <span class="o">=</span> <span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">repo_files_mapping</span><span class="o">=</span><span class="n">repo_files_mapping</span><span class="p">,</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">kind</span><span class="p">:</span> <span class="n">CloneKinds</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span><span class="p">,</span>
+    <span class="n">repo_files_mapping</span><span class="o">=</span><span class="n">repo_files_mapping</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clone a git repository and make a mapping of the files in the repository.</span>
@@ -551,11 +554,11 @@
     <span class="c1"># repo = ensure_github_url(repo)</span>
 
     <span class="c1"># subprocess.check_call(clone_command, shell=True)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;discussions&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;discussions&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">discussions_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;wiki&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;wiki&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">wiki_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{})</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;files&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;files&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">repo_files_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;kind must be &#39;files&#39; or &#39;wiki&#39;, not </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -566,7 +569,7 @@
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.repo_text_aggregate">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">repo_text_aggregate</span><span class="p">(</span>
     <span class="n">repo</span><span class="p">,</span>
-    <span class="n">kinds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="s1">&#39;wiki&#39;</span><span class="p">,</span> <span class="s1">&#39;discussions&#39;</span><span class="p">),</span>
+    <span class="n">kinds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;discussions&quot;</span><span class="p">),</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">github_repo_mapping</span><span class="o">=</span><span class="n">github_repo_mapping</span><span class="p">,</span>
     <span class="n">text_from_mapping</span><span class="o">=</span><span class="n">text_from_mapping</span><span class="p">,</span>
@@ -589,7 +592,7 @@
 <span class="sd">    A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github...</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">kinds</span><span class="p">:</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="n">text_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>

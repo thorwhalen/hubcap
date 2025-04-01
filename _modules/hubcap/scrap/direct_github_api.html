@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.scrap.direct_github_api &mdash; hubcap 0.1.11 documentation</title>
+  <title>hubcap.scrap.direct_github_api &mdash; hubcap 0.1.13 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=1e825a29"></script>
+      <script src="../../../_static/documentation_options.js?v=8d02545a"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -85,15 +85,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for hubcap.scrap.direct_github_api</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Functions that talk directly to api</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Functions that talk directly to api&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">DFLT_GITHUB_TOKEN_ENVIRON_NAME</span> <span class="o">=</span> <span class="s1">&#39;GITHUB_TOKEN&#39;</span>
-<span class="n">DFLT_USER</span> <span class="o">=</span> <span class="s1">&#39;thorwhalen&#39;</span>
-<span class="n">DFLT_REPO</span> <span class="o">=</span> <span class="s1">&#39;thorwhalen/graze&#39;</span>
+<span class="n">DFLT_GITHUB_TOKEN_ENVIRON_NAME</span> <span class="o">=</span> <span class="s2">&quot;GITHUB_TOKEN&quot;</span>
+<span class="n">DFLT_USER</span> <span class="o">=</span> <span class="s2">&quot;thorwhalen&quot;</span>
+<span class="n">DFLT_REPO</span> <span class="o">=</span> <span class="s2">&quot;thorwhalen/graze&quot;</span>
 
 
 <div class="viewcode-block" id="get_token">
@@ -106,15 +106,15 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/vnd.github.v3+json&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.github.v3+json&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_repos_info</span><span class="p">(</span>
     <span class="n">user</span><span class="o">=</span><span class="n">DFLT_USER</span><span class="p">,</span>
-    <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;updated&#39;</span><span class="p">,</span>
-    <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;desc&#39;</span><span class="p">,</span>
+    <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;updated&quot;</span><span class="p">,</span>
+    <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;desc&quot;</span><span class="p">,</span>
     <span class="n">per_page</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -125,7 +125,7 @@
     <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
     <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;https://api.github.com/users/</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s1">/repos&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;https://api.github.com/users/</span><span class="si">{</span><span class="n">user</span><span class="si">}</span><span class="s2">/repos&quot;</span><span class="p">,</span>
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
         <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
     <span class="p">)</span>
@@ -137,7 +137,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">repos_info</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">DFLT_USER</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;List repos and their info: dataframe&quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">_repos_info</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;full_name&quot;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
 
 
@@ -147,7 +147,7 @@
     <span class="n">token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
     <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;https://api.github.com/repos/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s1">/actions/runs&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;https://api.github.com/repos/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">/actions/runs&quot;</span><span class="p">,</span>
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
         <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
     <span class="p">)</span>
@@ -158,8 +158,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">actions_info</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">DFLT_REPO</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Github actions runs info: dataframe of workflow runs sorted by last updated&quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">_actions_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="n">per_page</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">workflow_runs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;workflow_runs&#39;</span><span class="p">,</span> <span class="p">[])</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">workflow_runs</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;updated_at&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">workflow_runs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workflow_runs&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">workflow_runs</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;updated_at&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span></div>
 
 
@@ -167,14 +167,14 @@
 <div class="viewcode-block" id="get_last_build_status">
 <a class="viewcode-back" href="../../../module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_last_build_status">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">DFLT_REPO</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check on github actions status of a repo &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check on github actions status of a repo&quot;&quot;&quot;</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">_actions_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">runs_docs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;workflow_runs&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">runs_docs</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workflow_runs&quot;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="c1"># no suitable status was found for a previous build, so the status is &quot;None&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">runs_docs</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">conclusion</span> <span class="o">=</span> <span class="n">runs_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;conclusion&#39;</span><span class="p">]</span>
+    <span class="n">conclusion</span> <span class="o">=</span> <span class="n">runs_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;conclusion&quot;</span><span class="p">]</span>
     <span class="c1">#     print(f&quot;&gt;&gt;&gt; previous run found with conclusion={conclusion}&quot;)</span>
     <span class="k">return</span> <span class="n">conclusion</span></div>
 
@@ -187,7 +187,7 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)]</span>
-    <span class="n">cis</span> <span class="o">=</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]}</span>
+    <span class="n">cis</span> <span class="o">=</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]}</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">cis</span><span class="p">)</span></div>
 
 
@@ -196,9 +196,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">date_selection_lidx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">date_column</span><span class="o">=</span><span class="s1">&#39;updated_at&#39;</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">gt</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">date_selection_lidx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">date_column</span><span class="o">=</span><span class="s2">&quot;updated_at&quot;</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">gt</span><span class="p">):</span>
     <span class="n">thresh_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">date_column</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">date_column</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">df</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_column</span><span class="p">])</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -212,7 +212,7 @@
     <span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
     <span class="n">updated_recently_lidx</span> <span class="o">=</span> <span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="n">hours_ago</span><span class="p">)</span>
     <span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">updated_recently_lidx</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]}</span></div>
+    <span class="k">return</span> <span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]}</span></div>
 
 
 
