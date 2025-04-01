@@ -145,8 +145,8 @@ True
 ['gh-pages', 'master']
 >>> branch = repo['master']
 >>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
-['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE',
-'/README.md', '/docsrc/', '/hubcap/', '/misc/', '/setup.cfg', '/setup.py']
+['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE', 
+'/README.md', '/hubcap/', '/misc/', '/setup.cfg', '/setup.py']
 >>> content = branch['/setup.cfg']
 >>> print(content[:32].decode())
 [metadata]
