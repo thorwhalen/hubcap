@@ -806,7 +806,9 @@ def create_markdown_from_discussion_jdict(jdict: Union[dict, Iterable[dict]]):
         return "\n\n".join(create_markdown_from_discussion_jdict(d) for d in jdict)
 
 
-create_markdown_from_jdict = create_markdown_from_discussion_jdict  # for backwards compatibility
+create_markdown_from_jdict = (
+    create_markdown_from_discussion_jdict  # for backwards compatibility
+)
 
 # --------------------------------------------------------------------------------------
 # Parse and generate github URLS
