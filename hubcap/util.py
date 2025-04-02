@@ -773,8 +773,9 @@ class Discussions(KvReader):
         return result
 
 
+# TODO: Make it so that we can pass in subdicts of the discussion fields (for example, single or multiple comments)
 # TODO: Perculate more control to the arguments
-def create_markdown_from_jdict(jdict: Union[dict, Iterable[dict]]):
+def create_markdown_from_discussion_jdict(jdict: Union[dict, Iterable[dict]]):
     """
     Creates a markdown representation of a discussion (metadata json-dict).
 
@@ -802,8 +803,10 @@ def create_markdown_from_jdict(jdict: Union[dict, Iterable[dict]]):
         ), f"Expected dict or Iterable, got {type(jdict)}"
         if isinstance(jdict, dict):
             jdict = jdict.values()
-        return "\n\n".join(create_markdown_from_jdict(d) for d in jdict)
+        return "\n\n".join(create_markdown_from_discussion_jdict(d) for d in jdict)
 
+
+create_markdown_from_jdict = create_markdown_from_discussion_jdict  # for backwards compatibility
 
 # --------------------------------------------------------------------------------------
 # Parse and generate github URLS
