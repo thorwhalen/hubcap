@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.util &mdash; hubcap 0.1.13 documentation</title>
+  <title>hubcap.util &mdash; hubcap 0.1.14 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8d02545a"></script>
+      <script src="../../_static/documentation_options.js?v=468bc497"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -890,10 +890,11 @@
 
 
 
+<span class="c1"># TODO: Make it so that we can pass in subdicts of the discussion fields (for example, single or multiple comments)</span>
 <span class="c1"># TODO: Perculate more control to the arguments</span>
-<div class="viewcode-block" id="create_markdown_from_jdict">
-<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.create_markdown_from_jdict">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">create_markdown_from_jdict</span><span class="p">(</span><span class="n">jdict</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]):</span>
+<div class="viewcode-block" id="create_markdown_from_discussion_jdict">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.create_markdown_from_discussion_jdict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_markdown_from_discussion_jdict</span><span class="p">(</span><span class="n">jdict</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a markdown representation of a discussion (metadata json-dict).</span>
 
@@ -921,9 +922,11 @@
         <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">jdict</span> <span class="o">=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_discussion_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
 
 
+
+<span class="n">create_markdown_from_jdict</span> <span class="o">=</span> <span class="n">create_markdown_from_discussion_jdict</span>  <span class="c1"># for backwards compatibility</span>
 
 <span class="c1"># --------------------------------------------------------------------------------------</span>
 <span class="c1"># Parse and generate github URLS</span>
