@@ -132,6 +132,7 @@ def _handle_repo_root_url(repo_root_url, image_relative_dir=""):
         return repo_root_url
 
 
+# TODO: There's a same name function in hubcap.repo_slurp, as well as in contaix.markdwon and dn.src -- consolidate!!
 def notebook_to_markdown(
     notebook_path: str,
     output_dir: Optional[str] = None,
