@@ -82,6 +82,26 @@ rm_repos_from_team = partial(team_repositories_action, action="remove_from_repos
 
 
 # --------------------------------------------------------------------------------------
+# Get markdown aggregate from GitHub repositories
+from functools import partial
+from types import SimpleNamespace
+from hubcap.repo_slurp import repo_text_aggregate
+
+github_repo_markdown_of = SimpleNamespace(
+    files=repo_text_aggregate(kinds=["files"]),
+    discussions=repo_text_aggregate(kinds=["discussions"]),
+    issues=repo_text_aggregate(kinds=["issues"]),
+    wikis=repo_text_aggregate(kinds=["wikis"]),
+)
+github_repo_markdown_of.__doc__ = (
+    "Holds functions to get markdown aggregate from GitHub repositories.\n\n"
+    "Example usage:\n\n"
+    ">>> github_repo_markdown_of.files('thorwhalen/hubcap')  # doctest: +SKIP\n"
+    ">>> github_repo_markdown_of.issues('thorwhalen/hubcap')  # doctest: +SKIP\n"
+)
+
+
+# --------------------------------------------------------------------------------------
 # Converting notebooks to Markdown and cleaning them up
 
 from typing import Optional, Union

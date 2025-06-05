@@ -198,7 +198,11 @@ from hubcap.util import (
     generate_github_url,  # generate a GitHub URL from the provided components dict.
     transform_github_url,  # transform a GitHub URL to another type, updating components as needed.
 )
-from hubcap.tools import hub, notebook_to_markdown
+from hubcap.tools import (
+    hub,  # High-level function to access GitHub resources.
+    notebook_to_markdown,  # Converts a Jupyter notebook to markdown.
+    github_repo_markdown_of  # Holds functions to get markdown aggregate from GitHub repositories
+)
 from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.
     ensure_repo_folder,  # Clone a git repository to a folder (default is a temporary folder() and return the path to that folder.
