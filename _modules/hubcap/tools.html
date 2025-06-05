@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.15 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.16 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=e2f3408e"></script>
+      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -169,6 +169,26 @@
 
 <span class="n">add_repos_to_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;add_to_repo&quot;</span><span class="p">)</span>
 <span class="n">rm_repos_from_team</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">team_repositories_action</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;remove_from_repos&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Get markdown aggregate from GitHub repositories</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleNamespace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.repo_slurp</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_text_aggregate</span>
+
+<span class="n">github_repo_markdown_of</span> <span class="o">=</span> <span class="n">SimpleNamespace</span><span class="p">(</span>
+    <span class="n">files</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">repo_text_aggregate</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]),</span>
+    <span class="n">discussions</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">repo_text_aggregate</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;discussions&quot;</span><span class="p">]),</span>
+    <span class="n">issues</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">repo_text_aggregate</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">]),</span>
+    <span class="n">wikis</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">repo_text_aggregate</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;wikis&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">github_repo_markdown_of</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;Holds functions to get markdown aggregate from GitHub repositories.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Example usage:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;&gt;&gt;&gt; github_repo_markdown_of.files(&#39;thorwhalen/hubcap&#39;)  # doctest: +SKIP</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;&gt;&gt;&gt; github_repo_markdown_of.issues(&#39;thorwhalen/hubcap&#39;)  # doctest: +SKIP</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="p">)</span>
 
 
 <span class="c1"># --------------------------------------------------------------------------------------</span>
