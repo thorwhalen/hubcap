@@ -88,10 +88,10 @@ from types import SimpleNamespace
 from hubcap.repo_slurp import repo_text_aggregate
 
 github_repo_markdown_of = SimpleNamespace(
-    files=repo_text_aggregate(kinds=["files"]),
-    discussions=repo_text_aggregate(kinds=["discussions"]),
-    issues=repo_text_aggregate(kinds=["issues"]),
-    wikis=repo_text_aggregate(kinds=["wikis"]),
+    files=partial(repo_text_aggregate, kinds=["files"]),
+    discussions=partial(repo_text_aggregate, kinds=["discussions"]),
+    issues=partial(repo_text_aggregate, kinds=["issues"]),
+    wikis=partial(repo_text_aggregate, kinds=["wikis"]),
 )
 github_repo_markdown_of.__doc__ = (
     "Holds functions to get markdown aggregate from GitHub repositories.\n\n"
