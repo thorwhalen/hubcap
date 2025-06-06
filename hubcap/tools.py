@@ -270,3 +270,322 @@ def postprocess_markdown_from_notebook(
         Path(md_trg).write_text(trg_str)
 
     return trg_str
+
+
+# --------------------------------------------------------------------------------------
+# Copying discussions from one repo to another (even with private repos!)
+
+import os
+import requests
+import re
+import json
+
+# --- Configuration ---
+# Get your GitHub Personal Access Token from environment variable
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+if not GITHUB_TOKEN:
+    raise EnvironmentError("GITHUB_TOKEN environment variable not set.")
+
+GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
+
+# --- Helper Functions ---
+
+
+def run_graphql_query(query, variables=None):
+    """Executes a GraphQL query against the GitHub API."""
+    headers = {
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "Content-Type": "application/json",
+    }
+    payload = {"query": query, "variables": variables or {}}
+    response = requests.post(GITHUB_GRAPHQL_URL, headers=headers, json=payload)
+    response.raise_for_status()  # Raise an exception for HTTP errors
+    data = response.json()
+    if "errors" in data:
+        raise Exception(f"GraphQL errors: {data['errors']}")
+    return data["data"]
+
+
+def parse_github_discussion_url(discussion_url):
+    """Parses a GitHub discussion URL to extract owner, repo, and discussion number."""
+    match = re.match(
+        r"https://github.com/([^/]+)/([^/]+)/discussions/(\d+)", discussion_url
+    )
+    if not match:
+        raise ValueError("Invalid GitHub discussion URL format.")
+    owner, repo_name, discussion_number = match.groups()
+    return owner, repo_name, int(discussion_number)
+
+
+def parse_github_repo_url(repo_url):
+    """Parses a GitHub repository URL to extract owner and repo name."""
+    match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
+    if not match:
+        raise ValueError("Invalid GitHub repository URL format.")
+    owner, repo_name = match.groups()
+    return owner, repo_name
+
+
+def get_repository_id(owner, repo_name):
+    """Gets the GraphQL node ID of a repository."""
+    query = """
+    query GetRepositoryId($owner: String!, $repoName: String!) {
+      repository(owner: $owner, name: $repoName) {
+        id
+        discussionCategories(first: 100) { # Fetch categories to aid in creating discussions
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+    """
+    variables = {"owner": owner, "repoName": repo_name}
+    data = run_graphql_query(query, variables)
+    if not data or not data["repository"]:
+        raise Exception(f"Repository '{owner}/{repo_name}' not found or inaccessible.")
+    return data["repository"]["id"], data["repository"]["discussionCategories"]["nodes"]
+
+
+def get_discussion_data(owner, repo_name, discussion_number):
+    """
+    Fetches the full JSON data for a discussion, including comments,
+    using the GitHub GraphQL API.
+    """
+    query = """
+    query GetDiscussion($owner: String!, $repoName: String!, $discussionNumber: Int!) {
+      repository(owner: $owner, name: $repoName) {
+        discussion(number: $discussionNumber) {
+          title
+          body
+          url
+          createdAt
+          author {
+            login
+          }
+          category {
+            id # Category ID is needed for new discussion creation
+            name
+          }
+          comments(first: 100) { # Adjust 'first' for more comments, use pagination if needed
+            nodes {
+              body
+              createdAt
+              author {
+                login
+              }
+              # You can add more fields for comments if needed, e.g., reactions, url
+            }
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+          }
+        }
+      }
+    }
+    """
+    variables = {
+        "owner": owner,
+        "repoName": repo_name,
+        "discussionNumber": discussion_number,
+    }
+    data = run_graphql_query(query, variables)
+    if not data or not data["repository"] or not data["repository"]["discussion"]:
+        raise Exception(
+            f"Discussion #{discussion_number} in '{owner}/{repo_name}' not found or inaccessible."
+        )
+
+    discussion = data["repository"]["discussion"]
+    comments = discussion["comments"]["nodes"]
+
+    # Handle pagination for comments
+    while discussion["comments"]["pageInfo"]["hasNextPage"]:
+        cursor = discussion["comments"]["pageInfo"]["endCursor"]
+        comment_query = """
+        query GetMoreDiscussionComments($owner: String!, $repoName: String!, $discussionNumber: Int!, $cursor: String!) {
+          repository(owner: $owner, name: $repoName) {
+            discussion(number: $discussionNumber) {
+              comments(first: 100, after: $cursor) {
+                nodes {
+                  body
+                  createdAt
+                  author {
+                    login
+                  }
+                }
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+              }
+            }
+          }
+        }
+        """
+        comment_variables = {
+            "owner": owner,
+            "repoName": repo_name,
+            "discussionNumber": discussion_number,
+            "cursor": cursor,
+        }
+        comment_data = run_graphql_query(comment_query, comment_variables)
+        discussion["comments"]["nodes"].extend(
+            comment_data["repository"]["discussion"]["comments"]["nodes"]
+        )
+        discussion["comments"]["pageInfo"] = comment_data["repository"]["discussion"][
+            "comments"
+        ]["pageInfo"]
+
+    return discussion
+
+
+def create_discussion(repo_id, title, body, category_id):
+    """Creates a new discussion in the target repository."""
+    mutation = """
+    mutation CreateDiscussion($repositoryId: ID!, $title: String!, $body: String!, $categoryId: ID!) {
+      createDiscussion(input: {repositoryId: $repositoryId, title: $title, body: $body, categoryId: $categoryId}) {
+        discussion {
+          id
+          url
+          number
+        }
+      }
+    }
+    """
+    variables = {
+        "repositoryId": repo_id,
+        "title": title,
+        "body": body,
+        "categoryId": category_id,
+    }
+    data = run_graphql_query(mutation, variables)
+    return data["createDiscussion"]["discussion"]
+
+
+def create_discussion_comment(discussion_id, body):
+    """Adds a comment to an existing discussion."""
+    mutation = """
+    mutation AddDiscussionComment($discussionId: ID!, $body: String!) {
+      addDiscussionComment(input: {discussionId: $discussionId, body: $body}) {
+        comment {
+          id
+          url
+        }
+      }
+    }
+    """
+    variables = {"discussionId": discussion_id, "body": body}
+    data = run_graphql_query(mutation, variables)
+    return data["addDiscussionComment"]["comment"]
+
+
+def copy_discussion(
+    source_discussion_url, target_repo_url, *, target_category_name='General'
+):
+    """
+    Copies a discussion from a source URL to a target repository URL.
+    Attempts to preserve content and provide context for original authors/timestamps.
+    """
+    print(f"--- Starting Discussion Copy ---")
+    print(f"Source Discussion: {source_discussion_url}")
+    print(f"Target Repository: {target_repo_url}")
+
+    # 1. Parse URLs
+    source_owner, source_repo_name, discussion_number = parse_github_discussion_url(
+        source_discussion_url
+    )
+    target_owner, target_repo_name = parse_github_repo_url(target_repo_url)
+
+    # 2. Get target repository ID and categories
+    print(
+        f"Getting target repository ID and discussion categories for '{target_owner}/{target_repo_name}'..."
+    )
+    target_repo_id, target_categories = get_repository_id(
+        target_owner, target_repo_name
+    )
+    print("Available discussion categories in target repository:")
+    for cat in target_categories:
+        print(f"  - Name: {cat['name']}, ID: {cat['id']}")
+
+    # Prompt user to choose a category ID
+    if target_category_name is None:
+        target_category_name = input(
+            "Enter the name of the target discussion category (e.g., 'General', 'Q&A'): "
+        )
+
+    target_category_id = None
+    for cat in target_categories:
+        if cat['name'].lower() == target_category_name.lower():
+            target_category_id = cat['id']
+            break
+    if not target_category_id:
+        raise ValueError(
+            f"Category '{target_category_name}' not found in target repository. Please choose from the listed categories."
+        )
+
+    # 3. Get source discussion data
+    print(
+        f"Fetching discussion #{discussion_number} from '{source_owner}/{source_repo_name}'..."
+    )
+    source_discussion = get_discussion_data(
+        source_owner, source_repo_name, discussion_number
+    )
+
+    # 4. Prepare new discussion title and body
+    original_discussion_link = source_discussion["url"]
+    original_author = (
+        source_discussion["author"]["login"]
+        if source_discussion["author"]
+        else "Unknown"
+    )
+    original_created_at = source_discussion["createdAt"]
+    original_category_name = (
+        source_discussion["category"]["name"]
+        if source_discussion["category"]
+        else "Unknown"
+    )
+
+    new_title = f"{source_discussion['title']}"
+    new_body_prefix = f"""
+_This discussion was copied from [original discussion]({original_discussion_link}) in `{source_owner}/{source_repo_name}`._
+
+---
+**Original Post by @{original_author} on {original_created_at} (Category: {original_category_name}):**
+
+"""
+    new_body = new_body_prefix + source_discussion["body"]
+
+    # 5. Create the new discussion
+    print(
+        f"Creating new discussion in '{target_owner}/{target_repo_name}' under category '{target_category_name}'..."
+    )
+    new_discussion = create_discussion(
+        target_repo_id, new_title, new_body, target_category_id
+    )
+    print(f"New discussion created: {new_discussion['url']}")
+    print(f"New discussion ID: {new_discussion['id']}")
+
+    # 6. Copy comments
+    print("Copying comments...")
+    for i, comment in enumerate(source_discussion["comments"]["nodes"]):
+        comment_author = comment["author"]["login"] if comment["author"] else "Unknown"
+        comment_created_at = comment["createdAt"]
+
+        new_comment_body = f"""
+---
+**Comment by @{comment_author} on {comment_created_at}:**
+
+{comment["body"]}
+"""
+        try:
+            create_discussion_comment(new_discussion["id"], new_comment_body)
+            print(
+                f"  - Copied comment {i + 1}/{len(source_discussion['comments']['nodes'])}"
+            )
+        except Exception as e:
+            print(f"  - ERROR copying comment {i + 1}: {e}")
+
+    print(f"--- Discussion Copy Complete ---")
+    print(f"New discussion available at: {new_discussion['url']}")

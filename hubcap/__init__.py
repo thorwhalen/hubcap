@@ -201,7 +201,8 @@ from hubcap.util import (
 from hubcap.tools import (
     hub,  # High-level function to access GitHub resources.
     notebook_to_markdown,  # Converts a Jupyter notebook to markdown.
-    github_repo_markdown_of  # Holds functions to get markdown aggregate from GitHub repositories
+    github_repo_markdown_of,  # Holds functions to get markdown aggregate from GitHub repositories
+    copy_discussion,  # Copies a discussion from one repository to another.
 )
 from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.
