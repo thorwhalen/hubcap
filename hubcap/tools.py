@@ -589,3 +589,144 @@ _This discussion was copied from [original discussion]({original_discussion_link
 
     print(f"--- Discussion Copy Complete ---")
     print(f"New discussion available at: {new_discussion['url']}")
+
+
+# --------------------------------------------------------------------------------------
+# Miscellaneous tools
+
+
+# TODO: Enhance to get more information, or be able to ask more from sha
+# TODO: Test (manually): Not sure I'm getting all the commits I should be getting
+def get_author_commits(
+    repo: str, author_email: str, days_range: tuple | int
+) -> list[dict]:
+    """
+    Fetches GitHub commits for a specific author within a given date range.
+
+    Args:
+        repo_name (str): The repo_owner/repo_name in the format for a repo.
+        author_email (str): The email address of the author to filter commits by.
+        days_range (tuple | int): The date range for the commits.
+                                  If an int, it's the number of days back from today.
+                                  If a tuple, it's (start_date_str, end_date_str) in 'YYYY-MM-DD' format (inclusive).
+
+    Returns:
+        list[dict]: A list of dictionaries, where each dictionary represents a commit
+                    and contains 'sha', 'message', 'author_name', 'author_email', 'commit_date'.
+                    Returns an empty list if no commits are found or an error occurs.
+    """
+
+    import os
+    import requests
+    from datetime import datetime, timedelta, timezone
+
+    github_token = os.environ.get('GITHUB_TOKEN')
+    if not github_token:
+        print("Error: GITHUB_TOKEN environment variable not set.")
+        return []
+
+    base_url = f"https://api.github.com/repos/{repo}/commits"
+    headers = {
+        "Authorization": f"token {github_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    # Determine start_date and end_date
+    today = datetime.now(timezone.utc).date()
+    if isinstance(days_range, int):
+        if days_range < 0:
+            print("Error: days_range (int) cannot be negative.")
+            return []
+        start_date_obj = today - timedelta(days=days_range)
+        end_date_obj = today
+    elif isinstance(days_range, tuple) and len(days_range) == 2:
+        try:
+            start_date_obj = datetime.strptime(days_range[0], '%Y-%m-%d').date()
+            end_date_obj = datetime.strptime(days_range[1], '%Y-%m-%d').date()
+        except ValueError:
+            print("Error: Invalid date format in days_range tuple. Use 'YYYY-MM-DD'.")
+            return []
+        if start_date_obj > end_date_obj:
+            print("Error: start_date cannot be after end_date.")
+            return []
+    else:
+        print(
+            "Error: days_range must be an integer or a tuple of (start_date_str, end_date_str)."
+        )
+        return []
+
+    # Format dates for GitHub API (ISO 8601)
+    # To make dates inclusive of the full day, set time to 00:00:00 for 'since' and 23:59:59 for 'until'
+    since_iso = (
+        datetime.combine(start_date_obj, datetime.min.time(), tzinfo=timezone.utc)
+        .isoformat(timespec='seconds')
+        .replace('+00:00', 'Z')
+    )
+    until_iso = (
+        datetime.combine(end_date_obj, datetime.max.time(), tzinfo=timezone.utc)
+        .isoformat(timespec='seconds')
+        .replace('+00:00', 'Z')
+    )
+
+    all_commits = []
+    page = 1
+    per_page = 100  # Max per_page for GitHub API
+
+    while True:
+        params = {
+            "since": since_iso,
+            "until": until_iso,
+            "per_page": per_page,
+            "page": page,
+        }
+
+        try:
+            response = requests.get(base_url, headers=headers, params=params)
+            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+            commits_data = response.json()
+
+            if not commits_data:
+                break  # No more commits on this page
+
+            for commit_info in commits_data:
+                commit_detail = commit_info.get('commit', {})
+                author_detail = commit_detail.get('author', {})
+                committer_detail = commit_detail.get(
+                    'committer', {}
+                )  # Fallback to committer if author is not filled
+
+                commit_email = author_detail.get('email') or committer_detail.get(
+                    'email'
+                )
+
+                if commit_email and commit_email.lower() == author_email.lower():
+                    all_commits.append(
+                        {
+                            "sha": commit_info.get('sha'),
+                            "message": commit_detail.get('message'),
+                            "author_name": author_detail.get('name')
+                            or committer_detail.get('name'),
+                            "author_email": commit_email,
+                            "commit_date": author_detail.get('date')
+                            or committer_detail.get(
+                                'date'
+                            ),  # Use author date or committer date
+                        }
+                    )
+
+            if len(commits_data) < per_page:
+                break  # Less than per_page commits means it's the last page
+
+            page += 1
+
+        except requests.exceptions.RequestException as e:
+            print(f"Network or API error: {e}")
+            break
+        except ValueError:
+            print("Error: Could not parse API response as JSON.")
+            break
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break
+
+    return all_commits
