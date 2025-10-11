@@ -11,7 +11,7 @@ Usage
 import json
 import os
 
-from config2py import simple_config_getter, get_app_data_folder
+from config2py import simple_config_getter, get_app_config_folder
 from dol import Files, wrap_kvs, TextFiles, path_get
 import dill
 import requests
@@ -21,7 +21,7 @@ LocalJsonStore = wrap_kvs(TextFiles, data_of_obj=json.dumps, obj_of_data=json.lo
 
 APP_NAME = "hubcap"
 get_config = simple_config_getter(APP_NAME)
-data_folder = os.path.join(get_app_data_folder(APP_NAME), "data")
+data_folder = os.path.join(get_app_config_folder(APP_NAME), "data")
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
 from dol import path_get
