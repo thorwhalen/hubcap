@@ -1,6 +1,7 @@
 """A place to put constants, defaults, types..."""
 
-from typing import Any, Literal, Tuple, Dict, Iterable, Union, Callable, NewType
+from typing import Any, Literal, Tuple, Dict, Union, NewType
+from collections.abc import Iterable, Callable
 from datetime import datetime
 
 from github.Repository import Repository
@@ -10,13 +11,13 @@ from dol.signatures import Sig
 # Some functions to help create the constants
 
 
-def _non_callable_non_dundered_attrs(obj: Any) -> Tuple[str]:
+def _non_callable_non_dundered_attrs(obj: Any) -> tuple[str]:
     return tuple(
         x for x in dir(obj) if not x.startswith("_") and not callable(getattr(obj, x))
     )
 
 
-def _non_callable_non_dundered_attrs_of_repo_type() -> Tuple[str]:
+def _non_callable_non_dundered_attrs_of_repo_type() -> tuple[str]:
     return _non_callable_non_dundered_attrs(Repository)
 
 
@@ -40,8 +41,8 @@ RepoPropSpec = Union[RepoProperty, RepoFunc]  # A repo property or function on r
 # The normal way is to specify RepoInfo with a dict,
 #  but iterable of items allows us to define a immutable default repo_info, so:
 RepoInfo = Union[
-    Dict[str, RepoProperty],  # {field: prop_spec, ...}
-    Iterable[Tuple[str, RepoProperty]],  # [(field, prop_spec), ...]
+    dict[str, RepoProperty],  # {field: prop_spec, ...}
+    Iterable[tuple[str, RepoProperty]],  # [(field, prop_spec), ...]
     str,  # "prop1 prop2 ..."
 ]
 

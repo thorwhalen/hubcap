@@ -1,4 +1,4 @@
-"""Discussions acquisition
+r"""Discussions acquisition
 
 Usage
 *****
@@ -102,14 +102,14 @@ class Reply:
 @dataclass
 class Comment:
     body: str
-    replies: List[Reply]
+    replies: list[Reply]
 
 
 @dataclass
 class Discussion:
     body: str
     title: str
-    comments: List[Comment]
+    comments: list[Comment]
 
 
 LocalDiscussionsStore = wrap_kvs(

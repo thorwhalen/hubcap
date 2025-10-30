@@ -2,7 +2,7 @@
 
 from functools import cached_property, partial
 from operator import attrgetter
-from typing import Mapping
+from collections.abc import Mapping
 from dol import KvReader, wrap_kvs
 from dol.util import format_invocation
 
@@ -466,8 +466,7 @@ class PaginatedListDol:
         self.paginated_list = paginated_list
 
     def __iter__(self):
-        for item in self.paginated_list:
-            yield item
+        yield from self.paginated_list
 
     def __len__(self):
         return self.paginated_list.totalCount

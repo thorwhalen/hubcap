@@ -4,7 +4,8 @@ import pandas as pd
 import requests
 from io import BytesIO
 import re
-from typing import Union, Iterable
+from typing import Union
+from collections.abc import Iterable
 
 Url = str
 Urls = Iterable[Url]

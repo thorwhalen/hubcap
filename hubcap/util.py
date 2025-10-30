@@ -1,6 +1,7 @@
 """Utils for hubcap."""
 
-from typing import Union, Dict, Literal, get_args, Callable, Iterable
+from typing import Union, Dict, Literal, get_args
+from collections.abc import Callable, Iterable
 from functools import lru_cache
 from urllib.parse import urljoin
 from operator import attrgetter
@@ -394,7 +395,7 @@ def _ensure_repo_func(prop_spec: RepoPropSpec) -> RepoFunc:
         return prop_spec
 
 
-def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, RepoFunc]:
+def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> dict[str, RepoFunc]:
     """Ensure a dict of repo info.
 
     >>> d = _ensure_repo_info_dict_with_func_values('name html_url')
@@ -408,7 +409,7 @@ def _ensure_repo_info_dict_with_func_values(repo_info: RepoInfo) -> Dict[str, Re
     return {k: _ensure_repo_func(v) for k, v in repo_info.items()}
 
 
-def ensure_url_suffix(url: Union[str, Repository]) -> str:
+def ensure_url_suffix(url: str | Repository) -> str:
     """Ensure a url suffix, that is, get rid of the (...)github.com prefix.
 
     >>> ensure_url_suffix('https://www.github.com/thorwhalen/hubcap/README.md')
@@ -554,13 +555,32 @@ def git(
             raise e
 
 
-def _prep_git_clone_args(repo, clone_to_folder=None):
-    return (ensure_github_url(repo), ensure_folder_to_clone_into(clone_to_folder))
+def _prep_git_clone_args(repo, clone_to_folder=None, branch=None):
+    return (
+        ensure_github_url(repo),
+        ensure_folder_to_clone_into(clone_to_folder),
+        branch,
+    )
 
 
-def git_clone(repo, clone_to_folder=None):
-    repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
-    git(f"clone {repo_url} {clone_to_folder}")
+def git_clone(repo, clone_to_folder=None, branch=None):
+    """Clone a GitHub repository, optionally specifying a branch.
+
+    Args:
+        repo: Repository URL or identifier
+        clone_to_folder: Local folder to clone into (creates temp folder if None)
+        branch: Optional branch name to clone (clones default branch if None)
+
+    Returns:
+        Path to the cloned repository folder
+    """
+    repo_url, clone_to_folder, branch = _prep_git_clone_args(
+        repo, clone_to_folder, branch
+    )
+    if branch:
+        git(f"clone --branch {branch} {repo_url} {clone_to_folder}")
+    else:
+        git(f"clone {repo_url} {clone_to_folder}")
     return clone_to_folder
 
 
@@ -647,8 +667,8 @@ class Discussions(KvReader):
         self,
         repo: RepoSpec,
         *,
-        token: Optional[str] = None,
-        discussion_fields: Tuple[str] = DFLT_DISCUSSION_FIELDS,
+        token: str | None = None,
+        discussion_fields: tuple[str] = DFLT_DISCUSSION_FIELDS,
         _max_discussions: int = 100,
         _max_comments: int = 100,
         _max_replies: int = 100,
@@ -775,7 +795,7 @@ class Discussions(KvReader):
 
 # TODO: Make it so that we can pass in subdicts of the discussion fields (for example, single or multiple comments)
 # TODO: Perculate more control to the arguments
-def create_markdown_from_discussion_jdict(jdict: Union[dict, Iterable[dict]]):
+def create_markdown_from_discussion_jdict(jdict: dict | Iterable[dict]):
     """
     Creates a markdown representation of a discussion (metadata json-dict).
 
@@ -859,6 +879,11 @@ _github_url_templates = [
         "field_patterns": {"path": ".+"},
     },
     {
+        "name": "tree_path",
+        "template": "https://github.com/{username}/{repository}/tree/{branch}/{path}",
+        "field_patterns": {"path": ".+"},
+    },
+    {
         "name": "branch",
         "template": "https://github.com/{username}/{repository}/tree/{branch}",
     },
@@ -897,7 +922,7 @@ url_template_fields = tuple(
 )
 
 UrlTemplateField = Literal[url_template_fields]
-UrlComponents = Dict[UrlTemplateField, str]
+UrlComponents = dict[UrlTemplateField, str]
 
 
 def is_url_components(d: dict):

@@ -9,7 +9,8 @@
 #  take care of caching what it clones (or in the case of discussions, downloads)
 
 import os
-from typing import Mapping, Union, Literal
+from typing import Union, Literal
+from collections.abc import Mapping
 from hubcap.util import (
     ensure_github_url,
     git_clone,
@@ -21,7 +22,8 @@ from hubcap.base import RepoReader, ResourceNotFound, NotSet
 # -------------------------------------------------------------------------------------
 # markdown utils
 
-from typing import Callable, KT, VT, Iterable
+from typing import KT, VT
+from collections.abc import Callable, Iterable
 
 KvToText = Callable[[KT, VT], str]
 
@@ -213,7 +215,7 @@ def _markdown_lines(notebook, process_code, process_markdown, process_output):
 #   For example, not including traceback in error outputs, or only including the last line of
 #   output cells -- or not including scrap sections of code cells.
 def notebook_to_markdown(
-    notebook: Union[str, bytes],
+    notebook: str | bytes,
     *,
     process_code=True,
     process_markdown=True,
@@ -240,7 +242,7 @@ def notebook_to_markdown(
 
     # Make a notebook object
     if os.path.isfile(notebook):
-        with open(notebook, "r", encoding=encoding) as f:
+        with open(notebook, encoding=encoding) as f:
             notebook = nbformat.read(f, as_version=4)
     if isinstance(notebook, (bytes, str)):
         if isinstance(notebook, str):
@@ -279,19 +281,51 @@ def _is_local_git_repo(repo: str):
 
 
 def ensure_repo_folder(
-    repo: str, clone_func=git_clone, local_folder: Optional[DirPathString] = None
+    repo: str, clone_func=git_clone, local_folder: DirPathString | None = None
 ) -> DirPathString:
     """Returns a local repo folder.
     Either the input repo is already a local "git" folder (which we return as is),
     or a temporary folder to clone the repo into is returned.
+
+    If the repo is a GitHub URL with a branch and/or path specification,
+    (e.g., https://github.com/user/repo/tree/branch/path), the function will:
+    - Clone the specified branch
+    - Return the path to the subfolder if a path is specified
     """
     if os.path.isdir(repo):
         return repo
-    elif ensure_github_url(repo):
+    elif 'github' in repo:  # Check if it looks like a GitHub URL
         try:
+            # Parse the URL to extract branch and path information
+            from hubcap.util import parse_github_url
+
+            url_parts = parse_github_url(repo)
+            branch = url_parts.get('branch')
+            path = url_parts.get('path')
+
+            # Build the base repo URL for cloning
+            base_repo_url = (
+                f"https://github.com/{url_parts['username']}/{url_parts['repository']}"
+            )
+
             if local_folder is None:
                 local_folder = tempfile.mkdtemp()
-            clone_func(repo, local_folder)
+
+            # Clone with branch if specified
+            if branch:
+                clone_func(base_repo_url, local_folder, branch=branch)
+            else:
+                clone_func(base_repo_url, local_folder)
+
+            # If a path was specified, return the subfolder
+            if path:
+                subfolder = os.path.join(local_folder, path)
+                if not os.path.isdir(subfolder):
+                    raise ResourceNotFound(
+                        f"Path '{path}' not found in cloned repository at {local_folder}"
+                    )
+                return subfolder
+
             return local_folder
         except CalledProcessError:
             raise ResourceNotFound(
@@ -395,7 +429,7 @@ def repo_files_mapping(
     repo: str,
     *,
     kv_to_text: KvToText = kv_to_python_aware_markdown,
-    folder_to_mapping: Union[Callable[[str], Mapping], str] = _filtered_py_and_md_files,
+    folder_to_mapping: Callable[[str], Mapping] | str = _filtered_py_and_md_files,
     extra_key_filter=_does_not_start_with_docsrc_or_setup,
 ):
     local_repo_folder = ensure_repo_folder(repo)
@@ -459,7 +493,7 @@ def github_repo_mapping(
 
 def repo_text_aggregate(
     repo,
-    kinds: Union[CloneKinds, Iterable[CloneKinds]] = ("files", "wiki", "discussions"),
+    kinds: CloneKinds | Iterable[CloneKinds] = ("files", "wiki", "discussions"),
     *,
     github_repo_mapping=github_repo_mapping,
     text_from_mapping=text_from_mapping,

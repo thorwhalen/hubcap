@@ -1,6 +1,7 @@
 """A medley of tools for Hubcap."""
 
-from typing import Iterable, Literal
+from typing import Literal
+from collections.abc import Iterable
 import time
 from functools import partial
 
@@ -155,8 +156,8 @@ def _handle_repo_root_url(repo_root_url, image_relative_dir=""):
 # TODO: There's a same name function in hubcap.repo_slurp, as well as in contaix.markdwon and dn.src -- consolidate!!
 def notebook_to_markdown(
     notebook_path: str,
-    output_dir: Optional[str] = None,
-    repo_root_url: Optional[Union[dict, str]] = None,
+    output_dir: str | None = None,
+    repo_root_url: dict | str | None = None,
     *,
     image_relative_dir: str = "",
 ):
@@ -263,7 +264,7 @@ def postprocess_markdown_from_notebook(
 
     # Remove unwanted artifacts
     trg_str = re.sub("<style scoped>(.*?)</style>", "", trg_str, flags=re.DOTALL)
-    trg_str = re.sub("```python\s*```", "", trg_str, flags=re.DOTALL)
+    trg_str = re.sub(r"```python\s*```", "", trg_str, flags=re.DOTALL)
 
     # Save to the target file if specified
     if md_trg:
@@ -284,7 +285,7 @@ import json
 # Get your GitHub Personal Access Token from environment variable
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 if not GITHUB_TOKEN:
-    raise EnvironmentError("GITHUB_TOKEN environment variable not set.")
+    raise OSError("GITHUB_TOKEN environment variable not set.")
 
 GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
