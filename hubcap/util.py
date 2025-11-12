@@ -118,7 +118,14 @@ def github_file_contents(
 
 
 # --------------------------------------------------------------------------------------
-def get_repository_info(repo: Repository, repo_info: RepoInfo = DFLT_REPO_INFO):
+def get_repository_info(
+    repo: Repository,
+    repo_info: RepoInfo = DFLT_REPO_INFO,
+    *,
+    refresh: bool = True,
+    token: str = None,
+    use_auth: bool = True,
+):
     """Get info about a repository.
 
     >>> info = get_repository_info('thorwhalen/hubcap')
@@ -161,16 +168,57 @@ def get_repository_info(repo: Repository, repo_info: RepoInfo = DFLT_REPO_INFO):
     ... )
     {'name': 'hubcap', 'has stars': True}
 
+    Args:
+        repo: Repository object or string identifier
+        repo_info: Info fields to return (default returns standard fields)
+        refresh: If True, fetches fresh data from GitHub and caches it.
+                 If False, returns cached data if available, otherwise fetches and caches.
+        token: GitHub token for authentication. If None and use_auth=True, will use
+               token from environment variables or config.
+        use_auth: If True (default), uses authenticated requests to avoid rate limits.
+                  Set to False to make unauthenticated requests.
+
     """
-    repo_info = _ensure_repo_info_dict_with_func_values(repo_info)
-    g = cached_github_object()
-    repo = g.get_repo(ensure_full_name(repo))
-    return {k: f(repo) for k, f in repo_info.items()}
+    from hubcap.constants import repo_props
+
+    if repo_info is None:
+        repo_info = repo_props  # all repo properties
+
+    requested_repo_info = _ensure_repo_info_dict_with_func_values(repo_info)
+
+    # Get GitHub client with authentication if requested
+    if use_auth:
+        g = github_object(token)
+    else:
+        g = Github()  # Unauthenticated client
+
+    full_name = ensure_full_name(repo)
+    cache_key = f"{full_name}/info.json"
+
+    # Check if we should use cached data
+    if not refresh and cache_key in repo_cache_json_files:
+        all_info = repo_cache_json_files[cache_key]
+    else:
+        # Fetch all available repo properties
+        repo_obj = g.get_repo(full_name)
+        all_info_spec = {prop: prop for prop in repo_props}
+        all_info_funcs = _ensure_repo_info_dict_with_func_values(all_info_spec)
+        all_info = {k: f(repo_obj) for k, f in all_info_funcs.items()}
+
+        # Cache the complete info
+        repo_cache_json_files[cache_key] = all_info
+
+    # Return only the requested fields
+    return {
+        k: all_info.get(k, f(g.get_repo(full_name)))
+        for k, f in requested_repo_info.items()
+    }
 
 
 @lru_cache(maxsize=1)
 def cached_github_object():
-    return Github()
+    """Returns a cached authenticated GitHub client using the default token."""
+    return github_object()
 
 
 # Define or modify the base patterns with their corresponding URL patterns here:
@@ -608,15 +656,30 @@ import os
 import requests
 from functools import cached_property, partial
 import json
+from datetime import datetime
 from warnings import warn
 from importlib.resources import files
 from typing import Tuple, Optional
-from dol import KvReader, path_get
-from config2py import simple_config_getter
+from dol import KvReader, path_get, Files, mk_dirs_if_missing, wrap_kvs
+from config2py import (
+    simple_config_getter,
+    get_app_data_folder,
+    process_path,
+)
+
+# --------------------------------------------------------------------------------------
+# Config and data resources (folders, configs, stores, etc.)
 
 APP_NAME = "hubcap"
 REPO_COLLECTION_CONFIGS = "REPO_COLLECTION_CONFIGS"
 USER_REPO_COLLECTION_KEY_PROPS_FILE = "repo_collections_key_props.json"
+
+app_data_dir = os.getenv("HUBCAP_DATA_FOLDER", get_app_data_folder(APP_NAME))
+app_data_dir = process_path(app_data_dir, ensure_dir_exists=True)
+repo_cache_dir = process_path(
+    os.path.join(app_data_dir, "repos"), ensure_dir_exists=True
+)
+repo_cache_store = mk_dirs_if_missing(Files(repo_cache_dir))
 
 get_config = simple_config_getter(APP_NAME)
 configs = get_config.configs
@@ -624,6 +687,7 @@ data_files = files("hubcap.data")
 repo_collections_configs = json.loads(
     data_files.joinpath("dflt_repo_collections_key_props.json").read_text()
 )
+# get_app_data_folder = get_app_data_folder(APP_NAME)
 
 
 if USER_REPO_COLLECTION_KEY_PROPS_FILE not in configs:
@@ -634,6 +698,74 @@ try:
     repo_collections_configs.update(user_key_props)
 except Exception as e:
     warn(f"Error loading user repo_collections_key_props.json: {e}", UserWarning)
+
+
+def _github_object_to_json_serializable(obj):
+    """
+    Convert a GitHub API object to a JSON-serializable representation.
+
+    Recursively processes dicts, lists, and other structures to ensure
+    all nested objects are JSON-serializable.
+    """
+    if obj is None or isinstance(obj, (str, int, float, bool)):
+        return obj
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    if isinstance(obj, dict):
+        return {k: _github_object_to_json_serializable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_github_object_to_json_serializable(item) for item in obj]
+    # Handle PyGithub objects by checking for common attributes
+    if hasattr(obj, '__dict__') and hasattr(obj, 'raw_data'):
+        # PyGithub objects typically have a raw_data attribute
+        return _github_object_to_json_serializable(obj.raw_data)
+    if hasattr(obj, '__dict__') and not isinstance(
+        obj, (str, int, float, bool, type(None))
+    ):
+        # Try to convert to dict representation
+        try:
+            obj_dict = {k: v for k, v in obj.__dict__.items() if not k.startswith('_')}
+            return _github_object_to_json_serializable(obj_dict)
+        except:
+            return str(obj)
+    # Fallback to string representation
+    return str(obj)
+
+
+def github_json_serializer(obj):
+    """
+    Prepare objects for JSON serialization, handling GitHub API objects and datetime.
+
+    Handles datetime objects and other common GitHub API types by recursively
+    converting them to JSON-serializable types, then encoding to JSON bytes.
+
+    >>> from datetime import datetime, timezone
+    >>> dt = datetime(2021, 1, 15, 22, 34, 10, tzinfo=timezone.utc)
+    >>> result = github_json_serializer(dt)
+    >>> result
+    b'"2021-01-15T22:34:10+00:00"'
+    >>> github_json_serializer({'created_at': dt, 'name': 'test'})
+    b'{"created_at": "2021-01-15T22:34:10+00:00", "name": "test"}'
+    """
+    serializable_obj = _github_object_to_json_serializable(obj)
+    return json.dumps(serializable_obj).encode('utf-8')
+
+
+def github_json_deserializer(data):
+    """Decode JSON bytes back to Python objects."""
+    if isinstance(data, bytes):
+        data = data.decode('utf-8')
+    return json.loads(data)
+
+
+JsonFiles = wrap_kvs(
+    Files, value_encoder=github_json_serializer, value_decoder=github_json_deserializer
+)
+
+repo_cache_json_files = mk_dirs_if_missing(JsonFiles(repo_cache_dir))
+
+
+# --------------------------------------------------------------------------------------
 
 
 def defaulted_itemgetter(d, k, default):

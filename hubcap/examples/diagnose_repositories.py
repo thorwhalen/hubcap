@@ -78,3 +78,28 @@ def is_valid_response(response):
 
 def url_exists(url):
     return is_valid_response(requests.get(url))
+
+
+from typing import Iterator
+from hubcap import GithubReader
+
+
+def org_repos_issue_counts(org_name: str, *, auth=None) -> Iterator[tuple[str, int]]:
+    """
+    Get the number of open issues for each repository in a GitHub organization.
+    
+    Yields (repo_name, issue_count) pairs for each repository.
+    
+    >>> issue_counts = dict(org_repos_issue_counts('i2mint'))  # doctest: +SKIP
+    >>> issue_counts['dol']  # doctest: +SKIP
+    12
+    
+    Note: The issue count is retrieved directly from repository metadata
+    without downloading individual issue details, making this efficient
+    even for organizations with many repositories.
+    """
+    reader = GithubReader(org_name, auth=auth)
+    
+    for repo_name in reader:
+        repo = reader._github.get_repo(f"{org_name}/{repo_name}")
+        yield repo_name, repo.open_issues_count

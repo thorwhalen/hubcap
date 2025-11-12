@@ -46,7 +46,9 @@ RepoInfo = Union[
     str,  # "prop1 prop2 ..."
 ]
 
-_dflt_repo_props = "name full_name description stargazers_count forks_count watchers_count html_url".split()
+_dflt_repo_props = (
+    "name full_name description open_issues_count size updated_at stargazers_count forks_count watchers_count html_url".split()
+)
 
 DFLT_REPO_INFO = tuple(
     [*zip(_dflt_repo_props, _dflt_repo_props), ("last_commit_date", _last_commit_date)]
