@@ -283,11 +283,24 @@ import json
 
 # --- Configuration ---
 # Get your GitHub Personal Access Token from environment variable
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
+
+def get_github_token():
+    """Return a GitHub token from common env var names, or None if not set."""
+    import os
+    candidates = ("HUBCAP_GITHUB_TOKEN", "HUBCAP_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
+    for name in candidates:
+        token = os.getenv(name)
+        if token:
+            return token
+    return None
+
+# Backwards-compatible snapshot (may be None)
+GITHUB_TOKEN = get_github_token()
+
+# Existing behavior preserved: raise at import time if no token
 if not GITHUB_TOKEN:
     raise OSError("GITHUB_TOKEN environment variable not set.")
-
-GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
 # --- Helper Functions ---
 
