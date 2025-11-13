@@ -88,6 +88,10 @@ jobs:
         # with:
         #   config-file: pyproject.toml
 
+      - name: Update Version Number
+        id: version
+        uses: i2mint/isee/actions/bump-version-number@master
+
       - name: Build Distribution
         uses: i2mint/wads/actions/build-dist@master
         with:
