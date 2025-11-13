@@ -4,7 +4,9 @@ on: [push, pull_request]
 
 env:
   PROJECT_NAME: hubcap
-  HUBCAP_GITHUB_TOKEN: ${{ secrets.HUBCAP_GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  HUBCAP_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   validation:
