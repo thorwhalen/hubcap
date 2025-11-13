@@ -908,15 +908,15 @@ class LocalRepoArtifacts(KvReader):
             'discussions': self.discussions,
             'issues': self.issues,
         }
-    
+
     def __iter__(self):
         """Iterate over artifact type names."""
         return iter(self._artifacts)
-    
+
     def __getitem__(self, key):
         """Get an artifact mapping by name."""
         return self._artifacts[key]
-    
+
     def __len__(self):
         """Return number of artifact types."""
         return len(self._artifacts)

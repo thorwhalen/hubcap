@@ -6,24 +6,39 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hubcap"
-version = "0.0.1"
-description = "There is a bit of an air of mystery around this project..."
+version = "0.1.17"
+description = "A dol (i.e. dict-like) interface to github"
 readme = "README.md"
 requires-python = ">=3.10"
-keywords = []
-authors = []
-dependencies = []
+keywords = [
+    "github",
+]
+authors = [
+    { name = "Thor Whalen" },
+]
+dependencies = [
+    "dol",
+    "PyGithub",
+    "requests",
+    "config2py",
+    "lkj",
+]
 
 [project.license]
-text = "mit"
+text = "Apache-2.0"
 
 [project.urls]
-Homepage = ""
+Homepage = "https://github.com/thorwhalen/hubcap"
 
 [tool.ruff]
 line-length = 88
 target-version = "py310"
 exclude = [
+    "**/*.ipynb",
+    ".git",
+    ".venv",
+    "build",
+    "dist",
     "tests",
     "examples",
     "scrap",
