@@ -78,6 +78,9 @@ jobs:
       - name: Format Source Code
         uses: i2mint/wads/actions/ruff-format@master
 
+      - name: Install setuptools for wads compatibility
+        run: pip install setuptools
+
       - name: Update Version Number
         id: version
         uses: i2mint/wads/actions/version-bump@master
