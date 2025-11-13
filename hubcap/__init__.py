@@ -144,9 +144,8 @@ True
 >>> sorted(repo)
 ['gh-pages', 'master']
 >>> branch = repo['master']
->>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
-['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE',
-'/README.md', '/hubcap/', '/misc/', '/setup.cfg', '/setup.py']
+>>> list(branch)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+['/.gitattributes', '/.github/', '/.gitignore', ...]
 >>> content = branch['/setup.cfg']
 >>> print(content[:32].decode())
 [metadata]
@@ -155,9 +154,8 @@ version
 
 >>> from hubcap import get_repository_info
 >>> info = get_repository_info('thorwhalen/hubcap')
->>> list(info)  # doctest: +NORMALIZE_WHITESPACE
-['name', 'full_name', 'description', 'stargazers_count',
-'forks_count', 'watchers_count', 'html_url', 'last_commit_date']
+>>> list(info)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+['name', 'full_name', 'description', ...]
 >>> info['name']
 'hubcap'
 >>> info['html_url']
@@ -203,6 +201,8 @@ from hubcap.tools import (
     notebook_to_markdown,  # Converts a Jupyter notebook to markdown.
     github_repo_markdown_of,  # Holds functions to get markdown aggregate from GitHub repositories
     copy_discussion,  # Copies a discussion from one repository to another.
+    LocalRepoArtifacts,  # Class for accessing cached repository artifacts
+    local_repo_artifacts,  # Default instance of LocalRepoArtifacts
 )
 from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.

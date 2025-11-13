@@ -118,7 +118,7 @@ def _raw_url(org, repo, branch="main", path=""):
         "username": org,
         "repository": repo,
         "branch": branch,
-        "path": relpath,
+        "path": path,
     }
     return generate_github_url(components, "fully_qualified_raw")
     # return (
@@ -731,3 +731,152 @@ def get_author_commits(
             break
 
     return all_commits
+
+
+# --------------------------------------------------------------------------------------
+# Local Repository Artifacts - Mapping interfaces to cached repository data
+
+
+import os
+from typing import Optional
+from dol import KvReader, wrap_kvs, Pipe
+from hubcap.util import (
+    repo_cache_dir,
+    JsonFiles,
+    get_repository_info,
+    Discussions,
+    ensure_full_name,
+)
+from hubcap.base import Issues
+
+
+class _RepoInfoMapping(KvReader):
+    """Mapping interface to cached repository info.json files."""
+
+    def __init__(self, refresh: bool = False):
+        self.refresh = refresh
+        self._cache_dir = repo_cache_dir
+
+    def __iter__(self):
+        """Iterate over repository full names that have cached info."""
+        for repo_name in os.listdir(self._cache_dir):
+            repo_path = os.path.join(self._cache_dir, repo_name)
+            if os.path.isdir(repo_path):
+                info_file = os.path.join(repo_path, "info.json")
+                if os.path.exists(info_file):
+                    yield repo_name
+
+    def __getitem__(self, repo: str) -> dict:
+        """Get repository info, from cache or by fetching."""
+        return get_repository_info(repo, refresh=self.refresh)
+
+
+class _RepoArtifactMapping(KvReader):
+    """Base class for mapping interfaces to cached repository artifacts."""
+
+    def __init__(self, artifact_type: str, artifact_class, refresh: bool = False):
+        self.artifact_type = artifact_type
+        self.artifact_class = artifact_class
+        self.refresh = refresh
+        self._cache_dir = repo_cache_dir
+
+    def __iter__(self):
+        """Iterate over repository full names that have this artifact cached."""
+        for repo_name in os.listdir(self._cache_dir):
+            repo_path = os.path.join(self._cache_dir, repo_name)
+            artifact_dir = os.path.join(repo_path, self.artifact_type)
+            if os.path.isdir(artifact_dir) and os.listdir(artifact_dir):
+                yield repo_name
+
+    def __getitem__(self, repo: str) -> dict:
+        """Get artifacts for a repository as a mapping."""
+        full_name = ensure_full_name(repo)
+        artifact_dir = os.path.join(self._cache_dir, full_name, self.artifact_type)
+
+        # If cache doesn't exist or refresh is True, fetch from GitHub
+        if self.refresh or not os.path.exists(artifact_dir):
+            # Fetch and cache using the artifact class
+            artifact_instance = self.artifact_class(
+                repo, cache=True, refresh=self.refresh
+            )
+            # Trigger fetching by iterating and accessing items
+            result = {}
+            for key in artifact_instance:
+                result[key] = artifact_instance[key]
+            return result
+        else:
+            # Load from cache
+            cache_store = JsonFiles(artifact_dir)
+            return {
+                int(k.replace('.json', '')): cache_store[k]
+                for k in cache_store
+                if k.endswith('.json')
+            }
+
+
+class _DiscussionsMapping(_RepoArtifactMapping):
+    """Mapping interface to cached repository discussions."""
+
+    def __init__(self, refresh: bool = False):
+        super().__init__(
+            artifact_type="discussions",
+            artifact_class=Discussions,
+            refresh=refresh,
+        )
+
+
+class _IssuesMapping(_RepoArtifactMapping):
+    """Mapping interface to cached repository issues."""
+
+    def __init__(self, refresh: bool = False):
+        super().__init__(
+            artifact_type="issues",
+            artifact_class=Issues,
+            refresh=refresh,
+        )
+
+
+class LocalRepoArtifacts:
+    """
+    Provides mapping interfaces to locally cached repository artifacts.
+
+    This class gives you access to cached repository information, discussions, and
+    issues through simple mapping interfaces. Data is cached locally and can be
+    refreshed on demand.
+
+    Args:
+        refresh: If True, always fetch fresh data from GitHub and update cache.
+                 If False, use cached data when available.
+
+    Attributes:
+        info: Mapping interface to repository info (info.json for each repo)
+        discussions: Mapping interface to repository discussions
+        issues: Mapping interface to repository issues
+
+    Example:
+        >>> artifacts = LocalRepoArtifacts(refresh=False)  # doctest: +SKIP
+        >>> # Get cached info for a repository
+        >>> info = artifacts.info['thorwhalen/hubcap']  # doctest: +SKIP
+        >>> # Get cached discussions
+        >>> discussions = artifacts.discussions['thorwhalen/hubcap']  # doctest: +SKIP
+        >>> # Access a specific discussion
+        >>> discussion_2 = discussions[2]  # doctest: +SKIP
+        >>> # Get cached issues
+        >>> issues = artifacts.issues['thorwhalen/hubcap']  # doctest: +SKIP
+
+    The cache is stored in: {app_data_dir}/repos/{org}/{repo}/{artifact_type}/
+    For example:
+        - Info: ~/.local/share/hubcap/repos/thorwhalen/hubcap/info.json
+        - Discussions: ~/.local/share/hubcap/repos/thorwhalen/hubcap/discussions/1.json
+        - Issues: ~/.local/share/hubcap/repos/thorwhalen/hubcap/issues/4.json
+    """
+
+    def __init__(self, refresh: bool = False):
+        self.refresh = refresh
+        self.info = _RepoInfoMapping(refresh=refresh)
+        self.discussions = _DiscussionsMapping(refresh=refresh)
+        self.issues = _IssuesMapping(refresh=refresh)
+
+
+# Create a default instance for convenience
+local_repo_artifacts = LocalRepoArtifacts(refresh=False)

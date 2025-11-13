@@ -344,6 +344,81 @@ True
 You also have other useful objects, like `Issues`, `IssueComments`, `Discussions`, etc.   
 
 
+## Cached Repository Artifacts
+
+Hubcap provides a convenient caching mechanism for repository artifacts like info, discussions, and issues. This allows you to work with GitHub data locally without repeatedly fetching from the API.
+
+### Using local_repo_artifacts
+
+The `local_repo_artifacts` object provides mapping interfaces to cached repository data:
+
+```python
+from hubcap import local_repo_artifacts
+
+# Access cached repository info
+info = local_repo_artifacts.info['thorwhalen/hubcap']
+print(info['name'])  # 'hubcap'
+print(info['stargazers_count'])  # Number of stars
+
+# Access cached discussions
+discussions = local_repo_artifacts.discussions['thorwhalen/hubcap']
+for discussion_number in discussions:
+    discussion = discussions[discussion_number]
+    print(f"Discussion {discussion_number}: {discussion['title']}")
+
+# Access cached issues  
+issues = local_repo_artifacts.issues['thorwhalen/hubcap']
+for issue_number in issues:
+    issue = issues[issue_number]
+    print(f"Issue {issue_number}: {issue.title}")
+```
+
+### Controlling cache behavior
+
+You can control whether to use cached data or fetch fresh data:
+
+```python
+from hubcap import LocalRepoArtifacts
+
+# Use cached data (default)
+cached_artifacts = LocalRepoArtifacts(refresh=False)
+info = cached_artifacts.info['thorwhalen/hubcap']  # Uses cache if available
+
+# Always fetch fresh data and update cache
+fresh_artifacts = LocalRepoArtifacts(refresh=True)
+info = fresh_artifacts.info['thorwhalen/hubcap']  # Always fetches from GitHub
+```
+
+### Direct caching with Discussions and Issues
+
+You can also enable caching directly when creating `Discussions` or `Issues` objects:
+
+```python
+from hubcap import Discussions, Issues
+
+# Enable caching for discussions
+discussions = Discussions('thorwhalen/hubcap', cache=True, refresh=False)
+discussion_2 = discussions[2]  # Cached after first access
+
+# Enable caching for issues
+issues = Issues('thorwhalen/hubcap', cache=True, refresh=True)
+issue_4 = issues[4]  # Always fetches fresh and updates cache
+```
+
+### Cache location
+
+The cache is stored in your system's application data directory:
+- On Linux/Mac: `~/.local/share/hubcap/repos/{org}/{repo}/`
+- On Windows: `%LOCALAPPDATA%\hubcap\repos\{org}\{repo}\`
+
+Each artifact type has its own subdirectory:
+- Info: `info.json` (single file per repo)
+- Discussions: `discussions/{number}.json` (one file per discussion)
+- Issues: `issues/{number}.json` (one file per issue)
+
+You can customize the cache location with the `HUBCAP_DATA_FOLDER` environment variable.
+
+
 ## github_repo_text_aggregate
 
 ```python

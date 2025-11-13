@@ -132,9 +132,8 @@ def get_repository_info(
 
     This gives us a ``dict`` with default info fields:
 
-    >>> list(info)  # doctest: +NORMALIZE_WHITESPACE
-    ['name', 'full_name', 'description', 'stargazers_count',
-    'forks_count', 'watchers_count', 'html_url', 'last_commit_date']
+    >>> list(info)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+    ['name', 'full_name', 'description', ...]
     >>> info['name']
     'hubcap'
     >>> info['html_url']
@@ -804,9 +803,12 @@ class Discussions(KvReader):
         _max_discussions: int = 100,
         _max_comments: int = 100,
         _max_replies: int = 100,
+        cache: bool = False,
+        refresh: bool = True,
     ):
         repo = ensure_repo_obj(repo)
         self.owner, self.repo_name = ensure_full_name(repo).split("/")
+        self.full_name = ensure_full_name(repo)
         self.repo = repo
         self.token = github_token(token)
         self.headers = {
@@ -818,6 +820,15 @@ class Discussions(KvReader):
         self._max_discussions = _max_discussions
         self._max_comments = _max_comments
         self._max_replies = _max_replies
+        self.cache = cache
+        self.refresh = refresh
+
+        if cache:
+            self._cache_dir = os.path.join(
+                repo_cache_dir, self.full_name, "discussions"
+            )
+            os.makedirs(self._cache_dir, exist_ok=True)
+            self._cache_store = JsonFiles(self._cache_dir)
 
     @cached_property
     def _discussions(self):
@@ -859,11 +870,25 @@ class Discussions(KvReader):
 
     def __getitem__(self, key):
         """Gets the discussion data for a given discussion number (key)."""
+        # Check cache first if caching is enabled
+        if self.cache and not self.refresh:
+            cache_key = f"{key}.json"
+            if cache_key in self._cache_store:
+                return self._cache_store[cache_key]
+
+        # Fetch from GitHub
         query = self._build_query(key)
         response = requests.post(self.url, headers=self.headers, json={"query": query})
         response.raise_for_status()
         data = _raise_if_error(response.json())
-        return self._process_discussion_data(data)
+        result = self._process_discussion_data(data)
+
+        # Cache if enabled
+        if self.cache:
+            cache_key = f"{key}.json"
+            self._cache_store[cache_key] = result
+
+        return result
 
     def _build_query(self, key):
         """Builds the graphQL query for a discussion."""

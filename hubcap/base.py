@@ -5,6 +5,7 @@ from operator import attrgetter
 from collections.abc import Mapping
 from dol import KvReader, wrap_kvs
 from dol.util import format_invocation
+import os
 
 import github
 from github import GithubException
@@ -13,9 +14,12 @@ from github.Auth import Token, Login
 from hubcap.util import (
     RepoSpec,
     ensure_repo_obj,
+    ensure_full_name,
     Github,
     Repository,
     Discussions,
+    JsonFiles,
+    repo_cache_dir,
 )
 from hubcap.constants import repo_collection_names
 
@@ -214,6 +218,8 @@ class Issues(RepoObjects):
     :param data_of_obj: A function to get the data from the issue object.
         Default is attrgetter('body'). Use identity to get the whole issue object.
     :param get_objs_kwargs: The keyword arguments to pass to the get_objs function
+    :param cache: If True, cache issue data to local storage
+    :param refresh: If True, always fetch fresh data from GitHub and update cache
 
     The default of data_of_obj is `IssueContents`, which will give a mapping
     interface to the body and comments of the issue.
@@ -227,6 +233,8 @@ class Issues(RepoObjects):
         objs_to_items="number",
         data_of_obj=identity,  # IssueContents,
         get_objs_kwargs=(("state", "open"),),
+        cache: bool = False,
+        refresh: bool = True,
     ):
         super().__init__(
             repo,
@@ -235,6 +243,32 @@ class Issues(RepoObjects):
             data_of_obj=data_of_obj,
             get_objs_kwargs=get_objs_kwargs,
         )
+        self.cache = cache
+        self.refresh = refresh
+
+        if cache:
+            full_name = ensure_full_name(repo)
+            self._cache_dir = os.path.join(repo_cache_dir, full_name, "issues")
+            os.makedirs(self._cache_dir, exist_ok=True)
+            self._cache_store = JsonFiles(self._cache_dir)
+
+    def __getitem__(self, key):
+        """Gets the issue data for a given issue number (key)."""
+        # Check cache first if caching is enabled and refresh is False
+        if self.cache and not self.refresh:
+            cache_key = f"{key}.json"
+            if cache_key in self._cache_store:
+                return self._cache_store[cache_key]
+
+        # Fetch from GitHub using parent class method
+        result = self.data_of_obj(self._objs[key])
+
+        # Cache if enabled
+        if self.cache:
+            cache_key = f"{key}.json"
+            self._cache_store[cache_key] = result
+
+        return result
 
 
 class Workflows(RepoObjects):
