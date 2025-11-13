@@ -81,12 +81,12 @@ jobs:
       - name: Install setuptools for wads compatibility
         run: pip install setuptools
 
-      - name: Update Version Number
-        id: version
-        uses: i2mint/wads/actions/version-bump@master
-        # Specify config file if needed:
-        # with:
-        #   config-file: pyproject.toml
+      # - name: Update Version Number
+      #   id: version
+      #   uses: i2mint/wads/actions/version-bump@master
+      #   # Specify config file if needed:
+      #   # with:
+      #   #   config-file: pyproject.toml
 
       - name: Update Version Number
         id: version
