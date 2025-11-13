@@ -285,15 +285,18 @@ import json
 # Get your GitHub Personal Access Token from environment variable
 GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
+
 def get_github_token():
     """Return a GitHub token from common env var names, or None if not set."""
     import os
+
     candidates = ("HUBCAP_GITHUB_TOKEN", "HUBCAP_TOKEN", "GH_TOKEN", "GITHUB_TOKEN")
     for name in candidates:
         token = os.getenv(name)
         if token:
             return token
     return None
+
 
 # Backwards-compatible snapshot (may be None)
 GITHUB_TOKEN = get_github_token()
@@ -772,12 +775,15 @@ class _RepoInfoMapping(KvReader):
 
     def __iter__(self):
         """Iterate over repository full names that have cached info."""
-        for repo_name in os.listdir(self._cache_dir):
-            repo_path = os.path.join(self._cache_dir, repo_name)
-            if os.path.isdir(repo_path):
-                info_file = os.path.join(repo_path, "info.json")
-                if os.path.exists(info_file):
-                    yield repo_name
+        for org_name in os.listdir(self._cache_dir):
+            org_path = os.path.join(self._cache_dir, org_name)
+            if os.path.isdir(org_path):
+                for repo_name in os.listdir(org_path):
+                    repo_path = os.path.join(org_path, repo_name)
+                    if os.path.isdir(repo_path):
+                        info_file = os.path.join(repo_path, "info.json")
+                        if os.path.exists(info_file):
+                            yield f"{org_name}/{repo_name}"
 
     def __getitem__(self, repo: str) -> dict:
         """Get repository info, from cache or by fetching."""
@@ -795,11 +801,14 @@ class _RepoArtifactMapping(KvReader):
 
     def __iter__(self):
         """Iterate over repository full names that have this artifact cached."""
-        for repo_name in os.listdir(self._cache_dir):
-            repo_path = os.path.join(self._cache_dir, repo_name)
-            artifact_dir = os.path.join(repo_path, self.artifact_type)
-            if os.path.isdir(artifact_dir) and os.listdir(artifact_dir):
-                yield repo_name
+        for org_name in os.listdir(self._cache_dir):
+            org_path = os.path.join(self._cache_dir, org_name)
+            if os.path.isdir(org_path):
+                for repo_name in os.listdir(org_path):
+                    repo_path = os.path.join(org_path, repo_name)
+                    artifact_dir = os.path.join(repo_path, self.artifact_type)
+                    if os.path.isdir(artifact_dir) and os.listdir(artifact_dir):
+                        yield f"{org_name}/{repo_name}"
 
     def __getitem__(self, repo: str) -> dict:
         """Get artifacts for a repository as a mapping."""
@@ -849,7 +858,7 @@ class _IssuesMapping(_RepoArtifactMapping):
         )
 
 
-class LocalRepoArtifacts:
+class LocalRepoArtifacts(KvReader):
     """
     Provides mapping interfaces to locally cached repository artifacts.
 
@@ -868,8 +877,13 @@ class LocalRepoArtifacts:
 
     Example:
         >>> artifacts = LocalRepoArtifacts(refresh=False)  # doctest: +SKIP
-        >>> # Get cached info for a repository
+        >>> # List available artifact types
+        >>> list(artifacts)  # doctest: +SKIP
+        ['info', 'discussions', 'issues']
+        >>> # Access via attribute
         >>> info = artifacts.info['thorwhalen/hubcap']  # doctest: +SKIP
+        >>> # Or via mapping interface
+        >>> info = artifacts['info']['thorwhalen/hubcap']  # doctest: +SKIP
         >>> # Get cached discussions
         >>> discussions = artifacts.discussions['thorwhalen/hubcap']  # doctest: +SKIP
         >>> # Access a specific discussion
@@ -889,6 +903,23 @@ class LocalRepoArtifacts:
         self.info = _RepoInfoMapping(refresh=refresh)
         self.discussions = _DiscussionsMapping(refresh=refresh)
         self.issues = _IssuesMapping(refresh=refresh)
+        self._artifacts = {
+            'info': self.info,
+            'discussions': self.discussions,
+            'issues': self.issues,
+        }
+    
+    def __iter__(self):
+        """Iterate over artifact type names."""
+        return iter(self._artifacts)
+    
+    def __getitem__(self, key):
+        """Get an artifact mapping by name."""
+        return self._artifacts[key]
+    
+    def __len__(self):
+        """Return number of artifact types."""
+        return len(self._artifacts)
 
 
 # Create a default instance for convenience
