@@ -715,15 +715,15 @@ def _github_object_to_json_serializable(obj):
     if isinstance(obj, (list, tuple)):
         return [_github_object_to_json_serializable(item) for item in obj]
     # Handle PyGithub objects by checking for common attributes
-    if hasattr(obj, '__dict__') and hasattr(obj, 'raw_data'):
+    if hasattr(obj, "__dict__") and hasattr(obj, "raw_data"):
         # PyGithub objects typically have a raw_data attribute
         return _github_object_to_json_serializable(obj.raw_data)
-    if hasattr(obj, '__dict__') and not isinstance(
+    if hasattr(obj, "__dict__") and not isinstance(
         obj, (str, int, float, bool, type(None))
     ):
         # Try to convert to dict representation
         try:
-            obj_dict = {k: v for k, v in obj.__dict__.items() if not k.startswith('_')}
+            obj_dict = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
             return _github_object_to_json_serializable(obj_dict)
         except:
             return str(obj)
@@ -747,13 +747,13 @@ def github_json_serializer(obj):
     b'{"created_at": "2021-01-15T22:34:10+00:00", "name": "test"}'
     """
     serializable_obj = _github_object_to_json_serializable(obj)
-    return json.dumps(serializable_obj).encode('utf-8')
+    return json.dumps(serializable_obj).encode("utf-8")
 
 
 def github_json_deserializer(data):
     """Decode JSON bytes back to Python objects."""
     if isinstance(data, bytes):
-        data = data.decode('utf-8')
+        data = data.decode("utf-8")
     return json.loads(data)
 
 
@@ -980,9 +980,9 @@ def create_markdown_from_jdict(jdict: dict | Iterable[dict]):
 
         return markdown
     else:
-        assert isinstance(
-            jdict, Iterable
-        ), f"Expected dict or Iterable, got {type(jdict)}"
+        assert isinstance(jdict, Iterable), (
+            f"Expected dict or Iterable, got {type(jdict)}"
+        )
         if isinstance(jdict, dict):
             jdict = jdict.values()
         return "\n\n".join(create_markdown_from_jdict(d) for d in jdict)

@@ -87,9 +87,9 @@ class RepoObjects(KvReader):
             _get_key = attrgetter(key_attr)
             self.objs_to_items = lambda x: zip(map(_get_key, x), x)
         else:
-            assert callable(
-                objs_to_items
-            ), "issue_objs_to_itemskey must be a str or callable"
+            assert callable(objs_to_items), (
+                "issue_objs_to_itemskey must be a str or callable"
+            )
             self.objs_to_items = objs_to_items
 
     @cached_property
@@ -341,9 +341,9 @@ class GithubReader(KvReader):
             # TODO: This forces token use. Should we allow for login/password use?
             auth = Token(auth)
         else:
-            assert isinstance(
-                account_name, str
-            ), "account_name must be given (and a str)"
+            assert isinstance(account_name, str), (
+                "account_name must be given (and a str)"
+            )
 
         _github = Github(
             auth=auth,

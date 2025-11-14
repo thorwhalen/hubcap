@@ -294,14 +294,14 @@ def ensure_repo_folder(
     """
     if os.path.isdir(repo):
         return repo
-    elif 'github' in repo:  # Check if it looks like a GitHub URL
+    elif "github" in repo:  # Check if it looks like a GitHub URL
         try:
             # Parse the URL to extract branch and path information
             from hubcap.util import parse_github_url
 
             url_parts = parse_github_url(repo)
-            branch = url_parts.get('branch')
-            path = url_parts.get('path')
+            branch = url_parts.get("branch")
+            path = url_parts.get("path")
 
             # Build the base repo URL for cloning
             base_repo_url = (

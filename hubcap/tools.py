@@ -499,7 +499,7 @@ def create_discussion_comment(discussion_id, body):
 
 
 def copy_discussion(
-    source_discussion_url, target_repo_url, *, target_category_name='General'
+    source_discussion_url, target_repo_url, *, target_category_name="General"
 ):
     """
     Copies a discussion from a source URL to a target repository URL.
@@ -534,8 +534,8 @@ def copy_discussion(
 
     target_category_id = None
     for cat in target_categories:
-        if cat['name'].lower() == target_category_name.lower():
-            target_category_id = cat['id']
+        if cat["name"].lower() == target_category_name.lower():
+            target_category_id = cat["id"]
             break
     if not target_category_id:
         raise ValueError(
@@ -637,7 +637,7 @@ def get_author_commits(
     import requests
     from datetime import datetime, timedelta, timezone
 
-    github_token = os.environ.get('GITHUB_TOKEN')
+    github_token = os.environ.get("GITHUB_TOKEN")
     if not github_token:
         print("Error: GITHUB_TOKEN environment variable not set.")
         return []
@@ -658,8 +658,8 @@ def get_author_commits(
         end_date_obj = today
     elif isinstance(days_range, tuple) and len(days_range) == 2:
         try:
-            start_date_obj = datetime.strptime(days_range[0], '%Y-%m-%d').date()
-            end_date_obj = datetime.strptime(days_range[1], '%Y-%m-%d').date()
+            start_date_obj = datetime.strptime(days_range[0], "%Y-%m-%d").date()
+            end_date_obj = datetime.strptime(days_range[1], "%Y-%m-%d").date()
         except ValueError:
             print("Error: Invalid date format in days_range tuple. Use 'YYYY-MM-DD'.")
             return []
@@ -676,13 +676,13 @@ def get_author_commits(
     # To make dates inclusive of the full day, set time to 00:00:00 for 'since' and 23:59:59 for 'until'
     since_iso = (
         datetime.combine(start_date_obj, datetime.min.time(), tzinfo=timezone.utc)
-        .isoformat(timespec='seconds')
-        .replace('+00:00', 'Z')
+        .isoformat(timespec="seconds")
+        .replace("+00:00", "Z")
     )
     until_iso = (
         datetime.combine(end_date_obj, datetime.max.time(), tzinfo=timezone.utc)
-        .isoformat(timespec='seconds')
-        .replace('+00:00', 'Z')
+        .isoformat(timespec="seconds")
+        .replace("+00:00", "Z")
     )
 
     all_commits = []
@@ -706,27 +706,27 @@ def get_author_commits(
                 break  # No more commits on this page
 
             for commit_info in commits_data:
-                commit_detail = commit_info.get('commit', {})
-                author_detail = commit_detail.get('author', {})
+                commit_detail = commit_info.get("commit", {})
+                author_detail = commit_detail.get("author", {})
                 committer_detail = commit_detail.get(
-                    'committer', {}
+                    "committer", {}
                 )  # Fallback to committer if author is not filled
 
-                commit_email = author_detail.get('email') or committer_detail.get(
-                    'email'
+                commit_email = author_detail.get("email") or committer_detail.get(
+                    "email"
                 )
 
                 if commit_email and commit_email.lower() == author_email.lower():
                     all_commits.append(
                         {
-                            "sha": commit_info.get('sha'),
-                            "message": commit_detail.get('message'),
-                            "author_name": author_detail.get('name')
-                            or committer_detail.get('name'),
+                            "sha": commit_info.get("sha"),
+                            "message": commit_detail.get("message"),
+                            "author_name": author_detail.get("name")
+                            or committer_detail.get("name"),
                             "author_email": commit_email,
-                            "commit_date": author_detail.get('date')
+                            "commit_date": author_detail.get("date")
                             or committer_detail.get(
-                                'date'
+                                "date"
                             ),  # Use author date or committer date
                         }
                     )
@@ -830,9 +830,9 @@ class _RepoArtifactMapping(KvReader):
             # Load from cache
             cache_store = JsonFiles(artifact_dir)
             return {
-                int(k.replace('.json', '')): cache_store[k]
+                int(k.replace(".json", "")): cache_store[k]
                 for k in cache_store
-                if k.endswith('.json')
+                if k.endswith(".json")
             }
 
 
@@ -904,9 +904,9 @@ class LocalRepoArtifacts(KvReader):
         self.discussions = _DiscussionsMapping(refresh=refresh)
         self.issues = _IssuesMapping(refresh=refresh)
         self._artifacts = {
-            'info': self.info,
-            'discussions': self.discussions,
-            'issues': self.issues,
+            "info": self.info,
+            "discussions": self.discussions,
+            "issues": self.issues,
         }
 
     def __iter__(self):
