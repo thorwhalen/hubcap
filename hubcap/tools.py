@@ -922,5 +922,23 @@ class LocalRepoArtifacts(KvReader):
         return len(self._artifacts)
 
 
+from hubcap.util import create_markdown_from_jdict
+
+
+def _add_md_access(s):
+    import dol
+
+    s.discussions_mds = dol.wrap_kvs(
+        s.discussions,
+        value_decoder=create_markdown_from_jdict,
+    )
+    s.issues_mds = dol.wrap_kvs(
+        s.issues,
+        value_decoder=create_markdown_from_jdict,
+    )
+    return s
+
+
 # Create a default instance for convenience
-local_repo_artifacts = LocalRepoArtifacts(refresh=False)
+local_repo_artifacts = _add_md_access(LocalRepoArtifacts(refresh=False))
+remote_repo_artifacts = _add_md_access(LocalRepoArtifacts(refresh=True))

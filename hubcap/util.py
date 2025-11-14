@@ -952,20 +952,25 @@ class Discussions(KvReader):
 
 # TODO: Make it so that we can pass in subdicts of the discussion fields (for example, single or multiple comments)
 # TODO: Perculate more control to the arguments
-def create_markdown_from_discussion_jdict(jdict: dict | Iterable[dict]):
+def create_markdown_from_jdict(jdict: dict | Iterable[dict]):
     """
-    Creates a markdown representation of a discussion (metadata json-dict).
+    Creates a markdown representation of a discussion or issue (metadata json-dict).
 
     Headers are used to separate the different sections.
 
     This is meant to be applied to json exports of github discussions or issues.
+
+    Note: For issues, the 'comments' field is just a count (int), not the actual
+    comment data. For discussions, 'comments' is a list of comment objects with
+    their full data including replies.
     """
     if isinstance(jdict, dict) and {"title", "body"} <= jdict.keys():
-        markdown = f"# {jdict['title']}\n\n{jdict['body']}\n\n"
+        markdown = f"# {jdict['title']} (#{jdict['number']})\n\n{jdict['body']}\n\n"
 
-        # Process comments
-        if jdict.get("comments"):
-            for comment in jdict["comments"]:
+        # Process comments (only if it's a list, not an int count)
+        comments = jdict.get("comments")
+        if comments and isinstance(comments, list):
+            for comment in comments:
                 markdown += f"## Comment\n\n{comment['body']}\n\n"
 
                 # Process replies to comments
@@ -980,12 +985,11 @@ def create_markdown_from_discussion_jdict(jdict: dict | Iterable[dict]):
         ), f"Expected dict or Iterable, got {type(jdict)}"
         if isinstance(jdict, dict):
             jdict = jdict.values()
-        return "\n\n".join(create_markdown_from_discussion_jdict(d) for d in jdict)
+        return "\n\n".join(create_markdown_from_jdict(d) for d in jdict)
 
 
-create_markdown_from_jdict = (
-    create_markdown_from_discussion_jdict  # for backwards compatibility
-)
+# Backwards compatibility alias
+create_markdown_from_discussion_jdict = create_markdown_from_jdict
 
 # --------------------------------------------------------------------------------------
 # Parse and generate github URLS

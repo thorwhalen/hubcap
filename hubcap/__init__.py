@@ -189,8 +189,8 @@ from hubcap.util import (
     Discussions,
     git_clone,
     git_wiki_clone,
-    create_markdown_from_discussion_jdict,  # Creates a markdown representation of a discussion (metadata json-dict).
-    create_markdown_from_jdict,  # Deprecated -- here for backwards compatibility.
+    create_markdown_from_jdict,  # Creates a markdown representation of a discussion or issue (metadata json-dict).
+    create_markdown_from_discussion_jdict,  # Backwards compatibility alias for create_markdown_from_jdict.
     replace_relative_urls,  # replace relative urls with absolute ones
     parse_github_url,  #  parse a GitHub URL and returns a dict of its components
     generate_github_url,  # generate a GitHub URL from the provided components dict.
@@ -203,6 +203,7 @@ from hubcap.tools import (
     copy_discussion,  # Copies a discussion from one repository to another.
     LocalRepoArtifacts,  # Class for accessing cached repository artifacts
     local_repo_artifacts,  # Default instance of LocalRepoArtifacts
+    remote_repo_artifacts,  # Default instance of LocalRepoArtifacts with remote refresh
 )
 from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.
