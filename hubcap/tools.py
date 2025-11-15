@@ -755,7 +755,7 @@ def get_author_commits(
 
 import os
 from typing import Optional
-from dol import KvReader, wrap_kvs, Pipe
+from dol import KvReader, wrap_kvs, Pipe, add_ipython_key_completions
 from hubcap.util import (
     repo_cache_dir,
     JsonFiles,
@@ -900,9 +900,11 @@ class LocalRepoArtifacts(KvReader):
 
     def __init__(self, refresh: bool = False):
         self.refresh = refresh
-        self.info = _RepoInfoMapping(refresh=refresh)
-        self.discussions = _DiscussionsMapping(refresh=refresh)
-        self.issues = _IssuesMapping(refresh=refresh)
+        self.info = add_ipython_key_completions(_RepoInfoMapping(refresh=refresh))
+        self.discussions = add_ipython_key_completions(
+            _DiscussionsMapping(refresh=refresh)
+        )
+        self.issues = add_ipython_key_completions(_IssuesMapping(refresh=refresh))
         self._artifacts = {
             "info": self.info,
             "discussions": self.discussions,
@@ -926,15 +928,17 @@ from hubcap.util import create_markdown_from_jdict
 
 
 def _add_md_access(s):
-    import dol
-
-    s.discussions_mds = dol.wrap_kvs(
-        s.discussions,
-        value_decoder=create_markdown_from_jdict,
+    s.discussions_mds = add_ipython_key_completions(
+        wrap_kvs(
+            s.discussions,
+            value_decoder=create_markdown_from_jdict,
+        )
     )
-    s.issues_mds = dol.wrap_kvs(
-        s.issues,
-        value_decoder=create_markdown_from_jdict,
+    s.issues_mds = add_ipython_key_completions(
+        wrap_kvs(
+            s.issues,
+            value_decoder=create_markdown_from_jdict,
+        )
     )
     return s
 
