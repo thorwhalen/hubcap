@@ -108,19 +108,21 @@ jobs:
           pypi-password: ${{ secrets.PYPI_PASSWORD }}
           skip-existing: false
 
+
       - name: Commit Changes
         uses: i2mint/wads/actions/git-commit@master
         with:
-          commit-message: "**CI** Formatted code + Updated version to ${{ steps.version.outputs.version }} [skip ci]"
+          commit-message: "**CI** Formatted code + Updated version to ${{ env.VERSION }} [skip ci]"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           push: true
 
       - name: Tag Repository
         uses: i2mint/wads/actions/git-tag@master
         with:
-          tag: ${{ steps.version.outputs.version }}
-          message: "Release version ${{ steps.version.outputs.version }}"
+          tag: ${{ env.VERSION }}
+          message: "Release version ${{ env.VERSION }}"
           push: true
+
 
   github-pages:
     name: Publish GitHub Pages
