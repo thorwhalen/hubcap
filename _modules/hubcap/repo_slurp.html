@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.repo_slurp &mdash; hubcap 0.1.16 documentation</title>
+  <title>hubcap.repo_slurp &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="../../_static/documentation_options.js?v=3d116926"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -96,7 +96,8 @@
 <span class="c1">#  take care of caching what it clones (or in the case of discussions, downloads)</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ensure_github_url</span><span class="p">,</span>
     <span class="n">git_clone</span><span class="p">,</span>
@@ -108,7 +109,8 @@
 <span class="c1"># -------------------------------------------------------------------------------------</span>
 <span class="c1"># markdown utils</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">KT</span><span class="p">,</span> <span class="n">VT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 
 <span class="n">KvToText</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">KT</span><span class="p">,</span> <span class="n">VT</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
 
@@ -311,7 +313,7 @@
 <div class="viewcode-block" id="notebook_to_markdown">
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.notebook_to_markdown">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">notebook_to_markdown</span><span class="p">(</span>
-    <span class="n">notebook</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span>
+    <span class="n">notebook</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">process_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">process_markdown</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -338,7 +340,7 @@
 
     <span class="c1"># Make a notebook object</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">notebook</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbformat</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">as_version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">notebook</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -380,19 +382,51 @@
 <div class="viewcode-block" id="ensure_repo_folder">
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.ensure_repo_folder">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">ensure_repo_folder</span><span class="p">(</span>
-    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clone_func</span><span class="o">=</span><span class="n">git_clone</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DirPathString</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clone_func</span><span class="o">=</span><span class="n">git_clone</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">:</span> <span class="n">DirPathString</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DirPathString</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a local repo folder.</span>
 <span class="sd">    Either the input repo is already a local &quot;git&quot; folder (which we return as is),</span>
 <span class="sd">    or a temporary folder to clone the repo into is returned.</span>
+
+<span class="sd">    If the repo is a GitHub URL with a branch and/or path specification,</span>
+<span class="sd">    (e.g., https://github.com/user/repo/tree/branch/path), the function will:</span>
+<span class="sd">    - Clone the specified branch</span>
+<span class="sd">    - Return the path to the subfolder if a path is specified</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">repo</span>
-    <span class="k">elif</span> <span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="s2">&quot;github&quot;</span> <span class="ow">in</span> <span class="n">repo</span><span class="p">:</span>  <span class="c1"># Check if it looks like a GitHub URL</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Parse the URL to extract branch and path information</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_github_url</span>
+
+            <span class="n">url_parts</span> <span class="o">=</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+            <span class="n">branch</span> <span class="o">=</span> <span class="n">url_parts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;branch&quot;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">url_parts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Build the base repo URL for cloning</span>
+            <span class="n">base_repo_url</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;https://github.com/</span><span class="si">{</span><span class="n">url_parts</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">url_parts</span><span class="p">[</span><span class="s1">&#39;repository&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
             <span class="k">if</span> <span class="n">local_folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">local_folder</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
-            <span class="n">clone_func</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">)</span>
+
+            <span class="c1"># Clone with branch if specified</span>
+            <span class="k">if</span> <span class="n">branch</span><span class="p">:</span>
+                <span class="n">clone_func</span><span class="p">(</span><span class="n">base_repo_url</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="n">branch</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">clone_func</span><span class="p">(</span><span class="n">base_repo_url</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">)</span>
+
+            <span class="c1"># If a path was specified, return the subfolder</span>
+            <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">subfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_folder</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">subfolder</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">ResourceNotFound</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Path &#39;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39; not found in cloned repository at </span><span class="si">{</span><span class="n">local_folder</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="n">subfolder</span>
+
             <span class="k">return</span> <span class="n">local_folder</span>
         <span class="k">except</span> <span class="n">CalledProcessError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ResourceNotFound</span><span class="p">(</span>
@@ -500,7 +534,7 @@
     <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">kv_to_text</span><span class="p">:</span> <span class="n">KvToText</span> <span class="o">=</span> <span class="n">kv_to_python_aware_markdown</span><span class="p">,</span>
-    <span class="n">folder_to_mapping</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_filtered_py_and_md_files</span><span class="p">,</span>
+    <span class="n">folder_to_mapping</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_filtered_py_and_md_files</span><span class="p">,</span>
     <span class="n">extra_key_filter</span><span class="o">=</span><span class="n">_does_not_start_with_docsrc_or_setup</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="n">local_repo_folder</span> <span class="o">=</span> <span class="n">ensure_repo_folder</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
@@ -569,7 +603,7 @@
 <a class="viewcode-back" href="../../module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.repo_text_aggregate">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">repo_text_aggregate</span><span class="p">(</span>
     <span class="n">repo</span><span class="p">,</span>
-    <span class="n">kinds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;discussions&quot;</span><span class="p">),</span>
+    <span class="n">kinds</span><span class="p">:</span> <span class="n">CloneKinds</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CloneKinds</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="s2">&quot;wiki&quot;</span><span class="p">,</span> <span class="s2">&quot;discussions&quot;</span><span class="p">),</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">github_repo_mapping</span><span class="o">=</span><span class="n">github_repo_mapping</span><span class="p">,</span>
     <span class="n">text_from_mapping</span><span class="o">=</span><span class="n">text_from_mapping</span><span class="p">,</span>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.util &mdash; hubcap 0.1.16 documentation</title>
+  <title>hubcap.util &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="../../_static/documentation_options.js?v=3d116926"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -87,7 +87,8 @@
   <h1>Source code for hubcap.util</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Utils for hubcap.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">get_args</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
@@ -209,16 +210,22 @@
 <span class="c1"># --------------------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="get_repository_info">
 <a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.get_repository_info">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_repository_info</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Repository</span><span class="p">,</span> <span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span> <span class="o">=</span> <span class="n">DFLT_REPO_INFO</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_repository_info</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">Repository</span><span class="p">,</span>
+    <span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span> <span class="o">=</span> <span class="n">DFLT_REPO_INFO</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">use_auth</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get info about a repository.</span>
 
 <span class="sd">    &gt;&gt;&gt; info = get_repository_info(&#39;thorwhalen/hubcap&#39;)</span>
 
 <span class="sd">    This gives us a ``dict`` with default info fields:</span>
 
-<span class="sd">    &gt;&gt;&gt; list(info)  # doctest: +NORMALIZE_WHITESPACE</span>
-<span class="sd">    [&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, &#39;stargazers_count&#39;,</span>
-<span class="sd">    &#39;forks_count&#39;, &#39;watchers_count&#39;, &#39;html_url&#39;, &#39;last_commit_date&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; list(info)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS</span>
+<span class="sd">    [&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, ...]</span>
 <span class="sd">    &gt;&gt;&gt; info[&#39;name&#39;]</span>
 <span class="sd">    &#39;hubcap&#39;</span>
 <span class="sd">    &gt;&gt;&gt; info[&#39;html_url&#39;]</span>
@@ -252,17 +259,61 @@
 <span class="sd">    ... )</span>
 <span class="sd">    {&#39;name&#39;: &#39;hubcap&#39;, &#39;has stars&#39;: True}</span>
 
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Repository object or string identifier</span>
+<span class="sd">        repo_info: Info fields to return (default returns standard fields)</span>
+<span class="sd">        refresh: If True, fetches fresh data from GitHub and caches it.</span>
+<span class="sd">                 If False, returns cached data if available, otherwise fetches and caches.</span>
+<span class="sd">        token: GitHub token for authentication. If None and use_auth=True, will use</span>
+<span class="sd">               token from environment variables or config.</span>
+<span class="sd">        use_auth: If True (default), uses authenticated requests to avoid rate limits.</span>
+<span class="sd">                  Set to False to make unauthenticated requests.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">repo_info</span> <span class="o">=</span> <span class="n">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">)</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">cached_github_object</span><span class="p">()</span>
-    <span class="n">repo</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_props</span>
+
+    <span class="k">if</span> <span class="n">repo_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">repo_info</span> <span class="o">=</span> <span class="n">repo_props</span>  <span class="c1"># all repo properties</span>
+
+    <span class="n">requested_repo_info</span> <span class="o">=</span> <span class="n">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">)</span>
+
+    <span class="c1"># Get GitHub client with authentication if requested</span>
+    <span class="k">if</span> <span class="n">use_auth</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">github_object</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Github</span><span class="p">()</span>  <span class="c1"># Unauthenticated client</span>
+
+    <span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">full_name</span><span class="si">}</span><span class="s2">/info.json&quot;</span>
+
+    <span class="c1"># Check if we should use cached data</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">refresh</span> <span class="ow">and</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">repo_cache_json_files</span><span class="p">:</span>
+        <span class="n">all_info</span> <span class="o">=</span> <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fetch all available repo properties</span>
+        <span class="n">repo_obj</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="n">all_info_spec</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="n">prop</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">repo_props</span><span class="p">}</span>
+        <span class="n">all_info_funcs</span> <span class="o">=</span> <span class="n">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">all_info_spec</span><span class="p">)</span>
+        <span class="n">all_info</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">repo_obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_info_funcs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+        <span class="c1"># Cache the complete info</span>
+        <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_info</span>
+
+    <span class="c1"># Return only the requested fields</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">all_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">full_name</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">requested_repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span></div>
 
 
 
+<div class="viewcode-block" id="cached_github_object">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.cached_github_object">[docs]</a>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">cached_github_object</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Github</span><span class="p">()</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a cached authenticated GitHub client using the default token.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">github_object</span><span class="p">()</span></div>
+
 
 
 <span class="c1"># Define or modify the base patterns with their corresponding URL patterns here:</span>
@@ -493,7 +544,7 @@
         <span class="k">return</span> <span class="n">prop_spec</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RepoFunc</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_repo_info_dict_with_func_values</span><span class="p">(</span><span class="n">repo_info</span><span class="p">:</span> <span class="n">RepoInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RepoFunc</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a dict of repo info.</span>
 
 <span class="sd">    &gt;&gt;&gt; d = _ensure_repo_info_dict_with_func_values(&#39;name html_url&#39;)</span>
@@ -509,7 +560,7 @@
 
 <div class="viewcode-block" id="ensure_url_suffix">
 <a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.ensure_url_suffix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ensure_url_suffix</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Repository</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_url_suffix</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure a url suffix, that is, get rid of the (...)github.com prefix.</span>
 
 <span class="sd">    &gt;&gt;&gt; ensure_url_suffix(&#39;https://www.github.com/thorwhalen/hubcap/README.md&#39;)</span>
@@ -668,14 +719,36 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">),</span> <span class="n">ensure_folder_to_clone_into</span><span class="p">(</span><span class="n">clone_to_folder</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">ensure_github_url</span><span class="p">(</span><span class="n">repo</span><span class="p">),</span>
+        <span class="n">ensure_folder_to_clone_into</span><span class="p">(</span><span class="n">clone_to_folder</span><span class="p">),</span>
+        <span class="n">branch</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">git_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">)</span>
-    <span class="n">git</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;clone </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">clone_to_folder</span>
+<div class="viewcode-block" id="git_clone">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.git_clone">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">git_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clone a GitHub repository, optionally specifying a branch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Repository URL or identifier</span>
+<span class="sd">        clone_to_folder: Local folder to clone into (creates temp folder if None)</span>
+<span class="sd">        branch: Optional branch name to clone (clones default branch if None)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Path to the cloned repository folder</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">,</span> <span class="n">branch</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span>
+        <span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">,</span> <span class="n">branch</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">branch</span><span class="p">:</span>
+        <span class="n">git</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;clone --branch </span><span class="si">{</span><span class="n">branch</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">git</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;clone </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clone_to_folder</span></div>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">git_wiki_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -702,15 +775,30 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">path_get</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">config2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">simple_config_getter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">path_get</span><span class="p">,</span> <span class="n">Files</span><span class="p">,</span> <span class="n">mk_dirs_if_missing</span><span class="p">,</span> <span class="n">wrap_kvs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">config2py</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">simple_config_getter</span><span class="p">,</span>
+    <span class="n">get_app_data_folder</span><span class="p">,</span>
+    <span class="n">process_path</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Config and data resources (folders, configs, stores, etc.)</span>
 
 <span class="n">APP_NAME</span> <span class="o">=</span> <span class="s2">&quot;hubcap&quot;</span>
 <span class="n">REPO_COLLECTION_CONFIGS</span> <span class="o">=</span> <span class="s2">&quot;REPO_COLLECTION_CONFIGS&quot;</span>
 <span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span> <span class="o">=</span> <span class="s2">&quot;repo_collections_key_props.json&quot;</span>
+
+<span class="n">app_data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HUBCAP_DATA_FOLDER&quot;</span><span class="p">,</span> <span class="n">get_app_data_folder</span><span class="p">(</span><span class="n">APP_NAME</span><span class="p">))</span>
+<span class="n">app_data_dir</span> <span class="o">=</span> <span class="n">process_path</span><span class="p">(</span><span class="n">app_data_dir</span><span class="p">,</span> <span class="n">ensure_dir_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">repo_cache_dir</span> <span class="o">=</span> <span class="n">process_path</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app_data_dir</span><span class="p">,</span> <span class="s2">&quot;repos&quot;</span><span class="p">),</span> <span class="n">ensure_dir_exists</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">repo_cache_store</span> <span class="o">=</span> <span class="n">mk_dirs_if_missing</span><span class="p">(</span><span class="n">Files</span><span class="p">(</span><span class="n">repo_cache_dir</span><span class="p">))</span>
 
 <span class="n">get_config</span> <span class="o">=</span> <span class="n">simple_config_getter</span><span class="p">(</span><span class="n">APP_NAME</span><span class="p">)</span>
 <span class="n">configs</span> <span class="o">=</span> <span class="n">get_config</span><span class="o">.</span><span class="n">configs</span>
@@ -718,6 +806,7 @@
 <span class="n">repo_collections_configs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
     <span class="n">data_files</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;dflt_repo_collections_key_props.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 <span class="p">)</span>
+<span class="c1"># get_app_data_folder = get_app_data_folder(APP_NAME)</span>
 
 
 <span class="k">if</span> <span class="n">USER_REPO_COLLECTION_KEY_PROPS_FILE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">configs</span><span class="p">:</span>
@@ -728,6 +817,80 @@
     <span class="n">repo_collections_configs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">user_key_props</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error loading user repo_collections_key_props.json: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a GitHub API object to a JSON-serializable representation.</span>
+
+<span class="sd">    Recursively processes dicts, lists, and other structures to ensure</span>
+<span class="sd">    all nested objects are JSON-serializable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="c1"># Handle PyGithub objects by checking for common attributes</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">):</span>
+        <span class="c1"># PyGithub objects typically have a raw_data attribute</span>
+        <span class="k">return</span> <span class="n">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">raw_data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__dict__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+    <span class="p">):</span>
+        <span class="c1"># Try to convert to dict representation</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)}</span>
+            <span class="k">return</span> <span class="n">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">obj_dict</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="c1"># Fallback to string representation</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="github_json_serializer">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.github_json_serializer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_json_serializer</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepare objects for JSON serialization, handling GitHub API objects and datetime.</span>
+
+<span class="sd">    Handles datetime objects and other common GitHub API types by recursively</span>
+<span class="sd">    converting them to JSON-serializable types, then encoding to JSON bytes.</span>
+
+<span class="sd">    &gt;&gt;&gt; from datetime import datetime, timezone</span>
+<span class="sd">    &gt;&gt;&gt; dt = datetime(2021, 1, 15, 22, 34, 10, tzinfo=timezone.utc)</span>
+<span class="sd">    &gt;&gt;&gt; result = github_json_serializer(dt)</span>
+<span class="sd">    &gt;&gt;&gt; result</span>
+<span class="sd">    b&#39;&quot;2021-01-15T22:34:10+00:00&quot;&#39;</span>
+<span class="sd">    &gt;&gt;&gt; github_json_serializer({&#39;created_at&#39;: dt, &#39;name&#39;: &#39;test&#39;})</span>
+<span class="sd">    b&#39;{&quot;created_at&quot;: &quot;2021-01-15T22:34:10+00:00&quot;, &quot;name&quot;: &quot;test&quot;}&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializable_obj</span> <span class="o">=</span> <span class="n">_github_object_to_json_serializable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">serializable_obj</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="github_json_deserializer">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.github_json_deserializer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">github_json_deserializer</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode JSON bytes back to Python objects.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+
+<span class="n">JsonFiles</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span>
+    <span class="n">Files</span><span class="p">,</span> <span class="n">value_encoder</span><span class="o">=</span><span class="n">github_json_serializer</span><span class="p">,</span> <span class="n">value_decoder</span><span class="o">=</span><span class="n">github_json_deserializer</span>
+<span class="p">)</span>
+
+<span class="n">repo_cache_json_files</span> <span class="o">=</span> <span class="n">mk_dirs_if_missing</span><span class="p">(</span><span class="n">JsonFiles</span><span class="p">(</span><span class="n">repo_cache_dir</span><span class="p">))</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">defaulted_itemgetter</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
@@ -763,14 +926,17 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">discussion_fields</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_DISCUSSION_FIELDS</span><span class="p">,</span>
+        <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">discussion_fields</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">DFLT_DISCUSSION_FIELDS</span><span class="p">,</span>
         <span class="n">_max_discussions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">_max_comments</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
         <span class="n">_max_replies</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">repo</span> <span class="o">=</span> <span class="n">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repo</span> <span class="o">=</span> <span class="n">repo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">github_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
@@ -782,6 +948,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_discussions</span> <span class="o">=</span> <span class="n">_max_discussions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_comments</span> <span class="o">=</span> <span class="n">_max_comments</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_replies</span> <span class="o">=</span> <span class="n">_max_replies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+
+        <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">repo_cache_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;discussions&quot;</span>
+            <span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span> <span class="o">=</span> <span class="n">JsonFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_discussions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -823,11 +998,25 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the discussion data for a given discussion number (key).&quot;&quot;&quot;</span>
+        <span class="c1"># Check cache first if caching is enabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">:</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+
+        <span class="c1"># Fetch from GitHub</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_query</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_raise_if_error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_discussion_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_discussion_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># Cache if enabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the graphQL query for a discussion.&quot;&quot;&quot;</span>
@@ -892,22 +1081,27 @@
 
 <span class="c1"># TODO: Make it so that we can pass in subdicts of the discussion fields (for example, single or multiple comments)</span>
 <span class="c1"># TODO: Perculate more control to the arguments</span>
-<div class="viewcode-block" id="create_markdown_from_discussion_jdict">
-<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.create_markdown_from_discussion_jdict">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">create_markdown_from_discussion_jdict</span><span class="p">(</span><span class="n">jdict</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]):</span>
+<div class="viewcode-block" id="create_markdown_from_jdict">
+<a class="viewcode-back" href="../../module_docs/hubcap/util.html#hubcap.util.create_markdown_from_jdict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_markdown_from_jdict</span><span class="p">(</span><span class="n">jdict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Creates a markdown representation of a discussion (metadata json-dict).</span>
+<span class="sd">    Creates a markdown representation of a discussion or issue (metadata json-dict).</span>
 
 <span class="sd">    Headers are used to separate the different sections.</span>
 
 <span class="sd">    This is meant to be applied to json exports of github discussions or issues.</span>
+
+<span class="sd">    Note: For issues, the &#39;comments&#39; field is just a count (int), not the actual</span>
+<span class="sd">    comment data. For discussions, &#39;comments&#39; is a list of comment objects with</span>
+<span class="sd">    their full data including replies.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">}</span> <span class="o">&lt;=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">markdown</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;# </span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="n">markdown</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;# </span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (#</span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)</span><span class="se">\n\n</span><span class="si">{</span><span class="n">jdict</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
 
-        <span class="c1"># Process comments</span>
-        <span class="k">if</span> <span class="n">jdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comments&quot;</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]:</span>
+        <span class="c1"># Process comments (only if it&#39;s a list, not an int count)</span>
+        <span class="n">comments</span> <span class="o">=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comments&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">comments</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comments</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">comments</span><span class="p">:</span>
                 <span class="n">markdown</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;## Comment</span><span class="se">\n\n</span><span class="si">{</span><span class="n">comment</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
 
                 <span class="c1"># Process replies to comments</span>
@@ -917,18 +1111,17 @@
 
         <span class="k">return</span> <span class="n">markdown</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">jdict</span><span class="p">,</span> <span class="n">Iterable</span>
-        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">jdict</span> <span class="o">=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_discussion_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
 
 
 
-<span class="n">create_markdown_from_jdict</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">create_markdown_from_discussion_jdict</span>  <span class="c1"># for backwards compatibility</span>
-<span class="p">)</span>
+<span class="c1"># Backwards compatibility alias</span>
+<span class="n">create_markdown_from_discussion_jdict</span> <span class="o">=</span> <span class="n">create_markdown_from_jdict</span>
 
 <span class="c1"># --------------------------------------------------------------------------------------</span>
 <span class="c1"># Parse and generate github URLS</span>
@@ -979,6 +1172,11 @@
         <span class="s2">&quot;field_patterns&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;.+&quot;</span><span class="p">},</span>
     <span class="p">},</span>
     <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;tree_path&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/</span><span class="si">{username}</span><span class="s2">/</span><span class="si">{repository}</span><span class="s2">/tree/</span><span class="si">{branch}</span><span class="s2">/</span><span class="si">{path}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;field_patterns&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;.+&quot;</span><span class="p">},</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;branch&quot;</span><span class="p">,</span>
         <span class="s2">&quot;template&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/</span><span class="si">{username}</span><span class="s2">/</span><span class="si">{repository}</span><span class="s2">/tree/</span><span class="si">{branch}</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">},</span>
@@ -1017,7 +1215,7 @@
 <span class="p">)</span>
 
 <span class="n">UrlTemplateField</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="n">url_template_fields</span><span class="p">]</span>
-<span class="n">UrlComponents</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="n">UrlTemplateField</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<span class="n">UrlComponents</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">UrlTemplateField</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">is_url_components</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>

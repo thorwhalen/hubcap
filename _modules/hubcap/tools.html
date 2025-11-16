@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.16 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="../../_static/documentation_options.js?v=3d116926"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -87,7 +87,8 @@
   <h1>Source code for hubcap.tools</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;A medley of tools for Hubcap.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
@@ -207,7 +208,7 @@
         <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">org</span><span class="p">,</span>
         <span class="s2">&quot;repository&quot;</span><span class="p">:</span> <span class="n">repo</span><span class="p">,</span>
         <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">branch</span><span class="p">,</span>
-        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">relpath</span><span class="p">,</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="s2">&quot;fully_qualified_raw&quot;</span><span class="p">)</span>
     <span class="c1"># return (</span>
@@ -247,8 +248,8 @@
 <a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.notebook_to_markdown">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">notebook_to_markdown</span><span class="p">(</span>
     <span class="n">notebook_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">repo_root_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">repo_root_url</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">image_relative_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
 <span class="p">):</span>
@@ -358,7 +359,7 @@
 
     <span class="c1"># Remove unwanted artifacts</span>
     <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&lt;style scoped&gt;(.*?)&lt;/style&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
-    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;```python\s*```&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+    <span class="n">trg_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;```python\s*```&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">trg_str</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
 
     <span class="c1"># Save to the target file if specified</span>
     <span class="k">if</span> <span class="n">md_trg</span><span class="p">:</span>
@@ -366,6 +367,714 @@
 
     <span class="k">return</span> <span class="n">trg_str</span></div>
 
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Copying discussions from one repo to another (even with private repos!)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="c1"># --- Configuration ---</span>
+<span class="c1"># Get your GitHub Personal Access Token from environment variable</span>
+<span class="n">GITHUB_GRAPHQL_URL</span> <span class="o">=</span> <span class="s2">&quot;https://api.github.com/graphql&quot;</span>
+
+
+<div class="viewcode-block" id="get_github_token">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.get_github_token">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_github_token</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a GitHub token from common env var names, or None if not set.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;HUBCAP_GITHUB_TOKEN&quot;</span><span class="p">,</span> <span class="s2">&quot;HUBCAP_TOKEN&quot;</span><span class="p">,</span> <span class="s2">&quot;GH_TOKEN&quot;</span><span class="p">,</span> <span class="s2">&quot;GITHUB_TOKEN&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">token</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># Backwards-compatible snapshot (may be None)</span>
+<span class="n">GITHUB_TOKEN</span> <span class="o">=</span> <span class="n">get_github_token</span><span class="p">()</span>
+
+<span class="c1"># Existing behavior preserved: raise at import time if no token</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">GITHUB_TOKEN</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">&quot;GITHUB_TOKEN environment variable not set.&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Helper Functions ---</span>
+
+
+<div class="viewcode-block" id="run_graphql_query">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.run_graphql_query">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_graphql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes a GraphQL query against the GitHub API.&quot;&quot;&quot;</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">GITHUB_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">&quot;variables&quot;</span><span class="p">:</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">GITHUB_GRAPHQL_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise an exception for HTTP errors</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GraphQL errors: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="parse_github_discussion_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.parse_github_discussion_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_github_discussion_url</span><span class="p">(</span><span class="n">discussion_url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses a GitHub discussion URL to extract owner, repo, and discussion number.&quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s2">&quot;https://github.com/([^/]+)/([^/]+)/discussions/(\d+)&quot;</span><span class="p">,</span> <span class="n">discussion_url</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid GitHub discussion URL format.&quot;</span><span class="p">)</span>
+    <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">,</span> <span class="n">discussion_number</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">discussion_number</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="parse_github_repo_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.parse_github_repo_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_github_repo_url</span><span class="p">(</span><span class="n">repo_url</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses a GitHub repository URL to extract owner and repo name.&quot;&quot;&quot;</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;https://github.com/([^/]+)/([^/]+)&quot;</span><span class="p">,</span> <span class="n">repo_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid GitHub repository URL format.&quot;</span><span class="p">)</span>
+    <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span></div>
+
+
+
+<div class="viewcode-block" id="get_repository_id">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.get_repository_id">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_repository_id</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the GraphQL node ID of a repository.&quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    query GetRepositoryId($owner: String!, $repoName: String!) {</span>
+<span class="s2">      repository(owner: $owner, name: $repoName) {</span>
+<span class="s2">        id</span>
+<span class="s2">        discussionCategories(first: 100) { # Fetch categories to aid in creating discussions</span>
+<span class="s2">          nodes {</span>
+<span class="s2">            id</span>
+<span class="s2">            name</span>
+<span class="s2">          }</span>
+<span class="s2">        }</span>
+<span class="s2">      }</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="n">owner</span><span class="p">,</span> <span class="s2">&quot;repoName&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">run_graphql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Repository &#39;</span><span class="si">{</span><span class="n">owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&#39; not found or inaccessible.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;discussionCategories&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_discussion_data">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.get_discussion_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_discussion_data</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">,</span> <span class="n">discussion_number</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches the full JSON data for a discussion, including comments,</span>
+<span class="sd">    using the GitHub GraphQL API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    query GetDiscussion($owner: String!, $repoName: String!, $discussionNumber: Int!) {</span>
+<span class="s2">      repository(owner: $owner, name: $repoName) {</span>
+<span class="s2">        discussion(number: $discussionNumber) {</span>
+<span class="s2">          title</span>
+<span class="s2">          body</span>
+<span class="s2">          url</span>
+<span class="s2">          createdAt</span>
+<span class="s2">          author {</span>
+<span class="s2">            login</span>
+<span class="s2">          }</span>
+<span class="s2">          category {</span>
+<span class="s2">            id # Category ID is needed for new discussion creation</span>
+<span class="s2">            name</span>
+<span class="s2">          }</span>
+<span class="s2">          comments(first: 100) { # Adjust &#39;first&#39; for more comments, use pagination if needed</span>
+<span class="s2">            nodes {</span>
+<span class="s2">              body</span>
+<span class="s2">              createdAt</span>
+<span class="s2">              author {</span>
+<span class="s2">                login</span>
+<span class="s2">              }</span>
+<span class="s2">              # You can add more fields for comments if needed, e.g., reactions, url</span>
+<span class="s2">            }</span>
+<span class="s2">            pageInfo {</span>
+<span class="s2">                hasNextPage</span>
+<span class="s2">                endCursor</span>
+<span class="s2">            }</span>
+<span class="s2">          }</span>
+<span class="s2">        }</span>
+<span class="s2">      }</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="n">owner</span><span class="p">,</span>
+        <span class="s2">&quot;repoName&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+        <span class="s2">&quot;discussionNumber&quot;</span><span class="p">:</span> <span class="n">discussion_number</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">run_graphql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;discussion&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Discussion #</span><span class="si">{</span><span class="n">discussion_number</span><span class="si">}</span><span class="s2"> in &#39;</span><span class="si">{</span><span class="n">owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&#39; not found or inaccessible.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">discussion</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;discussion&quot;</span><span class="p">]</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Handle pagination for comments</span>
+    <span class="k">while</span> <span class="n">discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;pageInfo&quot;</span><span class="p">][</span><span class="s2">&quot;hasNextPage&quot;</span><span class="p">]:</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;pageInfo&quot;</span><span class="p">][</span><span class="s2">&quot;endCursor&quot;</span><span class="p">]</span>
+        <span class="n">comment_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        query GetMoreDiscussionComments($owner: String!, $repoName: String!, $discussionNumber: Int!, $cursor: String!) {</span>
+<span class="s2">          repository(owner: $owner, name: $repoName) {</span>
+<span class="s2">            discussion(number: $discussionNumber) {</span>
+<span class="s2">              comments(first: 100, after: $cursor) {</span>
+<span class="s2">                nodes {</span>
+<span class="s2">                  body</span>
+<span class="s2">                  createdAt</span>
+<span class="s2">                  author {</span>
+<span class="s2">                    login</span>
+<span class="s2">                  }</span>
+<span class="s2">                }</span>
+<span class="s2">                pageInfo {</span>
+<span class="s2">                    hasNextPage</span>
+<span class="s2">                    endCursor</span>
+<span class="s2">                }</span>
+<span class="s2">              }</span>
+<span class="s2">            }</span>
+<span class="s2">          }</span>
+<span class="s2">        }</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="n">comment_variables</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="n">owner</span><span class="p">,</span>
+            <span class="s2">&quot;repoName&quot;</span><span class="p">:</span> <span class="n">repo_name</span><span class="p">,</span>
+            <span class="s2">&quot;discussionNumber&quot;</span><span class="p">:</span> <span class="n">discussion_number</span><span class="p">,</span>
+            <span class="s2">&quot;cursor&quot;</span><span class="p">:</span> <span class="n">cursor</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">comment_data</span> <span class="o">=</span> <span class="n">run_graphql_query</span><span class="p">(</span><span class="n">comment_query</span><span class="p">,</span> <span class="n">comment_variables</span><span class="p">)</span>
+        <span class="n">discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">comment_data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;discussion&quot;</span><span class="p">][</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;pageInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment_data</span><span class="p">[</span><span class="s2">&quot;repository&quot;</span><span class="p">][</span><span class="s2">&quot;discussion&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;comments&quot;</span>
+        <span class="p">][</span><span class="s2">&quot;pageInfo&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">discussion</span></div>
+
+
+
+<div class="viewcode-block" id="create_discussion">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.create_discussion">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_discussion</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a new discussion in the target repository.&quot;&quot;&quot;</span>
+    <span class="n">mutation</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    mutation CreateDiscussion($repositoryId: ID!, $title: String!, $body: String!, $categoryId: ID!) {</span>
+<span class="s2">      createDiscussion(input: {repositoryId: $repositoryId, title: $title, body: $body, categoryId: $categoryId}) {</span>
+<span class="s2">        discussion {</span>
+<span class="s2">          id</span>
+<span class="s2">          url</span>
+<span class="s2">          number</span>
+<span class="s2">        }</span>
+<span class="s2">      }</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;repositoryId&quot;</span><span class="p">:</span> <span class="n">repo_id</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+        <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="n">body</span><span class="p">,</span>
+        <span class="s2">&quot;categoryId&quot;</span><span class="p">:</span> <span class="n">category_id</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">run_graphql_query</span><span class="p">(</span><span class="n">mutation</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;createDiscussion&quot;</span><span class="p">][</span><span class="s2">&quot;discussion&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="create_discussion_comment">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.create_discussion_comment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_discussion_comment</span><span class="p">(</span><span class="n">discussion_id</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds a comment to an existing discussion.&quot;&quot;&quot;</span>
+    <span class="n">mutation</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    mutation AddDiscussionComment($discussionId: ID!, $body: String!) {</span>
+<span class="s2">      addDiscussionComment(input: {discussionId: $discussionId, body: $body}) {</span>
+<span class="s2">        comment {</span>
+<span class="s2">          id</span>
+<span class="s2">          url</span>
+<span class="s2">        }</span>
+<span class="s2">      }</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;discussionId&quot;</span><span class="p">:</span> <span class="n">discussion_id</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="n">body</span><span class="p">}</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">run_graphql_query</span><span class="p">(</span><span class="n">mutation</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;addDiscussionComment&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="copy_discussion">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.copy_discussion">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_discussion</span><span class="p">(</span>
+    <span class="n">source_discussion_url</span><span class="p">,</span> <span class="n">target_repo_url</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">target_category_name</span><span class="o">=</span><span class="s2">&quot;General&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copies a discussion from a source URL to a target repository URL.</span>
+<span class="sd">    Attempts to preserve content and provide context for original authors/timestamps.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Starting Discussion Copy ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source Discussion: </span><span class="si">{</span><span class="n">source_discussion_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target Repository: </span><span class="si">{</span><span class="n">target_repo_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 1. Parse URLs</span>
+    <span class="n">source_owner</span><span class="p">,</span> <span class="n">source_repo_name</span><span class="p">,</span> <span class="n">discussion_number</span> <span class="o">=</span> <span class="n">parse_github_discussion_url</span><span class="p">(</span>
+        <span class="n">source_discussion_url</span>
+    <span class="p">)</span>
+    <span class="n">target_owner</span><span class="p">,</span> <span class="n">target_repo_name</span> <span class="o">=</span> <span class="n">parse_github_repo_url</span><span class="p">(</span><span class="n">target_repo_url</span><span class="p">)</span>
+
+    <span class="c1"># 2. Get target repository ID and categories</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Getting target repository ID and discussion categories for &#39;</span><span class="si">{</span><span class="n">target_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">target_repo_name</span><span class="si">}</span><span class="s2">&#39;...&quot;</span>
+    <span class="p">)</span>
+    <span class="n">target_repo_id</span><span class="p">,</span> <span class="n">target_categories</span> <span class="o">=</span> <span class="n">get_repository_id</span><span class="p">(</span>
+        <span class="n">target_owner</span><span class="p">,</span> <span class="n">target_repo_name</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available discussion categories in target repository:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">target_categories</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Name: </span><span class="si">{</span><span class="n">cat</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, ID: </span><span class="si">{</span><span class="n">cat</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Prompt user to choose a category ID</span>
+    <span class="k">if</span> <span class="n">target_category_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">target_category_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span>
+            <span class="s2">&quot;Enter the name of the target discussion category (e.g., &#39;General&#39;, &#39;Q&amp;A&#39;): &quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">target_category_id</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">target_categories</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cat</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">target_category_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">target_category_id</span> <span class="o">=</span> <span class="n">cat</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">target_category_id</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Category &#39;</span><span class="si">{</span><span class="n">target_category_name</span><span class="si">}</span><span class="s2">&#39; not found in target repository. Please choose from the listed categories.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># 3. Get source discussion data</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Fetching discussion #</span><span class="si">{</span><span class="n">discussion_number</span><span class="si">}</span><span class="s2"> from &#39;</span><span class="si">{</span><span class="n">source_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">source_repo_name</span><span class="si">}</span><span class="s2">&#39;...&quot;</span>
+    <span class="p">)</span>
+    <span class="n">source_discussion</span> <span class="o">=</span> <span class="n">get_discussion_data</span><span class="p">(</span>
+        <span class="n">source_owner</span><span class="p">,</span> <span class="n">source_repo_name</span><span class="p">,</span> <span class="n">discussion_number</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 4. Prepare new discussion title and body</span>
+    <span class="n">original_discussion_link</span> <span class="o">=</span> <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
+    <span class="n">original_author</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="s2">&quot;login&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span>
+        <span class="k">else</span> <span class="s2">&quot;Unknown&quot;</span>
+    <span class="p">)</span>
+    <span class="n">original_created_at</span> <span class="o">=</span> <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">]</span>
+    <span class="n">original_category_name</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span>
+        <span class="k">else</span> <span class="s2">&quot;Unknown&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">new_title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_discussion</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">new_body_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">_This discussion was copied from [original discussion](</span><span class="si">{</span><span class="n">original_discussion_link</span><span class="si">}</span><span class="s2">) in `</span><span class="si">{</span><span class="n">source_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">source_repo_name</span><span class="si">}</span><span class="s2">`._</span>
+
+<span class="s2">---</span>
+<span class="s2">**Original Post by @</span><span class="si">{</span><span class="n">original_author</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">original_created_at</span><span class="si">}</span><span class="s2"> (Category: </span><span class="si">{</span><span class="n">original_category_name</span><span class="si">}</span><span class="s2">):**</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">new_body</span> <span class="o">=</span> <span class="n">new_body_prefix</span> <span class="o">+</span> <span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span>
+
+    <span class="c1"># 5. Create the new discussion</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Creating new discussion in &#39;</span><span class="si">{</span><span class="n">target_owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">target_repo_name</span><span class="si">}</span><span class="s2">&#39; under category &#39;</span><span class="si">{</span><span class="n">target_category_name</span><span class="si">}</span><span class="s2">&#39;...&quot;</span>
+    <span class="p">)</span>
+    <span class="n">new_discussion</span> <span class="o">=</span> <span class="n">create_discussion</span><span class="p">(</span>
+        <span class="n">target_repo_id</span><span class="p">,</span> <span class="n">new_title</span><span class="p">,</span> <span class="n">new_body</span><span class="p">,</span> <span class="n">target_category_id</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New discussion created: </span><span class="si">{</span><span class="n">new_discussion</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New discussion ID: </span><span class="si">{</span><span class="n">new_discussion</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 6. Copy comments</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Copying comments...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">source_discussion</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">][</span><span class="s2">&quot;nodes&quot;</span><span class="p">]):</span>
+        <span class="n">comment_author</span> <span class="o">=</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">][</span><span class="s2">&quot;login&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;Unknown&quot;</span>
+        <span class="n">comment_created_at</span> <span class="o">=</span> <span class="n">comment</span><span class="p">[</span><span class="s2">&quot;createdAt&quot;</span><span class="p">]</span>
+
+        <span class="n">new_comment_body</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">---</span>
+<span class="s2">**Comment by @</span><span class="si">{</span><span class="n">comment_author</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">comment_created_at</span><span class="si">}</span><span class="s2">:**</span>
+
+<span class="si">{</span><span class="n">comment</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">create_discussion_comment</span><span class="p">(</span><span class="n">new_discussion</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">new_comment_body</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;  - Copied comment </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">source_discussion</span><span class="p">[</span><span class="s1">&#39;comments&#39;</span><span class="p">][</span><span class="s1">&#39;nodes&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - ERROR copying comment </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Discussion Copy Complete ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New discussion available at: </span><span class="si">{</span><span class="n">new_discussion</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Miscellaneous tools</span>
+
+
+<span class="c1"># TODO: Enhance to get more information, or be able to ask more from sha</span>
+<span class="c1"># TODO: Test (manually): Not sure I&#39;m getting all the commits I should be getting</span>
+<div class="viewcode-block" id="get_author_commits">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.get_author_commits">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_author_commits</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">author_email</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">days_range</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches GitHub commits for a specific author within a given date range.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_name (str): The repo_owner/repo_name in the format for a repo.</span>
+<span class="sd">        author_email (str): The email address of the author to filter commits by.</span>
+<span class="sd">        days_range (tuple | int): The date range for the commits.</span>
+<span class="sd">                                  If an int, it&#39;s the number of days back from today.</span>
+<span class="sd">                                  If a tuple, it&#39;s (start_date_str, end_date_str) in &#39;YYYY-MM-DD&#39; format (inclusive).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[dict]: A list of dictionaries, where each dictionary represents a commit</span>
+<span class="sd">                    and contains &#39;sha&#39;, &#39;message&#39;, &#39;author_name&#39;, &#39;author_email&#39;, &#39;commit_date&#39;.</span>
+<span class="sd">                    Returns an empty list if no commits are found or an error occurs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+
+    <span class="n">github_token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GITHUB_TOKEN&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">github_token</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: GITHUB_TOKEN environment variable not set.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.github.com/repos/</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">/commits&quot;</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;token </span><span class="si">{</span><span class="n">github_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.github.v3+json&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Determine start_date and end_date</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">days_range</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">days_range</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: days_range (int) cannot be negative.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">start_date_obj</span> <span class="o">=</span> <span class="n">today</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days_range</span><span class="p">)</span>
+        <span class="n">end_date_obj</span> <span class="o">=</span> <span class="n">today</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">days_range</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">days_range</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">start_date_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">days_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="n">end_date_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">days_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Invalid date format in days_range tuple. Use &#39;YYYY-MM-DD&#39;.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">start_date_obj</span> <span class="o">&gt;</span> <span class="n">end_date_obj</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: start_date cannot be after end_date.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Error: days_range must be an integer or a tuple of (start_date_str, end_date_str).&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># Format dates for GitHub API (ISO 8601)</span>
+    <span class="c1"># To make dates inclusive of the full day, set time to 00:00:00 for &#39;since&#39; and 23:59:59 for &#39;until&#39;</span>
+    <span class="n">since_iso</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">start_date_obj</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">until_iso</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">end_date_obj</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+00:00&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">all_commits</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">per_page</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Max per_page for GitHub API</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;since&quot;</span><span class="p">:</span> <span class="n">since_iso</span><span class="p">,</span>
+            <span class="s2">&quot;until&quot;</span><span class="p">:</span> <span class="n">until_iso</span><span class="p">,</span>
+            <span class="s2">&quot;per_page&quot;</span><span class="p">:</span> <span class="n">per_page</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise an exception for HTTP errors (4xx or 5xx)</span>
+            <span class="n">commits_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">commits_data</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># No more commits on this page</span>
+
+            <span class="k">for</span> <span class="n">commit_info</span> <span class="ow">in</span> <span class="n">commits_data</span><span class="p">:</span>
+                <span class="n">commit_detail</span> <span class="o">=</span> <span class="n">commit_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">author_detail</span> <span class="o">=</span> <span class="n">commit_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">committer_detail</span> <span class="o">=</span> <span class="n">commit_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s2">&quot;committer&quot;</span><span class="p">,</span> <span class="p">{}</span>
+                <span class="p">)</span>  <span class="c1"># Fallback to committer if author is not filled</span>
+
+                <span class="n">commit_email</span> <span class="o">=</span> <span class="n">author_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">committer_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s2">&quot;email&quot;</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">commit_email</span> <span class="ow">and</span> <span class="n">commit_email</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">author_email</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">all_commits</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;sha&quot;</span><span class="p">:</span> <span class="n">commit_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sha&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">commit_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;author_name&quot;</span><span class="p">:</span> <span class="n">author_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                            <span class="ow">or</span> <span class="n">committer_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;author_email&quot;</span><span class="p">:</span> <span class="n">commit_email</span><span class="p">,</span>
+                            <span class="s2">&quot;commit_date&quot;</span><span class="p">:</span> <span class="n">author_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
+                            <span class="ow">or</span> <span class="n">committer_detail</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">&quot;date&quot;</span>
+                            <span class="p">),</span>  <span class="c1"># Use author date or committer date</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">commits_data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">per_page</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># Less than per_page commits means it&#39;s the last page</span>
+
+            <span class="n">page</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Network or API error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Could not parse API response as JSON.&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An unexpected error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">all_commits</span></div>
+
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Local Repository Artifacts - Mapping interfaces to cached repository data</span>
+
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">wrap_kvs</span><span class="p">,</span> <span class="n">Pipe</span><span class="p">,</span> <span class="n">add_ipython_key_completions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">repo_cache_dir</span><span class="p">,</span>
+    <span class="n">JsonFiles</span><span class="p">,</span>
+    <span class="n">get_repository_info</span><span class="p">,</span>
+    <span class="n">Discussions</span><span class="p">,</span>
+    <span class="n">ensure_full_name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Issues</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_RepoInfoMapping</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to cached repository info.json files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">repo_cache_dir</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over repository full names that have cached info.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">org_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">):</span>
+            <span class="n">org_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">org_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">org_path</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">repo_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">org_path</span><span class="p">):</span>
+                    <span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">org_path</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">repo_path</span><span class="p">):</span>
+                        <span class="n">info_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="s2">&quot;info.json&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">info_file</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get repository info, from cache or by fetching.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_RepoArtifactMapping</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for mapping interfaces to cached repository artifacts.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">artifact_class</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artifact_type</span> <span class="o">=</span> <span class="n">artifact_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artifact_class</span> <span class="o">=</span> <span class="n">artifact_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">repo_cache_dir</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over repository full names that have this artifact cached.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">org_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">):</span>
+            <span class="n">org_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">org_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">org_path</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">repo_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">org_path</span><span class="p">):</span>
+                    <span class="n">repo_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">org_path</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+                    <span class="n">artifact_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifact_type</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">artifact_dir</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">artifact_dir</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">org_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get artifacts for a repository as a mapping.&quot;&quot;&quot;</span>
+        <span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="n">artifact_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifact_type</span><span class="p">)</span>
+
+        <span class="c1"># If cache doesn&#39;t exist or refresh is True, fetch from GitHub</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">artifact_dir</span><span class="p">):</span>
+            <span class="c1"># Fetch and cache using the artifact class</span>
+            <span class="n">artifact_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">artifact_class</span><span class="p">(</span>
+                <span class="n">repo</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh</span>
+            <span class="p">)</span>
+            <span class="c1"># Trigger fetching by iterating and accessing items</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">artifact_instance</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">artifact_instance</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Load from cache</span>
+            <span class="n">cache_store</span> <span class="o">=</span> <span class="n">JsonFiles</span><span class="p">(</span><span class="n">artifact_dir</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span> <span class="n">cache_store</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cache_store</span>
+                <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span>
+            <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_DiscussionsMapping</span><span class="p">(</span><span class="n">_RepoArtifactMapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to cached repository discussions.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">artifact_type</span><span class="o">=</span><span class="s2">&quot;discussions&quot;</span><span class="p">,</span>
+            <span class="n">artifact_class</span><span class="o">=</span><span class="n">Discussions</span><span class="p">,</span>
+            <span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_IssuesMapping</span><span class="p">(</span><span class="n">_RepoArtifactMapping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to cached repository issues.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">artifact_type</span><span class="o">=</span><span class="s2">&quot;issues&quot;</span><span class="p">,</span>
+            <span class="n">artifact_class</span><span class="o">=</span><span class="n">Issues</span><span class="p">,</span>
+            <span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="LocalRepoArtifacts">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.LocalRepoArtifacts">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LocalRepoArtifacts</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides mapping interfaces to locally cached repository artifacts.</span>
+
+<span class="sd">    This class gives you access to cached repository information, discussions, and</span>
+<span class="sd">    issues through simple mapping interfaces. Data is cached locally and can be</span>
+<span class="sd">    refreshed on demand.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        refresh: If True, always fetch fresh data from GitHub and update cache.</span>
+<span class="sd">                 If False, use cached data when available.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        info: Mapping interface to repository info (info.json for each repo)</span>
+<span class="sd">        discussions: Mapping interface to repository discussions</span>
+<span class="sd">        issues: Mapping interface to repository issues</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; artifacts = LocalRepoArtifacts(refresh=False)  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # List available artifact types</span>
+<span class="sd">        &gt;&gt;&gt; list(artifacts)  # doctest: +SKIP</span>
+<span class="sd">        [&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; # Access via attribute</span>
+<span class="sd">        &gt;&gt;&gt; info = artifacts.info[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # Or via mapping interface</span>
+<span class="sd">        &gt;&gt;&gt; info = artifacts[&#39;info&#39;][&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # Get cached discussions</span>
+<span class="sd">        &gt;&gt;&gt; discussions = artifacts.discussions[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # Access a specific discussion</span>
+<span class="sd">        &gt;&gt;&gt; discussion_2 = discussions[2]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # Get cached issues</span>
+<span class="sd">        &gt;&gt;&gt; issues = artifacts.issues[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+
+<span class="sd">    The cache is stored in: {app_data_dir}/repos/{org}/{repo}/{artifact_type}/</span>
+<span class="sd">    For example:</span>
+<span class="sd">        - Info: ~/.local/share/hubcap/repos/thorwhalen/hubcap/info.json</span>
+<span class="sd">        - Discussions: ~/.local/share/hubcap/repos/thorwhalen/hubcap/discussions/1.json</span>
+<span class="sd">        - Issues: ~/.local/share/hubcap/repos/thorwhalen/hubcap/issues/4.json</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span><span class="n">_RepoInfoMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discussions</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span>
+            <span class="n">_DiscussionsMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">issues</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span><span class="n">_IssuesMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+            <span class="s2">&quot;discussions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussions</span><span class="p">,</span>
+            <span class="s2">&quot;issues&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">issues</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over artifact type names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an artifact mapping by name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return number of artifact types.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">)</span></div>
+
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_markdown_from_jdict</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_md_access</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">discussions_mds</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span>
+        <span class="n">wrap_kvs</span><span class="p">(</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">discussions</span><span class="p">,</span>
+            <span class="n">value_decoder</span><span class="o">=</span><span class="n">create_markdown_from_jdict</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">issues_mds</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span>
+        <span class="n">wrap_kvs</span><span class="p">(</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">issues</span><span class="p">,</span>
+            <span class="n">value_decoder</span><span class="o">=</span><span class="n">create_markdown_from_jdict</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="c1"># Create a default instance for convenience</span>
+<span class="n">local_repo_artifacts</span> <span class="o">=</span> <span class="n">_add_md_access</span><span class="p">(</span><span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">remote_repo_artifacts</span> <span class="o">=</span> <span class="n">_add_md_access</span><span class="p">(</span><span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 
            </div>

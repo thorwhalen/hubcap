@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.examples.diagnose_repositories &mdash; hubcap 0.1.16 documentation</title>
+  <title>hubcap.examples.diagnose_repositories &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="../../../_static/documentation_options.js?v=3d116926"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -55,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">hubcap.examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.examples.diagnose_repositories</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.examples.diagnose_repositories.github_org_and_repo"><code class="docutils literal notranslate"><span class="pre">github_org_and_repo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.examples.diagnose_repositories.org_repos_issue_counts"><code class="docutils literal notranslate"><span class="pre">org_repos_issue_counts()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.examples.diagnose_repositories.repo_url_to_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_docs_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.examples.diagnose_repositories.repo_url_to_repo_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_repo_docs_url()</span></code></a></li>
 </ul>
@@ -102,6 +103,21 @@
 <span class="go">{&#39;org&#39;: &#39;i2mint&#39;, &#39;repo&#39;: &#39;i2&#39;}</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.examples.diagnose_repositories.org_repos_issue_counts">
+<span class="sig-prename descclassname"><span class="pre">hubcap.examples.diagnose_repositories.</span></span><span class="sig-name descname"><span class="pre">org_repos_issue_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">org_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/hubcap/examples/diagnose_repositories.html#org_repos_issue_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.examples.diagnose_repositories.org_repos_issue_counts" title="Link to this definition"></a></dt>
+<dd><p>Get the number of open issues for each repository in a GitHub organization.</p>
+<p>Yields (repo_name, issue_count) pairs for each repository.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issue_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">org_repos_issue_counts</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">))</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_counts</span><span class="p">[</span><span class="s1">&#39;dol&#39;</span><span class="p">]</span>  
+<span class="go">12</span>
+</pre></div>
+</div>
+<p>Note: The issue count is retrieved directly from repository metadata
+without downloading individual issue details, making this efficient
+even for organizations with many repositories.</p>
 </dd></dl>
 
 <dl class="py function">

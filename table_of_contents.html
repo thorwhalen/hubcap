@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; hubcap 0.1.16 documentation</title>
+  <title>&lt;no title&gt; &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="_static/documentation_options.js?v=3d116926"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -114,6 +114,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples.html">hubcap.examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.github_org_and_repo"><code class="docutils literal notranslate"><span class="pre">github_org_and_repo()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.org_repos_issue_counts"><code class="docutils literal notranslate"><span class="pre">org_repos_issue_counts()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.repo_url_to_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_docs_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.repo_url_to_repo_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_repo_docs_url()</span></code></a></li>
 </ul>
@@ -147,15 +148,27 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/tools.html">hubcap.tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.LocalRepoArtifacts"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.add_repos_to_team"><code class="docutils literal notranslate"><span class="pre">add_repos_to_team()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.copy_discussion"><code class="docutils literal notranslate"><span class="pre">copy_discussion()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.create_discussion"><code class="docutils literal notranslate"><span class="pre">create_discussion()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.create_discussion_comment"><code class="docutils literal notranslate"><span class="pre">create_discussion_comment()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_author_commits"><code class="docutils literal notranslate"><span class="pre">get_author_commits()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_discussion_data"><code class="docutils literal notranslate"><span class="pre">get_discussion_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_github_token"><code class="docutils literal notranslate"><span class="pre">get_github_token()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_repository_id"><code class="docutils literal notranslate"><span class="pre">get_repository_id()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.notebook_to_markdown"><code class="docutils literal notranslate"><span class="pre">notebook_to_markdown()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.parse_github_discussion_url"><code class="docutils literal notranslate"><span class="pre">parse_github_discussion_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.parse_github_repo_url"><code class="docutils literal notranslate"><span class="pre">parse_github_repo_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.postprocess_markdown_from_notebook"><code class="docutils literal notranslate"><span class="pre">postprocess_markdown_from_notebook()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.rm_repos_from_team"><code class="docutils literal notranslate"><span class="pre">rm_repos_from_team()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.run_graphql_query"><code class="docutils literal notranslate"><span class="pre">run_graphql_query()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.team_repositories_action"><code class="docutils literal notranslate"><span class="pre">team_repositories_action()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/util.html">hubcap.util</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.Discussions"><code class="docutils literal notranslate"><span class="pre">Discussions</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.cached_github_object"><code class="docutils literal notranslate"><span class="pre">cached_github_object()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.create_markdown_from_discussion_jdict"><code class="docutils literal notranslate"><span class="pre">create_markdown_from_discussion_jdict()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.create_markdown_from_jdict"><code class="docutils literal notranslate"><span class="pre">create_markdown_from_jdict()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_folder_to_clone_into"><code class="docutils literal notranslate"><span class="pre">ensure_folder_to_clone_into()</span></code></a></li>
@@ -166,7 +179,10 @@
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.generate_github_url"><code class="docutils literal notranslate"><span class="pre">generate_github_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.get_repository_info"><code class="docutils literal notranslate"><span class="pre">get_repository_info()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.git"><code class="docutils literal notranslate"><span class="pre">git()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.git_clone"><code class="docutils literal notranslate"><span class="pre">git_clone()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_file_contents"><code class="docutils literal notranslate"><span class="pre">github_file_contents()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_json_deserializer"><code class="docutils literal notranslate"><span class="pre">github_json_deserializer()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_json_serializer"><code class="docutils literal notranslate"><span class="pre">github_json_serializer()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.parse_github_url"><code class="docutils literal notranslate"><span class="pre">parse_github_url()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.replace_relative_urls"><code class="docutils literal notranslate"><span class="pre">replace_relative_urls()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.transform_github_url"><code class="docutils literal notranslate"><span class="pre">transform_github_url()</span></code></a></li>

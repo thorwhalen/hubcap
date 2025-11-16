@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.base &mdash; hubcap 0.1.16 documentation</title>
+  <title>hubcap.base &mdash; hubcap 0.1.19 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=d50bcae4"></script>
+      <script src="../../_static/documentation_options.js?v=3d116926"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -89,9 +89,10 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">KvReader</span><span class="p">,</span> <span class="n">wrap_kvs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dol.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_invocation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">github</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">github</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubException</span>
@@ -100,9 +101,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">RepoSpec</span><span class="p">,</span>
     <span class="n">ensure_repo_obj</span><span class="p">,</span>
+    <span class="n">ensure_full_name</span><span class="p">,</span>
     <span class="n">Github</span><span class="p">,</span>
     <span class="n">Repository</span><span class="p">,</span>
     <span class="n">Discussions</span><span class="p">,</span>
+    <span class="n">JsonFiles</span><span class="p">,</span>
+    <span class="n">repo_cache_dir</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_collection_names</span>
 
@@ -178,9 +182,9 @@
             <span class="n">_get_key</span> <span class="o">=</span> <span class="n">attrgetter</span><span class="p">(</span><span class="n">key_attr</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">objs_to_items</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_get_key</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span>
-                <span class="n">objs_to_items</span>
-            <span class="p">),</span> <span class="s2">&quot;issue_objs_to_itemskey must be a str or callable&quot;</span>
+            <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">objs_to_items</span><span class="p">),</span> <span class="p">(</span>
+                <span class="s2">&quot;issue_objs_to_itemskey must be a str or callable&quot;</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">objs_to_items</span> <span class="o">=</span> <span class="n">objs_to_items</span>
 
     <span class="nd">@cached_property</span>
@@ -324,6 +328,8 @@
 <span class="sd">    :param data_of_obj: A function to get the data from the issue object.</span>
 <span class="sd">        Default is attrgetter(&#39;body&#39;). Use identity to get the whole issue object.</span>
 <span class="sd">    :param get_objs_kwargs: The keyword arguments to pass to the get_objs function</span>
+<span class="sd">    :param cache: If True, cache issue data to local storage</span>
+<span class="sd">    :param refresh: If True, always fetch fresh data from GitHub and update cache</span>
 
 <span class="sd">    The default of data_of_obj is `IssueContents`, which will give a mapping</span>
 <span class="sd">    interface to the body and comments of the issue.</span>
@@ -337,6 +343,8 @@
         <span class="n">objs_to_items</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
         <span class="n">data_of_obj</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>  <span class="c1"># IssueContents,</span>
         <span class="n">get_objs_kwargs</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">),),</span>
+        <span class="n">cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">repo</span><span class="p">,</span>
@@ -344,7 +352,33 @@
             <span class="n">objs_to_items</span><span class="o">=</span><span class="n">objs_to_items</span><span class="p">,</span>
             <span class="n">data_of_obj</span><span class="o">=</span><span class="n">data_of_obj</span><span class="p">,</span>
             <span class="n">get_objs_kwargs</span><span class="o">=</span><span class="n">get_objs_kwargs</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+
+        <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_cache_dir</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;issues&quot;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span> <span class="o">=</span> <span class="n">JsonFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the issue data for a given issue number (key).&quot;&quot;&quot;</span>
+        <span class="c1"># Check cache first if caching is enabled and refresh is False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">:</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+
+        <span class="c1"># Fetch from GitHub using parent class method</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_of_obj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="c1"># Cache if enabled</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
 
 
 
@@ -423,9 +457,9 @@
             <span class="c1"># TODO: This forces token use. Should we allow for login/password use?</span>
             <span class="n">auth</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="n">account_name</span><span class="p">,</span> <span class="nb">str</span>
-            <span class="p">),</span> <span class="s2">&quot;account_name must be given (and a str)&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">account_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="p">(</span>
+                <span class="s2">&quot;account_name must be given (and a str)&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">_github</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span>
             <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
@@ -591,8 +625,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">paginated_list</span> <span class="o">=</span> <span class="n">paginated_list</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginated_list</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">item</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginated_list</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">paginated_list</span><span class="o">.</span><span class="n">totalCount</span>
