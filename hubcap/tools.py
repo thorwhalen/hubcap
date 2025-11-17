@@ -762,8 +762,79 @@ from hubcap.util import (
     get_repository_info,
     Discussions,
     ensure_full_name,
+    repo_cache_json_files,
 )
 from hubcap.base import Issues
+from hubcap.actions import actions_info as _actions_info_df
+
+
+def get_ci_info(repo: str, *, refresh: bool = False, token: str = None) -> dict:
+    """
+    Get CI (GitHub Actions) info for a repository, with caching.
+
+    Fetches the most recent GitHub Actions workflow runs and returns comprehensive
+    info along with the current CI state. Uses actions_info which gets runs sorted
+    by last updated, so we get the most recent regardless of time period.
+
+    Args:
+        repo: Repository in 'owner/repo' format
+        refresh: If True, fetches fresh data. If False, uses cached data when available.
+        token: GitHub API token (optional, uses environment variable if not provided)
+
+    Returns:
+        dict: Contains 'actions' (list of workflow runs) and 'current_state' (bool/None).
+              'current_state' is True for success, False for failure, None for no CI or cancelled.
+
+    Example:
+        >>> ci = get_ci_info('thorwhalen/hubcap')  # doctest: +SKIP
+        >>> ci['current_state']  # doctest: +SKIP
+        True
+        >>> ci['actions'][0]['conclusion']  # doctest: +SKIP
+        'success'
+    """
+    from hubcap.util import ensure_full_name
+
+    full_name = ensure_full_name(repo)
+    cache_key = f"{full_name}/ci_info.json"
+
+    # Check if we should use cached data
+    if not refresh and cache_key in repo_cache_json_files:
+        return repo_cache_json_files[cache_key]
+
+    # Fetch fresh data - actions_info already sorts by updated_at descending
+    # We fetch up to 100 to get comprehensive data
+    df = _actions_info_df(full_name, per_page=100, token=token)
+
+    if df.empty:
+        result = {
+            'actions': [],
+            'current_state': None,
+        }
+    else:
+        # Convert DataFrame to list of dicts for caching
+        actions_list = df.to_dict('records')
+
+        # Determine current state from the most recent run (first in sorted list)
+        last_conclusion = df.iloc[0]['conclusion'] if len(df) > 0 else None
+
+        # Map conclusion to bool/None: success -> True, failure -> False, others -> None
+        if last_conclusion == 'success':
+            current_state = True
+        elif last_conclusion == 'failure':
+            current_state = False
+        else:
+            # cancelled, skipped, null, or other states
+            current_state = None
+
+        result = {
+            'actions': actions_list,
+            'current_state': current_state,
+        }
+
+    # Cache the result
+    repo_cache_json_files[cache_key] = result
+
+    return result
 
 
 class _RepoInfoMapping(KvReader):
@@ -858,6 +929,24 @@ class _IssuesMapping(_RepoArtifactMapping):
         )
 
 
+class _CIMapping(KvReader):
+    """Mapping interface to cached repository CI (GitHub Actions) information."""
+
+    def __init__(self, refresh: bool = False):
+        self.refresh = refresh
+
+    def __iter__(self):
+        """Iterate over repos that have cached CI info."""
+        for key in repo_cache_json_files:
+            if key.endswith('/ci_info.json'):
+                # Extract repo name from path like 'org/repo/ci_info.json'
+                yield '/'.join(key.split('/')[:-1])
+
+    def __getitem__(self, repo: str) -> dict:
+        """Get cached CI info for a repository."""
+        return get_ci_info(repo, refresh=self.refresh)
+
+
 class LocalRepoArtifacts(KvReader):
     """
     Provides mapping interfaces to locally cached repository artifacts.
@@ -874,12 +963,13 @@ class LocalRepoArtifacts(KvReader):
         info: Mapping interface to repository info (info.json for each repo)
         discussions: Mapping interface to repository discussions
         issues: Mapping interface to repository issues
+        ci: Mapping interface to repository CI (GitHub Actions) information
 
     Example:
         >>> artifacts = LocalRepoArtifacts(refresh=False)  # doctest: +SKIP
         >>> # List available artifact types
         >>> list(artifacts)  # doctest: +SKIP
-        ['info', 'discussions', 'issues']
+        ['info', 'discussions', 'issues', 'ci']
         >>> # Access via attribute
         >>> info = artifacts.info['thorwhalen/hubcap']  # doctest: +SKIP
         >>> # Or via mapping interface
@@ -890,12 +980,17 @@ class LocalRepoArtifacts(KvReader):
         >>> discussion_2 = discussions[2]  # doctest: +SKIP
         >>> # Get cached issues
         >>> issues = artifacts.issues['thorwhalen/hubcap']  # doctest: +SKIP
+        >>> # Get CI info
+        >>> ci_info = artifacts.ci['thorwhalen/hubcap']  # doctest: +SKIP
+        >>> ci_info['current_state']  # True (success), False (failure), or None  # doctest: +SKIP
+        True
 
     The cache is stored in: {app_data_dir}/repos/{org}/{repo}/{artifact_type}/
     For example:
         - Info: ~/.local/share/hubcap/repos/thorwhalen/hubcap/info.json
         - Discussions: ~/.local/share/hubcap/repos/thorwhalen/hubcap/discussions/1.json
         - Issues: ~/.local/share/hubcap/repos/thorwhalen/hubcap/issues/4.json
+        - CI: ~/.local/share/hubcap/repos/thorwhalen/hubcap/ci_info.json
     """
 
     def __init__(self, refresh: bool = False):
@@ -905,10 +1000,12 @@ class LocalRepoArtifacts(KvReader):
             _DiscussionsMapping(refresh=refresh)
         )
         self.issues = add_ipython_key_completions(_IssuesMapping(refresh=refresh))
+        self.ci = add_ipython_key_completions(_CIMapping(refresh=refresh))
         self._artifacts = {
             "info": self.info,
             "discussions": self.discussions,
             "issues": self.issues,
+            "ci": self.ci,
         }
 
     def __iter__(self):
@@ -938,6 +1035,13 @@ def _add_md_access(s):
         wrap_kvs(
             s.issues,
             value_decoder=create_markdown_from_jdict,
+        )
+    )
+    # Add quick access to just the current CI state (True/False/None)
+    s.ci_state = add_ipython_key_completions(
+        wrap_kvs(
+            s.ci,
+            value_decoder=lambda ci_info: ci_info.get('current_state'),
         )
     )
     return s

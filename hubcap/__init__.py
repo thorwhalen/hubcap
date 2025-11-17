@@ -201,6 +201,7 @@ from hubcap.tools import (
     notebook_to_markdown,  # Converts a Jupyter notebook to markdown.
     github_repo_markdown_of,  # Holds functions to get markdown aggregate from GitHub repositories
     copy_discussion,  # Copies a discussion from one repository to another.
+    get_ci_info,  # Get CI (GitHub Actions) info for a repository with caching
     LocalRepoArtifacts,  # Class for accessing cached repository artifacts
     local_repo_artifacts,  # Default instance of LocalRepoArtifacts
     remote_repo_artifacts,  # Default instance of LocalRepoArtifacts with remote refresh
