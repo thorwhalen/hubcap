@@ -837,6 +837,38 @@ def get_ci_info(repo: str, *, refresh: bool = False, token: str = None) -> dict:
     return result
 
 
+def _issue_to_dict(issue_obj) -> dict:
+    """Convert a GitHub Issue object to a serializable dict."""
+    return {
+        'number': issue_obj.number,
+        'title': issue_obj.title,
+        'body': issue_obj.body or '',
+        'state': issue_obj.state,
+        'created_at': (
+            issue_obj.created_at.isoformat() if issue_obj.created_at else None
+        ),
+        'updated_at': (
+            issue_obj.updated_at.isoformat() if issue_obj.updated_at else None
+        ),
+        'user': {'login': issue_obj.user.login} if issue_obj.user else None,
+        'labels': [{'name': label.name} for label in issue_obj.labels],
+        'comments': (
+            [
+                {
+                    'body': comment.body,
+                    'created_at': (
+                        comment.created_at.isoformat() if comment.created_at else None
+                    ),
+                    'user': {'login': comment.user.login} if comment.user else None,
+                }
+                for comment in issue_obj.get_comments()
+            ]
+            if hasattr(issue_obj, 'get_comments')
+            else []
+        ),
+    }
+
+
 class _RepoInfoMapping(KvReader):
     """Mapping interface to cached repository info.json files."""
 
@@ -927,6 +959,15 @@ class _IssuesMapping(_RepoArtifactMapping):
             artifact_class=Issues,
             refresh=refresh,
         )
+
+    def __getitem__(self, repo: str) -> dict:
+        """Get issues for a repository as a mapping of dicts."""
+        result = super().__getitem__(repo)
+        # Convert any GitHub Issue objects to dicts
+        return {
+            k: _issue_to_dict(v) if hasattr(v, 'raw_data') else v
+            for k, v in result.items()
+        }
 
 
 class _CIMapping(KvReader):

@@ -197,6 +197,8 @@ def get_repository_info(
     # Check if we should use cached data
     if not refresh and cache_key in repo_cache_json_files:
         all_info = repo_cache_json_files[cache_key]
+        # When using cache, return only what's available (no API calls for missing keys)
+        return {k: all_info[k] for k in requested_repo_info if k in all_info}
     else:
         # Fetch all available repo properties
         repo_obj = g.get_repo(full_name)
@@ -207,11 +209,8 @@ def get_repository_info(
         # Cache the complete info
         repo_cache_json_files[cache_key] = all_info
 
-    # Return only the requested fields
-    return {
-        k: all_info.get(k, f(g.get_repo(full_name)))
-        for k, f in requested_repo_info.items()
-    }
+        # Return only the requested fields, with fallback to compute missing ones
+        return {k: all_info.get(k, f(repo_obj)) for k, f in requested_repo_info.items()}
 
 
 @lru_cache(maxsize=1)
@@ -980,9 +979,9 @@ def create_markdown_from_jdict(jdict: dict | Iterable[dict]):
 
         return markdown
     else:
-        assert isinstance(jdict, Iterable), (
-            f"Expected dict or Iterable, got {type(jdict)}"
-        )
+        assert isinstance(
+            jdict, Iterable
+        ), f"Expected dict or Iterable, got {type(jdict)}"
         if isinstance(jdict, dict):
             jdict = jdict.values()
         return "\n\n".join(create_markdown_from_jdict(d) for d in jdict)
