@@ -682,6 +682,11 @@ repo_cache_store = mk_dirs_if_missing(Files(repo_cache_dir))
 get_config = simple_config_getter(APP_NAME)
 configs = get_config.configs
 data_files = files("hubcap.data")
+
+LOCAL_PROJECT_ROOTS_FILE = 'local_project_roots.list'
+# make an empty file, if it doesn't exist:
+configs.setdefault(LOCAL_PROJECT_ROOTS_FILE, '')  
+
 repo_collections_configs = json.loads(
     data_files.joinpath("dflt_repo_collections_key_props.json").read_text()
 )

@@ -210,3 +210,13 @@ from hubcap.repo_slurp import (
     repo_text_aggregate,  # Clone a git repository (by default, files, wiki, discussions) and aggregate all file contents into a string.
     ensure_repo_folder,  # Clone a git repository to a folder (default is a temporary folder() and return the path to that folder.
 )
+from hubcap.casting import (
+    normalize_project,  # Convert any project reference to a specific kind
+    to_local_path,  # Convert any project reference to local folder path
+    to_github_stub,  # Convert any project reference to org/repo stub
+    to_github_url,  # Convert any project reference to GitHub URL
+    register_project_root,  # Register a local project root folder for discovery
+    unregister_project_root,  # Remove a project root from registry
+    get_project_roots,  # Get list of registered project roots
+    project_kinds,  # The transformation graph for project references
+)
