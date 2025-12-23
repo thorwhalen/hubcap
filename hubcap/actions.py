@@ -144,7 +144,9 @@ def actions_info(repo=DFLT_REPO, per_page=10, token=None, **params):
     """
     r = _actions_info(repo, per_page=per_page, token=token, **params)
     workflow_runs = r.json().get("workflow_runs", [])
-    df = pd.DataFrame(workflow_runs).sort_values("updated_at", ascending=False)
+    df = pd.DataFrame(workflow_runs)
+    if not df.empty and "updated_at" in df.columns:
+        df = df.sort_values("updated_at", ascending=False)
     return df
 
 
