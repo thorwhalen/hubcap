@@ -57,6 +57,8 @@ jobs:
     strategy:
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v6
@@ -121,6 +123,8 @@ jobs:
     needs: setup
     runs-on: windows-latest
     continue-on-error: true
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v6
