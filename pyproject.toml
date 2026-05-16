@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["github"]
 authors = [{ name = "Thor Whalen" }]
-dependencies = ["dol", "PyGithub", "requests", "config2py", "lkj"]
+dependencies = ["dol", "PyGithub", "requests", "config2py", "lkj", "pandas"]
 
 [project.license]
 text = "Apache-2.0"
