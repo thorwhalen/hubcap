@@ -48,3 +48,10 @@ convention = "google"
 minversion = "6.0"
 testpaths = ["tests"]
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
+
+[tool.wads.ci.testing]
+# wads' default exclude_paths (["examples", "scrap"]) assume top-level dirs, but
+# this repo's modules live under hubcap/, so --ignore=examples never matched and
+# CI was doctest-collecting hubcap/examples/* — importing undeclared optional
+# deps (e.g. dill) and failing collection. Point the ignores at the real paths.
+exclude_paths = ["hubcap/examples", "hubcap/scrap"]

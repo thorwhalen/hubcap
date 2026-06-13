@@ -298,12 +298,26 @@ def get_github_token():
     return None
 
 
-# Backwards-compatible snapshot (may be None)
+# Backwards-compatible snapshot (may be None). Resolved lazily at call time by
+# the functions that need it — importing this module must NOT require a token.
 GITHUB_TOKEN = get_github_token()
 
-# Existing behavior preserved: raise at import time if no token
-if not GITHUB_TOKEN:
-    raise OSError("GITHUB_TOKEN environment variable not set.")
+
+def _require_github_token():
+    """Return a GitHub token, or raise a clear, actionable error.
+
+    Resolved lazily (at call time) so that importing :mod:`hubcap` never fails
+    just because no token is configured — only operations that actually call
+    the GitHub API require one.
+    """
+    token = get_github_token()
+    if not token:
+        raise OSError(
+            "No GitHub token found. Set one of these environment variables: "
+            "HUBCAP_GITHUB_TOKEN, HUBCAP_TOKEN, GH_TOKEN, or GITHUB_TOKEN."
+        )
+    return token
+
 
 # --- Helper Functions ---
 
@@ -311,7 +325,7 @@ if not GITHUB_TOKEN:
 def run_graphql_query(query, variables=None):
     """Executes a GraphQL query against the GitHub API."""
     headers = {
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "Authorization": f"Bearer {_require_github_token()}",
         "Content-Type": "application/json",
     }
     payload = {"query": query, "variables": variables or {}}
