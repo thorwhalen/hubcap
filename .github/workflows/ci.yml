@@ -1,13 +1,22 @@
 name: Continuous Integration (uv)
-# MIGRATION NOTE: Old CI uses setuptools - ensure pyproject.toml with [tool.wads.ci] is ready
-# MIGRATION NOTE: Old CI uses pylint - new CI uses ruff for linting
-# MIGRATION NOTE: PyPI auth changed: set secrets.PYPI_PASSWORD to a PyPI API token (uv publish uses UV_PUBLISH_TOKEN, mapped from PYPI_PASSWORD)
-# MIGRATION NOTE: Old CI references setup.cfg - ensure project is migrated to pyproject.toml first (use: wads-migrate setup-to-pyproject)
 on: [push, pull_request]
 
-# Note: Environment variables (PROJECT_NAME and vars from [tool.wads.ci.env])
-# are set by the read-ci-config action in the setup job and made available
-# to all subsequent jobs via GITHUB_ENV
+# Workflow-level env vars from [tool.wads.ci.env] in pyproject.toml.
+# Populated by wads-migrate / wads init via template substitution.
+# Includes PROJECT_NAME, literal defaults from env.defaults, and secret-
+# backed vars from required_envvars / test_envvars / extra_envvars,
+# rendered as `KEY: secrets.KEY || ''` so missing secrets don't fail parsing.
+#
+# GITHUB_TOKEN is NOT a repo secret (the name is reserved and cannot be set);
+# it is the token GitHub Actions mints for each run. hubcap resolves it via
+# hubcap.util.github_token(), so exporting it here lets the GitHub-touching
+# doctests authenticate instead of prompting for a token on a headless runner.
+# It is declared at workflow level rather than per job so there is one place to
+# look; the publish job's push-back does not use it (that flows through the
+# credentials actions/checkout persists in .git/config).
+env:
+  PROJECT_NAME: hubcap
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   # First job: Read configuration from pyproject.toml
@@ -21,6 +30,7 @@ jobs:
       coverage-enabled: ${{ steps.config.outputs.coverage-enabled }}
       exclude-paths: ${{ steps.config.outputs.exclude-paths }}
       test-on-windows: ${{ steps.config.outputs.test-on-windows }}
+      tests-enabled: ${{ steps.config.outputs.tests-enabled }}
       build-sdist: ${{ steps.config.outputs.build-sdist }}
       build-wheel: ${{ steps.config.outputs.build-wheel }}
       metrics-enabled: ${{ steps.config.outputs.metrics-enabled }}
@@ -32,6 +42,9 @@ jobs:
       black-enabled: ${{ steps.config.outputs.black-enabled }}
       mypy-enabled: ${{ steps.config.outputs.mypy-enabled }}
       docs-enabled: ${{ steps.config.outputs.docs-enabled }}
+      publish-enabled: ${{ steps.config.outputs.publish-enabled }}
+      skip-ci-marker: ${{ steps.config.outputs.skip-ci-marker }}
+      publish-marker: ${{ steps.config.outputs.publish-marker }}
 
     steps:
       - uses: actions/checkout@v6
@@ -57,8 +70,6 @@ jobs:
     strategy:
       matrix:
         python-version: ${{ fromJson(needs.setup.outputs.python-versions) }}
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v6
@@ -98,6 +109,7 @@ jobs:
         run: uvx mypy ${{ needs.setup.outputs.project-name }}
 
       - name: Run Tests
+        if: needs.setup.outputs.tests-enabled != 'false'
         uses: i2mint/wads/actions/run-tests-uv@master
         with:
           root-dir: ${{ needs.setup.outputs.project-name }}
@@ -119,12 +131,15 @@ jobs:
   # Optional Windows testing (if enabled in config)
   windows-validation:
     name: Windows Tests
-    if: "!contains(github.event.head_commit.message, '[skip ci]') && needs.setup.outputs.test-on-windows == 'true'"
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && needs.setup.outputs.test-on-windows == 'true' && needs.setup.outputs.tests-enabled != 'false'"
     needs: setup
     runs-on: windows-latest
     continue-on-error: true
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # PEP 540 UTF-8 mode: avoid cp1252 UnicodeDecode/EncodeError when test
+      # code reads source files or scripts print non-ASCII characters.
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: "utf-8"
 
     steps:
       - uses: actions/checkout@v6
@@ -155,15 +170,32 @@ jobs:
           exclude-paths: ${{ needs.setup.outputs.exclude-paths }}
 
   # Publishing job
+  #
+  # Gated by [tool.wads.ci.publish] in pyproject.toml (read via the setup job):
+  #   - skip-ci-marker  : when publishing is enabled, a commit message containing
+  #                       this substring skips the publish job (default "[skip ci]").
+  #   - publish-enabled : whether publishing runs at all (default true).
+  #   - publish-marker  : when publishing is disabled, a commit message containing
+  #                       this substring forces the publish job (default "[publish]").
+  # The publish-enabled check uses `== 'true'` (fail-closed): if an older wads
+  # without these outputs is installed by read-ci-config, publishing is skipped
+  # rather than run unintentionally.
   publish:
     name: Publish
     permissions:
       contents: write
-    if: "!contains(github.event.head_commit.message, '[skip ci]') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')"
+    if: "!contains(github.event.head_commit.message, needs.setup.outputs.skip-ci-marker) && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && (needs.setup.outputs.publish-enabled == 'true' || contains(github.event.head_commit.message, needs.setup.outputs.publish-marker))"
     needs: [setup, validation]
     runs-on: ubuntu-latest
 
     steps:
+      # `actions/checkout@v6` defaults to persist-credentials: true, configuring
+      # HTTPS auth in .git/config using `secrets.GITHUB_TOKEN`. Together with the
+      # job-level `permissions: contents: write`, this is exactly what the
+      # post-publish push-back needs — no per-repo SSH deploy key required. Do
+      # NOT re-add a "Force SSH for git remote" step: rewriting origin to an
+      # SSH URL overrides these credentials and reintroduces the push-back
+      # failure on every repo lacking an SSH_PRIVATE_KEY deploy key.
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
@@ -201,14 +233,10 @@ jobs:
         with:
           pypi-token: ${{ secrets.PYPI_PASSWORD }}
 
-      - name: Force SSH for git remote
-        run: git remote set-url origin git@github.com:${{ github.repository }}.git
-
       - name: Commit Changes
         uses: i2mint/wads/actions/git-commit@master
         with:
           commit-message: "**CI** Formatted code + Updated version to ${{ env.VERSION }} [skip ci]"
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           push: true
 
       - name: Tag Repository
@@ -219,6 +247,8 @@ jobs:
           push: true
 
   # Optional GitHub Pages (skipped when [tool.wads.ci.docs].enabled = false)
+  # Depends on validation (not publish) so docs still publish when the publish
+  # job is disabled via [tool.wads.ci.publish].enabled = false.
   github-pages:
     name: Publish GitHub Pages
     permissions:
@@ -226,10 +256,24 @@ jobs:
       pages: write
       id-token: write
     if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && needs.setup.outputs.docs-enabled != 'false'"
-    needs: [setup, publish]
+    needs: [setup, validation]
     runs-on: ubuntu-latest
 
     steps:
+      # Check out first so install-system-deps can read [tool.wads.ops.*] from
+      # pyproject.toml. The epythet action self-checks-out again internally;
+      # apt-installed system deps persist across that re-checkout.
+      - uses: actions/checkout@v6
+
+      # Install [tool.wads.ops.*] system deps (e.g. portaudio for pyaudio) so
+      # the epythet docs build, which pip-installs this package to extract
+      # docstrings, doesn't fail on a missing native library at import time.
+      # No-op when the package declares no system deps.
+      - name: Install System Dependencies
+        uses: i2mint/wads/actions/install-system-deps@master
+        with:
+          pyproject-path: .
+
       - uses: i2mint/epythet/actions/publish-github-pages@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
