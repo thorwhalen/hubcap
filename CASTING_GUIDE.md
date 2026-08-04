@@ -11,8 +11,8 @@ First, tell hubcap where your local projects are:
 ```python
 from hubcap.casting import register_project_root
 
-register_project_root('/Users/me/projects')
-register_project_root('/Users/me/work/repos')
+register_project_root("/Users/me/projects")
+register_project_root("/Users/me/work/repos")
 ```
 
 Or use the helper if you're using priv:
@@ -29,7 +29,7 @@ Now all these work interchangeably:
 from hubcap.casting import to_local_path, to_github_url, to_github_stub
 
 # Simple project name
-to_local_path("dol")  
+to_local_path("dol")
 # → '/Users/me/projects/dol'
 
 # GitHub stub (org/repo)
@@ -40,7 +40,7 @@ to_local_path("i2mint/dol")
 to_local_path("https://github.com/i2mint/dol")
 # → '/Users/me/projects/dol'
 
-# SSH URL  
+# SSH URL
 to_local_path("git@github.com:i2mint/dol.git")
 # → '/Users/me/projects/dol'
 
@@ -48,7 +48,7 @@ to_local_path("git@github.com:i2mint/dol.git")
 to_github_url("dol", ssh=True)
 # → 'git@github.com:i2mint/dol.git'
 
-to_github_url("dol", ssh=False)  
+to_github_url("dol", ssh=False)
 # → 'https://github.com/i2mint/dol'
 
 # Get org/repo stub
@@ -79,7 +79,8 @@ The `ingress` decorator automatically converts function arguments to the require
 ```python
 from hubcap.casting import project_kinds
 
-@project_kinds.ingress('local_proj_folder', 'project_path')
+
+@project_kinds.ingress("local_proj_folder", "project_path")
 def analyze_project(project_path: str, depth: int = 1):
     """Transform the 'project_path' argument specifically."""
     with open(f"{project_path}/README.md") as f:
@@ -89,7 +90,7 @@ def analyze_project(project_path: str, depth: int = 1):
 ### Pattern 2: Kind only (transforms first argument)
 
 ```python
-@project_kinds.ingress('local_proj_folder')
+@project_kinds.ingress("local_proj_folder")
 def analyze_project(project_path: str):
     """Accepts any project reference, gets local path automatically."""
     # project_path is now guaranteed to be a local folder path
@@ -100,7 +101,7 @@ def analyze_project(project_path: str):
 ### Pattern 3: Attribute syntax with argument name
 
 ```python
-@project_kinds.ingress.local_proj_folder('project_path')
+@project_kinds.ingress.local_proj_folder("project_path")
 def analyze_project(project_path: str, depth: int = 1):
     """Uses attribute access for better IDE autocomplete."""
     with open(f"{project_path}/README.md") as f:
@@ -122,7 +123,7 @@ All patterns accept any project reference format:
 ```python
 # All these work with any of the decorator patterns above:
 analyze_project("dol")
-analyze_project("i2mint/dol")  
+analyze_project("i2mint/dol")
 analyze_project("https://github.com/i2mint/dol")
 analyze_project("/Users/me/projects/dol")
 ```
@@ -134,7 +135,7 @@ analyze_project("/Users/me/projects/dol")
 You can pass context information through transformations:
 
 ```python
-@project_kinds.ingress('github_https_url', context={'include_branch': True})
+@project_kinds.ingress("github_https_url", context={"include_branch": True})
 def get_project_url(url: str):
     """Context is passed to transformation functions if needed."""
     return url
@@ -148,16 +149,13 @@ For custom transformations, use `normalize_project`:
 from hubcap.casting import normalize_project
 
 # Convert to any kind
-normalize_project("dol", to_kind='github_stub')
+normalize_project("dol", to_kind="github_stub")
 # → 'i2mint/dol'
 
-normalize_project("dol", to_kind='url_components')
+normalize_project("dol", to_kind="url_components")
 # → {'username': 'i2mint', 'repository': 'dol'}
 
-normalize_project(
-    "git@github.com:i2mint/dol.git", 
-    to_kind='github_https_url'
-)
+normalize_project("git@github.com:i2mint/dol.git", to_kind="github_https_url")
 # → 'https://github.com/i2mint/dol'
 ```
 
@@ -172,7 +170,7 @@ from hubcap.casting import get_project_roots, unregister_project_root
 print(get_project_roots())
 
 # Remove a root
-unregister_project_root('/Users/me/old/path')
+unregister_project_root("/Users/me/old/path")
 ```
 
 ## How It Works

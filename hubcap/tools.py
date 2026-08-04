@@ -821,28 +821,28 @@ def get_ci_info(repo: str, *, refresh: bool = False, token: str = None) -> dict:
 
     if df.empty:
         result = {
-            'actions': [],
-            'current_state': None,
+            "actions": [],
+            "current_state": None,
         }
     else:
         # Convert DataFrame to list of dicts for caching
-        actions_list = df.to_dict('records')
+        actions_list = df.to_dict("records")
 
         # Determine current state from the most recent run (first in sorted list)
-        last_conclusion = df.iloc[0]['conclusion'] if len(df) > 0 else None
+        last_conclusion = df.iloc[0]["conclusion"] if len(df) > 0 else None
 
         # Map conclusion to bool/None: success -> True, failure -> False, others -> None
-        if last_conclusion == 'success':
+        if last_conclusion == "success":
             current_state = True
-        elif last_conclusion == 'failure':
+        elif last_conclusion == "failure":
             current_state = False
         else:
             # cancelled, skipped, null, or other states
             current_state = None
 
         result = {
-            'actions': actions_list,
-            'current_state': current_state,
+            "actions": actions_list,
+            "current_state": current_state,
         }
 
     # Cache the result
@@ -854,30 +854,30 @@ def get_ci_info(repo: str, *, refresh: bool = False, token: str = None) -> dict:
 def _issue_to_dict(issue_obj) -> dict:
     """Convert a GitHub Issue object to a serializable dict."""
     return {
-        'number': issue_obj.number,
-        'title': issue_obj.title,
-        'body': issue_obj.body or '',
-        'state': issue_obj.state,
-        'created_at': (
+        "number": issue_obj.number,
+        "title": issue_obj.title,
+        "body": issue_obj.body or "",
+        "state": issue_obj.state,
+        "created_at": (
             issue_obj.created_at.isoformat() if issue_obj.created_at else None
         ),
-        'updated_at': (
+        "updated_at": (
             issue_obj.updated_at.isoformat() if issue_obj.updated_at else None
         ),
-        'user': {'login': issue_obj.user.login} if issue_obj.user else None,
-        'labels': [{'name': label.name} for label in issue_obj.labels],
-        'comments': (
+        "user": {"login": issue_obj.user.login} if issue_obj.user else None,
+        "labels": [{"name": label.name} for label in issue_obj.labels],
+        "comments": (
             [
                 {
-                    'body': comment.body,
-                    'created_at': (
+                    "body": comment.body,
+                    "created_at": (
                         comment.created_at.isoformat() if comment.created_at else None
                     ),
-                    'user': {'login': comment.user.login} if comment.user else None,
+                    "user": {"login": comment.user.login} if comment.user else None,
                 }
                 for comment in issue_obj.get_comments()
             ]
-            if hasattr(issue_obj, 'get_comments')
+            if hasattr(issue_obj, "get_comments")
             else []
         ),
     }
@@ -979,7 +979,7 @@ class _IssuesMapping(_RepoArtifactMapping):
         result = super().__getitem__(repo)
         # Convert any GitHub Issue objects to dicts
         return {
-            k: _issue_to_dict(v) if hasattr(v, 'raw_data') else v
+            k: _issue_to_dict(v) if hasattr(v, "raw_data") else v
             for k, v in result.items()
         }
 
@@ -993,9 +993,9 @@ class _CIMapping(KvReader):
     def __iter__(self):
         """Iterate over repos that have cached CI info."""
         for key in repo_cache_json_files:
-            if key.endswith('/ci_info.json'):
+            if key.endswith("/ci_info.json"):
                 # Extract repo name from path like 'org/repo/ci_info.json'
-                yield '/'.join(key.split('/')[:-1])
+                yield "/".join(key.split("/")[:-1])
 
     def __getitem__(self, repo: str) -> dict:
         """Get cached CI info for a repository."""
@@ -1096,7 +1096,7 @@ def _add_md_access(s):
     s.ci_state = add_ipython_key_completions(
         wrap_kvs(
             s.ci,
-            value_decoder=lambda ci_info: ci_info.get('current_state'),
+            value_decoder=lambda ci_info: ci_info.get("current_state"),
         )
     )
     return s

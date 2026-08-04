@@ -50,20 +50,20 @@ Implemented a comprehensive caching mechanism for hubcap that provides Mapping i
 from hubcap import local_repo_artifacts, LocalRepoArtifacts, Discussions, Issues
 
 # Use default cached artifacts (refresh=False)
-info = local_repo_artifacts.info['thorwhalen/hubcap']
-discussions = local_repo_artifacts.discussions['thorwhalen/hubcap']
-issues = local_repo_artifacts.issues['thorwhalen/hubcap']
+info = local_repo_artifacts.info["thorwhalen/hubcap"]
+discussions = local_repo_artifacts.discussions["thorwhalen/hubcap"]
+issues = local_repo_artifacts.issues["thorwhalen/hubcap"]
 
 # Create custom instance with refresh=True
 fresh = LocalRepoArtifacts(refresh=True)
-fresh_info = fresh.info['thorwhalen/hubcap']
+fresh_info = fresh.info["thorwhalen/hubcap"]
 
 # Direct caching with Discussions
-discussions = Discussions('thorwhalen/hubcap', cache=True, refresh=False)
+discussions = Discussions("thorwhalen/hubcap", cache=True, refresh=False)
 discussion_2 = discussions[2]  # Cached after first access
 
-# Direct caching with Issues  
-issues = Issues('thorwhalen/hubcap', cache=True, refresh=True)
+# Direct caching with Issues
+issues = Issues("thorwhalen/hubcap", cache=True, refresh=True)
 issue_4 = issues[4]  # Always fetches fresh and updates cache
 ```
 

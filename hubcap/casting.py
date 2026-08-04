@@ -76,11 +76,11 @@ from hubcap.util import (
 # ======================================================================================
 
 #: Separator used to serialize the registered project roots in the config store.
-PROJECT_ROOTS_SEPARATOR = '\n'
+PROJECT_ROOTS_SEPARATOR = "\n"
 
 #: Marker that identifies a folder as a git project (a folder in worktrees, a
 #: file in submodules/worktree links -- hence the existence, not isdir, check).
-GIT_FOLDER_NAME = '.git'
+GIT_FOLDER_NAME = ".git"
 
 #: Memoized ``project_name -> project_folder`` resolutions.
 #: Only *hits* are stored, and every stored hit is revalidated before reuse, so
@@ -100,7 +100,7 @@ def get_project_roots() -> list[str]:
         >>> print(roots)  # doctest: +SKIP
         ['/Users/me/projects', '/Users/me/work']
     """
-    config = get_config(LOCAL_PROJECT_ROOTS_FILE, default='')
+    config = get_config(LOCAL_PROJECT_ROOTS_FILE, default="")
     if not config:
         return []
     roots = [p.strip() for p in config.split(PROJECT_ROOTS_SEPARATOR) if p.strip()]
@@ -237,30 +237,34 @@ project_kinds = TransformationGraph()
 # Define kinds with predicates
 
 project_kinds.add_node(
-    'proj_name',
-    isa=lambda x: isinstance(x, str)
-    and '/' not in x
-    and not x.startswith('http')
-    and not x.startswith('git@')
-    and not os.path.sep in x,
+    "proj_name",
+    isa=lambda x: (
+        isinstance(x, str)
+        and "/" not in x
+        and not x.startswith("http")
+        and not x.startswith("git@")
+        and not os.path.sep in x
+    ),
 )
 
 project_kinds.add_node(
-    'github_stub',
-    isa=lambda x: isinstance(x, str)
-    and x.count('/') == 1
-    and not x.startswith('http')
-    and not x.startswith('git@'),
+    "github_stub",
+    isa=lambda x: (
+        isinstance(x, str)
+        and x.count("/") == 1
+        and not x.startswith("http")
+        and not x.startswith("git@")
+    ),
 )
 
 project_kinds.add_node(
-    'github_https_url',
-    isa=lambda x: isinstance(x, str) and x.startswith('https://github.com/'),
+    "github_https_url",
+    isa=lambda x: isinstance(x, str) and x.startswith("https://github.com/"),
 )
 
 project_kinds.add_node(
-    'github_ssh_url',
-    isa=lambda x: isinstance(x, str) and x.startswith('git@github.com:'),
+    "github_ssh_url",
+    isa=lambda x: isinstance(x, str) and x.startswith("git@github.com:"),
 )
 
 
@@ -269,20 +273,20 @@ def _isa_local_project(x) -> bool:
     return isinstance(x, (str, Path)) and _is_project_folder(str(x))
 
 
-project_kinds.add_node('local_git_folder', isa=_isa_local_project)
+project_kinds.add_node("local_git_folder", isa=_isa_local_project)
 
 # Alias for local_git_folder
-project_kinds.add_node('local_proj_folder', isa=_isa_local_project)
+project_kinds.add_node("local_proj_folder", isa=_isa_local_project)
 
 project_kinds.add_node(
-    'url_components',
-    isa=lambda x: isinstance(x, dict) and 'username' in x and 'repository' in x,
+    "url_components",
+    isa=lambda x: isinstance(x, dict) and "username" in x and "repository" in x,
 )
 
 # Add transformation edges
 
 
-@project_kinds.register_edge('proj_name', 'local_proj_folder')
+@project_kinds.register_edge("proj_name", "local_proj_folder")
 def proj_name_to_local_folder(name: str, ctx) -> str:
     """Find local project folder by searching registered roots."""
     folder = _find_project_by_name(name)
@@ -296,13 +300,13 @@ def proj_name_to_local_folder(name: str, ctx) -> str:
     return folder
 
 
-@project_kinds.register_edge('local_proj_folder', 'proj_name')
+@project_kinds.register_edge("local_proj_folder", "proj_name")
 def local_folder_to_proj_name(folder: str, ctx) -> str:
     """Extract project name from folder path."""
     return Path(folder).name
 
 
-@project_kinds.register_edge('local_proj_folder', 'github_stub')
+@project_kinds.register_edge("local_proj_folder", "github_stub")
 def local_folder_to_stub(folder: str, ctx) -> str:
     """Get org/repo stub from git remote URL."""
     remote_url = _get_git_remote_url(folder)
@@ -310,7 +314,7 @@ def local_folder_to_stub(folder: str, ctx) -> str:
         raise ValueError(f"No git remote URL found for {folder}")
 
     # Parse the remote URL to extract org/repo
-    if 'github.com' not in remote_url:
+    if "github.com" not in remote_url:
         raise ValueError(f"Remote URL is not a GitHub URL: {remote_url}")
 
     try:
@@ -318,78 +322,77 @@ def local_folder_to_stub(folder: str, ctx) -> str:
         return f"{components['username']}/{components['repository']}"
     except:
         # Fallback parsing for SSH URLs like git@github.com:org/repo.git
-        match = re.search(r'github\.com[:/]([^/]+)/([^/\.]+)', remote_url)
+        match = re.search(r"github\.com[:/]([^/]+)/([^/\.]+)", remote_url)
         if match:
             return f"{match.group(1)}/{match.group(2)}"
         raise ValueError(f"Could not parse GitHub URL: {remote_url}")
 
 
-@project_kinds.register_edge('github_stub', 'local_proj_folder')
+@project_kinds.register_edge("github_stub", "local_proj_folder")
 def stub_to_local_folder(stub: str, ctx) -> str:
     """Try to find local folder by searching for repo name."""
-    _, repo_name = stub.split('/', 1)
+    _, repo_name = stub.split("/", 1)
     folder = _find_project_by_name(repo_name)
     if folder is None:
         raise ValueError(
-            f"Local folder for '{stub}' not found. "
-            f"Searched registered project roots."
+            f"Local folder for '{stub}' not found. Searched registered project roots."
         )
     return folder
 
 
-@project_kinds.register_edge('github_stub', 'url_components')
+@project_kinds.register_edge("github_stub", "url_components")
 def stub_to_components(stub: str, ctx) -> dict:
     """Convert org/repo stub to URL components."""
-    org, repo = stub.split('/', 1)
-    return {'username': org, 'repository': repo}
+    org, repo = stub.split("/", 1)
+    return {"username": org, "repository": repo}
 
 
-@project_kinds.register_edge('github_https_url', 'url_components')
+@project_kinds.register_edge("github_https_url", "url_components")
 def https_url_to_components(url: str, ctx) -> dict:
     """Parse HTTPS GitHub URL to components."""
     return parse_github_url(url)
 
 
-@project_kinds.register_edge('github_ssh_url', 'url_components')
+@project_kinds.register_edge("github_ssh_url", "url_components")
 def ssh_url_to_components(url: str, ctx) -> dict:
     """Parse SSH GitHub URL to components."""
     return parse_github_url(url)
 
 
-@project_kinds.register_edge('url_components', 'github_stub')
+@project_kinds.register_edge("url_components", "github_stub")
 def components_to_stub(components: dict, ctx) -> str:
     """Extract org/repo stub from URL components."""
     return f"{components['username']}/{components['repository']}"
 
 
-@project_kinds.register_edge('url_components', 'github_https_url')
+@project_kinds.register_edge("url_components", "github_https_url")
 def components_to_https_url(components: dict, ctx) -> str:
     """Generate HTTPS GitHub URL from components."""
     base_components = {
-        'username': components['username'],
-        'repository': components['repository'],
+        "username": components["username"],
+        "repository": components["repository"],
     }
-    return generate_github_url(base_components, 'repository')
+    return generate_github_url(base_components, "repository")
 
 
-@project_kinds.register_edge('url_components', 'github_ssh_url')
+@project_kinds.register_edge("url_components", "github_ssh_url")
 def components_to_ssh_url(components: dict, ctx) -> str:
     """Generate SSH GitHub URL from components."""
     base_components = {
-        'username': components['username'],
-        'repository': components['repository'],
+        "username": components["username"],
+        "repository": components["repository"],
     }
-    return generate_github_url(base_components, 'clone_url')
+    return generate_github_url(base_components, "clone_url")
 
 
 # Add identity edge for local_proj_folder <-> local_git_folder
-@project_kinds.register_edge('local_proj_folder', 'local_git_folder', cost=0.0)
+@project_kinds.register_edge("local_proj_folder", "local_git_folder", cost=0.0)
 def proj_folder_to_git_folder(folder: str, ctx) -> str:
     """Identity: local_proj_folder and local_git_folder are the same."""
     return folder
 
 
-@project_kinds.register_edge('local_git_folder', 'local_proj_folder', cost=0.0)
+@project_kinds.register_edge("local_git_folder", "local_proj_folder", cost=0.0)
 def git_folder_to_proj_folder(folder: str, ctx) -> str:
     """Identity: local_git_folder and local_proj_folder are the same."""
     return folder
@@ -404,14 +407,14 @@ def normalize_project(
     project: str | Path,
     *,
     to_kind: Literal[
-        'local_proj_folder',
-        'local_git_folder',
-        'github_stub',
-        'proj_name',
-        'github_https_url',
-        'github_ssh_url',
-        'url_components',
-    ] = 'local_proj_folder',
+        "local_proj_folder",
+        "local_git_folder",
+        "github_stub",
+        "proj_name",
+        "github_https_url",
+        "github_ssh_url",
+        "url_components",
+    ] = "local_proj_folder",
 ) -> str | Path | dict:
     """
     Normalize any project reference to the desired kind.
@@ -456,12 +459,12 @@ def normalize_project(
 
 def to_local_path(project: str | Path) -> str:
     """Convert any project reference to local folder path."""
-    return normalize_project(project, to_kind='local_proj_folder')
+    return normalize_project(project, to_kind="local_proj_folder")
 
 
 def to_github_stub(project: str | Path) -> str:
     """Convert any project reference to org/repo stub."""
-    return normalize_project(project, to_kind='github_stub')
+    return normalize_project(project, to_kind="github_stub")
 
 
 def to_github_url(project: str | Path, *, ssh: bool = True) -> str:
@@ -471,5 +474,5 @@ def to_github_url(project: str | Path, *, ssh: bool = True) -> str:
         project: Any project reference
         ssh: If True, return SSH URL; if False, return HTTPS URL
     """
-    kind = 'github_ssh_url' if ssh else 'github_https_url'
+    kind = "github_ssh_url" if ssh else "github_https_url"
     return normalize_project(project, to_kind=kind)

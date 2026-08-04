@@ -10,16 +10,16 @@ Hubcap now includes a comprehensive caching mechanism for repository artifacts. 
 from hubcap import local_repo_artifacts
 
 # Access cached repository info
-info = local_repo_artifacts.info['thorwhalen/hubcap']
-print(info['name'])  # 'hubcap'
+info = local_repo_artifacts.info["thorwhalen/hubcap"]
+print(info["name"])  # 'hubcap'
 
 # Access cached discussions
-discussions = local_repo_artifacts.discussions['thorwhalen/hubcap']
+discussions = local_repo_artifacts.discussions["thorwhalen/hubcap"]
 for num, discussion in discussions.items():
     print(f"{num}: {discussion['title']}")
 
 # Access cached issues
-issues = local_repo_artifacts.issues['thorwhalen/hubcap']
+issues = local_repo_artifacts.issues["thorwhalen/hubcap"]
 for num, issue in issues.items():
     print(f"{num}: {issue['title']}")
 ```
@@ -63,9 +63,9 @@ LocalRepoArtifacts
 from hubcap import local_repo_artifacts
 
 # Default instance uses cache without refresh
-info = local_repo_artifacts.info['thorwhalen/hubcap']
-discussions = local_repo_artifacts.discussions['thorwhalen/hubcap']
-issues = local_repo_artifacts.issues['thorwhalen/hubcap']
+info = local_repo_artifacts.info["thorwhalen/hubcap"]
+discussions = local_repo_artifacts.discussions["thorwhalen/hubcap"]
+issues = local_repo_artifacts.issues["thorwhalen/hubcap"]
 ```
 
 ### Pattern 2: Custom LocalRepoArtifacts Instance
@@ -75,11 +75,11 @@ from hubcap import LocalRepoArtifacts
 
 # Always fetch fresh data
 fresh = LocalRepoArtifacts(refresh=True)
-info = fresh.info['thorwhalen/hubcap']
+info = fresh.info["thorwhalen/hubcap"]
 
 # Use cached data only
 cached = LocalRepoArtifacts(refresh=False)
-info = cached.info['thorwhalen/hubcap']
+info = cached.info["thorwhalen/hubcap"]
 ```
 
 ### Pattern 3: Direct Class Usage
@@ -89,18 +89,18 @@ from hubcap import Discussions, Issues
 
 # Discussions with caching
 discussions = Discussions(
-    'thorwhalen/hubcap',
-    cache=True,      # Enable caching
-    refresh=False    # Use cached data when available
+    "thorwhalen/hubcap",
+    cache=True,  # Enable caching
+    refresh=False,  # Use cached data when available
 )
 discussion = discussions[2]
 
 # Issues with caching and refresh
 issues = Issues(
-    'thorwhalen/hubcap',
-    cache=True,      # Enable caching
-    refresh=True,    # Always fetch fresh data
-    get_objs_kwargs=(('state', 'all'),)  # Fetch all issues
+    "thorwhalen/hubcap",
+    cache=True,  # Enable caching
+    refresh=True,  # Always fetch fresh data
+    get_objs_kwargs=(("state", "all"),),  # Fetch all issues
 )
 issue = issues[3]
 ```
@@ -233,7 +233,7 @@ from hubcap import LocalRepoArtifacts
 
 # First run: fetches and caches data
 artifacts = LocalRepoArtifacts(refresh=True)
-repos = ['i2mint/dol', 'i2mint/creek', 'thorwhalen/hubcap']
+repos = ["i2mint/dol", "i2mint/creek", "thorwhalen/hubcap"]
 
 for repo in repos:
     info = artifacts.info[repo]
@@ -253,13 +253,13 @@ from hubcap import local_repo_artifacts, LocalRepoArtifacts
 import time
 
 # Use cached data for quick access
-info = local_repo_artifacts.info['thorwhalen/hubcap']
+info = local_repo_artifacts.info["thorwhalen/hubcap"]
 print(f"Cached stargazers: {info['stargazers_count']}")
 
 # Periodically refresh for updates
 time.sleep(3600)  # Wait 1 hour
 fresh = LocalRepoArtifacts(refresh=True)
-info = fresh.info['thorwhalen/hubcap']
+info = fresh.info["thorwhalen/hubcap"]
 print(f"Fresh stargazers: {info['stargazers_count']}")
 ```
 
@@ -270,15 +270,15 @@ from hubcap import Discussions
 
 # Cache discussions for offline analysis
 discussions = Discussions(
-    'thorwhalen/hubcap',
+    "thorwhalen/hubcap",
     cache=True,
-    refresh=True  # Get latest discussions
+    refresh=True,  # Get latest discussions
 )
 
 # Analyze cached discussions
 for num in discussions:
     discussion = discussions[num]
-    comment_count = len(discussion.get('comments', []))
+    comment_count = len(discussion.get("comments", []))
     print(f"Discussion {num}: {comment_count} comments")
 ```
 
@@ -297,7 +297,7 @@ for num in discussions:
 
 ```python
 fresh = LocalRepoArtifacts(refresh=True)
-info = fresh.info['org/repo']
+info = fresh.info["org/repo"]
 ```
 
 ### Issue: Cache not being created
@@ -307,6 +307,7 @@ info = fresh.info['org/repo']
 ```python
 from hubcap.util import repo_cache_dir
 import os
+
 print(f"Cache dir: {repo_cache_dir}")
 print(f"Writable: {os.access(repo_cache_dir, os.W_OK)}")
 ```
@@ -318,7 +319,7 @@ print(f"Writable: {os.access(repo_cache_dir, os.W_OK)}")
 ```python
 cached = LocalRepoArtifacts(refresh=False)
 # This won't hit GitHub API if cache exists
-info = cached.info['org/repo']
+info = cached.info["org/repo"]
 ```
 
 ## Design Philosophy

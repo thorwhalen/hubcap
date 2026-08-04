@@ -356,18 +356,18 @@ The `local_repo_artifacts` object provides mapping interfaces to cached reposito
 from hubcap import local_repo_artifacts
 
 # Access cached repository info
-info = local_repo_artifacts.info['thorwhalen/hubcap']
-print(info['name'])  # 'hubcap'
-print(info['stargazers_count'])  # Number of stars
+info = local_repo_artifacts.info["thorwhalen/hubcap"]
+print(info["name"])  # 'hubcap'
+print(info["stargazers_count"])  # Number of stars
 
 # Access cached discussions
-discussions = local_repo_artifacts.discussions['thorwhalen/hubcap']
+discussions = local_repo_artifacts.discussions["thorwhalen/hubcap"]
 for discussion_number in discussions:
     discussion = discussions[discussion_number]
     print(f"Discussion {discussion_number}: {discussion['title']}")
 
-# Access cached issues  
-issues = local_repo_artifacts.issues['thorwhalen/hubcap']
+# Access cached issues
+issues = local_repo_artifacts.issues["thorwhalen/hubcap"]
 for issue_number in issues:
     issue = issues[issue_number]
     print(f"Issue {issue_number}: {issue.title}")
@@ -382,11 +382,11 @@ from hubcap import LocalRepoArtifacts
 
 # Use cached data (default)
 cached_artifacts = LocalRepoArtifacts(refresh=False)
-info = cached_artifacts.info['thorwhalen/hubcap']  # Uses cache if available
+info = cached_artifacts.info["thorwhalen/hubcap"]  # Uses cache if available
 
 # Always fetch fresh data and update cache
 fresh_artifacts = LocalRepoArtifacts(refresh=True)
-info = fresh_artifacts.info['thorwhalen/hubcap']  # Always fetches from GitHub
+info = fresh_artifacts.info["thorwhalen/hubcap"]  # Always fetches from GitHub
 ```
 
 ### Direct caching with Discussions and Issues
@@ -397,11 +397,11 @@ You can also enable caching directly when creating `Discussions` or `Issues` obj
 from hubcap import Discussions, Issues
 
 # Enable caching for discussions
-discussions = Discussions('thorwhalen/hubcap', cache=True, refresh=False)
+discussions = Discussions("thorwhalen/hubcap", cache=True, refresh=False)
 discussion_2 = discussions[2]  # Cached after first access
 
 # Enable caching for issues
-issues = Issues('thorwhalen/hubcap', cache=True, refresh=True)
+issues = Issues("thorwhalen/hubcap", cache=True, refresh=True)
 issue_4 = issues[4]  # Always fetches fresh and updates cache
 ```
 
@@ -435,20 +435,18 @@ You can customize the cache location with the `HUBCAP_DATA_FOLDER` environment v
 from hubcap import git_clone, git_wiki_clone
 from dol import TextFiles, filt_iter, Pipe
 
-repo_py_files = Pipe(
-    git_clone, TextFiles, filt_iter(filt=lambda x: x.endswith('.py'))
-)
+repo_py_files = Pipe(git_clone, TextFiles, filt_iter(filt=lambda x: x.endswith(".py")))
 repo_wiki_files = Pipe(git_wiki_clone, TextFiles)
 ```
 
 ```python
-py_files = repo_py_files('i2mint/dol')
+py_files = repo_py_files("i2mint/dol")
 len(py_files)
 # 37
 ```
 
 ```python
-wiki_files = repo_wiki_files('i2mint/dol')
+wiki_files = repo_wiki_files("i2mint/dol")
 list(wiki_files)
 # ['Recipes.md',
 #  'Critiques-and-their-comebacks.md',
