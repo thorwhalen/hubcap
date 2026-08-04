@@ -60,15 +60,33 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from functools import lru_cache
-from typing import Literal
+from typing import Iterable, Literal
 
 from i2.castgraph import TransformationGraph
-from hubcap.util import parse_github_url, generate_github_url, get_config, LOCAL_PROJECT_ROOTS_FILE
+from hubcap.util import (
+    parse_github_url,
+    generate_github_url,
+    get_config,
+    configs,
+    LOCAL_PROJECT_ROOTS_FILE,
+)
 
 # ======================================================================================
 # Configuration Management
 # ======================================================================================
+
+#: Separator used to serialize the registered project roots in the config store.
+PROJECT_ROOTS_SEPARATOR = '\n'
+
+#: Marker that identifies a folder as a git project (a folder in worktrees, a
+#: file in submodules/worktree links -- hence the existence, not isdir, check).
+GIT_FOLDER_NAME = '.git'
+
+#: Memoized ``project_name -> project_folder`` resolutions.
+#: Only *hits* are stored, and every stored hit is revalidated before reuse, so
+#: the cache can never contradict the filesystem. It is dropped wholesale by
+#: ``set_project_roots``, the single write path of the registry it derives from.
+_project_folder_cache: dict[str, str] = {}
 
 
 def get_project_roots() -> list[str]:
@@ -85,9 +103,28 @@ def get_project_roots() -> list[str]:
     config = get_config(LOCAL_PROJECT_ROOTS_FILE, default='')
     if not config:
         return []
-    # Config stores as newline-separated paths
-    roots = [p.strip() for p in config.split('\n') if p.strip()]
+    roots = [p.strip() for p in config.split(PROJECT_ROOTS_SEPARATOR) if p.strip()]
     return roots
+
+
+def set_project_roots(roots: Iterable[str]) -> None:
+    """Replace the registered project roots with ``roots``.
+
+    This is the *single write path* for the registry: ``register_project_root``
+    and ``unregister_project_root`` both go through it, so anything that must
+    happen when the registry changes (currently, dropping the stale project
+    lookup cache) has exactly one place to live.
+
+    Args:
+        roots: The full list of project root paths to persist
+
+    Example:
+        >>> set_project_roots(['/Users/me/projects'])  # doctest: +SKIP
+    """
+    roots = list(roots)
+    configs[LOCAL_PROJECT_ROOTS_FILE] = PROJECT_ROOTS_SEPARATOR.join(roots)
+    # The lookup cache derives from the roots: changing them invalidates it.
+    _project_folder_cache.clear()
 
 
 def register_project_root(root_path: str) -> None:
@@ -98,6 +135,9 @@ def register_project_root(root_path: str) -> None:
 
     Args:
         root_path: Absolute path to a directory containing project folders
+
+    Raises:
+        ValueError: If ``root_path`` is not an existing directory
 
     Example:
         >>> register_project_root('/Users/me/projects')  # doctest: +SKIP
@@ -110,8 +150,7 @@ def register_project_root(root_path: str) -> None:
     roots = get_project_roots()
     if root_path not in roots:
         roots.append(root_path)
-        # Store as newline-separated
-        get_config.configs[LOCAL_PROJECT_ROOTS_FILE] = '\n'.join(roots)
+        set_project_roots(roots)
 
 
 def unregister_project_root(root_path: str) -> None:
@@ -124,12 +163,28 @@ def unregister_project_root(root_path: str) -> None:
     roots = get_project_roots()
     if root_path in roots:
         roots.remove(root_path)
-        get_config.configs[LOCAL_PROJECT_ROOTS_FILE] = '\n'.join(roots)
+        set_project_roots(roots)
 
 
-@lru_cache(maxsize=128)
+def _is_project_folder(folder: str) -> bool:
+    """Tell whether ``folder`` is a local project, i.e. a directory holding a ``.git``.
+
+    This is the single definition of "is a local project folder", shared by the
+    name lookup and by the ``local_git_folder`` / ``local_proj_folder`` kind
+    predicates.
+    """
+    return os.path.isdir(folder) and os.path.exists(
+        os.path.join(folder, GIT_FOLDER_NAME)
+    )
+
+
 def _find_project_by_name(project_name: str) -> str | None:
     """Search registered roots for a project folder by name.
+
+    Results are memoized, but only when found and only for as long as they stay
+    true: a cached folder is revalidated on every call, and the whole cache is
+    dropped whenever the registered roots change. Misses are never memoized, so
+    a project cloned into an already registered root is picked up immediately.
 
     Args:
         project_name: Simple project name (folder name)
@@ -137,9 +192,16 @@ def _find_project_by_name(project_name: str) -> str | None:
     Returns:
         Absolute path to project folder if found, None otherwise
     """
+    cached = _project_folder_cache.get(project_name)
+    if cached is not None:
+        if _is_project_folder(cached):
+            return cached
+        del _project_folder_cache[project_name]
+
     for root in get_project_roots():
         candidate = os.path.join(root, project_name)
-        if os.path.isdir(candidate) and os.path.exists(os.path.join(candidate, '.git')):
+        if _is_project_folder(candidate):
+            _project_folder_cache[project_name] = candidate
             return candidate
     return None
 
@@ -201,20 +263,16 @@ project_kinds.add_node(
     isa=lambda x: isinstance(x, str) and x.startswith('git@github.com:'),
 )
 
-project_kinds.add_node(
-    'local_git_folder',
-    isa=lambda x: isinstance(x, (str, Path))
-    and os.path.isdir(str(x))
-    and os.path.exists(os.path.join(str(x), '.git')),
-)
+
+def _isa_local_project(x) -> bool:
+    """Predicate for the ``local_git_folder`` / ``local_proj_folder`` kinds."""
+    return isinstance(x, (str, Path)) and _is_project_folder(str(x))
+
+
+project_kinds.add_node('local_git_folder', isa=_isa_local_project)
 
 # Alias for local_git_folder
-project_kinds.add_node(
-    'local_proj_folder',
-    isa=lambda x: isinstance(x, (str, Path))
-    and os.path.isdir(str(x))
-    and os.path.exists(os.path.join(str(x), '.git')),
-)
+project_kinds.add_node('local_proj_folder', isa=_isa_local_project)
 
 project_kinds.add_node(
     'url_components',

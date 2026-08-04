@@ -46,7 +46,11 @@ convention = "google"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = ["tests"]
+# Both paths are named explicitly: "tests" for the test modules and "hubcap" for
+# the module doctests CI collects with --doctest-modules. Naming only "tests"
+# used to leave pytest with nothing to collect, so it fell back to scanning the
+# repo root and swept up root-level scripts as if they were test modules.
+testpaths = ["tests", "hubcap"]
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
 
 [tool.wads.ci.testing]
