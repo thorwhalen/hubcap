@@ -3,7 +3,9 @@
    :caption: Contents:
 
    module_docs/hubcap
+   module_docs/hubcap/actions
    module_docs/hubcap/base
+   module_docs/hubcap/casting
    module_docs/hubcap/constants
    module_docs/hubcap/examples
    module_docs/hubcap/examples/diagnose_repositories

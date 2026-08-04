@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.casting &mdash; hubcap 0.1.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hubcap.constants" href="constants.html" />
+    <link rel="prev" title="hubcap.base" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">hubcap.actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.casting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-kinds">Supported Kinds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-with-ingress-decorator">Usage with Ingress Decorator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#direct-transformation">Direct Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.GIT_FOLDER_NAME"><code class="docutils literal notranslate"><span class="pre">GIT_FOLDER_NAME</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.PROJECT_ROOTS_SEPARATOR"><code class="docutils literal notranslate"><span class="pre">PROJECT_ROOTS_SEPARATOR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.components_to_https_url"><code class="docutils literal notranslate"><span class="pre">components_to_https_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.components_to_ssh_url"><code class="docutils literal notranslate"><span class="pre">components_to_ssh_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.components_to_stub"><code class="docutils literal notranslate"><span class="pre">components_to_stub()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.get_project_roots"><code class="docutils literal notranslate"><span class="pre">get_project_roots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.git_folder_to_proj_folder"><code class="docutils literal notranslate"><span class="pre">git_folder_to_proj_folder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.https_url_to_components"><code class="docutils literal notranslate"><span class="pre">https_url_to_components()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.local_folder_to_proj_name"><code class="docutils literal notranslate"><span class="pre">local_folder_to_proj_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.local_folder_to_stub"><code class="docutils literal notranslate"><span class="pre">local_folder_to_stub()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.normalize_project"><code class="docutils literal notranslate"><span class="pre">normalize_project()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.proj_folder_to_git_folder"><code class="docutils literal notranslate"><span class="pre">proj_folder_to_git_folder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.proj_name_to_local_folder"><code class="docutils literal notranslate"><span class="pre">proj_name_to_local_folder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.register_project_root"><code class="docutils literal notranslate"><span class="pre">register_project_root()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.set_project_roots"><code class="docutils literal notranslate"><span class="pre">set_project_roots()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.ssh_url_to_components"><code class="docutils literal notranslate"><span class="pre">ssh_url_to_components()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.stub_to_components"><code class="docutils literal notranslate"><span class="pre">stub_to_components()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.stub_to_local_folder"><code class="docutils literal notranslate"><span class="pre">stub_to_local_folder()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.to_github_stub"><code class="docutils literal notranslate"><span class="pre">to_github_stub()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.to_github_url"><code class="docutils literal notranslate"><span class="pre">to_github_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.to_local_path"><code class="docutils literal notranslate"><span class="pre">to_local_path()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.casting.unregister_project_root"><code class="docutils literal notranslate"><span class="pre">unregister_project_root()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.casting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/casting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.casting">
+<span id="hubcap-casting"></span><h1>hubcap.casting<a class="headerlink" href="#module-hubcap.casting" title="Link to this heading"></a></h1>
+<p>Transformation graph for GitHub project references with flexible input handling.</p>
+<p>This module provides automatic conversion between different representations of GitHub
+projects using i2.castgraph. It integrates with hubcap’s URL parsing/generation and
+supports user-configurable local project folder discovery.</p>
+<section id="supported-kinds">
+<h2>Supported Kinds<a class="headerlink" href="#supported-kinds" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>proj_name</strong>: Simple project name (e.g., “dol”)</p></li>
+<li><p><strong>github_stub</strong>: Org/repo format (e.g., “i2mint/dol”)</p></li>
+<li><p><strong>github_https_url</strong>: HTTPS URLs (e.g., “<a class="reference external" href="https://github.com/i2mint/dol">https://github.com/i2mint/dol</a>”)</p></li>
+<li><p><strong>github_ssh_url</strong>: SSH URLs (e.g., “<a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:i2mint/dol.git”)</p></li>
+<li><p><strong>local_git_folder</strong>: Local path with .git folder</p></li>
+<li><p><strong>local_proj_folder</strong>: Alias for local_git_folder</p></li>
+<li><p><strong>url_components</strong>: Parsed URL components dict</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Register your local project root folders in the hubcap config:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_project_root</span><span class="p">,</span> <span class="n">get_project_roots</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/projects/personal&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/work&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_project_roots</span><span class="p">()</span>
+<span class="go">[&#39;/Users/me/projects/personal&#39;, &#39;/Users/me/work&#39;]</span>
+</pre></div>
+</div>
+<p>The system will search one level deep in these roots for folders containing .git.</p>
+</section>
+<section id="usage-with-ingress-decorator">
+<h2>Usage with Ingress Decorator<a class="headerlink" href="#usage-with-ingress-decorator" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">project_kinds</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@project_kinds</span><span class="o">.</span><span class="n">ingress</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">process_project</span><span class="p">(</span><span class="n">project_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="gp">... </span><span class="w">    </span><span class="sd">&#39;&#39;&#39;Accepts any project reference, gets local path.&#39;&#39;&#39;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="n">project_path</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;i2mint/dol&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;https://github.com/i2mint/dol&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="direct-transformation">
+<h2>Direct Transformation<a class="headerlink" href="#direct-transformation" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_project</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># From name to local path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
+<span class="go">&#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># From URL to stub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://github.com/i2mint/dol/tree/master&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_stub&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&#39;i2mint/dol&#39;</span>
+</pre></div>
+</div>
+</section>
+<dl class="py data">
+<dt class="sig sig-object py" id="hubcap.casting.GIT_FOLDER_NAME">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">GIT_FOLDER_NAME</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.git'</span></span><a class="headerlink" href="#hubcap.casting.GIT_FOLDER_NAME" title="Link to this definition"></a></dt>
+<dd><p>Marker that identifies a folder as a git project (a folder in worktrees, a
+file in submodules/worktree links – hence the existence, not isdir, check).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="hubcap.casting.PROJECT_ROOTS_SEPARATOR">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">PROJECT_ROOTS_SEPARATOR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\n'</span></span><a class="headerlink" href="#hubcap.casting.PROJECT_ROOTS_SEPARATOR" title="Link to this definition"></a></dt>
+<dd><p>Separator used to serialize the registered project roots in the config store.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.components_to_https_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">components_to_https_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#components_to_https_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.components_to_https_url" title="Link to this definition"></a></dt>
+<dd><p>Generate HTTPS GitHub URL from components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.components_to_ssh_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">components_to_ssh_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#components_to_ssh_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.components_to_ssh_url" title="Link to this definition"></a></dt>
+<dd><p>Generate SSH GitHub URL from components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.components_to_stub">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">components_to_stub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#components_to_stub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.components_to_stub" title="Link to this definition"></a></dt>
+<dd><p>Extract org/repo stub from URL components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.get_project_roots">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">get_project_roots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#get_project_roots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.get_project_roots" title="Link to this definition"></a></dt>
+<dd><p>Get the list of registered project root folders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of absolute paths to project root directories</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">roots</span> <span class="o">=</span> <span class="n">get_project_roots</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+<span class="go">[&#39;/Users/me/projects&#39;, &#39;/Users/me/work&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.git_folder_to_proj_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">git_folder_to_proj_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#git_folder_to_proj_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.git_folder_to_proj_folder" title="Link to this definition"></a></dt>
+<dd><p>Identity: local_git_folder and local_proj_folder are the same.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.https_url_to_components">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">https_url_to_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#https_url_to_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.https_url_to_components" title="Link to this definition"></a></dt>
+<dd><p>Parse HTTPS GitHub URL to components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.local_folder_to_proj_name">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">local_folder_to_proj_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#local_folder_to_proj_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.local_folder_to_proj_name" title="Link to this definition"></a></dt>
+<dd><p>Extract project name from folder path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.local_folder_to_stub">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">local_folder_to_stub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#local_folder_to_stub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.local_folder_to_stub" title="Link to this definition"></a></dt>
+<dd><p>Get org/repo stub from git remote URL.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.normalize_project">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">normalize_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'local_proj_folder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'local_git_folder'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'github_stub'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'proj_name'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'github_https_url'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'github_ssh_url'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'url_components'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'local_proj_folder'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#normalize_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.normalize_project" title="Link to this definition"></a></dt>
+<dd><p>Normalize any project reference to the desired kind.</p>
+<p>This allows flexible input handling - pass a project name, stub, URL, or path
+and get it converted to whatever format you need.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> – Any valid project reference</p></li>
+<li><p><strong>to_kind</strong> – Target kind to convert to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The project reference in the desired format</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the project cannot be found or converted</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From simple name to path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">)</span>
+<span class="go">&#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From URL to stub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://github.com/i2mint/dol/tree/master&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_stub&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&#39;i2mint/dol&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From SSH URL to HTTPS URL</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;git@github.com:i2mint/dol.git&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_https_url&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&#39;https://github.com/i2mint/dol&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.proj_folder_to_git_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">proj_folder_to_git_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#proj_folder_to_git_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.proj_folder_to_git_folder" title="Link to this definition"></a></dt>
+<dd><p>Identity: local_proj_folder and local_git_folder are the same.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.proj_name_to_local_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">proj_name_to_local_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#proj_name_to_local_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.proj_name_to_local_folder" title="Link to this definition"></a></dt>
+<dd><p>Find local project folder by searching registered roots.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.register_project_root">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">register_project_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#register_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.register_project_root" title="Link to this definition"></a></dt>
+<dd><p>Register a new project root folder.</p>
+<p>Projects (folders with .git) one level below this root will be discoverable
+by project name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>root_path</strong> – Absolute path to a directory containing project folders</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">root_path</span></code> is not an existing directory</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/projects&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/work/repos&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.set_project_roots">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">set_project_roots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#set_project_roots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.set_project_roots" title="Link to this definition"></a></dt>
+<dd><p>Replace the registered project roots with <code class="docutils literal notranslate"><span class="pre">roots</span></code>.</p>
+<p>This is the <em>single write path</em> for the registry: <code class="docutils literal notranslate"><span class="pre">register_project_root</span></code>
+and <code class="docutils literal notranslate"><span class="pre">unregister_project_root</span></code> both go through it, so anything that must
+happen when the registry changes (currently, dropping the stale project
+lookup cache) has exactly one place to live.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>roots</strong> – The full list of project root paths to persist</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">set_project_roots</span><span class="p">([</span><span class="s1">&#39;/Users/me/projects&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.ssh_url_to_components">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">ssh_url_to_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#ssh_url_to_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.ssh_url_to_components" title="Link to this definition"></a></dt>
+<dd><p>Parse SSH GitHub URL to components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.stub_to_components">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">stub_to_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#stub_to_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.stub_to_components" title="Link to this definition"></a></dt>
+<dd><p>Convert org/repo stub to URL components.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.stub_to_local_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">stub_to_local_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#stub_to_local_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.stub_to_local_folder" title="Link to this definition"></a></dt>
+<dd><p>Try to find local folder by searching for repo name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.to_github_stub">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">to_github_stub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#to_github_stub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.to_github_stub" title="Link to this definition"></a></dt>
+<dd><p>Convert any project reference to org/repo stub.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.to_github_url">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">to_github_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#to_github_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.to_github_url" title="Link to this definition"></a></dt>
+<dd><p>Convert any project reference to GitHub URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> – Any project reference</p></li>
+<li><p><strong>ssh</strong> – If True, return SSH URL; if False, return HTTPS URL</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.to_local_path">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">to_local_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#to_local_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.to_local_path" title="Link to this definition"></a></dt>
+<dd><p>Convert any project reference to local folder path.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.casting.unregister_project_root">
+<span class="sig-prename descclassname"><span class="pre">hubcap.casting.</span></span><span class="sig-name descname"><span class="pre">unregister_project_root</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/hubcap/casting.html#unregister_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.casting.unregister_project_root" title="Link to this definition"></a></dt>
+<dd><p>Remove a project root folder from the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>root_path</strong> – Path to remove from registered roots</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="base.html" class="btn btn-neutral float-left" title="hubcap.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="constants.html" class="btn btn-neutral float-right" title="hubcap.constants" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

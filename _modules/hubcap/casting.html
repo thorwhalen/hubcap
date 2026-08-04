@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.casting &mdash; hubcap 0.1.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/actions.html">hubcap.actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/casting.html">hubcap.casting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">hubcap.casting</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for hubcap.casting</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Transformation graph for GitHub project references with flexible input handling.</span>
+
+<span class="sd">This module provides automatic conversion between different representations of GitHub</span>
+<span class="sd">projects using i2.castgraph. It integrates with hubcap&#39;s URL parsing/generation and</span>
+<span class="sd">supports user-configurable local project folder discovery.</span>
+
+<span class="sd">Supported Kinds</span>
+<span class="sd">---------------</span>
+<span class="sd">- **proj_name**: Simple project name (e.g., &quot;dol&quot;)</span>
+<span class="sd">- **github_stub**: Org/repo format (e.g., &quot;i2mint/dol&quot;)</span>
+<span class="sd">- **github_https_url**: HTTPS URLs (e.g., &quot;https://github.com/i2mint/dol&quot;)</span>
+<span class="sd">- **github_ssh_url**: SSH URLs (e.g., &quot;git@github.com:i2mint/dol.git&quot;)</span>
+<span class="sd">- **local_git_folder**: Local path with .git folder</span>
+<span class="sd">- **local_proj_folder**: Alias for local_git_folder</span>
+<span class="sd">- **url_components**: Parsed URL components dict</span>
+
+<span class="sd">Configuration</span>
+<span class="sd">-------------</span>
+<span class="sd">Register your local project root folders in the hubcap config:</span>
+
+<span class="sd">    &gt;&gt;&gt; from hubcap.casting import register_project_root, get_project_roots</span>
+<span class="sd">    &gt;&gt;&gt; register_project_root(&#39;/Users/me/projects/personal&#39;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; register_project_root(&#39;/Users/me/work&#39;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; get_project_roots()  # doctest: +SKIP</span>
+<span class="sd">    [&#39;/Users/me/projects/personal&#39;, &#39;/Users/me/work&#39;]</span>
+
+<span class="sd">The system will search one level deep in these roots for folders containing .git.</span>
+
+<span class="sd">Usage with Ingress Decorator</span>
+<span class="sd">-----------------------------</span>
+<span class="sd">    &gt;&gt;&gt; from hubcap.casting import project_kinds</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @project_kinds.ingress(&#39;local_proj_folder&#39;)</span>
+<span class="sd">    ... def process_project(project_path: str):</span>
+<span class="sd">    ...     &#39;&#39;&#39;Accepts any project reference, gets local path.&#39;&#39;&#39;</span>
+<span class="sd">    ...     return f&quot;Processing {project_path}&quot;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; process_project(&quot;dol&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; process_project(&quot;i2mint/dol&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; process_project(&quot;https://github.com/i2mint/dol&quot;)  # doctest: +SKIP</span>
+
+<span class="sd">Direct Transformation</span>
+<span class="sd">---------------------</span>
+<span class="sd">    &gt;&gt;&gt; from hubcap.casting import normalize_project</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # From name to local path</span>
+<span class="sd">    &gt;&gt;&gt; normalize_project(&quot;dol&quot;, to_kind=&#39;local_proj_folder&#39;)  # doctest: +SKIP</span>
+<span class="sd">    &#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # From URL to stub</span>
+<span class="sd">    &gt;&gt;&gt; normalize_project(</span>
+<span class="sd">    ...     &quot;https://github.com/i2mint/dol/tree/master&quot;,</span>
+<span class="sd">    ...     to_kind=&#39;github_stub&#39;</span>
+<span class="sd">    ... )  # doctest: +SKIP</span>
+<span class="sd">    &#39;i2mint/dol&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">i2.castgraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransformationGraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">parse_github_url</span><span class="p">,</span>
+    <span class="n">generate_github_url</span><span class="p">,</span>
+    <span class="n">get_config</span><span class="p">,</span>
+    <span class="n">configs</span><span class="p">,</span>
+    <span class="n">LOCAL_PROJECT_ROOTS_FILE</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># ======================================================================================</span>
+<span class="c1"># Configuration Management</span>
+<span class="c1"># ======================================================================================</span>
+
+<span class="c1">#: Separator used to serialize the registered project roots in the config store.</span>
+<span class="n">PROJECT_ROOTS_SEPARATOR</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<span class="c1">#: Marker that identifies a folder as a git project (a folder in worktrees, a</span>
+<span class="c1">#: file in submodules/worktree links -- hence the existence, not isdir, check).</span>
+<span class="n">GIT_FOLDER_NAME</span> <span class="o">=</span> <span class="s1">&#39;.git&#39;</span>
+
+<span class="c1">#: Memoized ``project_name -&gt; project_folder`` resolutions.</span>
+<span class="c1">#: Only *hits* are stored, and every stored hit is revalidated before reuse, so</span>
+<span class="c1">#: the cache can never contradict the filesystem. It is dropped wholesale by</span>
+<span class="c1">#: ``set_project_roots``, the single write path of the registry it derives from.</span>
+<span class="n">_project_folder_cache</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="get_project_roots">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.get_project_roots">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_project_roots</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the list of registered project root folders.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of absolute paths to project root directories</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; roots = get_project_roots()  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; print(roots)  # doctest: +SKIP</span>
+<span class="sd">        [&#39;/Users/me/projects&#39;, &#39;/Users/me/work&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">LOCAL_PROJECT_ROOTS_FILE</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">PROJECT_ROOTS_SEPARATOR</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">roots</span></div>
+
+
+
+<div class="viewcode-block" id="set_project_roots">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.set_project_roots">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_project_roots</span><span class="p">(</span><span class="n">roots</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace the registered project roots with ``roots``.</span>
+
+<span class="sd">    This is the *single write path* for the registry: ``register_project_root``</span>
+<span class="sd">    and ``unregister_project_root`` both go through it, so anything that must</span>
+<span class="sd">    happen when the registry changes (currently, dropping the stale project</span>
+<span class="sd">    lookup cache) has exactly one place to live.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        roots: The full list of project root paths to persist</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; set_project_roots([&#39;/Users/me/projects&#39;])  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+    <span class="n">configs</span><span class="p">[</span><span class="n">LOCAL_PROJECT_ROOTS_FILE</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROJECT_ROOTS_SEPARATOR</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+    <span class="c1"># The lookup cache derives from the roots: changing them invalidates it.</span>
+    <span class="n">_project_folder_cache</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="register_project_root">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.register_project_root">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">register_project_root</span><span class="p">(</span><span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a new project root folder.</span>
+
+<span class="sd">    Projects (folders with .git) one level below this root will be discoverable</span>
+<span class="sd">    by project name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        root_path: Absolute path to a directory containing project folders</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``root_path`` is not an existing directory</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; register_project_root(&#39;/Users/me/projects&#39;)  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; register_project_root(&#39;/Users/me/work/repos&#39;)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">root_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not a directory: </span><span class="si">{</span><span class="n">root_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">get_project_roots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">root_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
+        <span class="n">roots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+        <span class="n">set_project_roots</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="unregister_project_root">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.unregister_project_root">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unregister_project_root</span><span class="p">(</span><span class="n">root_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove a project root folder from the registry.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        root_path: Path to remove from registered roots</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">root_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="n">roots</span> <span class="o">=</span> <span class="n">get_project_roots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">root_path</span> <span class="ow">in</span> <span class="n">roots</span><span class="p">:</span>
+        <span class="n">roots</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+        <span class="n">set_project_roots</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_project_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tell whether ``folder`` is a local project, i.e. a directory holding a ``.git``.</span>
+
+<span class="sd">    This is the single definition of &quot;is a local project folder&quot;, shared by the</span>
+<span class="sd">    name lookup and by the ``local_git_folder`` / ``local_proj_folder`` kind</span>
+<span class="sd">    predicates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">GIT_FOLDER_NAME</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_find_project_by_name</span><span class="p">(</span><span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search registered roots for a project folder by name.</span>
+
+<span class="sd">    Results are memoized, but only when found and only for as long as they stay</span>
+<span class="sd">    true: a cached folder is revalidated on every call, and the whole cache is</span>
+<span class="sd">    dropped whenever the registered roots change. Misses are never memoized, so</span>
+<span class="sd">    a project cloned into an already registered root is picked up immediately.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project_name: Simple project name (folder name)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Absolute path to project folder if found, None otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cached</span> <span class="o">=</span> <span class="n">_project_folder_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_is_project_folder</span><span class="p">(</span><span class="n">cached</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cached</span>
+        <span class="k">del</span> <span class="n">_project_folder_cache</span><span class="p">[</span><span class="n">project_name</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">get_project_roots</span><span class="p">():</span>
+        <span class="n">candidate</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_is_project_folder</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+            <span class="n">_project_folder_cache</span><span class="p">[</span><span class="n">project_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">candidate</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_git_remote_url</span><span class="p">(</span><span class="n">git_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the origin remote URL from a git folder.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        git_folder: Path to folder containing .git</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Remote URL or None if not found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;-C&quot;</span><span class="p">,</span> <span class="n">git_folder</span><span class="p">,</span> <span class="s2">&quot;remote&quot;</span><span class="p">,</span> <span class="s2">&quot;get-url&quot;</span><span class="p">,</span> <span class="s2">&quot;origin&quot;</span><span class="p">],</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Clean control characters</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\x00-\x1F\x7F]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="c1"># ======================================================================================</span>
+<span class="c1"># Transformation Graph</span>
+<span class="c1"># ======================================================================================</span>
+
+<span class="n">project_kinds</span> <span class="o">=</span> <span class="n">TransformationGraph</span><span class="p">()</span>
+
+<span class="c1"># Define kinds with predicates</span>
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+    <span class="s1">&#39;proj_name&#39;</span><span class="p">,</span>
+    <span class="n">isa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="ow">and</span> <span class="s1">&#39;/&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">)</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;git@&#39;</span><span class="p">)</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="ow">in</span> <span class="n">x</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+    <span class="s1">&#39;github_stub&#39;</span><span class="p">,</span>
+    <span class="n">isa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">)</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;git@&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+    <span class="s1">&#39;github_https_url&#39;</span><span class="p">,</span>
+    <span class="n">isa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;https://github.com/&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+    <span class="s1">&#39;github_ssh_url&#39;</span><span class="p">,</span>
+    <span class="n">isa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;git@github.com:&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_isa_local_project</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predicate for the ``local_git_folder`` / ``local_proj_folder`` kinds.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">))</span> <span class="ow">and</span> <span class="n">_is_project_folder</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;local_git_folder&#39;</span><span class="p">,</span> <span class="n">isa</span><span class="o">=</span><span class="n">_isa_local_project</span><span class="p">)</span>
+
+<span class="c1"># Alias for local_git_folder</span>
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span> <span class="n">isa</span><span class="o">=</span><span class="n">_isa_local_project</span><span class="p">)</span>
+
+<span class="n">project_kinds</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+    <span class="s1">&#39;url_components&#39;</span><span class="p">,</span>
+    <span class="n">isa</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">x</span> <span class="ow">and</span> <span class="s1">&#39;repository&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add transformation edges</span>
+
+
+<div class="viewcode-block" id="proj_name_to_local_folder">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.proj_name_to_local_folder">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;proj_name&#39;</span><span class="p">,</span> <span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">proj_name_to_local_folder</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find local project folder by searching registered roots.&quot;&quot;&quot;</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">_find_project_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="n">get_project_roots</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Project &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; not found in registered roots. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Searched: </span><span class="si">{</span><span class="n">roots</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Use register_project_root() to add project folders.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">folder</span></div>
+
+
+
+<div class="viewcode-block" id="local_folder_to_proj_name">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.local_folder_to_proj_name">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span> <span class="s1">&#39;proj_name&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">local_folder_to_proj_name</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract project name from folder path.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<div class="viewcode-block" id="local_folder_to_stub">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.local_folder_to_stub">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span> <span class="s1">&#39;github_stub&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">local_folder_to_stub</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get org/repo stub from git remote URL.&quot;&quot;&quot;</span>
+    <span class="n">remote_url</span> <span class="o">=</span> <span class="n">_get_git_remote_url</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">remote_url</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No git remote URL found for </span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Parse the remote URL to extract org/repo</span>
+    <span class="k">if</span> <span class="s1">&#39;github.com&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remote_url</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Remote URL is not a GitHub URL: </span><span class="si">{</span><span class="n">remote_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">components</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">components</span><span class="p">[</span><span class="s1">&#39;repository&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># Fallback parsing for SSH URLs like git@github.com:org/repo.git</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;github\.com[:/]([^/]+)/([^/\.]+)&#39;</span><span class="p">,</span> <span class="n">remote_url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse GitHub URL: </span><span class="si">{</span><span class="n">remote_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="stub_to_local_folder">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.stub_to_local_folder">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;github_stub&#39;</span><span class="p">,</span> <span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stub_to_local_folder</span><span class="p">(</span><span class="n">stub</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Try to find local folder by searching for repo name.&quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">stub</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">_find_project_by_name</span><span class="p">(</span><span class="n">repo_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Local folder for &#39;</span><span class="si">{</span><span class="n">stub</span><span class="si">}</span><span class="s2">&#39; not found. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Searched registered project roots.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">folder</span></div>
+
+
+
+<div class="viewcode-block" id="stub_to_components">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.stub_to_components">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;github_stub&#39;</span><span class="p">,</span> <span class="s1">&#39;url_components&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">stub_to_components</span><span class="p">(</span><span class="n">stub</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert org/repo stub to URL components.&quot;&quot;&quot;</span>
+    <span class="n">org</span><span class="p">,</span> <span class="n">repo</span> <span class="o">=</span> <span class="n">stub</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">org</span><span class="p">,</span> <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="n">repo</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="https_url_to_components">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.https_url_to_components">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;github_https_url&#39;</span><span class="p">,</span> <span class="s1">&#39;url_components&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">https_url_to_components</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse HTTPS GitHub URL to components.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ssh_url_to_components">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.ssh_url_to_components">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;github_ssh_url&#39;</span><span class="p">,</span> <span class="s1">&#39;url_components&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ssh_url_to_components</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse SSH GitHub URL to components.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">parse_github_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="components_to_stub">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.components_to_stub">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;url_components&#39;</span><span class="p">,</span> <span class="s1">&#39;github_stub&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">components_to_stub</span><span class="p">(</span><span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract org/repo stub from URL components.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">components</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">components</span><span class="p">[</span><span class="s1">&#39;repository&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="components_to_https_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.components_to_https_url">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;url_components&#39;</span><span class="p">,</span> <span class="s1">&#39;github_https_url&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">components_to_https_url</span><span class="p">(</span><span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate HTTPS GitHub URL from components.&quot;&quot;&quot;</span>
+    <span class="n">base_components</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">components</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="n">components</span><span class="p">[</span><span class="s1">&#39;repository&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">base_components</span><span class="p">,</span> <span class="s1">&#39;repository&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="components_to_ssh_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.components_to_ssh_url">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;url_components&#39;</span><span class="p">,</span> <span class="s1">&#39;github_ssh_url&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">components_to_ssh_url</span><span class="p">(</span><span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate SSH GitHub URL from components.&quot;&quot;&quot;</span>
+    <span class="n">base_components</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">components</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;repository&#39;</span><span class="p">:</span> <span class="n">components</span><span class="p">[</span><span class="s1">&#39;repository&#39;</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">generate_github_url</span><span class="p">(</span><span class="n">base_components</span><span class="p">,</span> <span class="s1">&#39;clone_url&#39;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Add identity edge for local_proj_folder &lt;-&gt; local_git_folder</span>
+<div class="viewcode-block" id="proj_folder_to_git_folder">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.proj_folder_to_git_folder">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span> <span class="s1">&#39;local_git_folder&#39;</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">proj_folder_to_git_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Identity: local_proj_folder and local_git_folder are the same.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">folder</span></div>
+
+
+
+<div class="viewcode-block" id="git_folder_to_proj_folder">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.git_folder_to_proj_folder">[docs]</a>
+<span class="nd">@project_kinds</span><span class="o">.</span><span class="n">register_edge</span><span class="p">(</span><span class="s1">&#39;local_git_folder&#39;</span><span class="p">,</span> <span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">git_folder_to_proj_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Identity: local_git_folder and local_proj_folder are the same.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">folder</span></div>
+
+
+
+<span class="c1"># ======================================================================================</span>
+<span class="c1"># Public API</span>
+<span class="c1"># ======================================================================================</span>
+
+
+<div class="viewcode-block" id="normalize_project">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.normalize_project">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_project</span><span class="p">(</span>
+    <span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">to_kind</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+        <span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;local_git_folder&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;github_stub&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;proj_name&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;github_https_url&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;github_ssh_url&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;url_components&#39;</span><span class="p">,</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;local_proj_folder&#39;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalize any project reference to the desired kind.</span>
+
+<span class="sd">    This allows flexible input handling - pass a project name, stub, URL, or path</span>
+<span class="sd">    and get it converted to whatever format you need.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project: Any valid project reference</span>
+<span class="sd">        to_kind: Target kind to convert to</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The project reference in the desired format</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the project cannot be found or converted</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; # From simple name to path</span>
+<span class="sd">        &gt;&gt;&gt; normalize_project(&quot;dol&quot;)  # doctest: +SKIP</span>
+<span class="sd">        &#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; # From URL to stub</span>
+<span class="sd">        &gt;&gt;&gt; normalize_project(</span>
+<span class="sd">        ...     &quot;https://github.com/i2mint/dol/tree/master&quot;,</span>
+<span class="sd">        ...     to_kind=&#39;github_stub&#39;</span>
+<span class="sd">        ... )  # doctest: +SKIP</span>
+<span class="sd">        &#39;i2mint/dol&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; # From SSH URL to HTTPS URL</span>
+<span class="sd">        &gt;&gt;&gt; normalize_project(</span>
+<span class="sd">        ...     &quot;git@github.com:i2mint/dol.git&quot;,</span>
+<span class="sd">        ...     to_kind=&#39;github_https_url&#39;</span>
+<span class="sd">        ... )  # doctest: +SKIP</span>
+<span class="sd">        &#39;https://github.com/i2mint/dol&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">project_kinds</span><span class="o">.</span><span class="n">transform_any</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">to_kind</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Convenience functions for common conversions</span>
+
+
+<div class="viewcode-block" id="to_local_path">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.to_local_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_local_path</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any project reference to local folder path.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">normalize_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_github_stub">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.to_github_stub">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_github_stub</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any project reference to org/repo stub.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">normalize_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_stub&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_github_url">
+<a class="viewcode-back" href="../../module_docs/hubcap/casting.html#hubcap.casting.to_github_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_github_url</span><span class="p">(</span><span class="n">project</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">ssh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any project reference to GitHub URL.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project: Any project reference</span>
+<span class="sd">        ssh: If True, return SSH URL; if False, return HTTPS URL</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;github_ssh_url&#39;</span> <span class="k">if</span> <span class="n">ssh</span> <span class="k">else</span> <span class="s1">&#39;github_https_url&#39;</span>
+    <span class="k">return</span> <span class="n">normalize_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

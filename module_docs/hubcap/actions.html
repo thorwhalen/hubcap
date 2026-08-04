@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hubcap.actions &mdash; hubcap 0.1.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hubcap.base" href="base.html" />
+    <link rel="prev" title="hubcap" href="../hubcap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            hubcap
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hubcap.actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.actions_info"><code class="docutils literal notranslate"><span class="pre">actions_info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.ci_status"><code class="docutils literal notranslate"><span class="pre">ci_status()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.date_selection_lidx"><code class="docutils literal notranslate"><span class="pre">date_selection_lidx()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.get_action_ci_status"><code class="docutils literal notranslate"><span class="pre">get_action_ci_status()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.get_headers"><code class="docutils literal notranslate"><span class="pre">get_headers()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.get_last_build_status"><code class="docutils literal notranslate"><span class="pre">get_last_build_status()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.get_token"><code class="docutils literal notranslate"><span class="pre">get_token()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.actions.repos_info"><code class="docutils literal notranslate"><span class="pre">repos_info()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="casting.html">hubcap.casting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repo_slurp.html">hubcap.repo_slurp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap.html">hubcap.scrap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">hubcap.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">hubcap.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">hubcap</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">hubcap.actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/hubcap/actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-hubcap.actions">
+<span id="hubcap-actions"></span><h1>hubcap.actions<a class="headerlink" href="#module-hubcap.actions" title="Link to this heading"></a></h1>
+<p>GitHub Actions and CI status utilities.</p>
+<p>This module provides functions for checking GitHub Actions workflow status and CI results.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.actions_info">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">actions_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'thorwhalen/graze'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#actions_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.actions_info" title="Link to this definition"></a></dt>
+<dd><p>Github actions runs info: dataframe of workflow runs sorted by last updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – Repository in ‘owner/repo’ format</p></li>
+<li><p><strong>per_page</strong> – Number of workflow runs to retrieve</p></li>
+<li><p><strong>token</strong> – GitHub API token</p></li>
+<li><p><strong>**params</strong> – Additional query parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>DataFrame of workflow runs with columns like ‘id’, ‘name’,</dt><dd><p>’status’, ‘conclusion’, ‘created_at’, ‘updated_at’, etc.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions_info</span><span class="p">(</span><span class="s1">&#39;i2mint/mongodol&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(10, 30)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">actions</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">[&#39;id&#39;, &#39;name&#39;, &#39;node_id&#39;, &#39;head_branch&#39;, &#39;head_sha&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.ci_status">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">ci_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'thorwhalen'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours_ago</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#ci_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.ci_status" title="Link to this definition"></a></dt>
+<dd><p>Get a dict of CI conclusions for all recently updated repos for a user/org.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> – GitHub username or organization name</p></li>
+<li><p><strong>hours_ago</strong> – Only check repos updated within this many hours ago</p></li>
+<li><p><strong>token</strong> – GitHub API token</p></li>
+<li><p><strong>**params</strong> – Additional parameters for repos_info</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mapping of ‘owner/repo’ names to their CI conclusions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">statuses</span> <span class="o">=</span> <span class="n">ci_status</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">statuses</span>
+<span class="go">{&#39;i2mint/py2mqtt&#39;: &#39;failure&#39;,</span>
+<span class="go"> &#39;i2mint/mongodol&#39;: &#39;success&#39;,</span>
+<span class="go"> &#39;i2mint/dol&#39;: &#39;success&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.date_selection_lidx">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">date_selection_lidx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours_ago</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'updated_at'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">gt&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#date_selection_lidx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.date_selection_lidx" title="Link to this definition"></a></dt>
+<dd><p>Filter DataFrame rows by date threshold.</p>
+<p>Helper function to create a boolean index for rows with dates that satisfy
+a comparison operator relative to a threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – DataFrame with a date column</p></li>
+<li><p><strong>hours_ago</strong> – Number of hours ago for the threshold</p></li>
+<li><p><strong>date_column</strong> – Name of the column containing dates</p></li>
+<li><p><strong>op</strong> – Comparison operator (default: operator.gt for “greater than”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean array for indexing rows that match the criteria</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-01-15&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recent_idx</span> <span class="o">=</span> <span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">recent_idx</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.get_action_ci_status">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">get_action_ci_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours_ago</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8760</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#get_action_ci_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.get_action_ci_status" title="Link to this definition"></a></dt>
+<dd><p>Get a table of CI status for repositories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repos</strong> – DataFrame with repository info (must have ‘full_name’ and ‘updated_at’ columns)</p></li>
+<li><p><strong>hours_ago</strong> – Only check repos updated within this many hours ago</p></li>
+<li><p><strong>token</strong> – GitHub API token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Series mapping repo names to their CI conclusions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_statuses</span> <span class="o">=</span> <span class="n">get_action_ci_status</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_statuses</span>
+<span class="go">full_name</span>
+<span class="go">i2mint/dol        success</span>
+<span class="go">i2mint/creek      success</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.get_headers">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">get_headers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#get_headers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.get_headers" title="Link to this definition"></a></dt>
+<dd><p>Get HTTP headers for GitHub API requests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>token</strong> – GitHub API token</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Headers dictionary with Authorization and Accept fields</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.get_last_build_status">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">get_last_build_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'thorwhalen/graze'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#get_last_build_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.get_last_build_status" title="Link to this definition"></a></dt>
+<dd><p>Check the most recent GitHub Actions status of a repo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – Repository in ‘owner/repo’ format</p></li>
+<li><p><strong>token</strong> – GitHub API token</p></li>
+<li><p><strong>**params</strong> – Additional query parameters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The conclusion of the last workflow run (e.g., ‘success’,</dt><dd><p>’failure’, ‘cancelled’, ‘skipped’), or None if no runs found.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="s1">&#39;failure&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.get_token">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">get_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">environ_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GITHUB_TOKEN'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.get_token" title="Link to this definition"></a></dt>
+<dd><p>Resolves token from parameter or environment variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> – GitHub API token. If None, will look in environment variable.</p></li>
+<li><p><strong>environ_name</strong> – Name of environment variable to check for token.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GitHub API token</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If token is None and environment variable is not set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.actions.repos_info">
+<span class="sig-prename descclassname"><span class="pre">hubcap.actions.</span></span><span class="sig-name descname"><span class="pre">repos_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'thorwhalen'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/actions.html#repos_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.actions.repos_info" title="Link to this definition"></a></dt>
+<dd><p>List repos and their info as a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> – GitHub username or organization name</p></li>
+<li><p><strong>token</strong> – GitHub API token</p></li>
+<li><p><strong>**params</strong> – Additional query parameters for the API call</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with repository information, indexed by full_name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(60, 78)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">repos</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">[&#39;id&#39;, &#39;node_id&#39;, &#39;name&#39;, &#39;full_name&#39;, &#39;private&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../hubcap.html" class="btn btn-neutral float-left" title="hubcap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="hubcap.base" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

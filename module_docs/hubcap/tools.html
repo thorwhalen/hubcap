@@ -6,18 +6,18 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.19 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3d116926"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -50,7 +50,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">hubcap.actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="casting.html">hubcap.casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="constants.html">hubcap.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">hubcap.examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
@@ -64,6 +66,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#hubcap.tools.LocalRepoArtifacts.info"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts.info</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hubcap.tools.LocalRepoArtifacts.discussions"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts.discussions</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hubcap.tools.LocalRepoArtifacts.issues"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts.issues</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hubcap.tools.LocalRepoArtifacts.ci"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts.ci</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.add_repos_to_team"><code class="docutils literal notranslate"><span class="pre">add_repos_to_team()</span></code></a></li>
@@ -71,6 +74,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.create_discussion"><code class="docutils literal notranslate"><span class="pre">create_discussion()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.create_discussion_comment"><code class="docutils literal notranslate"><span class="pre">create_discussion_comment()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.get_author_commits"><code class="docutils literal notranslate"><span class="pre">get_author_commits()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.get_ci_info"><code class="docutils literal notranslate"><span class="pre">get_ci_info()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.get_discussion_data"><code class="docutils literal notranslate"><span class="pre">get_discussion_data()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.get_github_token"><code class="docutils literal notranslate"><span class="pre">get_github_token()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hubcap.tools.get_repository_id"><code class="docutils literal notranslate"><span class="pre">get_repository_id()</span></code></a></li>
@@ -115,7 +119,7 @@
 <p>A medley of tools for Hubcap.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="hubcap.tools.LocalRepoArtifacts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">LocalRepoArtifacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#LocalRepoArtifacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.LocalRepoArtifacts" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">LocalRepoArtifacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#LocalRepoArtifacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.LocalRepoArtifacts" title="Link to this definition"></a></dt>
 <dd><p>Provides mapping interfaces to locally cached repository artifacts.</p>
 <p>This class gives you access to cached repository information, discussions, and
 issues through simple mapping interfaces. Data is cached locally and can be
@@ -144,21 +148,31 @@ If False, use cached data when available.</p>
 <dd><p>Mapping interface to repository issues</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="hubcap.tools.LocalRepoArtifacts.ci">
+<span class="sig-name descname"><span class="pre">ci</span></span><a class="headerlink" href="#hubcap.tools.LocalRepoArtifacts.ci" title="Link to this definition"></a></dt>
+<dd><p>Mapping interface to repository CI (GitHub Actions) information</p>
+</dd></dl>
+
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">artifacts</span> <span class="o">=</span> <span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">artifacts</span> <span class="o">=</span> <span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># List available artifact types</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">artifacts</span><span class="p">)</span>  
-<span class="go">[&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">artifacts</span><span class="p">)</span>
+<span class="go">[&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;, &#39;ci&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access via attribute</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or via mapping interface</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">][</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">][</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get cached discussions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">discussions</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">discussions</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access a specific discussion</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion_2</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion_2</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get cached issues</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">issues</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">issues</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get CI info</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span><span class="p">[</span><span class="s1">&#39;current_state&#39;</span><span class="p">]</span>  <span class="c1"># True (success), False (failure), or None</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 <p>The cache is stored in: {app_data_dir}/repos/{org}/{repo}/{artifact_type}/
@@ -168,19 +182,20 @@ For example:</p>
 <li><p>Info: ~/.local/share/hubcap/repos/thorwhalen/hubcap/info.json</p></li>
 <li><p>Discussions: ~/.local/share/hubcap/repos/thorwhalen/hubcap/discussions/1.json</p></li>
 <li><p>Issues: ~/.local/share/hubcap/repos/thorwhalen/hubcap/issues/4.json</p></li>
+<li><p>CI: ~/.local/share/hubcap/repos/thorwhalen/hubcap/ci_info.json</p></li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.add_repos_to_team">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">add_repos_to_team</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'add_to_repo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hubcap.tools.add_repos_to_team" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">add_repos_to_team</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'add_to_repo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hubcap.tools.add_repos_to_team" title="Link to this definition"></a></dt>
 <dd><p>Add a list of repositories to a team with read permission</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.copy_discussion">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">copy_discussion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_discussion_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_repo_url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_category_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'General'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#copy_discussion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.copy_discussion" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">copy_discussion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_discussion_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_repo_url</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_category_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'General'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#copy_discussion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.copy_discussion" title="Link to this definition"></a></dt>
 <dd><p>Copies a discussion from a source URL to a target repository URL.
 Attempts to preserve content and provide context for original authors/timestamps.</p>
 </dd></dl>
@@ -226,6 +241,42 @@ Returns an empty list if no commits are found or an error occurs.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="hubcap.tools.get_ci_info">
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">get_ci_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/hubcap/tools.html#get_ci_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.get_ci_info" title="Link to this definition"></a></dt>
+<dd><p>Get CI (GitHub Actions) info for a repository, with caching.</p>
+<p>Fetches the most recent GitHub Actions workflow runs and returns comprehensive
+info along with the current CI state. Uses actions_info which gets runs sorted
+by last updated, so we get the most recent regardless of time period.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – Repository in ‘owner/repo’ format</p></li>
+<li><p><strong>refresh</strong> – If True, fetches fresh data. If False, uses cached data when available.</p></li>
+<li><p><strong>token</strong> – GitHub API token (optional, uses environment variable if not provided)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Contains ‘actions’ (list of workflow runs) and ‘current_state’ (bool/None).</dt><dd><p>’current_state’ is True for success, False for failure, None for no CI or cancelled.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span> <span class="o">=</span> <span class="n">get_ci_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;current_state&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;conclusion&#39;</span><span class="p">]</span>
+<span class="go">&#39;success&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.get_discussion_data">
 <span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">get_discussion_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">owner</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discussion_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#get_discussion_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.get_discussion_data" title="Link to this definition"></a></dt>
 <dd><p>Fetches the full JSON data for a discussion, including comments,
@@ -246,7 +297,7 @@ using the GitHub GraphQL API.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.notebook_to_markdown">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">notebook_to_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notebook_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_root_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_relative_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#notebook_to_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.notebook_to_markdown" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">notebook_to_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notebook_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_root_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_relative_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#notebook_to_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.notebook_to_markdown" title="Link to this definition"></a></dt>
 <dd><p>Convert a Jupyter notebook to Markdown and optionally post-process the output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -267,7 +318,7 @@ If None, the Markdown is returned as a string.</p></li>
 </dl>
 <p>Usage Examples</p>
 <p>### Convert a notebook to Markdown and return as a string</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_string</span> <span class="o">=</span> <span class="n">notebook_to_markdown</span><span class="p">(</span>  
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_string</span> <span class="o">=</span> <span class="n">notebook_to_markdown</span><span class="p">(</span>
 <span class="go">    notebook_path=&quot;example_notebook.ipynb&quot;,</span>
 <span class="go">    output_dir=None,  # Do not save to a file</span>
 <span class="go">    repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;,</span>
@@ -276,7 +327,7 @@ If None, the Markdown is returned as a string.</p></li>
 </pre></div>
 </div>
 <p>### Post-process directly from a notebook file</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">notebook_to_markdown</span> <span class="o">=</span> <span class="n">post_process_markdown_generated_from_notebook</span><span class="p">(</span>  
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">notebook_to_markdown</span> <span class="o">=</span> <span class="n">post_process_markdown_generated_from_notebook</span><span class="p">(</span>
 <span class="go">    md_src=&quot;example_notebook.ipynb&quot;,</span>
 <span class="go">    repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;</span>
 <span class="go">)</span>
@@ -298,7 +349,7 @@ If None, the Markdown is returned as a string.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.postprocess_markdown_from_notebook">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">postprocess_markdown_from_notebook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_root_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">md_trg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#postprocess_markdown_from_notebook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.postprocess_markdown_from_notebook" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">postprocess_markdown_from_notebook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_src</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_root_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">md_trg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#postprocess_markdown_from_notebook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.postprocess_markdown_from_notebook" title="Link to this definition"></a></dt>
 <dd><p>Post-process Markdown content generated from a notebook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -319,7 +370,7 @@ If None, the Markdown is returned as a string.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.rm_repos_from_team">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">rm_repos_from_team</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'remove_from_repos'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hubcap.tools.rm_repos_from_team" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">rm_repos_from_team</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'remove_from_repos'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#hubcap.tools.rm_repos_from_team" title="Link to this definition"></a></dt>
 <dd><p>Add a list of repositories to a team with read permission</p>
 </dd></dl>
 
@@ -331,7 +382,7 @@ If None, the Markdown is returned as a string.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="hubcap.tools.team_repositories_action">
-<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">team_repositories_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#team_repositories_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.team_repositories_action" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">hubcap.tools.</span></span><span class="sig-name descname"><span class="pre">team_repositories_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repositories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'add_to_repo'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'remove_from_repos'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">org</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/hubcap/tools.html#team_repositories_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.tools.team_repositories_action" title="Link to this definition"></a></dt>
 <dd><p>Add a list of repositories to a team with read permission</p>
 </dd></dl>
 
@@ -348,7 +399,7 @@ If None, the Markdown is returned as a string.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

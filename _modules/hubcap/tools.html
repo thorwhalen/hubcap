@@ -5,18 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.19 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3d116926"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -47,7 +47,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/actions.html">hubcap.actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/casting.html">hubcap.casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
@@ -397,12 +399,26 @@
 
 
 
-<span class="c1"># Backwards-compatible snapshot (may be None)</span>
+<span class="c1"># Backwards-compatible snapshot (may be None). Resolved lazily at call time by</span>
+<span class="c1"># the functions that need it — importing this module must NOT require a token.</span>
 <span class="n">GITHUB_TOKEN</span> <span class="o">=</span> <span class="n">get_github_token</span><span class="p">()</span>
 
-<span class="c1"># Existing behavior preserved: raise at import time if no token</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">GITHUB_TOKEN</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">&quot;GITHUB_TOKEN environment variable not set.&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_require_github_token</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a GitHub token, or raise a clear, actionable error.</span>
+
+<span class="sd">    Resolved lazily (at call time) so that importing :mod:`hubcap` never fails</span>
+<span class="sd">    just because no token is configured — only operations that actually call</span>
+<span class="sd">    the GitHub API require one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">get_github_token</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
+            <span class="s2">&quot;No GitHub token found. Set one of these environment variables: &quot;</span>
+            <span class="s2">&quot;HUBCAP_GITHUB_TOKEN, HUBCAP_TOKEN, GH_TOKEN, or GITHUB_TOKEN.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">token</span>
+
 
 <span class="c1"># --- Helper Functions ---</span>
 
@@ -412,7 +428,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">run_graphql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes a GraphQL query against the GitHub API.&quot;&quot;&quot;</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">GITHUB_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">_require_github_token</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">&quot;variables&quot;</span><span class="p">:</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}}</span>
@@ -888,8 +904,114 @@
     <span class="n">get_repository_info</span><span class="p">,</span>
     <span class="n">Discussions</span><span class="p">,</span>
     <span class="n">ensure_full_name</span><span class="p">,</span>
+    <span class="n">repo_cache_json_files</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Issues</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">actions_info</span> <span class="k">as</span> <span class="n">_actions_info_df</span>
+
+
+<div class="viewcode-block" id="get_ci_info">
+<a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.get_ci_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ci_info</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get CI (GitHub Actions) info for a repository, with caching.</span>
+
+<span class="sd">    Fetches the most recent GitHub Actions workflow runs and returns comprehensive</span>
+<span class="sd">    info along with the current CI state. Uses actions_info which gets runs sorted</span>
+<span class="sd">    by last updated, so we get the most recent regardless of time period.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Repository in &#39;owner/repo&#39; format</span>
+<span class="sd">        refresh: If True, fetches fresh data. If False, uses cached data when available.</span>
+<span class="sd">        token: GitHub API token (optional, uses environment variable if not provided)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Contains &#39;actions&#39; (list of workflow runs) and &#39;current_state&#39; (bool/None).</span>
+<span class="sd">              &#39;current_state&#39; is True for success, False for failure, None for no CI or cancelled.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; ci = get_ci_info(&#39;thorwhalen/hubcap&#39;)  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; ci[&#39;current_state&#39;]  # doctest: +SKIP</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; ci[&#39;actions&#39;][0][&#39;conclusion&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &#39;success&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensure_full_name</span>
+
+    <span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">full_name</span><span class="si">}</span><span class="s2">/ci_info.json&quot;</span>
+
+    <span class="c1"># Check if we should use cached data</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">refresh</span> <span class="ow">and</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">repo_cache_json_files</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+
+    <span class="c1"># Fetch fresh data - actions_info already sorts by updated_at descending</span>
+    <span class="c1"># We fetch up to 100 to get comprehensive data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_actions_info_df</span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;current_state&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Convert DataFrame to list of dicts for caching</span>
+        <span class="n">actions_list</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Determine current state from the most recent run (first in sorted list)</span>
+        <span class="n">last_conclusion</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;conclusion&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="c1"># Map conclusion to bool/None: success -&gt; True, failure -&gt; False, others -&gt; None</span>
+        <span class="k">if</span> <span class="n">last_conclusion</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">:</span>
+            <span class="n">current_state</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">last_conclusion</span> <span class="o">==</span> <span class="s1">&#39;failure&#39;</span><span class="p">:</span>
+            <span class="n">current_state</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># cancelled, skipped, null, or other states</span>
+            <span class="n">current_state</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="n">actions_list</span><span class="p">,</span>
+            <span class="s1">&#39;current_state&#39;</span><span class="p">:</span> <span class="n">current_state</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="c1"># Cache the result</span>
+    <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_issue_to_dict</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a GitHub Issue object to a serializable dict.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+        <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">body</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">issue_obj</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="k">if</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">created_at</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">issue_obj</span><span class="o">.</span><span class="n">updated_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="k">if</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">updated_at</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">login</span><span class="p">}</span> <span class="k">if</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">user</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">label</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">labels</span><span class="p">],</span>
+        <span class="s1">&#39;comments&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;body&#39;</span><span class="p">:</span> <span class="n">comment</span><span class="o">.</span><span class="n">body</span><span class="p">,</span>
+                    <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="n">comment</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">created_at</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="p">),</span>
+                    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;login&#39;</span><span class="p">:</span> <span class="n">comment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">login</span><span class="p">}</span> <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">user</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">comment</span> <span class="ow">in</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comments</span><span class="p">()</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">,</span> <span class="s1">&#39;get_comments&#39;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">[]</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_RepoInfoMapping</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
@@ -983,6 +1105,33 @@
             <span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">,</span>
         <span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get issues for a repository as a mapping of dicts.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="c1"># Convert any GitHub Issue objects to dicts</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">_issue_to_dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;raw_data&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_CIMapping</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to cached repository CI (GitHub Actions) information.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over repos that have cached CI info.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">repo_cache_json_files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;/ci_info.json&#39;</span><span class="p">):</span>
+                <span class="c1"># Extract repo name from path like &#39;org/repo/ci_info.json&#39;</span>
+                <span class="k">yield</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get cached CI info for a repository.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_ci_info</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="LocalRepoArtifacts">
 <a class="viewcode-back" href="../../module_docs/hubcap/tools.html#hubcap.tools.LocalRepoArtifacts">[docs]</a>
@@ -1002,12 +1151,13 @@
 <span class="sd">        info: Mapping interface to repository info (info.json for each repo)</span>
 <span class="sd">        discussions: Mapping interface to repository discussions</span>
 <span class="sd">        issues: Mapping interface to repository issues</span>
+<span class="sd">        ci: Mapping interface to repository CI (GitHub Actions) information</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; artifacts = LocalRepoArtifacts(refresh=False)  # doctest: +SKIP</span>
 <span class="sd">        &gt;&gt;&gt; # List available artifact types</span>
 <span class="sd">        &gt;&gt;&gt; list(artifacts)  # doctest: +SKIP</span>
-<span class="sd">        [&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;]</span>
+<span class="sd">        [&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;, &#39;ci&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; # Access via attribute</span>
 <span class="sd">        &gt;&gt;&gt; info = artifacts.info[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
 <span class="sd">        &gt;&gt;&gt; # Or via mapping interface</span>
@@ -1018,12 +1168,17 @@
 <span class="sd">        &gt;&gt;&gt; discussion_2 = discussions[2]  # doctest: +SKIP</span>
 <span class="sd">        &gt;&gt;&gt; # Get cached issues</span>
 <span class="sd">        &gt;&gt;&gt; issues = artifacts.issues[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; # Get CI info</span>
+<span class="sd">        &gt;&gt;&gt; ci_info = artifacts.ci[&#39;thorwhalen/hubcap&#39;]  # doctest: +SKIP</span>
+<span class="sd">        &gt;&gt;&gt; ci_info[&#39;current_state&#39;]  # True (success), False (failure), or None  # doctest: +SKIP</span>
+<span class="sd">        True</span>
 
 <span class="sd">    The cache is stored in: {app_data_dir}/repos/{org}/{repo}/{artifact_type}/</span>
 <span class="sd">    For example:</span>
 <span class="sd">        - Info: ~/.local/share/hubcap/repos/thorwhalen/hubcap/info.json</span>
 <span class="sd">        - Discussions: ~/.local/share/hubcap/repos/thorwhalen/hubcap/discussions/1.json</span>
 <span class="sd">        - Issues: ~/.local/share/hubcap/repos/thorwhalen/hubcap/issues/4.json</span>
+<span class="sd">        - CI: ~/.local/share/hubcap/repos/thorwhalen/hubcap/ci_info.json</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -1033,10 +1188,12 @@
             <span class="n">_DiscussionsMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">issues</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span><span class="n">_IssuesMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ci</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span><span class="n">_CIMapping</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="n">refresh</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
             <span class="s2">&quot;discussions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">discussions</span><span class="p">,</span>
             <span class="s2">&quot;issues&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">issues</span><span class="p">,</span>
+            <span class="s2">&quot;ci&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ci</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1069,6 +1226,13 @@
             <span class="n">value_decoder</span><span class="o">=</span><span class="n">create_markdown_from_jdict</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">)</span>
+    <span class="c1"># Add quick access to just the current CI state (True/False/None)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">ci_state</span> <span class="o">=</span> <span class="n">add_ipython_key_completions</span><span class="p">(</span>
+        <span class="n">wrap_kvs</span><span class="p">(</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">ci</span><span class="p">,</span>
+            <span class="n">value_decoder</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ci_info</span><span class="p">:</span> <span class="n">ci_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;current_state&#39;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
 
 
@@ -1084,7 +1248,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -5,18 +5,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.util &mdash; hubcap 0.1.19 documentation</title>
+  <title>hubcap.util &mdash; hubcap 0.1.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3d116926"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -47,7 +47,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap.html">hubcap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/actions.html">hubcap.actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/base.html">hubcap.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/casting.html">hubcap.casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/constants.html">hubcap.constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples.html">hubcap.examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
@@ -289,6 +291,8 @@
     <span class="c1"># Check if we should use cached data</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">refresh</span> <span class="ow">and</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">repo_cache_json_files</span><span class="p">:</span>
         <span class="n">all_info</span> <span class="o">=</span> <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+        <span class="c1"># When using cache, return only what&#39;s available (no API calls for missing keys)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">all_info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">requested_repo_info</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">all_info</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Fetch all available repo properties</span>
         <span class="n">repo_obj</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">full_name</span><span class="p">)</span>
@@ -299,11 +303,8 @@
         <span class="c1"># Cache the complete info</span>
         <span class="n">repo_cache_json_files</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_info</span>
 
-    <span class="c1"># Return only the requested fields</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="n">k</span><span class="p">:</span> <span class="n">all_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">full_name</span><span class="p">)))</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">requested_repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">}</span></div>
+        <span class="c1"># Return only the requested fields, with fallback to compute missing ones</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">all_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">repo_obj</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">requested_repo_info</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div>
 
 
 
@@ -803,6 +804,11 @@
 <span class="n">get_config</span> <span class="o">=</span> <span class="n">simple_config_getter</span><span class="p">(</span><span class="n">APP_NAME</span><span class="p">)</span>
 <span class="n">configs</span> <span class="o">=</span> <span class="n">get_config</span><span class="o">.</span><span class="n">configs</span>
 <span class="n">data_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="s2">&quot;hubcap.data&quot;</span><span class="p">)</span>
+
+<span class="n">LOCAL_PROJECT_ROOTS_FILE</span> <span class="o">=</span> <span class="s1">&#39;local_project_roots.list&#39;</span>
+<span class="c1"># make an empty file, if it doesn&#39;t exist:</span>
+<span class="n">configs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">LOCAL_PROJECT_ROOTS_FILE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>  
+
 <span class="n">repo_collections_configs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
     <span class="n">data_files</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;dflt_repo_collections_key_props.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 <span class="p">)</span>
@@ -1111,9 +1117,9 @@
 
         <span class="k">return</span> <span class="n">markdown</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">),</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">jdict</span><span class="p">,</span> <span class="n">Iterable</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Expected dict or Iterable, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jdict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">jdict</span> <span class="o">=</span> <span class="n">jdict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">create_markdown_from_jdict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">)</span></div>
@@ -1470,7 +1476,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright NO COPYRIGHT.</p>
+    <p></p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

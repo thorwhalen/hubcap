@@ -1,0 +1,4 @@
+hubcap.actions
+==============
+.. automodule:: hubcap.actions
+   :members:
