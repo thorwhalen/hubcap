@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.base &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.base &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -87,7 +87,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for hubcap.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Base objects&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Base objects"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">attrgetter</span>
@@ -119,14 +119,14 @@
 <div class="viewcode-block" id="ResourceNotFound">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.ResourceNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ResourceNotFound</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a resource is not found&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when a resource is not found"""</span></div>
 
 
 
 <div class="viewcode-block" id="RepositoryNotFound">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.RepositoryNotFound">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RepositoryNotFound</span><span class="p">(</span><span class="n">github</span><span class="o">.</span><span class="n">UnknownObjectException</span><span class="p">,</span> <span class="n">ResourceNotFound</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a repository is not found&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Raised when a repository is not found"""</span></div>
 
 
 
@@ -141,16 +141,16 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">find_github_token</span><span class="p">():</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HUBCAP_GITHUB_TOKEN&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s2">&quot;GITHUB_TOKEN&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HUBCAP_GITHUB_TOKEN"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">"GITHUB_TOKEN"</span><span class="p">,</span> <span class="kc">None</span>
     <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">find_user_name</span><span class="p">():</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HUBCAP_GITHUB_TOKEN&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s2">&quot;GITHUB_USERNAME&quot;</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"HUBCAP_GITHUB_TOKEN"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">"GITHUB_USERNAME"</span><span class="p">,</span> <span class="kc">None</span>
     <span class="p">)</span>
 
 
@@ -185,7 +185,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">objs_to_items</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_get_key</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">callable</span><span class="p">(</span><span class="n">objs_to_items</span><span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;issue_objs_to_itemskey must be a str or callable&quot;</span>
+                <span class="s2">"issue_objs_to_itemskey must be a str or callable"</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">objs_to_items</span> <span class="o">=</span> <span class="n">objs_to_items</span>
 
@@ -206,36 +206,36 @@
 
 
     <span class="c1"># def __repr__(self):</span>
-    <span class="c1">#     return f&quot;{type(self).__name__}({self.repo}, {self.get_objs}, ...)&quot;</span>
+    <span class="c1">#     return f"{type(self).__name__}({self.repo}, {self.get_objs}, ...)"</span>
 
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">repo_collections_configs</span>
 
 <span class="n">dflt_repo_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">k</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;objs_to_items&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">repo_collections_configs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="n">k</span><span class="p">:</span> <span class="p">{</span><span class="s2">"objs_to_items"</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">repo_collections_configs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 <span class="p">}</span>
-<span class="n">dflt_repo_kwargs</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">][</span><span class="s2">&quot;get_objs_kwargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">),)</span>
+<span class="n">dflt_repo_kwargs</span><span class="p">[</span><span class="s2">"issues"</span><span class="p">][</span><span class="s2">"get_objs_kwargs"</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="s2">"state"</span><span class="p">,</span> <span class="s2">"open"</span><span class="p">),)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">repo_objects_instance</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">object_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">object_name</span> <span class="o">==</span> <span class="s2">&quot;issues&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">object_name</span> <span class="o">==</span> <span class="s2">"issues"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Issues</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">object_name</span> <span class="o">==</span> <span class="s2">&quot;discussions&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">object_name</span> <span class="o">==</span> <span class="s2">"discussions"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Discussions</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">object_name</span> <span class="ow">in</span> <span class="n">repo_collection_names</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">RepoObjects</span><span class="p">(</span>
             <span class="n">repo</span><span class="p">,</span>
-            <span class="n">get_objs</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Repository</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;get_</span><span class="si">{</span><span class="n">object_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">get_objs</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Repository</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"get_</span><span class="si">{</span><span class="n">object_name</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
             <span class="o">**</span><span class="n">dflt_repo_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">object_name</span><span class="p">,</span> <span class="p">{}),</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown object name: </span><span class="si">{</span><span class="n">object_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown object name: </span><span class="si">{</span><span class="n">object_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RepoReader">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.RepoReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RepoReader</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-    <span class="n">repo_collection_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">repo_collection_names</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;discussions&quot;</span><span class="p">})</span>
+    <span class="n">repo_collection_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">repo_collection_names</span><span class="p">)</span> <span class="o">|</span> <span class="p">{</span><span class="s2">"discussions"</span><span class="p">})</span>
 
     <span class="c1"># TODO: Separate error handling concern: https://github.com/i2mint/i2/issues/45</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">):</span>
@@ -243,7 +243,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">repo</span> <span class="o">=</span> <span class="n">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">github</span><span class="o">.</span><span class="n">UnknownObjectException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">RepositoryNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Repository not found: </span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">RepositoryNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Repository not found: </span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span>
 
@@ -257,7 +257,7 @@
         <span class="k">return</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_collection_names</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s1">&quot;)&#39;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">("</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s1">")'</span></div>
 
 
 
@@ -267,7 +267,7 @@
 <div class="viewcode-block" id="IssueCommentsBase">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.IssueCommentsBase">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IssueCommentsBase</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Mapping interface to repository issue comments (object)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Base Mapping interface to repository issue comments (object)"""</span>
 
     <span class="n">_comment_key</span> <span class="o">=</span> <span class="nb">enumerate</span>
 
@@ -288,25 +288,25 @@
 
 <div class="viewcode-block" id="IssueComments">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.IssueComments">[docs]</a>
-<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">obj_of_data</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">))</span>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">obj_of_data</span><span class="o">=</span><span class="n">attrgetter</span><span class="p">(</span><span class="s2">"body"</span><span class="p">))</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">IssueComments</span><span class="p">(</span><span class="n">IssueCommentsBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to repository issue comments&#39; body&quot;&quot;&quot;</span></div>
+<span class="w">    </span><span class="sd">"""Mapping interface to repository issue comments' body"""</span></div>
 
 
 
 <div class="viewcode-block" id="IssueContents">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.IssueContents">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IssueContents</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapping interface to repository issue contents&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mapping interface to repository issue contents"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue_obj</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">issue_obj</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">yield from</span> <span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="s2">&quot;comments&quot;</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="p">(</span><span class="s2">"body"</span><span class="p">,</span> <span class="s2">"comments"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;comments&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">"comments"</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">IssueComments</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">body</span>
@@ -321,30 +321,30 @@
 <div class="viewcode-block" id="Issues">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.Issues">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Issues</span><span class="p">(</span><span class="n">RepoObjects</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Mapping interface to repository issues.</span>
 
 <span class="sd">    :param repo: The repository to get issues from</span>
 <span class="sd">    :param get_objs: The function to get the issues</span>
 <span class="sd">    :param objs_to_items: A function to get the key-value pairs from the issue objects</span>
 <span class="sd">    :param data_of_obj: A function to get the data from the issue object.</span>
-<span class="sd">        Default is attrgetter(&#39;body&#39;). Use identity to get the whole issue object.</span>
+<span class="sd">        Default is attrgetter('body'). Use identity to get the whole issue object.</span>
 <span class="sd">    :param get_objs_kwargs: The keyword arguments to pass to the get_objs function</span>
 <span class="sd">    :param cache: If True, cache issue data to local storage</span>
 <span class="sd">    :param refresh: If True, always fetch fresh data from GitHub and update cache</span>
 
 <span class="sd">    The default of data_of_obj is `IssueContents`, which will give a mapping</span>
 <span class="sd">    interface to the body and comments of the issue.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">,</span>
         <span class="n">get_objs</span><span class="o">=</span><span class="n">Repository</span><span class="o">.</span><span class="n">get_issues</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">objs_to_items</span><span class="o">=</span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+        <span class="n">objs_to_items</span><span class="o">=</span><span class="s2">"number"</span><span class="p">,</span>
         <span class="n">data_of_obj</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>  <span class="c1"># IssueContents,</span>
-        <span class="n">get_objs_kwargs</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">),),</span>
+        <span class="n">get_objs_kwargs</span><span class="o">=</span><span class="p">((</span><span class="s2">"state"</span><span class="p">,</span> <span class="s2">"open"</span><span class="p">),),</span>
         <span class="n">cache</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
@@ -360,15 +360,15 @@
 
         <span class="k">if</span> <span class="n">cache</span><span class="p">:</span>
             <span class="n">full_name</span> <span class="o">=</span> <span class="n">ensure_full_name</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_cache_dir</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;issues&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_cache_dir</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">"issues"</span><span class="p">)</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span> <span class="o">=</span> <span class="n">JsonFiles</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cache_dir</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the issue data for a given issue number (key).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Gets the issue data for a given issue number (key)."""</span>
         <span class="c1"># Check cache first if caching is enabled and refresh is False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">:</span>
-            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json"</span>
             <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
 
@@ -377,7 +377,7 @@
 
         <span class="c1"># Cache if enabled</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
-            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+            <span class="n">cache_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json"</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cache_store</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
@@ -392,7 +392,7 @@
         <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">,</span>
         <span class="n">get_objs</span><span class="o">=</span><span class="n">Repository</span><span class="o">.</span><span class="n">get_workflows</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">objs_to_items</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+        <span class="n">objs_to_items</span><span class="o">=</span><span class="s2">"id"</span><span class="p">,</span>
         <span class="n">data_of_obj</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
         <span class="n">get_objs_kwargs</span><span class="o">=</span><span class="p">(),</span>
     <span class="p">):</span>
@@ -415,7 +415,7 @@
 <div class="viewcode-block" id="GithubReader">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.GithubReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GithubReader</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    a Store that can access a GitHub account.</span>
 
 <span class="sd">    You need to specify a token in auth, or in the environment variable</span>
@@ -423,7 +423,7 @@
 
 <span class="sd">    The iteration is defined to be the repositories of the account_name</span>
 <span class="sd">    (could be organization name).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -432,9 +432,9 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">jwt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://api.github.com&quot;</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">"https://api.github.com"</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-        <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;PyGithub/Python&quot;</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="o">=</span><span class="s2">"PyGithub/Python"</span><span class="p">,</span>
         <span class="n">per_page</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -460,7 +460,7 @@
             <span class="n">auth</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">account_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;account_name must be given (and a str)&quot;</span>
+                <span class="s2">"account_name must be given (and a str)"</span>
             <span class="p">)</span>
 
         <span class="n">_github</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span>
@@ -484,19 +484,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_repos</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">get_repos_kwargs</span><span class="p">):</span>
-            <span class="n">org</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">full_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">org</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">full_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">org</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">login</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">name</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves a given repository</span>
+<span class="w">        </span><span class="sd">"""Retrieves a given repository</span>
 <span class="sd">        :param k: str</span>
 <span class="sd">        :rtype: :class:`github.Repository.Repository`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">repository</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">GithubException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key doesn&#39;t exist: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key doesn't exist: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Branches</span><span class="p">(</span><span class="n">repository</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_file_extractor</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -528,11 +528,11 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="c1"># return self.src.get_branch(k) # should not give only the branch</span>
-        <span class="c1"># return self.src.get_contents(&quot;&quot;, ref = k)</span>
+        <span class="c1"># return self.src.get_contents("", ref = k)</span>
         <span class="k">return</span> <span class="n">BranchDir</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">,</span>
             <span class="n">branch_name</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
             <span class="n">content_file_extractor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">content_file_extractor</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -551,7 +551,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">repo</span><span class="p">:</span> <span class="n">RepoSpec</span><span class="p">,</span>
         <span class="n">branch_name</span><span class="p">,</span>
-        <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
         <span class="n">content_file_extractor</span><span class="o">=</span><span class="n">decoded_contents</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">ensure_repo_obj</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
@@ -561,19 +561,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">yield from</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;/&quot;</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;dir&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"/"</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"dir"</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">branch_name</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># yield from (x.name for x in self.src.get_contents(self.subpath, ref=self.branch_name))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">):</span>
             <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># remove the / suffix</span>
         <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="c1"># TODO: There is an inefficiency here in the isinstance(t, list) case</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">t</span><span class="p">,</span> <span class="nb">list</span>
-        <span class="p">):</span>  <span class="c1"># TODO: ... you already have the content_files in t, so don&#39;t need to call API again.</span>
+        <span class="p">):</span>  <span class="c1"># TODO: ... you already have the content_files in t, so don't need to call API again.</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">branch_name</span><span class="p">,</span>
@@ -594,7 +594,7 @@
             <span class="p">),</span>
         <span class="p">)</span></div>
 
-        <span class="c1"># return f&quot;{self.__class__.__name__}({self.src}, {self.branch_name})&quot;</span>
+        <span class="c1"># return f"{self.__class__.__name__}({self.src}, {self.branch_name})"</span>
 
 
 <span class="c1"># --------------------------------------------------------------------------------------</span>
@@ -602,11 +602,11 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_content_file_isfile</span><span class="p">(</span><span class="n">content_file</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">content_file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span>
+    <span class="k">return</span> <span class="n">content_file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_content_file_isdir</span><span class="p">(</span><span class="n">content_file</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">content_file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;dir&quot;</span>
+    <span class="k">return</span> <span class="n">content_file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"dir"</span>
 
 
 <span class="c1"># from dol import kv_wrap</span>
@@ -619,9 +619,9 @@
 <div class="viewcode-block" id="PaginatedListDol">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.PaginatedListDol">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PaginatedListDol</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gives a Sized &amp; Iterable &amp; Reversible view of a paginated_list.</span>
+<span class="w">    </span><span class="sd">"""Gives a Sized &amp; Iterable &amp; Reversible view of a paginated_list.</span>
 <span class="sd">    That is, iterating over a PaginatedListDol</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paginated_list</span><span class="p">:</span> <span class="n">PaginatedList</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">paginated_list</span> <span class="o">=</span> <span class="n">paginated_list</span>
@@ -640,9 +640,9 @@
 <div class="viewcode-block" id="GitHubDol">
 <a class="viewcode-back" href="../../module_docs/hubcap/base.html#hubcap.base.GitHubDol">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GitHubDol</span><span class="p">(</span><span class="n">KvReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    a Store that can access a GitHub account</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -651,15 +651,15 @@
         <span class="n">login_or_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">jwt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://api.github.com&quot;</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="s2">"https://api.github.com"</span><span class="p">,</span>
         <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
-        <span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;PyGithub/Python&quot;</span><span class="p">,</span>
+        <span class="n">user_agent</span><span class="o">=</span><span class="s2">"PyGithub/Python"</span><span class="p">,</span>
         <span class="n">per_page</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
         <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">pool_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">account_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;account_name must be given (and a str)&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">account_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">"account_name must be given (and a str)"</span>
         <span class="n">login_or_token</span> <span class="o">=</span> <span class="n">login_or_token</span> <span class="ow">or</span> <span class="n">find_github_token</span><span class="p">()</span>
 
         <span class="n">_github</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span>
@@ -682,19 +682,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_repos</span><span class="p">():</span>
-            <span class="n">org</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">full_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">org</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">full_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">org</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">login</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">name</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves a given repository</span>
+<span class="w">        </span><span class="sd">"""Retrieves a given repository</span>
 <span class="sd">        :param k: str</span>
 <span class="sd">        :rtype: :class:`github.Repository.Repository`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">repository</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">get_repo</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">GithubException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key doesn&#39;t exist: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key doesn't exist: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Branches</span><span class="p">(</span><span class="n">repository</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_file_extractor</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>

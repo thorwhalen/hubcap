@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.tools &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.tools &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -158,20 +158,20 @@ If False, use cached data when available.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">artifacts</span> <span class="o">=</span> <span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># List available artifact types</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">artifacts</span><span class="p">)</span>
-<span class="go">[&#39;info&#39;, &#39;discussions&#39;, &#39;issues&#39;, &#39;ci&#39;]</span>
+<span class="go">['info', 'discussions', 'issues', 'ci']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access via attribute</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or via mapping interface</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">][</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="p">[</span><span class="s1">'info'</span><span class="p">][</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get cached discussions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">discussions</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">discussions</span><span class="p">[</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access a specific discussion</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">discussion_2</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get cached issues</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">issues</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">issues</span><span class="p">[</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get CI info</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span><span class="p">[</span><span class="s1">&#39;current_state&#39;</span><span class="p">]</span>  <span class="c1"># True (success), False (failure), or None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span> <span class="o">=</span> <span class="n">artifacts</span><span class="o">.</span><span class="n">ci</span><span class="p">[</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_info</span><span class="p">[</span><span class="s1">'current_state'</span><span class="p">]</span>  <span class="c1"># True (success), False (failure), or None</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -267,11 +267,11 @@ by last updated, so we get the most recent regardless of time period.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span> <span class="o">=</span> <span class="n">get_ci_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;current_state&#39;</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span> <span class="o">=</span> <span class="n">get_ci_info</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">'current_state'</span><span class="p">]</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;conclusion&#39;</span><span class="p">]</span>
-<span class="go">&#39;success&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci</span><span class="p">[</span><span class="s1">'actions'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'conclusion'</span><span class="p">]</span>
+<span class="go">'success'</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -319,17 +319,17 @@ If None, the Markdown is returned as a string.</p></li>
 <p>Usage Examples</p>
 <p>### Convert a notebook to Markdown and return as a string</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_string</span> <span class="o">=</span> <span class="n">notebook_to_markdown</span><span class="p">(</span>
-<span class="go">    notebook_path=&quot;example_notebook.ipynb&quot;,</span>
+<span class="go">    notebook_path="example_notebook.ipynb",</span>
 <span class="go">    output_dir=None,  # Do not save to a file</span>
-<span class="go">    repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;,</span>
-<span class="go">    image_relative_dir=&quot;images&quot;</span>
+<span class="go">    repo_root_url="https://github.com/username/repo/blob/main/",</span>
+<span class="go">    image_relative_dir="images"</span>
 <span class="go">)</span>
 </pre></div>
 </div>
 <p>### Post-process directly from a notebook file</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">notebook_to_markdown</span> <span class="o">=</span> <span class="n">post_process_markdown_generated_from_notebook</span><span class="p">(</span>
-<span class="go">    md_src=&quot;example_notebook.ipynb&quot;,</span>
-<span class="go">    repo_root_url=&quot;https://github.com/username/repo/blob/main/&quot;</span>
+<span class="go">    md_src="example_notebook.ipynb",</span>
+<span class="go">    repo_root_url="https://github.com/username/repo/blob/main/"</span>
 <span class="go">)</span>
 </pre></div>
 </div>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -99,63 +99,63 @@ or put it in an environmental variable under the name <cite>HUBCAP_GITHUB_TOKEN<
 <p># Example usage</p>
 <p>## RepoReader</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoReader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="s1">&#39;thorwhalen/test_repo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="s1">'thorwhalen/test_repo'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="go">[&#39;artifacts&#39;, &#39;assignees&#39;, &#39;autolinks&#39;, &#39;branches&#39;, &#39;codescan_alerts&#39;, &#39;collaborators&#39;,</span>
-<span class="go">&#39;comments&#39;, &#39;commits&#39;, &#39;contributors&#39;, &#39;deployments&#39;, &#39;discussions&#39;, &#39;downloads&#39;,</span>
-<span class="go">&#39;environments&#39;, &#39;events&#39;, &#39;forks&#39;, &#39;git_refs&#39;, &#39;hooks&#39;, &#39;issues&#39;, &#39;issues_comments&#39;,</span>
-<span class="go">&#39;issues_events&#39;, &#39;labels&#39;, &#39;languages&#39;, &#39;milestones&#39;, &#39;network_events&#39;,</span>
-<span class="go">&#39;notifications&#39;, &#39;pending_invitations&#39;, &#39;projects&#39;, &#39;pulls&#39;, &#39;pulls_comments&#39;,</span>
-<span class="go">&#39;pulls_review_comments&#39;, &#39;releases&#39;, &#39;repository_advisories&#39;, &#39;secrets&#39;,</span>
-<span class="go">&#39;self_hosted_runners&#39;, &#39;stargazers&#39;, &#39;stargazers_with_dates&#39;, &#39;stats_contributors&#39;,</span>
-<span class="go">&#39;subscribers&#39;, &#39;tags&#39;, &#39;teams&#39;, &#39;top_paths&#39;, &#39;top_referrers&#39;, &#39;topics&#39;, &#39;variables&#39;,</span>
-<span class="go">&#39;watchers&#39;, &#39;workflow_runs&#39;, &#39;workflows&#39;]</span>
+<span class="go">['artifacts', 'assignees', 'autolinks', 'branches', 'codescan_alerts', 'collaborators',</span>
+<span class="go">'comments', 'commits', 'contributors', 'deployments', 'discussions', 'downloads',</span>
+<span class="go">'environments', 'events', 'forks', 'git_refs', 'hooks', 'issues', 'issues_comments',</span>
+<span class="go">'issues_events', 'labels', 'languages', 'milestones', 'network_events',</span>
+<span class="go">'notifications', 'pending_invitations', 'projects', 'pulls', 'pulls_comments',</span>
+<span class="go">'pulls_review_comments', 'releases', 'repository_advisories', 'secrets',</span>
+<span class="go">'self_hosted_runners', 'stargazers', 'stargazers_with_dates', 'stats_contributors',</span>
+<span class="go">'subscribers', 'tags', 'teams', 'top_paths', 'top_referrers', 'topics', 'variables',</span>
+<span class="go">'watchers', 'workflow_runs', 'workflows']</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;issues&#39;</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'issues'</span> <span class="ow">in</span> <span class="n">r</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">'issues'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">issues</span><span class="p">)</span>
 <span class="go">[4, 5]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span>
-<span class="go">Issue(title=&quot;Test Issue A&quot;, number=4)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)])</span>
-<span class="go">[&#39;CHECK_AFTER_INIT_FLAG&#39;, &#39;active_lock_reason&#39;, &#39;add_to_assignees&#39;, &#39;add_to_labels&#39;,</span>
-<span class="go">&#39;as_pull_request&#39;, &#39;assignee&#39;, &#39;assignees&#39;, &#39;body&#39;, &#39;closed_at&#39;, &#39;closed_by&#39;,</span>
-<span class="go">&#39;comments&#39;, &#39;comments_url&#39;, &#39;create_comment&#39;, &#39;create_reaction&#39;, &#39;created_at&#39;,</span>
-<span class="go">&#39;delete_labels&#39;, &#39;delete_reaction&#39;, &#39;edit&#39;, &#39;etag&#39;, &#39;events_url&#39;, &#39;get__repr__&#39;,</span>
-<span class="go">&#39;get_comment&#39;, &#39;get_comments&#39;, &#39;get_events&#39;, &#39;get_labels&#39;, &#39;get_reactions&#39;,</span>
-<span class="go">&#39;get_timeline&#39;, &#39;html_url&#39;, &#39;id&#39;, &#39;labels&#39;, &#39;labels_url&#39;, &#39;last_modified&#39;, &#39;lock&#39;,</span>
-<span class="go">&#39;locked&#39;, &#39;milestone&#39;, &#39;number&#39;, &#39;pull_request&#39;, &#39;raw_data&#39;, &#39;raw_headers&#39;,</span>
-<span class="go">&#39;remove_from_assignees&#39;, &#39;remove_from_labels&#39;, &#39;repository&#39;, &#39;setCheckAfterInitFlag&#39;,</span>
-<span class="go">&#39;set_labels&#39;, &#39;state&#39;, &#39;state_reason&#39;, &#39;title&#39;, &#39;unlock&#39;, &#39;update&#39;, &#39;updated_at&#39;,</span>
-<span class="go">&#39;url&#39;, &#39;user&#39;]</span>
+<span class="go">Issue(title="Test Issue A", number=4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)])</span>
+<span class="go">['CHECK_AFTER_INIT_FLAG', 'active_lock_reason', 'add_to_assignees', 'add_to_labels',</span>
+<span class="go">'as_pull_request', 'assignee', 'assignees', 'body', 'closed_at', 'closed_by',</span>
+<span class="go">'comments', 'comments_url', 'create_comment', 'create_reaction', 'created_at',</span>
+<span class="go">'delete_labels', 'delete_reaction', 'edit', 'etag', 'events_url', 'get__repr__',</span>
+<span class="go">'get_comment', 'get_comments', 'get_events', 'get_labels', 'get_reactions',</span>
+<span class="go">'get_timeline', 'html_url', 'id', 'labels', 'labels_url', 'last_modified', 'lock',</span>
+<span class="go">'locked', 'milestone', 'number', 'pull_request', 'raw_data', 'raw_headers',</span>
+<span class="go">'remove_from_assignees', 'remove_from_labels', 'repository', 'setCheckAfterInitFlag',</span>
+<span class="go">'set_labels', 'state', 'state_reason', 'title', 'unlock', 'update', 'updated_at',</span>
+<span class="go">'url', 'user']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">number</span>
 <span class="go">4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;open&#39;</span>
+<span class="go">'open'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">labels</span>
-<span class="go">[Label(name=&quot;documentation&quot;), Label(name=&quot;enhancement&quot;)]</span>
+<span class="go">[Label(name="documentation"), Label(name="enhancement")]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># title of issue</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">title</span>
-<span class="go">&#39;Test Issue A&#39;</span>
+<span class="go">'Test Issue A'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># content of issue</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">body</span>
-<span class="go">&#39;Contents of Test Issue A&#39;</span>
+<span class="go">'Contents of Test Issue A'</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">comments</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comments</span><span class="p">())</span>
-<span class="go">[IssueComment(user=NamedUser(login=&quot;thorwhalen&quot;), id=1801792378),</span>
-<span class="go">IssueComment(user=NamedUser(login=&quot;thorwhalen&quot;), id=1801792855)]</span>
+<span class="go">[IssueComment(user=NamedUser(login="thorwhalen"), id=1801792378),</span>
+<span class="go">IssueComment(user=NamedUser(login="thorwhalen"), id=1801792855)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span> <span class="o">=</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comment</span><span class="p">(</span><span class="mi">1801792378</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span><span class="o">.</span><span class="n">body</span>
-<span class="go">&#39;Comment 1 of Test Issue A&#39;</span>
+<span class="go">'Comment 1 of Test Issue A'</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;discussions&#39;</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'discussions'</span> <span class="ow">in</span> <span class="n">r</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;discussions&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">'discussions'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">discussions</span><span class="p">)</span>
 <span class="go">[1, 2, 3]</span>
 </pre></div>
@@ -165,46 +165,46 @@ or put it in an environmental variable under the name <cite>HUBCAP_GITHUB_TOKEN<
 function that takes a path to a github resource and returns a mapping to that
 resource. The mapping is lazy, so it’s only when you access a key that the
 resource is actually fetched from github.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repositories</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hubcap&#39;</span> <span class="ow">in</span> <span class="n">repositories</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repositories</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">repositories</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_repo</span> <span class="o">=</span> <span class="n">repositories</span><span class="p">[</span><span class="s1">&#39;hubcap&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_repo</span> <span class="o">=</span> <span class="n">repositories</span><span class="p">[</span><span class="s1">'hubcap'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;master&#39;</span> <span class="ow">in</span> <span class="n">repo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'master'</span> <span class="ow">in</span> <span class="n">repo</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">master_files</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">master_files</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">'master'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/master&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/README.md&#39;</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/master'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/README.md'</span> <span class="ow">in</span> <span class="n">files</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/hubcap/&#39;</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/hubcap/'</span> <span class="ow">in</span> <span class="n">files</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="s1">&#39;/hubcap/&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;/hubcap/base.py&#39;</span> <span class="ow">in</span> <span class="n">hubcap_files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="s1">'/hubcap/'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/hubcap/base.py'</span> <span class="ow">in</span> <span class="n">hubcap_files</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 <p>### Access issues</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/issues&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">issues</span>  <span class="c1"># there&#39;s a &quot;number 3&quot; issue</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/issues'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">issues</span>  <span class="c1"># there's a "number 3" issue</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">title</span>
-<span class="go">&#39;Test Issue&#39;</span>
+<span class="go">'Test Issue'</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">body</span>
-<span class="go">&#39;This is just a test issue to test that hubcap can see it.\r\n&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">comments</span>  <span class="c1"># meaning &quot;number of comments&quot;</span>
+<span class="go">'This is just a test issue to test that hubcap can see it.\r\n'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">comments</span>  <span class="c1"># meaning "number of comments"</span>
 <span class="go">2</span>
 </pre></div>
 </div>
 <p>### Access discussions</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap/discussions&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/discussions'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">in</span> <span class="n">discussions</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
-<span class="go">&#39;Root interface of hubcap&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span>
+<span class="go">'Root interface of hubcap'</span>
 </pre></div>
 </div>
 <p>## GithubReader</p>
@@ -212,40 +212,38 @@ resource is actually fetched from github.</p>
 github user or organization, and returns a mapping of repositories. The
 repositories are also mappings, that return mappings of branches, and so on.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubReader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="s1">&#39;thorwhalen&#39;</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="go">[&#39;agen&#39;,</span>
-<span class="go"> &#39;aix&#39;,</span>
+<span class="go">['agen',</span>
+<span class="go"> 'aix',</span>
 <span class="go"> ...</span>
-<span class="go"> &#39;viral&#39;,</span>
-<span class="go"> &#39;wealth&#39;,</span>
-<span class="go"> &#39;wrapt&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;a_non_existing_repository_name&#39;</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="go"> 'viral',</span>
+<span class="go"> 'wealth',</span>
+<span class="go"> 'wrapt']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'a_non_existing_repository_name'</span> <span class="ow">in</span> <span class="n">s</span>
 <span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hubcap&#39;</span> <span class="ow">in</span> <span class="n">s</span>  <span class="c1"># of course, this will be true, it&#39;s what you&#39;re using now!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">s</span>  <span class="c1"># of course, this will be true, it's what you're using now!</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;hubcap&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;master&#39;</span> <span class="ow">in</span> <span class="n">repo</span> <span class="ow">and</span> <span class="s1">&#39;gh-pages&#39;</span> <span class="ow">in</span> <span class="n">repo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">'hubcap'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'master'</span> <span class="ow">in</span> <span class="n">repo</span> <span class="ow">and</span> <span class="s1">'gh-pages'</span> <span class="ow">in</span> <span class="n">repo</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">branch</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">&#39;master&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">'master'</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>
-<span class="go">[&#39;/.gitattributes&#39;, &#39;/.github/&#39;, &#39;/.gitignore&#39;, ...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[</span><span class="s1">&#39;/setup.cfg&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">32</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
-<span class="go">[metadata]</span>
-<span class="go">name = hubcap</span>
-<span class="go">version</span>
+<span class="go">['/.gitattributes', '/.github/', '/.gitignore', ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[</span><span class="s1">'/pyproject.toml'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">14</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="go">[build-system]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_repository_info</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-<span class="go">[&#39;name&#39;, &#39;full_name&#39;, &#39;description&#39;, ...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-<span class="go">&#39;hubcap&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;html_url&#39;</span><span class="p">]</span>
-<span class="go">&#39;https://github.com/thorwhalen/hubcap&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;stargazers_count&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+<span class="go">['name', 'full_name', 'description', ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span>
+<span class="go">'hubcap'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'html_url'</span><span class="p">]</span>
+<span class="go">'https://github.com/thorwhalen/hubcap'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'stargazers_count'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
 <span class="go">True</span>
 </pre></div>
 </div>

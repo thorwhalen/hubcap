@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.casting &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.casting &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -139,10 +139,10 @@ supports user-configurable local project folder discovery.</p>
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>Register your local project root folders in the hubcap config:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_project_root</span><span class="p">,</span> <span class="n">get_project_roots</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/projects/personal&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/work&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">'/Users/me/projects/personal'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">'/Users/me/work'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_project_roots</span><span class="p">()</span>
-<span class="go">[&#39;/Users/me/projects/personal&#39;, &#39;/Users/me/work&#39;]</span>
+<span class="go">['/Users/me/projects/personal', '/Users/me/work']</span>
 </pre></div>
 </div>
 <p>The system will search one level deep in these roots for folders containing .git.</p>
@@ -151,14 +151,14 @@ supports user-configurable local project folder discovery.</p>
 <h2>Usage with Ingress Decorator<a class="headerlink" href="#usage-with-ingress-decorator" title="Link to this heading"></a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">project_kinds</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nd">@project_kinds</span><span class="o">.</span><span class="n">ingress</span><span class="p">(</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@project_kinds</span><span class="o">.</span><span class="n">ingress</span><span class="p">(</span><span class="s1">'local_proj_folder'</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">def</span><span class="w"> </span><span class="nf">process_project</span><span class="p">(</span><span class="n">project_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="gp">... </span><span class="w">    </span><span class="sd">&#39;&#39;&#39;Accepts any project reference, gets local path.&#39;&#39;&#39;</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="n">project_path</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">... </span><span class="w">    </span><span class="sd">'''Accepts any project reference, gets local path.'''</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="sa">f</span><span class="s2">"Processing </span><span class="si">{</span><span class="n">project_path</span><span class="si">}</span><span class="s2">"</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;i2mint/dol&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">&quot;https://github.com/i2mint/dol&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">"dol"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">"i2mint/dol"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_project</span><span class="p">(</span><span class="s2">"https://github.com/i2mint/dol"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -167,15 +167,15 @@ supports user-configurable local project folder discovery.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.casting</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_project</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># From name to local path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;local_proj_folder&#39;</span><span class="p">)</span>
-<span class="go">&#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">"dol"</span><span class="p">,</span> <span class="n">to_kind</span><span class="o">=</span><span class="s1">'local_proj_folder'</span><span class="p">)</span>
+<span class="go">'/Users/thorwhalen/Dropbox/py/proj/i/dol'</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># From URL to stub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s2">&quot;https://github.com/i2mint/dol/tree/master&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_stub&#39;</span>
+<span class="gp">... </span>    <span class="s2">"https://github.com/i2mint/dol/tree/master"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">'github_stub'</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&#39;i2mint/dol&#39;</span>
+<span class="go">'i2mint/dol'</span>
 </pre></div>
 </div>
 </section>
@@ -222,7 +222,7 @@ file in submodules/worktree links – hence the existence, not isdir, check).</p
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">roots</span> <span class="o">=</span> <span class="n">get_project_roots</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
-<span class="go">[&#39;/Users/me/projects&#39;, &#39;/Users/me/work&#39;]</span>
+<span class="go">['/Users/me/projects', '/Users/me/work']</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -273,24 +273,24 @@ and get it converted to whatever format you need.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From simple name to path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">&quot;dol&quot;</span><span class="p">)</span>
-<span class="go">&#39;/Users/thorwhalen/Dropbox/py/proj/i/dol&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span><span class="s2">"dol"</span><span class="p">)</span>
+<span class="go">'/Users/thorwhalen/Dropbox/py/proj/i/dol'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From URL to stub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s2">&quot;https://github.com/i2mint/dol/tree/master&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_stub&#39;</span>
+<span class="gp">... </span>    <span class="s2">"https://github.com/i2mint/dol/tree/master"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">'github_stub'</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&#39;i2mint/dol&#39;</span>
+<span class="go">'i2mint/dol'</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># From SSH URL to HTTPS URL</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_project</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s2">&quot;git@github.com:i2mint/dol.git&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">&#39;github_https_url&#39;</span>
+<span class="gp">... </span>    <span class="s2">"git@github.com:i2mint/dol.git"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">to_kind</span><span class="o">=</span><span class="s1">'github_https_url'</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">&#39;https://github.com/i2mint/dol&#39;</span>
+<span class="go">'https://github.com/i2mint/dol'</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -322,8 +322,8 @@ by project name.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/projects&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">&#39;/Users/me/work/repos&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">'/Users/me/projects'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_project_root</span><span class="p">(</span><span class="s1">'/Users/me/work/repos'</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -342,7 +342,7 @@ lookup cache) has exactly one place to live.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">set_project_roots</span><span class="p">([</span><span class="s1">&#39;/Users/me/projects&#39;</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">set_project_roots</span><span class="p">([</span><span class="s1">'/Users/me/projects'</span><span class="p">])</span>
 </pre></div>
 </div>
 </dd></dl>

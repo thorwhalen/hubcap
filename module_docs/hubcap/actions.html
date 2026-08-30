@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.actions &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.actions &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -128,11 +128,11 @@
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions_info</span><span class="p">(</span><span class="s1">&#39;i2mint/mongodol&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions_info</span><span class="p">(</span><span class="s1">'i2mint/mongodol'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(10, 30)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">actions</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
-<span class="go">[&#39;id&#39;, &#39;name&#39;, &#39;node_id&#39;, &#39;head_branch&#39;, &#39;head_sha&#39;]</span>
+<span class="go">['id', 'name', 'node_id', 'head_branch', 'head_sha']</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -158,11 +158,11 @@
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">statuses</span> <span class="o">=</span> <span class="n">ci_status</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">statuses</span> <span class="o">=</span> <span class="n">ci_status</span><span class="p">(</span><span class="s1">'i2mint'</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">statuses</span>
-<span class="go">{&#39;i2mint/py2mqtt&#39;: &#39;failure&#39;,</span>
-<span class="go"> &#39;i2mint/mongodol&#39;: &#39;success&#39;,</span>
-<span class="go"> &#39;i2mint/dol&#39;: &#39;success&#39;}</span>
+<span class="go">{'i2mint/py2mqtt': 'failure',</span>
+<span class="go"> 'i2mint/mongodol': 'success',</span>
+<span class="go"> 'i2mint/dol': 'success'}</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -190,7 +190,7 @@ a comparison operator relative to a threshold.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2024-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2024-01-15&#39;</span><span class="p">]})</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'updated_at'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'2024-01-01'</span><span class="p">,</span> <span class="s1">'2024-01-15'</span><span class="p">]})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">recent_idx</span> <span class="o">=</span> <span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">30</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">recent_idx</span><span class="p">]</span>
 </pre></div>
@@ -217,7 +217,7 @@ a comparison operator relative to a threshold.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">'i2mint'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ci_statuses</span> <span class="o">=</span> <span class="n">get_action_ci_status</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="o">*</span><span class="mi">30</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ci_statuses</span>
 <span class="go">full_name</span>
@@ -269,8 +269,8 @@ a comparison operator relative to a threshold.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="s1">&#39;failure&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'success'</span><span class="p">,</span> <span class="s1">'failure'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -319,11 +319,11 @@ a comparison operator relative to a threshold.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">&#39;i2mint&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">'i2mint'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(60, 78)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">repos</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
-<span class="go">[&#39;id&#39;, &#39;node_id&#39;, &#39;name&#39;, &#39;full_name&#39;, &#39;private&#39;]</span>
+<span class="go">['id', 'node_id', 'name', 'full_name', 'private']</span>
 </pre></div>
 </div>
 </dd></dl>

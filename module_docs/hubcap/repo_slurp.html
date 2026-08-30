@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.repo_slurp &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.repo_slurp &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -109,19 +109,19 @@
 <p>It works by adding <cite>offset</cite> number of ‘#’ to the start of each header line.</p>
 <p>If the offset causes a header level to become zero or negative, it is ignored (remains the same).</p>
 <p>Comments (lines starting with ‘#’) in code blocks are not affected by the offset.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;### Header 1\n\n#### Header 2\n\n##### Header 3&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;# Header 1\n\n## Header 2\n\n### Header 3&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'### Header 1\n\n#### Header 2\n\n##### Header 3'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">'# Header 1\n\n## Header 2\n\n### Header 3'</span>
 </pre></div>
 </div>
 <p>Note that comments in code blocks are not affected:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;```\n# Not a header\n```&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'```\n# Not a header\n```'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">&quot;## Header 1</span><span class="se">\n\n</span><span class="s2">```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n\n</span><span class="s2">### Header 2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="go">&#39;### Header 1\n\n```\n# Not a header\n```\n\n#### Header 2&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n\n</span><span class="s2">### Header 2"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'### Header 1\n\n```\n# Not a header\n```\n\n#### Header 2'</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -162,7 +162,7 @@ or a temporary folder to clone the repo into is returned.</p>
 <dd class="field-odd"><p>Mapping</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repo_files</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repo_files</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -213,7 +213,7 @@ kinds (Union[CloneKinds, Iterable[CloneKinds]], optional):</p>
 <dt>Returns:</dt><dd><p>str: A string with all file contents.</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">repo_text_aggregate</span><span class="p">(</span><span class="s1">&#39;thorwhalen/hubcap&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">repo_text_aggregate</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aggregate</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
 <span class="go">## README.md</span>
 </pre></div>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hubcap.constants &mdash; hubcap 0.1.20 documentation</title>
+  <title>hubcap.constants &mdash; hubcap 0.1.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=17aaaefc"></script>
+      <script src="../../_static/documentation_options.js?v=b3d22ae5"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -87,7 +87,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for hubcap.constants</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A place to put constants, defaults, types...&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A place to put constants, defaults, types..."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">NewType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
@@ -102,7 +102,7 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_non_callable_non_dundered_attrs</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
-        <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
     <span class="p">)</span>
 
 
@@ -113,7 +113,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_last_commit_date</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Repository</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-            <span class="n">repo</span><span class="o">.</span><span class="n">updated_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">updated_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">),</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span>
         <span class="p">)</span>
         <span class="o">.</span><span class="n">date</span><span class="p">()</span>
         <span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
@@ -132,31 +132,31 @@
 <span class="n">RepoInfo</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
     <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RepoProperty</span><span class="p">],</span>  <span class="c1"># {field: prop_spec, ...}</span>
     <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RepoProperty</span><span class="p">]],</span>  <span class="c1"># [(field, prop_spec), ...]</span>
-    <span class="nb">str</span><span class="p">,</span>  <span class="c1"># &quot;prop1 prop2 ...&quot;</span>
+    <span class="nb">str</span><span class="p">,</span>  <span class="c1"># "prop1 prop2 ..."</span>
 <span class="p">]</span>
 
-<span class="n">_dflt_repo_props</span> <span class="o">=</span> <span class="s2">&quot;name full_name description open_issues_count size updated_at stargazers_count forks_count watchers_count html_url&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">_dflt_repo_props</span> <span class="o">=</span> <span class="s2">"name full_name description open_issues_count size updated_at stargazers_count forks_count watchers_count html_url"</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
 <span class="n">DFLT_REPO_INFO</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-    <span class="p">[</span><span class="o">*</span><span class="nb">zip</span><span class="p">(</span><span class="n">_dflt_repo_props</span><span class="p">,</span> <span class="n">_dflt_repo_props</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;last_commit_date&quot;</span><span class="p">,</span> <span class="n">_last_commit_date</span><span class="p">)]</span>
+    <span class="p">[</span><span class="o">*</span><span class="nb">zip</span><span class="p">(</span><span class="n">_dflt_repo_props</span><span class="p">,</span> <span class="n">_dflt_repo_props</span><span class="p">),</span> <span class="p">(</span><span class="s2">"last_commit_date"</span><span class="p">,</span> <span class="n">_last_commit_date</span><span class="p">)]</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="repo_collection_names_">
 <a class="viewcode-back" href="../../module_docs/hubcap/constants.html#hubcap.constants.repo_collection_names_">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">repo_collection_names_</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    List of the names of the objects that can be retrieved from a repository</span>
 <span class="sd">    (e.g. commits, contributors, issues, pull_requests, releases, tags, etc.)</span>
 <span class="sd">    These names are extracted by taking all the method names of the</span>
 <span class="sd">    `github.Repository` class that start with `get_` and end with `s`,</span>
 <span class="sd">    and removing the `get_` prefix.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">repo_object_names</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">Repository</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;get_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">Repository</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"get_"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"s"</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="n">repo_object_names</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">k</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;get_&quot;</span><span class="p">)</span> <span class="p">:]</span>
+        <span class="n">k</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s2">"get_"</span><span class="p">)</span> <span class="p">:]</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">repo_object_names</span>
         <span class="k">if</span> <span class="n">Sig</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Repository</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">n_required</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="p">}</span>
@@ -165,7 +165,7 @@
 
 
 <span class="c1"># tuple.__doc__ is read-only, so had to subclass to give my variable a doc</span>
-<span class="n">_tuple</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;_tuple&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,),</span> <span class="p">{</span><span class="s2">&quot;__doc__&quot;</span><span class="p">:</span> <span class="n">repo_collection_names_</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">})</span>
+<span class="n">_tuple</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s2">"_tuple"</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,),</span> <span class="p">{</span><span class="s2">"__doc__"</span><span class="p">:</span> <span class="n">repo_collection_names_</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">})</span>
 <span class="n">repo_collection_names</span> <span class="o">=</span> <span class="n">_tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">repo_collection_names_</span><span class="p">()))</span>
 
 <span class="c1"># TODO: When in 3.11, change to Literal[*repo_collection_names]</span>
