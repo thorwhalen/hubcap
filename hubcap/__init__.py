@@ -146,11 +146,9 @@ True
 >>> branch = repo['master']
 >>> list(branch)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
 ['/.gitattributes', '/.github/', '/.gitignore', ...]
->>> content = branch['/setup.cfg']
->>> print(content[:32].decode())
-[metadata]
-name = hubcap
-version
+>>> content = branch['/pyproject.toml']
+>>> print(content[:14].decode())
+[build-system]
 
 >>> from hubcap import get_repository_info
 >>> info = get_repository_info('thorwhalen/hubcap')
