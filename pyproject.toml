@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hubcap"
-version = "0.1.21"
+version = "0.1.22"
 description = "A dol (i.e. dict-like) interface to github"
 readme = "README.md"
 requires-python = ">=3.10"
