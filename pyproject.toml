@@ -71,9 +71,18 @@ exclude_paths = ["hubcap/examples", "hubcap/scrap"]
 # wads licence check can report "known and accepted" rather than "violation".
 # --------------------------------------------------------------------------
 [tool.wads.licence]
-project_licence = "Apache-2.0"
-# Copyleft is only allowed here when an entry below says so.
-allow = ["MIT", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "ISC", "PSF-2.0"]
+# Written in the schema `wads-licence-check` actually reads (wads#71). The
+# earlier hand-written shape here used `project_licence` / `allow`, which the
+# tool rejects: `project_licence` restated `[project].license` as a second
+# source of truth, and `allow` had no `deny` counterpart to pair with.
+#
+# `allowed` and `forbidden` are omitted on purpose. They REPLACE the shipped
+# defaults rather than extending them, so the six-entry `allow` list this
+# replaces was a narrowing: it dropped `Apache Software License` (which is what
+# a free-text field usually says), HPND, Zlib, CC0, 0BSD and Unlicense, all of
+# which are permissive, and all of which would have surfaced as UNCLASSIFIED
+# noise. The defaults are the superset; add to them here only if something
+# genuinely new turns up.
 
 [[tool.wads.licence.exceptions]]
 dependency = "PyGithub"
