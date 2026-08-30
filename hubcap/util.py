@@ -86,10 +86,9 @@ def github_file_contents(
         Exception: If the repository, file, or branch does not exist, or access is denied.
 
 
-    >>> file_string = github_file_contents('https://github.com/thorwhalen/hubcap/blob/master/setup.cfg')
-    >>> print(file_string[:24])
-    [metadata]
-    name = hubcap
+    >>> file_string = github_file_contents('https://github.com/thorwhalen/hubcap/blob/master/pyproject.toml')
+    >>> print(file_string[:14])
+    [build-system]
 
     """
     necessary_parts = ["username", "repository", "branch", "path"]

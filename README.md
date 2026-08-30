@@ -35,21 +35,18 @@ True
 >>> list(repo)
 ['master']
 >>> branch = repo['master']
->>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
+>>> list(branch)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
 ['/.gitattributes',
  '/.github/',
  '/.gitignore',
- '/LICENSE',
- '/README.md',
- '/docsrc/',
+ ...
  '/hubcap/',
- '/setup.cfg',
- '/setup.py']
->>> content = branch['/setup.cfg']
->>> print(content[:32].decode())
-[metadata]
-name = hubcap
-version
+ '/misc/',
+ '/pyproject.toml',
+ '/tests/']
+>>> content = branch['/pyproject.toml']
+>>> print(content[:14].decode())
+[build-system]
 ```
 
 
@@ -319,14 +316,12 @@ True
 >>> list(repo)
 ['master']
 >>> branch = repo['master']
->>> list(branch)  # doctest: +NORMALIZE_WHITESPACE
-['/.gitattributes', '/.github/', '/.gitignore', '/LICENSE',
-'/README.md', '/docsrc/', '/hubcap/', '/misc/', '/setup.cfg', '/setup.py']
->>> content = branch['/setup.cfg']
->>> print(content[:32].decode())
-[metadata]
-name = hubcap
-version
+>>> list(branch)  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+['/.gitattributes', '/.github/', '/.gitignore', ...
+'/hubcap/', '/misc/', '/pyproject.toml', '/tests/']
+>>> content = branch['/pyproject.toml']
+>>> print(content[:14].decode())
+[build-system]
 
 >>> from hubcap import get_repository_info
 >>> info = get_repository_info('thorwhalen/hubcap')
@@ -453,3 +448,21 @@ list(wiki_files)
 #  'Home.md',
 #  'Mapping-Views.md']
 ```
+
+# Licensing
+
+hubcap itself is **Apache-2.0** (see `LICENSE`).
+
+One dependency is not permissively licensed: **PyGithub** ships a single
+`License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)`
+classifier. This is a knowing, recorded decision rather than an oversight —
+hubcap *is* a `dol` interface to the GitHub API, so PyGithub is load-bearing and
+its objects are part of hubcap's public surface. The full reasoning, and the
+conditions under which the decision should be revisited, live in
+`[tool.wads.licence]` in `pyproject.toml`.
+
+What this means in practice: importing hubcap does not change the licence of
+your code, but `pip install hubcap` puts an LGPL library in your environment.
+If you **redistribute** a bundled/frozen artifact (PyInstaller and friends)
+rather than letting pip install PyGithub as a separate, replaceable
+distribution, the LGPL relinking obligations are yours to honour.

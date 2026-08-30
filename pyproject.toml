@@ -59,3 +59,52 @@ doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
 # CI was doctest-collecting hubcap/examples/* — importing undeclared optional
 # deps (e.g. dill) and failing collection. Point the ignores at the real paths.
 exclude_paths = ["hubcap/examples", "hubcap/scrap"]
+
+# --------------------------------------------------------------------------
+# Licence adjudication
+#
+# hubcap is Apache-2.0 and depends on PyGithub, whose only licence signal is
+# the classifier "License :: OSI Approved :: GNU Library or Lesser General
+# Public License (LGPL)" (PyGithub 2.8.1 ships no License-Expression and an
+# empty License field). This block records that this is a decision somebody
+# made, not an omission nobody noticed. Machine-readable so the planned
+# wads licence check can report "known and accepted" rather than "violation".
+# --------------------------------------------------------------------------
+[tool.wads.licence]
+project_licence = "Apache-2.0"
+# Copyleft is only allowed here when an entry below says so.
+allow = ["MIT", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "ISC", "PSF-2.0"]
+
+[[tool.wads.licence.exceptions]]
+dependency = "PyGithub"
+licence = "LGPL (classifier only; no SPDX expression published)"
+scope = "core"
+decided = "2026-08-30"
+decided_in = "https://github.com/thorwhalen/hubcap/issues/10"
+reason = """
+Accepted, not removable. hubcap *is* a dol interface to the GitHub API:
+PyGithub is imported at package import time (hubcap/__init__.py) and its
+objects are hubcap's values — GithubReader, RepoReader, Repository,
+ContentFile, GithubException are all PyGithub types re-exported as part of
+hubcap's public surface. Moving it to an extra would leave a package that
+cannot do the one thing it is for, so there is no honest "core without
+PyGithub" to install.
+
+The LGPL question is real and the answer is that the terms are satisfiable
+as used. PyGithub is a pure-Python library consumed by ordinary import at
+runtime; hubcap neither vendors nor modifies it, and pip installs it as a
+separate, independently replaceable distribution. Under LGPL section 4 that
+is the "uses the Library" case with the relinking freedom already intact —
+a user can `pip install -U PyGithub` and get their modified version without
+touching hubcap. hubcap's own Apache-2.0 source stays Apache-2.0; the
+combined *installed environment* carries LGPL obligations, which is what a
+downstream redistributor (not an importer) has to honour.
+
+Reconsider if any of these change: PyGithub starts being vendored or
+patched, hubcap starts being shipped as a frozen/static bundle (PyInstaller,
+a wheel with PyGithub inlined) where the relink freedom is no longer
+automatic, or PyGithub publishes a stricter SPDX expression than its
+classifier implies. The permissive alternative surveyed was ghapi
+(Apache-2.0); it was not adopted because the swap is not a dependency
+change but a rewrite of hubcap's value types.
+"""
