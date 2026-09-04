@@ -241,5 +241,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    # from argh import dispatch_command
-    # dispatch_command(download_and_save_discussion_data)
