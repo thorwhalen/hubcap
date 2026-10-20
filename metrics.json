@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 6.149663925170898,
-  "commit_message": "Merge 970ecefdbac56bb1a248f50ff16616b64229f189 into 45dc1fa8c76d8f208b0f6cca0f34ff6fca5e120b",
-  "commit_sha": "cbeaf6af0366b05127944d724e201aa7d6796444",
+  "collection_duration_seconds": 6.993386268615723,
+  "commit_message": "Add hubcap.snapshot: incremental org snapshot (#15)\n\n* Add hubcap.snapshot: incremental org-wide export of issues, PRs, discussions (#14)\n\n* Skip live-data doctests in the package docstring that drifted with thorwhalen/test_repo (#14)\n\n* Skip the live issue doctests that drifted (#14)",
+  "commit_sha": "8bd6cecdb4bc11ccee965f422a1d9d4807993cc1",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,19 +11,29 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 44874,
-      "comment_lines_ratio": 0.05807360856415546,
-      "docs_lines": 163962,
-      "empty_lines": 110976,
-      "empty_lines_ratio": 0.1436193961763096,
-      "files_analyzed": 1581,
-      "function_lines": 481504,
-      "function_lines_ratio": 0.6231375588999222,
-      "mean_lines_per_function": 19.226321673854017,
-      "num_classes": 3459,
-      "num_functions": 25044,
+      "comment_lines": 42972,
+      "comment_lines_ratio": 0.05617343017145367,
+      "docs_lines": 186869,
+      "empty_lines": 110166,
+      "empty_lines_ratio": 0.14401010211924892,
+      "errors": [
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1468,
+      "function_lines": 486284,
+      "function_lines_ratio": 0.635675330854863,
+      "mean_lines_per_function": 20.390976182489098,
+      "num_classes": 3220,
+      "num_functions": 23848,
       "pypi_version": "0.1.24",
-      "total_lines": 772709
+      "total_errors": 7,
+      "total_lines": 764988
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -33,15 +43,15 @@
       "total_loc": 0
     },
     "workflow_status": {
-      "last_run_status": "failure",
-      "last_success_timestamp": "2026-09-04T13:18:13Z",
+      "last_run_status": "success",
+      "last_success_timestamp": "2026-10-20T11:17:26Z",
       "recent_failure_count": 4,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/39413557902",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/39413728287",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-10-20T11:17:20.100478Z",
+  "timestamp": "2026-10-20T11:18:58.875679Z",
   "workflow_status": {}
 }
