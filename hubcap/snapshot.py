@@ -207,7 +207,11 @@ def _comment_block(c: dict, *, indent: int = 0) -> str:
     for reply in (c.get("replies") or {}).get("nodes", []):
         out.append(_comment_block(reply, indent=indent + 1))
     text = "\n".join(out)
-    return "\n".join(("> " * indent) + line for line in text.splitlines()) if indent else text
+    return (
+        "\n".join(("> " * indent) + line for line in text.splitlines())
+        if indent
+        else text
+    )
 
 
 def render_markdown(kind: str, repo: str, item: dict) -> str:

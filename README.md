@@ -471,6 +471,7 @@ distribution, the LGPL relinking obligations are yours to honour.
 
 ```python
 from hubcap.snapshot import snapshot_github
+
 snapshot_github(["my-org"], store="my_snapshot")  # markdown + index.jsonl + raw.jsonl
 ```
 
