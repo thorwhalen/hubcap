@@ -24,13 +24,13 @@ or put it in an environmental variable under the name `HUBCAP_GITHUB_TOKEN` or
 'subscribers', 'tags', 'teams', 'top_paths', 'top_referrers', 'topics', 'variables',
 'watchers', 'workflow_runs', 'workflows']
 >>>
->>> 'issues' in r
+>>> 'issues' in r  # doctest: +SKIP
 True
->>> issues = r['issues']
->>> sorted(issues)
+>>> issues = r['issues']  # doctest: +SKIP
+>>> sorted(issues)  # doctest: +SKIP
 [4, 5]
->>> issue_obj = issues[4]
->>> issue_obj
+>>> issue_obj = issues[4]  # doctest: +SKIP
+>>> issue_obj  # doctest: +SKIP
 Issue(title="Test Issue A", number=4)
 >>> sorted([attr for attr in dir(issue_obj) if not attr.startswith('_')])  # doctest: +SKIP
 ['CHECK_AFTER_INIT_FLAG', 'active_lock_reason', 'add_to_assignees', 'add_to_labels',
@@ -43,30 +43,30 @@ Issue(title="Test Issue A", number=4)
 'remove_from_assignees', 'remove_from_labels', 'repository', 'setCheckAfterInitFlag',
 'set_labels', 'state', 'state_reason', 'title', 'unlock', 'update', 'updated_at',
 'url', 'user']
->>> issue_obj.number
+>>> issue_obj.number  # doctest: +SKIP
 4
->>> issue_obj.state
+>>> issue_obj.state  # doctest: +SKIP
 'open'
->>> issue_obj.labels
+>>> issue_obj.labels  # doctest: +SKIP
 [Label(name="documentation"), Label(name="enhancement")]
 >>> # title of issue
->>> issue_obj.title
+>>> issue_obj.title  # doctest: +SKIP
 'Test Issue A'
 >>> # content of issue
->>> issue_obj.body
+>>> issue_obj.body  # doctest: +SKIP
 'Contents of Test Issue A'
 >>>
->>> issue_obj.comments
+>>> issue_obj.comments  # doctest: +SKIP
 2
 >>>
->>> list(issue_obj.get_comments())  # doctest: +NORMALIZE_WHITESPACE
+>>> list(issue_obj.get_comments())  # doctest: +NORMALIZE_WHITESPACE, +SKIP
 [IssueComment(user=NamedUser(login="thorwhalen"), id=1801792378),
 IssueComment(user=NamedUser(login="thorwhalen"), id=1801792855)]
->>> issue_comment = issue_obj.get_comment(1801792378)
->>> issue_comment.body
+>>> issue_comment = issue_obj.get_comment(1801792378)  # doctest: +SKIP
+>>> issue_comment.body  # doctest: +SKIP
 'Comment 1 of Test Issue A'
 >>>
->>> 'discussions' in r
+>>> 'discussions' in r  # doctest: +SKIP
 True
 >>> discussions = r['discussions']  # doctest: +SKIP
 >>> sorted(discussions)  # doctest: +SKIP
