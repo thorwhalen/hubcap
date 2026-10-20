@@ -1,0 +1,20 @@
+﻿hubcap
+======
+
+.. automodule:: hubcap
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   actions
+   base
+   casting
+   constants
+   repo_slurp
+   snapshot
+   tools
+   util

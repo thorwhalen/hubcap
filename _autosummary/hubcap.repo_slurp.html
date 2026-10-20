@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="hubcap.repo_slurp.html.md">
+<link rel="describedby" href="../llms.txt" type="text/markdown">
+<link rel="alternate" type="text/markdown" href="hubcap.repo_slurp.html.md">
+<link rel="describedby" href="llms.txt">
+    <title>hubcap.repo_slurp &#8212; hubcap</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/epythet.css?v=e11382f7" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=ebdbb45b"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=fd10adb8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/hubcap.repo_slurp';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hubcap.snapshot" href="hubcap.snapshot.html" />
+    <link rel="prev" title="hubcap.constants" href="hubcap.constants.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.24" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">hubcap</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/hubcap" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/hubcap" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="hubcap.html">hubcap</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="hubcap.actions.html">hubcap.actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.base.html">hubcap.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.casting.html">hubcap.casting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.constants.html">hubcap.constants</a></li>
+<li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">hubcap.repo_slurp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.snapshot.html">hubcap.snapshot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.tools.html">hubcap.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hubcap.util.html">hubcap.util</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="hubcap.html" class="nav-link">hubcap</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">hubcap.repo_slurp</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-hubcap.repo_slurp">
+<span id="hubcap-repo-slurp"></span><h1>hubcap.repo_slurp<a class="headerlink" href="#module-hubcap.repo_slurp" title="Link to this heading">#</a></h1>
+<p>Tools to slurp a repo’s information</p>
+<p class="rubric">Functions</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hubcap.repo_slurp.add_offset_to_headers" title="hubcap.repo_slurp.add_offset_to_headers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_offset_to_headers</span></code></a>(markdown_text[, offset])</p></td>
+<td><p>Returns the same text but where the (markdown) headers have been offset by <code class="code docutils literal notranslate"><span class="pre">offset</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hubcap.repo_slurp.all_decodable_text_folder_to_mapping" title="hubcap.repo_slurp.all_decodable_text_folder_to_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_decodable_text_folder_to_mapping</span></code></a>(folder)</p></td>
+<td><p>A folder_to_mapping function that takes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">discussions_mapping</span></code>(repo[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hubcap.repo_slurp.ensure_repo_folder" title="hubcap.repo_slurp.ensure_repo_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_repo_folder</span></code></a>(repo[, clone_func, ...])</p></td>
+<td><p>Returns a local repo folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hubcap.repo_slurp.github_repo_mapping" title="hubcap.repo_slurp.github_repo_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">github_repo_mapping</span></code></a>(repo, *[, kind, ...])</p></td>
+<td><p>Clone a git repository and make a mapping of the files in the repository.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_filtered_text_files</span></code>(folder, key_pattern)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hubcap.repo_slurp.kv_to_python_aware_markdown" title="hubcap.repo_slurp.kv_to_python_aware_markdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kv_to_python_aware_markdown</span></code></a>(k, v)</p></td>
+<td><p>Puts .py content in a code block, and returns a markdown formatted string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hubcap.repo_slurp.notebook_to_markdown" title="hubcap.repo_slurp.notebook_to_markdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notebook_to_markdown</span></code></a>(notebook, *[, ...])</p></td>
+<td><p>Transforms a Jupyter notebook into a markdown string with control over cell processing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">repo_files_mapping</span></code>(repo, *[, kv_to_text, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hubcap.repo_slurp.repo_text_aggregate" title="hubcap.repo_slurp.repo_text_aggregate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repo_text_aggregate</span></code></a>(repo[, kinds, ...])</p></td>
+<td><p>Clone a git repository and aggregate all file contents into a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hubcap.repo_slurp.text_from_mapping" title="hubcap.repo_slurp.text_from_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_from_mapping</span></code></a>(mapping[, kv_to_text])</p></td>
+<td><p>Creates a string from a given mapping with string keys and values using a formatting function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wiki_mapping</span></code>(repo[, local_repo_folder, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.add_offset_to_headers">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">add_offset_to_headers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markdown_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#add_offset_to_headers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.add_offset_to_headers" title="Link to this definition">#</a></dt>
+<dd><p>Returns the same text but where the (markdown) headers have been offset by <code class="code docutils literal notranslate"><span class="pre">offset</span></code>.</p>
+<p>It works by adding <code class="code docutils literal notranslate"><span class="pre">offset</span></code> number of ‘#’ to the start of each header line.</p>
+<p>If the offset causes a header level to become zero or negative, it is ignored (remains the same).</p>
+<p>Comments (lines starting with ‘#’) in code blocks are not affected by the offset.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'### Header 1\n\n#### Header 2\n\n##### Header 3'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">### Header 2</span><span class="se">\n\n</span><span class="s2">#### Header 3"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">'# Header 1\n\n## Header 2\n\n### Header 3'</span>
+</pre></div>
+</div>
+<p>Note that comments in code blocks are not affected:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'```\n# Not a header\n```'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">add_offset_to_headers</span><span class="p">(</span><span class="s2">"## Header 1</span><span class="se">\n\n</span><span class="s2">```</span><span class="se">\n</span><span class="s2"># Not a header</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n\n</span><span class="s2">### Header 2"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">'### Header 1\n\n```\n# Not a header\n```\n\n#### Header 2'</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.all_decodable_text_folder_to_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">all_decodable_text_folder_to_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#all_decodable_text_folder_to_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.all_decodable_text_folder_to_mapping" title="Link to this definition">#</a></dt>
+<dd><p>A folder_to_mapping function that takes</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.ensure_repo_folder">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">ensure_repo_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clone_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">git_clone&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#ensure_repo_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.ensure_repo_folder" title="Link to this definition">#</a></dt>
+<dd><p>Returns a local repo folder.
+Either the input repo is already a local “git” folder (which we return as is),
+or a temporary folder to clone the repo into is returned.</p>
+<p>If the repo is a GitHub URL with a branch and/or path specification,
+(e.g., <a class="github reference external" href="https://github.com/user/repo/tree/branch/path">user/repo</a>), the function will:</p>
+<ul class="simple">
+<li><p>Clone the specified branch</p></li>
+<li><p>Return the path to the subfolder if a path is specified</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.github_repo_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">github_repo_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_files_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">repo_files_mapping&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#github_repo_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.github_repo_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Clone a git repository and make a mapping of the files in the repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The GitHub repository in the format ‘owner/repo’ or github url.</p></li>
+<li><p><strong>clone_to_folder</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><em>optional</em>) – The target folder to clone the repository into. Defaults to a temporary folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A mapping of the files in the repository.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Mapping</em></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repo_files</span> <span class="o">=</span> <span class="n">github_repo_mapping</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.kv_to_python_aware_markdown">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">kv_to_python_aware_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#kv_to_python_aware_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.kv_to_python_aware_markdown" title="Link to this definition">#</a></dt>
+<dd><p>Puts .py content in a code block, and returns a markdown formatted string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.notebook_to_markdown">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">notebook_to_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notebook</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_markdown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#notebook_to_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.notebook_to_markdown" title="Link to this definition">#</a></dt>
+<dd><p>Transforms a Jupyter notebook into a markdown string with control over cell processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>notebook</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bytes" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a></span>) – Path to (or bytes or str contents of) the Jupyter notebook.</p></li>
+<li><p><strong>process_code</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em> or </em><em>callable</em>) – Whether to include code cells or a callable to process them.
+Default is True.</p></li>
+<li><p><strong>process_markdown</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em> or </em><em>callable</em>) – Whether to include markdown cells or a callable to process them.
+Default is True.</p></li>
+<li><p><strong>process_output</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a><em> or </em><em>callable</em>) – Whether to include the output of code cells or a callable to process them.
+Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The notebook content as a markdown string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.repo_text_aggregate">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">repo_text_aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('files'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'discussions')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">github_repo_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">github_repo_mapping&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_from_mapping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">text_from_mapping&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#repo_text_aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.repo_text_aggregate" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Clone a git repository and aggregate all file contents into a string.</p>
+<dl>
+<dt>Args:</dt><dd><p>repo (str): The GitHub repository in the format ‘owner/repo’ or github url.
+kinds (Union[CloneKinds, Iterable[CloneKinds]], optional):</p>
+<blockquote>
+<div><p>The kinds of content to aggregate. Defaults to (‘files’, ‘wiki’, ‘discussions’).</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>str: A string with all file contents.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="n">repo_text_aggregate</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aggregate</span><span class="p">[:</span><span class="mi">100</span><span class="p">])</span>
+<span class="go">## README.md</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt># hubcap</dt><dd><p>A <a class="reference external" href="https://github.com/i2mint/dol">dol</a> (i.e. dict-like) interface to github…</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="hubcap.repo_slurp.text_from_mapping">
+<span class="sig-prename descclassname"><span class="pre">hubcap.repo_slurp.</span></span><span class="sig-name descname"><span class="pre">text_from_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kv_to_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">kv_to_python_aware_markdown&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hubcap/repo_slurp.html#text_from_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#hubcap.repo_slurp.text_from_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Creates a string from a given mapping with string keys and values using a formatting function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mapping</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></span>) – A mapping with string keys and values.</p></li>
+<li><p><strong>kv_to_text</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<code class="docutils literal notranslate"><span class="pre">KT</span></code>, <code class="docutils literal notranslate"><span class="pre">VT</span></code>], <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Function that takes a key and value and returns a string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string aggregate of the values of the mapping.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example_mapping</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s2">"apple.txt"</span><span class="p">:</span> <span class="s2">"Crumble"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"tit.md"</span><span class="p">:</span> <span class="s2">"For tat."</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">"state.cfg"</span><span class="p">:</span> <span class="s2">"Of the art."</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example_kv_to_text</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"## </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="se">\n</span><span class="s2">```</span><span class="se">\n</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s2">```"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">text_from_mapping</span><span class="p">(</span><span class="n">example_mapping</span><span class="p">,</span> <span class="n">example_kv_to_text</span><span class="p">))</span>
+<span class="go">## apple.txt</span>
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Crumble
+</pre></div>
+</div>
+<p>## tit.md</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>For tat.
+</pre></div>
+</div>
+<p>## state.cfg</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Of the art.
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hubcap.constants.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">hubcap.constants</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hubcap.snapshot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">hubcap.snapshot</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.add_offset_to_headers"><code class="docutils literal notranslate"><span class="pre">add_offset_to_headers()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.all_decodable_text_folder_to_mapping"><code class="docutils literal notranslate"><span class="pre">all_decodable_text_folder_to_mapping()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.ensure_repo_folder"><code class="docutils literal notranslate"><span class="pre">ensure_repo_folder()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.github_repo_mapping"><code class="docutils literal notranslate"><span class="pre">github_repo_mapping()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.kv_to_python_aware_markdown"><code class="docutils literal notranslate"><span class="pre">kv_to_python_aware_markdown()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.notebook_to_markdown"><code class="docutils literal notranslate"><span class="pre">notebook_to_markdown()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.repo_text_aggregate"><code class="docutils literal notranslate"><span class="pre">repo_text_aggregate()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hubcap.repo_slurp.text_from_mapping"><code class="docutils literal notranslate"><span class="pre">text_from_mapping()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/_autosummary/hubcap.repo_slurp.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

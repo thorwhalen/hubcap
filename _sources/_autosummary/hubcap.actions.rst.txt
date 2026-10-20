@@ -1,0 +1,19 @@
+hubcap.actions
+==============
+
+.. automodule:: hubcap.actions
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      actions_info
+      ci_status
+      date_selection_lidx
+      get_action_ci_status
+      get_headers
+      get_last_build_status
+      get_token
+      repos_info
+   

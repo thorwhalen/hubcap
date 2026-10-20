@@ -1,0 +1,38 @@
+hubcap.casting
+==============
+
+.. automodule:: hubcap.casting
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      PROJECT_ROOTS_SEPARATOR
+      GIT_FOLDER_NAME
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      components_to_https_url
+      components_to_ssh_url
+      components_to_stub
+      get_project_roots
+      git_folder_to_proj_folder
+      https_url_to_components
+      local_folder_to_proj_name
+      local_folder_to_stub
+      normalize_project
+      proj_folder_to_git_folder
+      proj_name_to_local_folder
+      register_project_root
+      set_project_roots
+      ssh_url_to_components
+      stub_to_components
+      stub_to_local_folder
+      to_github_stub
+      to_github_url
+      to_local_path
+      unregister_project_root
+   

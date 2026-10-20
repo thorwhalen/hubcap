@@ -1,0 +1,23 @@
+hubcap.repo\_slurp
+==================
+
+.. automodule:: hubcap.repo_slurp
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      add_offset_to_headers
+      all_decodable_text_folder_to_mapping
+      discussions_mapping
+      ensure_repo_folder
+      github_repo_mapping
+      key_filtered_text_files
+      kv_to_python_aware_markdown
+      notebook_to_markdown
+      repo_files_mapping
+      repo_text_aggregate
+      text_from_mapping
+      wiki_mapping
+   

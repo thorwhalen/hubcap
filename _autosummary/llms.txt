@@ -1,0 +1,20 @@
+# hubcap
+
+> A dol (i.e. dict-like) interface to github
+
+
+## Pages in this subsection
+
+- [hubcap](hubcap.html.md): The simplest facade to github data.
+- [hubcap.actions](hubcap.actions.html.md): GitHub Actions and CI status utilities.
+- [hubcap.base](hubcap.base.html.md): Base objects
+- [hubcap.casting](hubcap.casting.html.md): Transformation graph for GitHub project references with flexible input handling.
+- [hubcap.constants](hubcap.constants.html.md): A place to put constants, defaults, types…
+- [hubcap.repo_slurp](hubcap.repo_slurp.html.md): Tools to slurp a repo’s information
+- [hubcap.snapshot](hubcap.snapshot.html.md): Incremental snapshot of GitHub orgs: issues, PRs and discussions with all comments.
+- [hubcap.tools](hubcap.tools.html.md): A medley of tools for Hubcap.
+- [hubcap.util](hubcap.util.html.md): Utils for hubcap.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

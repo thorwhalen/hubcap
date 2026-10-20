@@ -1,0 +1,43 @@
+hubcap.util
+===========
+
+.. automodule:: hubcap.util
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      cached_github_object
+      create_markdown_from_discussion_jdict
+      create_markdown_from_jdict
+      defaulted_itemgetter
+      ensure_folder_to_clone_into
+      ensure_full_name
+      ensure_github_url
+      ensure_no_slash_suffix
+      ensure_repo_obj
+      ensure_slash_suffix
+      ensure_url_suffix
+      generate_github_url
+      get_repository_info
+      git
+      git_clone
+      git_wiki_clone
+      github_file_contents
+      github_json_deserializer
+      github_json_serializer
+      github_object
+      github_repo_object
+      github_token
+      is_url_components
+      parse_github_url
+      replace_relative_urls
+      transform_github_url
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Discussions
+   

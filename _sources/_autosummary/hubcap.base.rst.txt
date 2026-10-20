@@ -1,0 +1,41 @@
+hubcap.base
+===========
+
+.. automodule:: hubcap.base
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      decoded_contents
+      find_github_token
+      find_user_name
+      identity
+      repo_objects_instance
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BranchDir
+      Branches
+      GitHubDol
+      GitHubReader
+      GithubReader
+      IssueComments
+      IssueCommentsBase
+      IssueContents
+      Issues
+      PaginatedListDol
+      RepoObjects
+      RepoReader
+      Workflows
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      RepositoryNotFound
+      ResourceNotFound
+   

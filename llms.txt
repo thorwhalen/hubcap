@@ -1,0 +1,27 @@
+# hubcap
+
+> A dol (i.e. dict-like) interface to github
+
+
+## Pages
+
+- [hubcap](index.html.md): A dol (i.e. dict-like) interface to github
+- [API reference](api.html.md): | &#96;hubcap&#96;   | The simplest facade to github data.   |
+- [hubcap](_autosummary/hubcap.html.md): The simplest facade to github data.
+- [hubcap.actions](_autosummary/hubcap.actions.html.md): GitHub Actions and CI status utilities.
+- [hubcap.base](_autosummary/hubcap.base.html.md): Base objects
+- [hubcap.casting](_autosummary/hubcap.casting.html.md): Transformation graph for GitHub project references with flexible input handling.
+- [hubcap.constants](_autosummary/hubcap.constants.html.md): A place to put constants, defaults, types…
+- [hubcap.repo_slurp](_autosummary/hubcap.repo_slurp.html.md): Tools to slurp a repo’s information
+- [hubcap.snapshot](_autosummary/hubcap.snapshot.html.md): Incremental snapshot of GitHub orgs: issues, PRs and discussions with all comments.
+- [hubcap.tools](_autosummary/hubcap.tools.html.md): A medley of tools for Hubcap.
+- [hubcap.util](_autosummary/hubcap.util.html.md): Utils for hubcap.
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 11:19 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [hubcap.md](hubcap.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

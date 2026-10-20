@@ -1,281 +1,891 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to hubcap’s documentation! &mdash; hubcap 0.1.23 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt">
+    <title>hubcap &#8212; hubcap</title>
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=20522496"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/epythet.css?v=e11382f7" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="_static/documentation_options.js?v=ebdbb45b"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="hubcap" href="module_docs/hubcap.html" /> 
-</head>
+    <link rel="next" title="API reference" href="api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.24" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-          
-          <a href="#" class="icon icon-home">
-            hubcap
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap.html">hubcap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/actions.html">hubcap.actions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/base.html">hubcap.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/casting.html">hubcap.casting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/constants.html">hubcap.constants</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples.html">hubcap.examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/tools.html">hubcap.tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/util.html">hubcap.util</a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">hubcap</a>
-      </nav>
+  
+    
+  
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to hubcap’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">hubcap</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
   </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-hubcap-s-documentation">
-<h1>Welcome to hubcap’s documentation!<a class="headerlink" href="#welcome-to-hubcap-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap.html">hubcap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/actions.html">hubcap.actions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.actions_info"><code class="docutils literal notranslate"><span class="pre">actions_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.ci_status"><code class="docutils literal notranslate"><span class="pre">ci_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.date_selection_lidx"><code class="docutils literal notranslate"><span class="pre">date_selection_lidx()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.get_action_ci_status"><code class="docutils literal notranslate"><span class="pre">get_action_ci_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.get_headers"><code class="docutils literal notranslate"><span class="pre">get_headers()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.get_last_build_status"><code class="docutils literal notranslate"><span class="pre">get_last_build_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.get_token"><code class="docutils literal notranslate"><span class="pre">get_token()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/actions.html#hubcap.actions.repos_info"><code class="docutils literal notranslate"><span class="pre">repos_info()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/base.html">hubcap.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.BranchDir"><code class="docutils literal notranslate"><span class="pre">BranchDir</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.Branches"><code class="docutils literal notranslate"><span class="pre">Branches</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.GitHubDol"><code class="docutils literal notranslate"><span class="pre">GitHubDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.GitHubReader"><code class="docutils literal notranslate"><span class="pre">GitHubReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.GithubReader"><code class="docutils literal notranslate"><span class="pre">GithubReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.IssueComments"><code class="docutils literal notranslate"><span class="pre">IssueComments</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.IssueCommentsBase"><code class="docutils literal notranslate"><span class="pre">IssueCommentsBase</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.IssueContents"><code class="docutils literal notranslate"><span class="pre">IssueContents</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.Issues"><code class="docutils literal notranslate"><span class="pre">Issues</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.PaginatedListDol"><code class="docutils literal notranslate"><span class="pre">PaginatedListDol</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.RepoObjects"><code class="docutils literal notranslate"><span class="pre">RepoObjects</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.RepoReader"><code class="docutils literal notranslate"><span class="pre">RepoReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.RepositoryNotFound"><code class="docutils literal notranslate"><span class="pre">RepositoryNotFound</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.ResourceNotFound"><code class="docutils literal notranslate"><span class="pre">ResourceNotFound</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/base.html#hubcap.base.Workflows"><code class="docutils literal notranslate"><span class="pre">Workflows</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/casting.html">hubcap.casting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#supported-kinds">Supported Kinds</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#configuration">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#usage-with-ingress-decorator">Usage with Ingress Decorator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#direct-transformation">Direct Transformation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.GIT_FOLDER_NAME"><code class="docutils literal notranslate"><span class="pre">GIT_FOLDER_NAME</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.PROJECT_ROOTS_SEPARATOR"><code class="docutils literal notranslate"><span class="pre">PROJECT_ROOTS_SEPARATOR</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.components_to_https_url"><code class="docutils literal notranslate"><span class="pre">components_to_https_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.components_to_ssh_url"><code class="docutils literal notranslate"><span class="pre">components_to_ssh_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.components_to_stub"><code class="docutils literal notranslate"><span class="pre">components_to_stub()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.get_project_roots"><code class="docutils literal notranslate"><span class="pre">get_project_roots()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.git_folder_to_proj_folder"><code class="docutils literal notranslate"><span class="pre">git_folder_to_proj_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.https_url_to_components"><code class="docutils literal notranslate"><span class="pre">https_url_to_components()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.local_folder_to_proj_name"><code class="docutils literal notranslate"><span class="pre">local_folder_to_proj_name()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.local_folder_to_stub"><code class="docutils literal notranslate"><span class="pre">local_folder_to_stub()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.normalize_project"><code class="docutils literal notranslate"><span class="pre">normalize_project()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.proj_folder_to_git_folder"><code class="docutils literal notranslate"><span class="pre">proj_folder_to_git_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.proj_name_to_local_folder"><code class="docutils literal notranslate"><span class="pre">proj_name_to_local_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.register_project_root"><code class="docutils literal notranslate"><span class="pre">register_project_root()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.set_project_roots"><code class="docutils literal notranslate"><span class="pre">set_project_roots()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.ssh_url_to_components"><code class="docutils literal notranslate"><span class="pre">ssh_url_to_components()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.stub_to_components"><code class="docutils literal notranslate"><span class="pre">stub_to_components()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.stub_to_local_folder"><code class="docutils literal notranslate"><span class="pre">stub_to_local_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.to_github_stub"><code class="docutils literal notranslate"><span class="pre">to_github_stub()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.to_github_url"><code class="docutils literal notranslate"><span class="pre">to_github_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.to_local_path"><code class="docutils literal notranslate"><span class="pre">to_local_path()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/casting.html#hubcap.casting.unregister_project_root"><code class="docutils literal notranslate"><span class="pre">unregister_project_root()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/constants.html">hubcap.constants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/constants.html#hubcap.constants.repo_collection_names_"><code class="docutils literal notranslate"><span class="pre">repo_collection_names_()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples.html">hubcap.examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html">hubcap.examples.diagnose_repositories</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.github_org_and_repo"><code class="docutils literal notranslate"><span class="pre">github_org_and_repo()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.org_repos_issue_counts"><code class="docutils literal notranslate"><span class="pre">org_repos_issue_counts()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.repo_url_to_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_docs_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/diagnose_repositories.html#hubcap.examples.diagnose_repositories.repo_url_to_repo_docs_url"><code class="docutils literal notranslate"><span class="pre">repo_url_to_repo_docs_url()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/get_discussions.html">hubcap.examples.get_discussions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/examples/get_wikis.html">hubcap.examples.get_wikis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.download_github_wiki"><code class="docutils literal notranslate"><span class="pre">download_github_wiki()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.repository_identifiers"><code class="docutils literal notranslate"><span class="pre">repository_identifiers()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/examples/get_wikis.html#hubcap.examples.get_wikis.url_of_git_directory"><code class="docutils literal notranslate"><span class="pre">url_of_git_directory()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html">hubcap.repo_slurp</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.add_offset_to_headers"><code class="docutils literal notranslate"><span class="pre">add_offset_to_headers()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.all_decodable_text_folder_to_mapping"><code class="docutils literal notranslate"><span class="pre">all_decodable_text_folder_to_mapping()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.ensure_repo_folder"><code class="docutils literal notranslate"><span class="pre">ensure_repo_folder()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.github_repo_mapping"><code class="docutils literal notranslate"><span class="pre">github_repo_mapping()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.kv_to_python_aware_markdown"><code class="docutils literal notranslate"><span class="pre">kv_to_python_aware_markdown()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.notebook_to_markdown"><code class="docutils literal notranslate"><span class="pre">notebook_to_markdown()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.repo_text_aggregate"><code class="docutils literal notranslate"><span class="pre">repo_text_aggregate()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/repo_slurp.html#hubcap.repo_slurp.text_from_mapping"><code class="docutils literal notranslate"><span class="pre">text_from_mapping()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/scrap.html">hubcap.scrap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html">hubcap.scrap.direct_github_api</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.actions_info"><code class="docutils literal notranslate"><span class="pre">actions_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.ci_status"><code class="docutils literal notranslate"><span class="pre">ci_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_action_ci_status"><code class="docutils literal notranslate"><span class="pre">get_action_ci_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_last_build_status"><code class="docutils literal notranslate"><span class="pre">get_last_build_status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.get_token"><code class="docutils literal notranslate"><span class="pre">get_token()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/scrap/direct_github_api.html#hubcap.scrap.direct_github_api.repos_info"><code class="docutils literal notranslate"><span class="pre">repos_info()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/tools.html">hubcap.tools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.LocalRepoArtifacts"><code class="docutils literal notranslate"><span class="pre">LocalRepoArtifacts</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.add_repos_to_team"><code class="docutils literal notranslate"><span class="pre">add_repos_to_team()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.copy_discussion"><code class="docutils literal notranslate"><span class="pre">copy_discussion()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.create_discussion"><code class="docutils literal notranslate"><span class="pre">create_discussion()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.create_discussion_comment"><code class="docutils literal notranslate"><span class="pre">create_discussion_comment()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_author_commits"><code class="docutils literal notranslate"><span class="pre">get_author_commits()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_ci_info"><code class="docutils literal notranslate"><span class="pre">get_ci_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_discussion_data"><code class="docutils literal notranslate"><span class="pre">get_discussion_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_github_token"><code class="docutils literal notranslate"><span class="pre">get_github_token()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.get_repository_id"><code class="docutils literal notranslate"><span class="pre">get_repository_id()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.notebook_to_markdown"><code class="docutils literal notranslate"><span class="pre">notebook_to_markdown()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.parse_github_discussion_url"><code class="docutils literal notranslate"><span class="pre">parse_github_discussion_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.parse_github_repo_url"><code class="docutils literal notranslate"><span class="pre">parse_github_repo_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.postprocess_markdown_from_notebook"><code class="docutils literal notranslate"><span class="pre">postprocess_markdown_from_notebook()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.rm_repos_from_team"><code class="docutils literal notranslate"><span class="pre">rm_repos_from_team()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.run_graphql_query"><code class="docutils literal notranslate"><span class="pre">run_graphql_query()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/tools.html#hubcap.tools.team_repositories_action"><code class="docutils literal notranslate"><span class="pre">team_repositories_action()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/hubcap/util.html">hubcap.util</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.Discussions"><code class="docutils literal notranslate"><span class="pre">Discussions</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.cached_github_object"><code class="docutils literal notranslate"><span class="pre">cached_github_object()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.create_markdown_from_discussion_jdict"><code class="docutils literal notranslate"><span class="pre">create_markdown_from_discussion_jdict()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.create_markdown_from_jdict"><code class="docutils literal notranslate"><span class="pre">create_markdown_from_jdict()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_folder_to_clone_into"><code class="docutils literal notranslate"><span class="pre">ensure_folder_to_clone_into()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_full_name"><code class="docutils literal notranslate"><span class="pre">ensure_full_name()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_github_url"><code class="docutils literal notranslate"><span class="pre">ensure_github_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_repo_obj"><code class="docutils literal notranslate"><span class="pre">ensure_repo_obj()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.ensure_url_suffix"><code class="docutils literal notranslate"><span class="pre">ensure_url_suffix()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.generate_github_url"><code class="docutils literal notranslate"><span class="pre">generate_github_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.get_repository_info"><code class="docutils literal notranslate"><span class="pre">get_repository_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.git"><code class="docutils literal notranslate"><span class="pre">git()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.git_clone"><code class="docutils literal notranslate"><span class="pre">git_clone()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_file_contents"><code class="docutils literal notranslate"><span class="pre">github_file_contents()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_json_deserializer"><code class="docutils literal notranslate"><span class="pre">github_json_deserializer()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.github_json_serializer"><code class="docutils literal notranslate"><span class="pre">github_json_serializer()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.parse_github_url"><code class="docutils literal notranslate"><span class="pre">parse_github_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.replace_relative_urls"><code class="docutils literal notranslate"><span class="pre">replace_relative_urls()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/hubcap/util.html#hubcap.util.transform_github_url"><code class="docutils literal notranslate"><span class="pre">transform_github_url()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 0.1.23</p>
-<p>Last change: Sep 04, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/hubcap.html" class="btn btn-neutral float-right" title="hubcap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+</nav></div>
+      
     </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      
+      
+        <div class="navbar-item">
 
-</body>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/hubcap" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/hubcap" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- generated by epythet -->
+<section id="hubcap">
+<h1>hubcap<a class="headerlink" href="#hubcap" title="Link to this heading">#</a></h1>
+<p>A <a class="reference external" href="https://github.com/i2mint/dol">dol</a> (i.e. dict-like) interface to github</p>
+<p>To install:	<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">hubcap</span></code></p>
+</section>
+<section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Link to this heading">#</a></h2>
+<p>The simplest facade to github data.</p>
+<p>Interact with github like you’d interact with a <code class="docutils literal notranslate"><span class="pre">dict</span></code> object.</p>
+<p>Warning: You’ll need to have a github api token (google it if you don’t have one;
+it’s easy to get). You’ll have to specify this token when making hubcap objects,
+or put it in an environmental variable under the name <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code> or <code class="docutils literal notranslate"><span class="pre">HUBCAP_GITHUB_TOKEN</span></code>
+(useful since github actions doesn’t allow you to have env variables starting with <code class="docutils literal notranslate"><span class="pre">GITHUB</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GitHubReader</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">['agen',</span>
+<span class="go"> 'aix',</span>
+<span class="go"> ...</span>
+<span class="go"> 'viral',</span>
+<span class="go"> 'wealth',</span>
+<span class="go"> 'wrapt']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'a_non_existing_repository_name'</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">s</span>  <span class="c1"># of course, this will be true, it's what you're using now!</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">'hubcap'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="go">['master']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">'master'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>
+<span class="go">['/.gitattributes',</span>
+<span class="go"> '/.github/',</span>
+<span class="go"> '/.gitignore',</span>
+<span class="go"> ...</span>
+<span class="go"> '/hubcap/',</span>
+<span class="go"> '/misc/',</span>
+<span class="go"> '/pyproject.toml',</span>
+<span class="go"> '/tests/']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[</span><span class="s1">'/pyproject.toml'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">14</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="go">[build-system]</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-repositories-and-information-about-them">
+<h2>Listing repositories and information about them<a class="headerlink" href="#listing-repositories-and-information-about-them" title="Link to this heading">#</a></h2>
+<p>List repositories for a given user or organization, along with 78 fields of info.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">repos_info</span><span class="p">,</span> <span class="n">actions_info</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span> <span class="o">=</span> <span class="n">repos_info</span><span class="p">(</span><span class="s1">'i2mint'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">repos</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(60, 78)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repos</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">                         id                           node_id       name  ... watchers  default_branch                                        permissions</span>
+<span class="go">full_name                                                                 ...</span>
+<span class="go">i2mint/py2mqtt    425694616                      R_kgDOGV-VmA    py2mqtt  ...        0            main  {'admin': True, 'maintain': True, 'push': True...</span>
+<span class="go">i2mint/mongodol   341721959  MDEwOlJlcG9zaXRvcnkzNDE3MjE5NTk=   mongodol  ...        0          master  {'admin': True, 'maintain': True, 'push': True...</span>
+<span class="go">i2mint/dol        299438731  MDEwOlJlcG9zaXRvcnkyOTk0Mzg3MzE=        dol  ...        4          master  {'admin': True, 'maintain': True, 'push': True...</span>
+<span class="go">i2mint/stream2py  238989487  MDEwOlJlcG9zaXRvcnkyMzg5ODk0ODc=  stream2py  ...        2          master  {'admin': True, 'maintain': True, 'push': True...</span>
+<span class="go">i2mint/creek      321448350  MDEwOlJlcG9zaXRvcnkzMjE0NDgzNTA=      creek  ...        0          master  {'admin': True, 'maintain': True, 'push': True...</span>
+
+<span class="go">[5 rows x 78 columns]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">repos</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="go">['id', 'node_id', 'name', 'full_name', 'private', 'owner', 'html_url', 'description',</span>
+<span class="go">'fork', 'url', 'forks_url', 'keys_url', 'collaborators_url', 'teams_url', 'hooks_url</span>
+<span class="go">', 'issue_events_url', 'events_url', 'assignees_url', 'branches_url', 'tags_url',</span>
+<span class="go">'blobs_url', 'git_tags_url', 'git_refs_url', 'trees_url', 'statuses_url', 'languages_url</span>
+<span class="go">', 'stargazers_url', 'contributors_url', 'subscribers_url', 'subscription_url',</span>
+<span class="go">'commits_url', 'git_commits_url', 'comments_url', 'issue_comment_url', 'contents_url',</span>
+<span class="go">'compare_url', 'merges_url', 'archive_url', 'downloads_url', 'issues_url', 'pulls_url',</span>
+<span class="go">'milestones_url', 'notifications_url', 'labels_url', 'releases_url', 'deployments_url</span>
+<span class="go">', 'created_at', 'updated_at', 'pushed_at', 'git_url', 'ssh_url', 'clone_url', 'svn_url',</span>
+<span class="go">'homepage', 'size', 'stargazers_count', 'watchers_count', 'language', 'has_issue</span>
+<span class="go">s', 'has_projects', 'has_downloads', 'has_wiki', 'has_pages', 'forks_count',</span>
+<span class="go">'mirror_url', 'archived', 'disabled', 'open_issues_count', 'license', 'allow_forking',</span>
+<span class="go">'is_template', 'topics', 'visibility', 'forks', 'open_issues', 'watchers',</span>
+<span class="go">'default_branch', 'permissions']</span>
+
+</pre></div>
+</div>
+<p>Get info about github actions for a given repository.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions_info</span><span class="p">(</span><span class="s1">'i2mint/mongodol'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">actions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(10, 30)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">actions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">           id                    name  ...                                         repository                                    head_repository</span>
+<span class="go">0  1468986198  Continuous Integration  ...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...</span>
+<span class="go">1  1445456774  Continuous Integration  ...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...</span>
+<span class="go">2  1437461380  Continuous Integration  ...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...</span>
+<span class="go">3  1343133456  Continuous Integration  ...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...</span>
+<span class="go">4  1262878182  Continuous Integration  ...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...  {'id': 341721959, 'node_id': 'MDEwOlJlcG9zaXRv...</span>
+
+<span class="go">[5 rows x 30 columns]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">actions</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="go">['id', 'name', 'node_id', 'head_branch', 'head_sha', 'run_number', 'event', 'status',</span>
+<span class="go">'conclusion', 'workflow_id', 'check_suite_id', 'check_suite_node_id', 'url', 'html_url',</span>
+<span class="go">'pull_requests', 'created_at', 'updated_at', 'run_attempt', 'run_started_at',</span>
+<span class="go">'jobs_url', 'logs_url', 'check_suite_url', 'artifacts_url', 'cancel_url', 'rerun_url',</span>
+<span class="go">'previous_attempt_url', 'workflow_url', 'head_commit', 'repository', 'head_repository']</span>
+</pre></div>
+</div>
+<p>Find most recently changed repositories and check if their CI failed or not.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">date_selection_lidx</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_recently</span> <span class="o">=</span> <span class="n">repos</span><span class="o">.</span><span class="n">iloc</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">date_selection_lidx</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">{</span><span class="n">repo</span><span class="p">:</span> <span class="n">get_last_build_status</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">updated_recently</span><span class="p">[</span><span class="s1">'full_name'</span><span class="p">]}</span>
+<span class="go">{'i2mint/py2mqtt': 'failure',</span>
+<span class="go"> 'i2mint/mongodol': 'success',</span>
+<span class="go"> 'i2mint/dol': 'success',</span>
+<span class="go"> 'i2mint/stream2py': 'success',</span>
+<span class="go"> 'i2mint/creek': 'success'}</span>
+</pre></div>
+</div>
+<p>Note: You can get this directly using the <code class="docutils literal notranslate"><span class="pre">ci_status</span></code> function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">ci_status</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ci_status</span><span class="p">(</span><span class="s1">'i2mint'</span><span class="p">,</span> <span class="n">hours_ago</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="go">{'i2mint/py2mqtt': 'failure',</span>
+<span class="go"> 'i2mint/mongodol': 'success',</span>
+<span class="go"> 'i2mint/dol': 'success',</span>
+<span class="go"> 'i2mint/stream2py': 'success',</span>
+<span class="go"> 'i2mint/creek': 'success'}</span>
+</pre></div>
+</div>
+</section>
+<section id="reporeader">
+<h2>RepoReader<a class="headerlink" href="#reporeader" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepoReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">RepoReader</span><span class="p">(</span><span class="s1">'thorwhalen/test_repo'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="go">['artifacts', 'assignees', 'autolinks', 'branches', 'codescan_alerts', 'collaborators', </span>
+<span class="go">'comments', 'commits', 'contributors', 'deployments', 'discussions', 'downloads', </span>
+<span class="go">'environments', 'events', 'forks', 'git_refs', 'hooks', 'issues', 'issues_comments', </span>
+<span class="go">'issues_events', 'labels', 'languages', 'milestones', 'network_events', </span>
+<span class="go">'notifications', 'pending_invitations', 'projects', 'pulls', 'pulls_comments', </span>
+<span class="go">'pulls_review_comments', 'releases', 'repository_advisories', 'secrets', </span>
+<span class="go">'self_hosted_runners', 'stargazers', 'stargazers_with_dates', 'stats_contributors', </span>
+<span class="go">'subscribers', 'tags', 'teams', 'top_paths', 'top_referrers', 'topics', 'variables', </span>
+<span class="go">'watchers', 'workflow_runs', 'workflows']</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'issues'</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">'issues'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">issues</span><span class="p">)</span>
+<span class="go">[4, 5]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span>
+<span class="go">Issue(title="Test Issue A", number=4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">([</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">issue_obj</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)])</span>
+<span class="go">['CHECK_AFTER_INIT_FLAG', 'active_lock_reason', 'add_to_assignees', 'add_to_labels', </span>
+<span class="go">'as_pull_request', 'assignee', 'assignees', 'body', 'closed_at', 'closed_by', </span>
+<span class="go">'comments', 'comments_url', 'create_comment', 'create_reaction', 'created_at', </span>
+<span class="go">'delete_labels', 'delete_reaction', 'edit', 'etag', 'events_url', 'get__repr__', </span>
+<span class="go">'get_comment', 'get_comments', 'get_events', 'get_labels', 'get_reactions', </span>
+<span class="go">'get_timeline', 'html_url', 'id', 'labels', 'labels_url', 'last_modified', 'lock', </span>
+<span class="go">'locked', 'milestone', 'number', 'pull_request', 'raw_data', 'raw_headers', </span>
+<span class="go">'remove_from_assignees', 'remove_from_labels', 'repository', 'setCheckAfterInitFlag', </span>
+<span class="go">'set_labels', 'state', 'state_reason', 'title', 'unlock', 'update', 'updated_at', </span>
+<span class="go">'url', 'user']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">number</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">state</span>
+<span class="go">'open'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">labels</span>
+<span class="go">[Label(name="documentation"), Label(name="enhancement")]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># title of issue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">title</span>
+<span class="go">'Test Issue A'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># content of issue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">body</span>
+<span class="go">'Contents of Test Issue A'</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_obj</span><span class="o">.</span><span class="n">comments</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comments</span><span class="p">())</span>
+<span class="go">[IssueComment(user=NamedUser(login="thorwhalen"), id=1801792378), </span>
+<span class="go">IssueComment(user=NamedUser(login="thorwhalen"), id=1801792855)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span> <span class="o">=</span> <span class="n">issue_obj</span><span class="o">.</span><span class="n">get_comment</span><span class="p">(</span><span class="mi">1801792378</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue_comment</span><span class="o">.</span><span class="n">body</span>
+<span class="go">'Comment 1 of Test Issue A'</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'discussions'</span> <span class="ow">in</span> <span class="n">r</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">'discussions'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">discussions</span><span class="p">)</span>
+<span class="go">[1, 2, 3]</span>
+</pre></div>
+</div>
+</section>
+<section id="hub-function">
+<h2>hub function<a class="headerlink" href="#hub-function" title="Link to this heading">#</a></h2>
+<p>The high level function <code class="docutils literal notranslate"><span class="pre">hub</span></code> is the simplest way to get started. It’s a
+function that takes a path to a github resource and returns a mapping to that
+resource. The mapping is lazy, so it’s only when you access a key that the
+resource is actually fetched from github.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repositories</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">repositories</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_repo</span> <span class="o">=</span> <span class="n">repositories</span><span class="p">[</span><span class="s1">'hubcap'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'master'</span> <span class="ow">in</span> <span class="n">repo</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">master_files</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">'master'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/master'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/README.md'</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/hubcap/'</span> <span class="ow">in</span> <span class="n">files</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hubcap_files</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="s1">'/hubcap/'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'/hubcap/base.py'</span> <span class="ow">in</span> <span class="n">hubcap_files</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<section id="access-issues">
+<h3>Access issues<a class="headerlink" href="#access-issues" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/issues'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">issues</span>  <span class="c1"># there's a "number 3" issue</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">title</span>
+<span class="go">'Test Issue'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">body</span>
+<span class="go">'This is just a test issue to test that hubcap can see it.\r\n'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">issue</span><span class="o">.</span><span class="n">comments</span>  <span class="c1"># meaning "number of comments"</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</section>
+<section id="access-discussions">
+<h3>Access discussions<a class="headerlink" href="#access-discussions" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">discussions</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/discussions'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get a list of discussion (keys)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">discussions</span><span class="p">)</span>
+<span class="go">[2, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># the discussion 2 should be included in that list</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="ow">in</span> <span class="n">discussions</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span>
+<span class="go">{'number': 2,</span>
+<span class="go"> 'title': 'Root interface of hubcap',</span>
+<span class="go"> 'body': 'Every time I need to do something with `hubcap` ...',</span>
+<span class="go"> 'author': {'login': 'thorwhalen'},</span>
+<span class="go"> 'createdAt': '2023-11-07T09:30:59Z',</span>
+<span class="go"> 'updatedAt': '2023-12-05T08:25:39Z',</span>
+<span class="go"> 'comments': [{'body': 'Further it would be nice if we ...',</span>
+<span class="go">   'author': 'thorwhalen',</span>
+<span class="go">   'replies': []}]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">discussion</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span>
+<span class="go">'Root interface of hubcap'</span>
+</pre></div>
+</div>
+<p>Here’s a nice trick for those want to download a discussion in a nice readable format,
+for you, or some AI, to look through.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_markdown_from_jdict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_string</span> <span class="o">=</span> <span class="n">create_markdown_from_jdict</span><span class="p">(</span><span class="n">discussion</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">markdown_string</span><span class="p">)</span>
+<span class="go"># Root interface of hubcap</span>
+
+<span class="go">Every time I need to do something with `hubcap` I need to look up how it works again. </span>
+
+<span class="go">That's negative points</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="githubreader">
+<h2>GithubReader<a class="headerlink" href="#githubreader" title="Link to this heading">#</a></h2>
+<p>One of the main classes is <code class="docutils literal notranslate"><span class="pre">GithubReader</span></code>. It’s a mapping that connects to a
+github user or organization, and returns a mapping of repositories. The
+repositories are also mappings, that return mappings of branches, and so on.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="go">['agen',</span>
+<span class="go"> 'aix',</span>
+<span class="go"> ...</span>
+<span class="go"> 'viral',</span>
+<span class="go"> 'wealth',</span>
+<span class="go"> 'wrapt']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'a_non_existing_repository_name'</span> <span class="ow">in</span> <span class="n">s</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">s</span>  <span class="c1"># of course, this will be true, it's what you're using now!</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">repo</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">'hubcap'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+<span class="go">['master']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">branch</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="s1">'master'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>
+<span class="go">['/.gitattributes', '/.github/', '/.gitignore', ...</span>
+<span class="go">'/hubcap/', '/misc/', '/pyproject.toml', '/tests/']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">content</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[</span><span class="s1">'/pyproject.toml'</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">[:</span><span class="mi">14</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="go">[build-system]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_repository_info</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">get_repository_info</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="go">['name', 'full_name', 'description', 'stargazers_count',</span>
+<span class="go">'forks_count', 'watchers_count', 'html_url', 'last_commit_date']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span>
+<span class="go">'hubcap'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'html_url'</span><span class="p">]</span>
+<span class="go">'https://github.com/thorwhalen/hubcap'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span><span class="p">[</span><span class="s1">'stargazers_count'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>You also have other useful objects, like <code class="docutils literal notranslate"><span class="pre">Issues</span></code>, <code class="docutils literal notranslate"><span class="pre">IssueComments</span></code>, <code class="docutils literal notranslate"><span class="pre">Discussions</span></code>, etc.</p>
+</section>
+<section id="cached-repository-artifacts">
+<h2>Cached Repository Artifacts<a class="headerlink" href="#cached-repository-artifacts" title="Link to this heading">#</a></h2>
+<p>Hubcap provides a convenient caching mechanism for repository artifacts like info, discussions, and issues. This allows you to work with GitHub data locally without repeatedly fetching from the API.</p>
+<section id="using-local-repo-artifacts">
+<h3>Using local_repo_artifacts<a class="headerlink" href="#using-local-repo-artifacts" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">local_repo_artifacts</span></code> object provides mapping interfaces to cached repository data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">local_repo_artifacts</span>
+
+<span class="c1"># Access cached repository info</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">local_repo_artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>  <span class="c1"># 'hubcap'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">"stargazers_count"</span><span class="p">])</span>  <span class="c1"># Number of stars</span>
+
+<span class="c1"># Access cached discussions</span>
+<span class="n">discussions</span> <span class="o">=</span> <span class="n">local_repo_artifacts</span><span class="o">.</span><span class="n">discussions</span><span class="p">[</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">discussion_number</span> <span class="ow">in</span> <span class="n">discussions</span><span class="p">:</span>
+    <span class="n">discussion</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="n">discussion_number</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Discussion </span><span class="si">{</span><span class="n">discussion_number</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">discussion</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Access cached issues</span>
+<span class="n">issues</span> <span class="o">=</span> <span class="n">local_repo_artifacts</span><span class="o">.</span><span class="n">issues</span><span class="p">[</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">issue_number</span> <span class="ow">in</span> <span class="n">issues</span><span class="p">:</span>
+    <span class="n">issue</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="n">issue_number</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Issue </span><span class="si">{</span><span class="n">issue_number</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">issue</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="controlling-cache-behavior">
+<h3>Controlling cache behavior<a class="headerlink" href="#controlling-cache-behavior" title="Link to this heading">#</a></h3>
+<p>You can control whether to use cached data or fetch fresh data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalRepoArtifacts</span>
+
+<span class="c1"># Use cached data (default)</span>
+<span class="n">cached_artifacts</span> <span class="o">=</span> <span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">cached_artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">]</span>  <span class="c1"># Uses cache if available</span>
+
+<span class="c1"># Always fetch fresh data and update cache</span>
+<span class="n">fresh_artifacts</span> <span class="o">=</span> <span class="n">LocalRepoArtifacts</span><span class="p">(</span><span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">fresh_artifacts</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">]</span>  <span class="c1"># Always fetches from GitHub</span>
+</pre></div>
+</div>
+</section>
+<section id="direct-caching-with-discussions-and-issues">
+<h3>Direct caching with Discussions and Issues<a class="headerlink" href="#direct-caching-with-discussions-and-issues" title="Link to this heading">#</a></h3>
+<p>You can also enable caching directly when creating <code class="docutils literal notranslate"><span class="pre">Discussions</span></code> or <code class="docutils literal notranslate"><span class="pre">Issues</span></code> objects:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discussions</span><span class="p">,</span> <span class="n">Issues</span>
+
+<span class="c1"># Enable caching for discussions</span>
+<span class="n">discussions</span> <span class="o">=</span> <span class="n">Discussions</span><span class="p">(</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">discussion_2</span> <span class="o">=</span> <span class="n">discussions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># Cached after first access</span>
+
+<span class="c1"># Enable caching for issues</span>
+<span class="n">issues</span> <span class="o">=</span> <span class="n">Issues</span><span class="p">(</span><span class="s2">"thorwhalen/hubcap"</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">issue_4</span> <span class="o">=</span> <span class="n">issues</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># Always fetches fresh and updates cache</span>
+</pre></div>
+</div>
+</section>
+<section id="cache-location">
+<h3>Cache location<a class="headerlink" href="#cache-location" title="Link to this heading">#</a></h3>
+<p>The cache is stored in your system’s application data directory:</p>
+<ul class="simple">
+<li><p>On Linux/Mac: <code class="docutils literal notranslate"><span class="pre">~/.local/share/hubcap/repos/{org}/{repo}/</span></code></p></li>
+<li><p>On Windows: <code class="docutils literal notranslate"><span class="pre">%LOCALAPPDATA%\hubcap\repos\{org}\{repo}\</span></code></p></li>
+</ul>
+<p>Each artifact type has its own subdirectory:</p>
+<ul class="simple">
+<li><p>Info: <code class="docutils literal notranslate"><span class="pre">info.json</span></code> (single file per repo)</p></li>
+<li><p>Discussions: <code class="docutils literal notranslate"><span class="pre">discussions/{number}.json</span></code> (one file per discussion)</p></li>
+<li><p>Issues: <code class="docutils literal notranslate"><span class="pre">issues/{number}.json</span></code> (one file per issue)</p></li>
+</ul>
+<p>You can customize the cache location with the <code class="docutils literal notranslate"><span class="pre">HUBCAP_DATA_FOLDER</span></code> environment variable.</p>
+</section>
+</section>
+<section id="github-repo-text-aggregate">
+<h2>github_repo_text_aggregate<a class="headerlink" href="#github-repo-text-aggregate" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">owner_repo_files</span> <span class="o">=</span> <span class="n">github_repo_text_aggregate</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_output</span> <span class="o">=</span> <span class="n">github_repo_text_aggregate</span><span class="p">(</span><span class="n">owner_repo_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recipes">
+<h1>Recipes<a class="headerlink" href="#recipes" title="Link to this heading">#</a></h1>
+<section id="clone-to-temp-folder-and-get-store-mapping-of-files">
+<h2>Clone to temp folder and get store (mapping) of files<a class="headerlink" href="#clone-to-temp-folder-and-get-store-mapping-of-files" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">git_clone</span><span class="p">,</span> <span class="n">git_wiki_clone</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextFiles</span><span class="p">,</span> <span class="n">filt_iter</span><span class="p">,</span> <span class="n">Pipe</span>
+
+<span class="n">repo_py_files</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">git_clone</span><span class="p">,</span> <span class="n">TextFiles</span><span class="p">,</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">filt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".py"</span><span class="p">)))</span>
+<span class="n">repo_wiki_files</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="n">git_wiki_clone</span><span class="p">,</span> <span class="n">TextFiles</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">py_files</span> <span class="o">=</span> <span class="n">repo_py_files</span><span class="p">(</span><span class="s2">"i2mint/dol"</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">py_files</span><span class="p">)</span>
+<span class="c1"># 37</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_files</span> <span class="o">=</span> <span class="n">repo_wiki_files</span><span class="p">(</span><span class="s2">"i2mint/dol"</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">wiki_files</span><span class="p">)</span>
+<span class="c1"># ['Recipes.md',</span>
+<span class="c1">#  'Critiques-and-their-comebacks.md',</span>
+<span class="c1">#  'Home.md',</span>
+<span class="c1">#  'Mapping-Views.md']</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="licensing">
+<h1>Licensing<a class="headerlink" href="#licensing" title="Link to this heading">#</a></h1>
+<p>hubcap itself is <strong>Apache-2.0</strong> (see <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code>).</p>
+<p>One dependency is not permissively licensed: <strong>PyGithub</strong> ships a single
+<code class="docutils literal notranslate"><span class="pre">License</span> <span class="pre">::</span> <span class="pre">OSI</span> <span class="pre">Approved</span> <span class="pre">::</span> <span class="pre">GNU</span> <span class="pre">Library</span> <span class="pre">or</span> <span class="pre">Lesser</span> <span class="pre">General</span> <span class="pre">Public</span> <span class="pre">License</span> <span class="pre">(LGPL)</span></code>
+classifier. This is a knowing, recorded decision rather than an oversight —
+hubcap <em>is</em> a <code class="docutils literal notranslate"><span class="pre">dol</span></code> interface to the GitHub API, so PyGithub is load-bearing and
+its objects are part of hubcap’s public surface. The full reasoning, and the
+conditions under which the decision should be revisited, live in
+<code class="docutils literal notranslate"><span class="pre">[tool.wads.licence]</span></code> in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+<p>What this means in practice: importing hubcap does not change the licence of
+your code, but <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">hubcap</span></code> puts an LGPL library in your environment.
+If you <strong>redistribute</strong> a bundled/frozen artifact (PyInstaller and friends)
+rather than letting pip install PyGithub as a separate, replaceable
+distribution, the LGPL relinking obligations are yours to honour.</p>
+<section id="snapshot-orgs-issues-prs-discussions">
+<h2>Snapshot orgs: issues, PRs, discussions<a class="headerlink" href="#snapshot-orgs-issues-prs-discussions" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.snapshot</span><span class="w"> </span><span class="kn">import</span> <span class="n">snapshot_github</span>
+<span class="n">snapshot_github</span><span class="p">([</span><span class="s2">"my-org"</span><span class="p">],</span> <span class="n">store</span><span class="o">=</span><span class="s2">"my_snapshot"</span><span class="p">)</span>  <span class="c1"># markdown + index.jsonl + raw.jsonl</span>
+</pre></div>
+</div>
+<p>Incremental: re-runs fetch only items updated since the last run. Seams: <code class="docutils literal notranslate"><span class="pre">client=</span></code> (data source), <code class="docutils literal notranslate"><span class="pre">store=</span></code> (any <code class="docutils literal notranslate"><span class="pre">MutableMapping</span></code>), <code class="docutils literal notranslate"><span class="pre">render=</span></code> (markdown strategy).</p>
+<p class="epythet-aggregates">This documentation as a single file: <a href="hubcap.md">hubcap.md</a> (Markdown, for agents).</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-20 11:19 UTC from <a href="https://github.com/thorwhalen/hubcap/commit/8bd6cecdb4bc11ccee965f422a1d9d4807993cc1">8bd6cec</a> (master) · hubcap 0.1.24 · <a href="about-this-build.html">about this build</a></p>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">hubcap</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basics">Basics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#listing-repositories-and-information-about-them">Listing repositories and information about them</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reporeader">RepoReader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hub-function">hub function</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access-issues">Access issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#access-discussions">Access discussions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#githubreader">GithubReader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cached-repository-artifacts">Cached Repository Artifacts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-local-repo-artifacts">Using local_repo_artifacts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#controlling-cache-behavior">Controlling cache behavior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-caching-with-discussions-and-issues">Direct caching with Discussions and Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-location">Cache location</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github-repo-text-aggregate">github_repo_text_aggregate</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#recipes">Recipes</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clone-to-temp-folder-and-get-store-mapping-of-files">Clone to temp folder and get store (mapping) of files</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#licensing">Licensing</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snapshot-orgs-issues-prs-discussions">Snapshot orgs: issues, PRs, discussions</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/index.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>

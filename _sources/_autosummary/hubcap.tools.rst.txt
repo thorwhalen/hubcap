@@ -1,0 +1,32 @@
+hubcap.tools
+============
+
+.. automodule:: hubcap.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      copy_discussion
+      create_discussion
+      create_discussion_comment
+      get_author_commits
+      get_ci_info
+      get_discussion_data
+      get_github_token
+      get_repository_id
+      hub
+      notebook_to_markdown
+      parse_github_discussion_url
+      parse_github_repo_url
+      postprocess_markdown_from_notebook
+      run_graphql_query
+      team_repositories_action
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      LocalRepoArtifacts
+   

@@ -1,0 +1,20 @@
+hubcap.snapshot
+===============
+
+.. automodule:: hubcap.snapshot
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      render_markdown
+      snapshot_github
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      GithubClient
+      SnapshotClient
+   

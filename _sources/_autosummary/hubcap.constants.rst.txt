@@ -1,0 +1,12 @@
+hubcap.constants
+================
+
+.. automodule:: hubcap.constants
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      repo_collection_names_
+   

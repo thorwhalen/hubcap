@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-20T11:19:34Z",
+  "package": {
+    "name": "hubcap",
+    "version": "0.1.24",
+    "display_name": "hubcap",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "8bd6cecdb4bc11ccee965f422a1d9d4807993cc1",
+    "short_commit": "8bd6cec",
+    "branch": "master",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/thorwhalen/hubcap",
+    "commit_url": "https://github.com/thorwhalen/hubcap/commit/8bd6cecdb4bc11ccee965f422a1d9d4807993cc1",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "thorwhalen/hubcap",
+    "sha": "8bd6cecdb4bc11ccee965f422a1d9d4807993cc1",
+    "sha_in_history": true,
+    "ref": "refs/heads/master",
+    "ref_name": "master",
+    "run_id": "39413928540",
+    "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/39413928540",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.19",
+    "sphinx": "9.1.1",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "pydata_sphinx_theme",
+    "accent": "#006e52",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 9,
+    "objects_documented": 103
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.1.24",
+    "relation": "same",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/thorwhalen/hubcap && cd hubcap\ngit checkout 8bd6cecdb4bc11ccee965f422a1d9d4807993cc1\npip install \"epythet==0.2.19\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": true,
+    "notes": []
+  }
+}
