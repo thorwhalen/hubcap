@@ -100,15 +100,15 @@ True
 
 ### Access issues
 
->>> issues = hub('thorwhalen/hubcap/issues')
->>> 3 in issues  # there's a "number 3" issue
+>>> issues = hub('thorwhalen/hubcap/issues')  # doctest: +SKIP
+>>> 3 in issues  # there's a "number 3" issue  # doctest: +SKIP
 True
->>> issue = issues[3]
->>> issue.title
+>>> issue = issues[3]  # doctest: +SKIP
+>>> issue.title  # doctest: +SKIP
 'Test Issue'
->>> issue.body
+>>> issue.body  # doctest: +SKIP
 'This is just a test issue to test that hubcap can see it.\r\n'
->>> issue.comments  # meaning "number of comments"
+>>> issue.comments  # meaning "number of comments"  # doctest: +SKIP
 2
 
 ### Access discussions
