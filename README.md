@@ -466,3 +466,12 @@ your code, but `pip install hubcap` puts an LGPL library in your environment.
 If you **redistribute** a bundled/frozen artifact (PyInstaller and friends)
 rather than letting pip install PyGithub as a separate, replaceable
 distribution, the LGPL relinking obligations are yours to honour.
+
+## Snapshot orgs: issues, PRs, discussions
+
+```python
+from hubcap.snapshot import snapshot_github
+snapshot_github(["my-org"], store="my_snapshot")  # markdown + index.jsonl + raw.jsonl
+```
+
+Incremental: re-runs fetch only items updated since the last run. Seams: `client=` (data source), `store=` (any `MutableMapping`), `render=` (markdown strategy).
