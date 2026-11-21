@@ -1,4 +1,4 @@
-> built 2026-10-20 11:19 UTC from 8bd6cec (master) · hubcap 0.1.24. Details: build_info.json
+> built 2026-11-21 18:43 UTC from bc604b6 (master) · hubcap 0.1.25. Details: build_info.json
 
 # index.html.md
 
@@ -468,6 +468,7 @@ distribution, the LGPL relinking obligations are yours to honour.
 
 ```python
 from hubcap.snapshot import snapshot_github
+
 snapshot_github(["my-org"], store="my_snapshot")  # markdown + index.jsonl + raw.jsonl
 ```
 
@@ -2420,16 +2421,18 @@ Transforms a GitHub URL to another type, updating components as needed.
 
 # About this build
 
-This documentation was built on **2026-10-20 11:19 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/8bd6cecdb4bc11ccee965f422a1d9d4807993cc1"><code>8bd6cec</code></a> on branch <code>master</code>, for **hubcap 0.1.24** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-21 18:43 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/bc604b6646806add2d2783651d59c3996fc83c70"><code>bc604b6</code></a> on branch <code>master</code>, for **hubcap 0.1.25** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.25) is behind the latest release on PyPI (0.1.26): `pip install hubcap` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/8bd6cecdb4bc11ccee965f422a1d9d4807993cc1"><code>8bd6cecdb4bc11ccee965f422a1d9d4807993cc1</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/bc604b6646806add2d2783651d59c3996fc83c70"><code>bc604b6646806add2d2783651d59c3996fc83c70</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2440,18 +2443,18 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/39413928540">39413928540</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/44936879076">44936879076</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>8bd6cecdb4bc11ccee965f422a1d9d4807993cc1</code> (in the history of the built commit) |
+| Event commit | <code>bc604b6646806add2d2783651d59c3996fc83c70</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.19  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -2467,14 +2470,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.24/">0.1.24</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.26/">0.1.26</a>, newer than the documented version (0.1.25).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout 8bd6cecdb4bc11ccee965f422a1d9d4807993cc1
-pip install "epythet==0.2.19"
+git checkout bc604b6646806add2d2783651d59c3996fc83c70
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
