@@ -347,7 +347,7 @@ def _decode_to_text_or_skip(obj, log_error_function=False):
 
 def all_decodable_text_folder_to_mapping(folder):
     """A folder_to_mapping function that takes"""
-    return wrap_kvs(Files(folder), obj_of_data=_decode_to_text_or_skip)
+    return wrap_kvs(Files(folder), value_decoder=_decode_to_text_or_skip)
 
 
 def key_filtered_text_files(folder, key_pattern):
