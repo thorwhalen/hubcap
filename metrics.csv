@@ -1,8 +1,8 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-21T18:40:35.081741Z
-commit_sha,d5f0f7268bbac16e42b80525cb6e4eb69bba763f
-commit_message,Merge 6cc340acfb622d97b88291e6a91d3d6b963c4044 into 937b074c42c0735be1707c9e474c5b40be0b56dc
+timestamp,2026-11-21T18:40:45.324965Z
+commit_sha,6cc340acfb622d97b88291e6a91d3d6b963c4044
+commit_message,Use the encoder/decoder keywords of wrap_kvs (dol 0.4 deprecates X_of_Y)
 python_version,3.10
 metrics.umpyre_stats.num_functions,25341
 metrics.umpyre_stats.num_classes,3490
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,7.225257158279419
+collection_duration_seconds,8.402616024017334
