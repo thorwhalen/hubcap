@@ -182,7 +182,7 @@ class IssueCommentsBase(KvReader):
         return self._comments[k]
 
 
-@wrap_kvs(obj_of_data=attrgetter("body"))
+@wrap_kvs(value_decoder=attrgetter("body"))
 class IssueComments(IssueCommentsBase):
     """Mapping interface to repository issue comments' body"""
 

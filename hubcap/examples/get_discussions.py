@@ -16,8 +16,8 @@ from dol import Files, wrap_kvs, TextFiles, path_get
 import dill
 import requests
 
-LocalDillStore = wrap_kvs(Files, data_of_obj=dill.dumps, obj_of_data=dill.loads)
-LocalJsonStore = wrap_kvs(TextFiles, data_of_obj=json.dumps, obj_of_data=json.loads)
+LocalDillStore = wrap_kvs(Files, value_encoder=dill.dumps, value_decoder=dill.loads)
+LocalJsonStore = wrap_kvs(TextFiles, value_encoder=json.dumps, value_decoder=json.loads)
 
 APP_NAME = "hubcap"
 get_config = simple_config_getter(APP_NAME)
@@ -114,7 +114,7 @@ class Discussion:
 
 LocalDiscussionsStore = wrap_kvs(
     LocalJsonStore,
-    obj_of_data=lambda d: Discussion(
+    value_decoder=lambda d: Discussion(
         body=d["body"], title=d["title"], comments=d["comments"]
     ),
 )
