@@ -1,5 +1,5 @@
 {
-  "collection_duration_seconds": 5.5586419105529785,
+  "collection_duration_seconds": 8.66918683052063,
   "commit_message": "Use the encoder/decoder keywords of wrap_kvs (dol 0.4 deprecates X_of_Y) (#16)",
   "commit_sha": "bc604b6646806add2d2783651d59c3996fc83c70",
   "metrics": {
@@ -11,29 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 46312,
-      "comment_lines_ratio": 0.058180173615909346,
-      "docs_lines": 201881,
-      "empty_lines": 113840,
-      "empty_lines_ratio": 0.14301327872765418,
-      "errors": [
-        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)",
-        "_scalars.py: invalid syntax (_scalars.py, line 7)",
-        "_shape.py: invalid syntax (_shape.py, line 4)",
-        "_nbit.py: invalid syntax (_nbit.py, line 6)",
-        "_array_like.py: invalid syntax (_array_like.py, line 15)",
-        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
-        "_char_codes.py: invalid syntax (_char_codes.py, line 3)"
-      ],
-      "files_analyzed": 1504,
-      "function_lines": 517439,
-      "function_lines_ratio": 0.6500408286328061,
-      "mean_lines_per_function": 21.082097457627118,
-      "num_classes": 3239,
-      "num_functions": 24544,
+      "comment_lines": 45424,
+      "comment_lines_ratio": 0.0582286561799366,
+      "docs_lines": 165445,
+      "empty_lines": 112090,
+      "empty_lines_ratio": 0.14368725940492016,
+      "files_analyzed": 1598,
+      "function_lines": 486521,
+      "function_lines_ratio": 0.623667313167465,
+      "mean_lines_per_function": 19.19896610236376,
+      "num_classes": 3490,
+      "num_functions": 25341,
       "pypi_version": "0.1.25",
-      "total_errors": 7,
-      "total_lines": 796010
+      "total_lines": 780097
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -52,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-21T18:42:36.190676Z",
+  "timestamp": "2026-11-21T18:42:49.925296Z",
   "workflow_status": {}
 }
