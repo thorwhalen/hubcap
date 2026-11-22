@@ -28,7 +28,7 @@ from collections.abc import Callable, Iterable
 KvToText = Callable[[KT, VT], str]
 
 
-def kv_to_python_aware_markdown(k, v):
+def kv_to_python_aware_markdown(k, v) -> str:
     """Puts .py content in a code block, and returns a markdown formatted string."""
     if k.endswith(".py"):
         # if it's a python file, we'll put it in a code block

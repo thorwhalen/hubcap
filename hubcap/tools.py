@@ -56,7 +56,7 @@ def team_repositories_action(
     action: Literal["add_to_repo", "remove_from_repos"],
     org: str,
     wait_s: int = 1,
-):
+) -> None:
     """
     Add a list of repositories to a team with read permission
     """
@@ -514,7 +514,7 @@ def create_discussion_comment(discussion_id, body):
 
 def copy_discussion(
     source_discussion_url, target_repo_url, *, target_category_name="General"
-):
+) -> None:
     """
     Copies a discussion from a source URL to a target repository URL.
     Attempts to preserve content and provide context for original authors/timestamps.
@@ -886,7 +886,7 @@ def _issue_to_dict(issue_obj) -> dict:
 class _RepoInfoMapping(KvReader):
     """Mapping interface to cached repository info.json files."""
 
-    def __init__(self, refresh: bool = False):
+    def __init__(self, refresh: bool = False) -> None:
         self.refresh = refresh
         self._cache_dir = repo_cache_dir
 
@@ -910,7 +910,7 @@ class _RepoInfoMapping(KvReader):
 class _RepoArtifactMapping(KvReader):
     """Base class for mapping interfaces to cached repository artifacts."""
 
-    def __init__(self, artifact_type: str, artifact_class, refresh: bool = False):
+    def __init__(self, artifact_type: str, artifact_class, refresh: bool = False) -> None:
         self.artifact_type = artifact_type
         self.artifact_class = artifact_class
         self.refresh = refresh
@@ -956,7 +956,7 @@ class _RepoArtifactMapping(KvReader):
 class _DiscussionsMapping(_RepoArtifactMapping):
     """Mapping interface to cached repository discussions."""
 
-    def __init__(self, refresh: bool = False):
+    def __init__(self, refresh: bool = False) -> None:
         super().__init__(
             artifact_type="discussions",
             artifact_class=Discussions,
@@ -967,7 +967,7 @@ class _DiscussionsMapping(_RepoArtifactMapping):
 class _IssuesMapping(_RepoArtifactMapping):
     """Mapping interface to cached repository issues."""
 
-    def __init__(self, refresh: bool = False):
+    def __init__(self, refresh: bool = False) -> None:
         super().__init__(
             artifact_type="issues",
             artifact_class=Issues,
@@ -987,7 +987,7 @@ class _IssuesMapping(_RepoArtifactMapping):
 class _CIMapping(KvReader):
     """Mapping interface to cached repository CI (GitHub Actions) information."""
 
-    def __init__(self, refresh: bool = False):
+    def __init__(self, refresh: bool = False) -> None:
         self.refresh = refresh
 
     def __iter__(self):
@@ -1048,7 +1048,7 @@ class LocalRepoArtifacts(KvReader):
         - CI: ~/.local/share/hubcap/repos/thorwhalen/hubcap/ci_info.json
     """
 
-    def __init__(self, refresh: bool = False):
+    def __init__(self, refresh: bool = False) -> None:
         self.refresh = refresh
         self.info = add_ipython_key_completions(_RepoInfoMapping(refresh=refresh))
         self.discussions = add_ipython_key_completions(
@@ -1071,7 +1071,7 @@ class LocalRepoArtifacts(KvReader):
         """Get an artifact mapping by name."""
         return self._artifacts[key]
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return number of artifact types."""
         return len(self._artifacts)
 
