@@ -1,5 +1,5 @@
 {
-  "collection_duration_seconds": 5.2254698276519775,
+  "collection_duration_seconds": 5.796704053878784,
   "commit_message": "types: annotate actions and None returns [skip publish] (#21)",
   "commit_sha": "7c01bb92b55f51bc53ed679c00bf3b2c98e0b743",
   "metrics": {
@@ -11,19 +11,29 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 45427,
-      "comment_lines_ratio": 0.058224515639499416,
-      "docs_lines": 165502,
-      "empty_lines": 112105,
-      "empty_lines_ratio": 0.143686779355143,
-      "files_analyzed": 1598,
-      "function_lines": 486623,
-      "function_lines_ratio": 0.6237125162137082,
-      "mean_lines_per_function": 19.20071811868687,
-      "num_classes": 3490,
-      "num_functions": 25344,
+      "comment_lines": 46315,
+      "comment_lines_ratio": 0.05817612235387512,
+      "docs_lines": 201938,
+      "empty_lines": 113855,
+      "empty_lines_ratio": 0.1430128988578312,
+      "errors": [
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1504,
+      "function_lines": 517541,
+      "function_lines_ratio": 0.6500815834858444,
+      "mean_lines_per_function": 21.08367621297918,
+      "num_classes": 3239,
+      "num_functions": 24547,
       "pypi_version": "0.1.29",
-      "total_lines": 780204
+      "total_errors": 7,
+      "total_lines": 796117
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -42,6 +52,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T21:57:02.621434Z",
+  "timestamp": "2026-11-22T21:57:08.007799Z",
   "workflow_status": {}
 }
