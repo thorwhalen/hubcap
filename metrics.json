@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 6.349519491195679,
-  "commit_message": "Coverage pass: offline tests for casting conversions and render_markdown [skip publish]",
-  "commit_sha": "55b1a543e19443c131173b08566b778e0698fd81",
+  "collection_duration_seconds": 7.040015935897827,
+  "commit_message": "Merge 55b1a543e19443c131173b08566b778e0698fd81 into ec8efdb5a6faa57897c6837a5fdb806a545a45f5",
+  "commit_sha": "ffa96a659ea96ec2959d62104ddf8b83b2b400c3",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,29 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 46315,
-      "comment_lines_ratio": 0.05817656080621923,
-      "docs_lines": 201938,
-      "empty_lines": 113855,
-      "empty_lines_ratio": 0.1430139766942047,
-      "errors": [
-        "_shape.py: invalid syntax (_shape.py, line 4)",
-        "_array_like.py: invalid syntax (_array_like.py, line 15)",
-        "_nbit.py: invalid syntax (_nbit.py, line 6)",
-        "_scalars.py: invalid syntax (_scalars.py, line 7)",
-        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
-        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
-        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
-      ],
-      "files_analyzed": 1504,
-      "function_lines": 517535,
-      "function_lines_ratio": 0.650078946277592,
-      "mean_lines_per_function": 21.083431783924716,
-      "num_classes": 3239,
-      "num_functions": 24547,
+      "comment_lines": 45427,
+      "comment_lines_ratio": 0.05822496340672496,
+      "docs_lines": 165502,
+      "empty_lines": 112105,
+      "empty_lines_ratio": 0.14368788435756052,
+      "files_analyzed": 1598,
+      "function_lines": 486617,
+      "function_lines_ratio": 0.6237096224291783,
+      "mean_lines_per_function": 19.200481376262626,
+      "num_classes": 3490,
+      "num_functions": 25344,
       "pypi_version": "0.1.26",
-      "total_errors": 7,
-      "total_lines": 796111
+      "total_lines": 780198
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -52,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T18:48:02.603774Z",
+  "timestamp": "2026-11-22T18:48:05.920716Z",
   "workflow_status": {}
 }
