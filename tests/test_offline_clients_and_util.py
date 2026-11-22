@@ -110,9 +110,10 @@ def test_token_and_session_are_lazy(monkeypatch):
 
 
 def test_url_helpers():
-    assert util.ensure_slash_suffix("a") == "a/"
-    assert util.ensure_slash_suffix("a/") == "a/"
-    assert util.ensure_no_slash_suffix("a//") == "a"
+    sep = util.path_sep
+    assert util.ensure_slash_suffix("a") == "a" + sep
+    assert util.ensure_slash_suffix("a" + sep) == "a" + sep
+    assert util.ensure_no_slash_suffix("a" + sep * 2) == "a"
     assert util.ensure_url_suffix("https://github.com/o/r/") == "o/r"
     assert util.ensure_full_name("github.com/o/r") == "o/r"
     with pytest.raises(ValueError):
