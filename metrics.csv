@@ -1,8 +1,8 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-22T18:48:05.920716Z
-commit_sha,ffa96a659ea96ec2959d62104ddf8b83b2b400c3
-commit_message,Merge 55b1a543e19443c131173b08566b778e0698fd81 into ec8efdb5a6faa57897c6837a5fdb806a545a45f5
+timestamp,2026-11-22T18:48:09.232458Z
+commit_sha,55b1a543e19443c131173b08566b778e0698fd81
+commit_message,Coverage pass: offline tests for casting conversions and render_markdown [skip publish]
 python_version,3.10
 metrics.umpyre_stats.num_functions,25344
 metrics.umpyre_stats.num_classes,3490
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,7.040015935897827
+collection_duration_seconds,7.194141387939453
