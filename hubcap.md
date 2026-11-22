@@ -1,4 +1,4 @@
-> built 2026-11-22 18:59 UTC from a9d608f (master) · hubcap 0.1.27. Details: build_info.json
+> built 2026-11-22 19:54 UTC from 7fc65e5 (master) · hubcap 0.1.28. Details: build_info.json
 
 # index.html.md
 
@@ -23,6 +23,7 @@ it’s easy to get). You’ll have to specify this token when making hubcap obje
 or put it in an environmental variable under the name `GITHUB_TOKEN` or `HUBCAP_GITHUB_TOKEN`
 (useful since github actions doesn’t allow you to have env variables starting with `GITHUB`).
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 >>> s = GitHubReader('thorwhalen')  # connnecting to a particular user/organization
 >>> list(s)
@@ -215,6 +216,7 @@ function that takes a path to a github resource and returns a mapping to that
 resource. The mapping is lazy, so it’s only when you access a key that the
 resource is actually fetched from github.
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 >>> repositories = hub('thorwhalen')
 >>> 'hubcap' in repositories
@@ -238,6 +240,7 @@ True
 
 ### Access issues
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 >>> issues = hub('thorwhalen/hubcap/issues')
 >>> 3 in issues  # there's a "number 3" issue
@@ -296,6 +299,7 @@ One of the main classes is `GithubReader`. It’s a mapping that connects to a
 github user or organization, and returns a mapping of repositories. The
 repositories are also mappings, that return mappings of branches, and so on.
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 >>> from hubcap import GithubReader
 >>> s = GithubReader('thorwhalen')  # connnecting to a particular user/organization
@@ -344,6 +348,7 @@ Hubcap provides a convenient caching mechanism for repository artifacts like inf
 
 The `local_repo_artifacts` object provides mapping interfaces to cached repository data:
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 from hubcap import local_repo_artifacts
 
@@ -369,6 +374,7 @@ for issue_number in issues:
 
 You can control whether to use cached data or fetch fresh data:
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 from hubcap import LocalRepoArtifacts
 
@@ -385,6 +391,7 @@ info = fresh_artifacts.info["thorwhalen/hubcap"]  # Always fetches from GitHub
 
 You can also enable caching directly when creating `Discussions` or `Issues` objects:
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 from hubcap import Discussions, Issues
 
@@ -437,6 +444,7 @@ len(py_files)
 # 37
 ```
 
+<!-- wads-docs: skip - blocked by thorwhalen/hubcap#19 (git_wiki_clone unpack bug); also clones over the network -->
 ```python
 wiki_files = repo_wiki_files("i2mint/dol")
 list(wiki_files)
@@ -466,6 +474,7 @@ distribution, the LGPL relinking obligations are yours to honour.
 
 ## Snapshot orgs: issues, PRs, discussions
 
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
 from hubcap.snapshot import snapshot_github
 
@@ -2421,16 +2430,18 @@ Transforms a GitHub URL to another type, updating components as needed.
 
 # About this build
 
-This documentation was built on **2026-11-22 18:59 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f"><code>a9d608f</code></a> on branch <code>master</code>, for **hubcap 0.1.27** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:54 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5</code></a> on branch <code>master</code>, for **hubcap 0.1.28** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.28) is behind the latest release on PyPI (0.1.29): `pip install hubcap` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f"><code>a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2441,9 +2452,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45058014568">45058014568</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45063184550">45063184550</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f</code> (in the history of the built commit) |
+| Event commit | <code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2468,13 +2479,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.27/">0.1.27</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.29/">0.1.29</a>, newer than the documented version (0.1.28).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f
+git checkout 7fc65e5006dba0e42c8a92efb7513ba326e8764e
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

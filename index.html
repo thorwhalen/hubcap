@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=dc233e31"></script>
+    <script src="_static/documentation_options.js?v=34399df3"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.27" />
+  <meta name="docsearch:version" content="0.1.28" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -336,6 +336,7 @@
 it’s easy to get). You’ll have to specify this token when making hubcap objects,
 or put it in an environmental variable under the name <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code> or <code class="docutils literal notranslate"><span class="pre">HUBCAP_GITHUB_TOKEN</span></code>
 (useful since github actions doesn’t allow you to have env variables starting with <code class="docutils literal notranslate"><span class="pre">GITHUB</span></code>).</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GitHubReader</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="go">['agen',</span>
@@ -520,6 +521,7 @@ or put it in an environmental variable under the name <code class="docutils lite
 function that takes a path to a github resource and returns a mapping to that
 resource. The mapping is lazy, so it’s only when you access a key that the
 resource is actually fetched from github.</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">repositories</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="s1">'hubcap'</span> <span class="ow">in</span> <span class="n">repositories</span>
 <span class="go">True</span>
@@ -542,6 +544,7 @@ resource is actually fetched from github.</p>
 </div>
 <section id="access-issues">
 <h3>Access issues<a class="headerlink" href="#access-issues" title="Link to this heading">#</a></h3>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">issues</span> <span class="o">=</span> <span class="n">hub</span><span class="p">(</span><span class="s1">'thorwhalen/hubcap/issues'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">3</span> <span class="ow">in</span> <span class="n">issues</span>  <span class="c1"># there's a "number 3" issue</span>
 <span class="go">True</span>
@@ -598,6 +601,7 @@ for you, or some AI, to look through.</p>
 <p>One of the main classes is <code class="docutils literal notranslate"><span class="pre">GithubReader</span></code>. It’s a mapping that connects to a
 github user or organization, and returns a mapping of repositories. The
 repositories are also mappings, that return mappings of branches, and so on.</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">GithubReader</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">GithubReader</span><span class="p">(</span><span class="s1">'thorwhalen'</span><span class="p">)</span>  <span class="c1"># connnecting to a particular user/organization</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -643,6 +647,7 @@ repositories are also mappings, that return mappings of branches, and so on.</p>
 <section id="using-local-repo-artifacts">
 <span id="using-local_repo_artifacts"></span><h3>Using local_repo_artifacts<a class="headerlink" href="#using-local-repo-artifacts" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">local_repo_artifacts</span></code> object provides mapping interfaces to cached repository data:</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">local_repo_artifacts</span>
 
 <span class="c1"># Access cached repository info</span>
@@ -667,6 +672,7 @@ repositories are also mappings, that return mappings of branches, and so on.</p>
 <section id="controlling-cache-behavior">
 <h3>Controlling cache behavior<a class="headerlink" href="#controlling-cache-behavior" title="Link to this heading">#</a></h3>
 <p>You can control whether to use cached data or fetch fresh data:</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalRepoArtifacts</span>
 
 <span class="c1"># Use cached data (default)</span>
@@ -682,6 +688,7 @@ repositories are also mappings, that return mappings of branches, and so on.</p>
 <section id="direct-caching-with-discussions-and-issues">
 <h3>Direct caching with Discussions and Issues<a class="headerlink" href="#direct-caching-with-discussions-and-issues" title="Link to this heading">#</a></h3>
 <p>You can also enable caching directly when creating <code class="docutils literal notranslate"><span class="pre">Discussions</span></code> or <code class="docutils literal notranslate"><span class="pre">Issues</span></code> objects:</p>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discussions</span><span class="p">,</span> <span class="n">Issues</span>
 
 <span class="c1"># Enable caching for discussions</span>
@@ -734,6 +741,7 @@ repositories are also mappings, that return mappings of branches, and so on.</p>
 <span class="c1"># 37</span>
 </pre></div>
 </div>
+<!-- wads-docs: skip - blocked by thorwhalen/hubcap#19 (git_wiki_clone unpack bug); also clones over the network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wiki_files</span> <span class="o">=</span> <span class="n">repo_wiki_files</span><span class="p">(</span><span class="s2">"i2mint/dol"</span><span class="p">)</span>
 <span class="nb">list</span><span class="p">(</span><span class="n">wiki_files</span><span class="p">)</span>
 <span class="c1"># ['Recipes.md',</span>
@@ -761,6 +769,7 @@ rather than letting pip install PyGithub as a separate, replaceable
 distribution, the LGPL relinking obligations are yours to honour.</p>
 <section id="snapshot-orgs-issues-prs-discussions">
 <h2>Snapshot orgs: issues, PRs, discussions<a class="headerlink" href="#snapshot-orgs-issues-prs-discussions" title="Link to this heading">#</a></h2>
+<!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">hubcap.snapshot</span><span class="w"> </span><span class="kn">import</span> <span class="n">snapshot_github</span>
 
 <span class="n">snapshot_github</span><span class="p">([</span><span class="s2">"my-org"</span><span class="p">],</span> <span class="n">store</span><span class="o">=</span><span class="s2">"my_snapshot"</span><span class="p">)</span>  <span class="c1"># markdown + index.jsonl + raw.jsonl</span>
@@ -773,7 +782,7 @@ distribution, the LGPL relinking obligations are yours to honour.</p>
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 18:59 UTC from <a href="https://github.com/thorwhalen/hubcap/commit/a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f">a9d608f</a> (master) · hubcap 0.1.27 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 19:54 UTC from <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e">7fc65e5</a> (master) · hubcap 0.1.28 · <a href="about-this-build.html">about this build</a></p>
 
                 </article>
               
