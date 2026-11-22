@@ -630,7 +630,7 @@ def git_clone(repo, clone_to_folder=None, branch=None):
 
 
 def git_wiki_clone(repo, clone_to_folder=None, *, suppress_errors=False):
-    repo_url, clone_to_folder = _prep_git_clone_args(repo, clone_to_folder)
+    repo_url, clone_to_folder, _ = _prep_git_clone_args(repo, clone_to_folder)
     try:
         git(
             f"clone {repo_url}.wiki.git {clone_to_folder}",
