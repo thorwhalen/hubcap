@@ -447,7 +447,7 @@ len(py_files)
 # 37
 ```
 
-<!-- wads-docs: skip - blocked by thorwhalen/hubcap#19 (git_wiki_clone unpack bug); also clones over the network -->
+<!-- wads-docs: skip - clones over the network -->
 ```python
 wiki_files = repo_wiki_files("i2mint/dol")
 list(wiki_files)
