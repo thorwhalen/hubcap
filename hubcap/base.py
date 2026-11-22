@@ -76,7 +76,7 @@ class RepoObjects(KvReader):
         objs_to_items=enumerate,
         data_of_obj=identity,
         get_objs_kwargs=None,
-    ):
+    ) -> None:
         self.repo = ensure_repo_obj(repo)
         self.get_objs = get_objs
         self.data_of_obj = data_of_obj
@@ -138,7 +138,7 @@ class RepoReader(KvReader):
     repo_collection_names = sorted(set(repo_collection_names) | {"discussions"})
 
     # TODO: Separate error handling concern: https://github.com/i2mint/i2/issues/45
-    def __init__(self, repo: RepoSpec):
+    def __init__(self, repo: RepoSpec) -> None:
         try:
             self.repo = ensure_repo_obj(repo)
         except github.UnknownObjectException as e:
@@ -153,10 +153,10 @@ class RepoReader(KvReader):
     def __iter__(self):
         yield from self.repo_collection_names
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         return k in self.repo_collection_names
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{type(self).__name__}("{self.repo.full_name}")'
 
 
@@ -168,7 +168,7 @@ class IssueCommentsBase(KvReader):
 
     _comment_key = enumerate
 
-    def __init__(self, issue_obj):
+    def __init__(self, issue_obj) -> None:
         self.src = issue_obj
 
     @cached_property
@@ -190,7 +190,7 @@ class IssueComments(IssueCommentsBase):
 class IssueContents(KvReader):
     """Mapping interface to repository issue contents"""
 
-    def __init__(self, issue_obj):
+    def __init__(self, issue_obj) -> None:
         self.src = issue_obj
 
     def __iter__(self):
@@ -202,7 +202,7 @@ class IssueContents(KvReader):
         else:
             return self.src.body
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return format_invocation(self.__class__.__name__, (self.src,))
 
 
@@ -235,7 +235,7 @@ class Issues(RepoObjects):
         get_objs_kwargs=(("state", "open"),),
         cache: bool = False,
         refresh: bool = True,
-    ):
+    ) -> None:
         super().__init__(
             repo,
             get_objs=get_objs,
@@ -280,7 +280,7 @@ class Workflows(RepoObjects):
         objs_to_items="id",
         data_of_obj=identity,
         get_objs_kwargs=(),
-    ):
+    ) -> None:
         super().__init__(
             repo,
             get_objs=get_objs,
@@ -323,7 +323,7 @@ class GithubReader(KvReader):
         get_repos_kwargs=(),
         login_or_token=None,  # deprecated
         password=None,  # deprecated
-    ):
+    ) -> None:
         # TODO: Not sure what the rules are with account_name and login_or_token
         #  So only using a search-if-not-given strategy if account_name is None
         # account_name = account_name or find_user_name()
@@ -381,12 +381,12 @@ class GithubReader(KvReader):
             raise KeyError(f"Key doesn't exist: {k}")
         return Branches(repository, self.content_file_extractor)
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         if self.get(k, None) is None:
             return False
         return True
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return format_invocation(
             self.__class__.__name__,
             (self.src, self.content_file_extractor),
@@ -397,7 +397,7 @@ GitHubReader = GithubReader  # backcompatibility alias
 
 
 class Branches(KvReader):
-    def __init__(self, repo: RepoSpec, content_file_extractor=decoded_contents):
+    def __init__(self, repo: RepoSpec, content_file_extractor=decoded_contents) -> None:
         self.src = ensure_repo_obj(repo)
         self.content_file_extractor = content_file_extractor
         # self._con = repo  # same as this.
@@ -415,7 +415,7 @@ class Branches(KvReader):
             content_file_extractor=self.content_file_extractor,
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return format_invocation(
             self.__class__.__name__,
             (self.src, self.content_file_extractor),
@@ -429,7 +429,7 @@ class BranchDir(KvReader):
         branch_name,
         path="",
         content_file_extractor=decoded_contents,
-    ):
+    ) -> None:
         self.src = ensure_repo_obj(repo)
         self.branch_name = branch_name
         self.path = path
@@ -459,7 +459,7 @@ class BranchDir(KvReader):
         else:
             return self.content_file_extractor(t)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return format_invocation(
             self.__class__.__name__,
             (
@@ -496,13 +496,13 @@ class PaginatedListDol:
     That is, iterating over a PaginatedListDol
     """
 
-    def __init__(self, paginated_list: PaginatedList):
+    def __init__(self, paginated_list: PaginatedList) -> None:
         self.paginated_list = paginated_list
 
     def __iter__(self):
         yield from self.paginated_list
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.paginated_list.totalCount
 
     def __reversed__(self):
@@ -528,7 +528,7 @@ class GitHubDol(KvReader):
         verify=True,
         retry=None,
         pool_size=None,
-    ):
+    ) -> None:
         assert isinstance(account_name, str), "account_name must be given (and a str)"
         login_or_token = login_or_token or find_github_token()
 
@@ -567,12 +567,12 @@ class GitHubDol(KvReader):
             raise KeyError(f"Key doesn't exist: {k}")
         return Branches(repository, self.content_file_extractor)
 
-    def __contains__(self, k):
+    def __contains__(self, k) -> bool:
         if self.get(k, None) is None:
             return False
         return True
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return format_invocation(
             self.__class__.__name__,
             (self.src, self.content_file_extractor),

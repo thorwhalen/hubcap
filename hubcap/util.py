@@ -808,7 +808,7 @@ class Discussions(KvReader):
         _max_replies: int = 100,
         cache: bool = False,
         refresh: bool = True,
-    ):
+    ) -> None:
         repo = ensure_repo_obj(repo)
         self.owner, self.repo_name = ensure_full_name(repo).split("/")
         self.full_name = ensure_full_name(repo)
@@ -863,11 +863,11 @@ class Discussions(KvReader):
         """Iterates over the discussion numbers (keys of the mapping)."""
         return iter(self._discussion_numbers)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Returns the number of discussions."""
         return self._discussions.get("totalCount", 0)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         """Checks if a discussion number (key) is in the mapping."""
         return key in self._discussion_numbers
 

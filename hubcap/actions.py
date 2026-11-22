@@ -14,7 +14,9 @@ DFLT_USER = "thorwhalen"
 DFLT_REPO = "thorwhalen/graze"
 
 
-def get_token(token=None, environ_name=DFLT_GITHUB_TOKEN_ENVIRON_NAME):
+def get_token(
+    token: str | None = None, environ_name: str = DFLT_GITHUB_TOKEN_ENVIRON_NAME
+) -> str:
     """Resolves token from parameter or environment variable.
 
     Args:
@@ -30,7 +32,7 @@ def get_token(token=None, environ_name=DFLT_GITHUB_TOKEN_ENVIRON_NAME):
     return token or os.environ[environ_name]
 
 
-def get_headers(token):
+def get_headers(token: str) -> dict[str, str]:
     """Get HTTP headers for GitHub API requests.
 
     Args:
@@ -46,12 +48,12 @@ def get_headers(token):
 
 
 def _repos_info(
-    user=DFLT_USER,
-    sort="updated",
-    direction="desc",
-    per_page=100,
-    page=1,
-    token=None,
+    user: str = DFLT_USER,
+    sort: str = "updated",
+    direction: str = "desc",
+    per_page: int = 100,
+    page: int = 1,
+    token: str | None = None,
     **params,
 ):
     """List repos and their info: raw response object.
@@ -101,7 +103,9 @@ def repos_info(user=DFLT_USER, token=None, **params):
     return df
 
 
-def _actions_info(repo=DFLT_REPO, per_page=10, token=None, **params):
+def _actions_info(
+    repo: str = DFLT_REPO, per_page: int = 10, token: str | None = None, **params
+):
     """Github actions runs info: raw response object.
 
     Args:

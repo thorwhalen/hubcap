@@ -94,7 +94,7 @@ class GithubClient:
     :func:`hubcap.tools.get_github_token`); constructing the client needs none.
     """
 
-    def __init__(self, token: Optional[str] = None, *, session=None):
+    def __init__(self, token: Optional[str] = None, *, session=None) -> None:
         self._token = token
         self._session = session
 
