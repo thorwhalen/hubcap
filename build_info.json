@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-21T18:43:21Z",
+  "built_at": "2026-11-22T18:50:39Z",
   "package": {
     "name": "hubcap",
-    "version": "0.1.25",
+    "version": "0.1.26",
     "display_name": "hubcap",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "bc604b6646806add2d2783651d59c3996fc83c70",
-    "short_commit": "bc604b6",
+    "commit": "f829bd52367516acdd5d5b1042fa1ece10ca97e6",
+    "short_commit": "f829bd5",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/hubcap",
-    "commit_url": "https://github.com/thorwhalen/hubcap/commit/bc604b6646806add2d2783651d59c3996fc83c70",
+    "commit_url": "https://github.com/thorwhalen/hubcap/commit/f829bd52367516acdd5d5b1042fa1ece10ca97e6",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/hubcap",
-    "sha": "bc604b6646806add2d2783651d59c3996fc83c70",
+    "sha": "f829bd52367516acdd5d5b1042fa1ece10ca97e6",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "44936879076",
-    "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/44936879076",
+    "run_id": "45057175988",
+    "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45057175988",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,16 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.26",
+    "latest": "0.1.27",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/hubcap && cd hubcap\ngit checkout bc604b6646806add2d2783651d59c3996fc83c70\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/hubcap && cd hubcap\ngit checkout f829bd52367516acdd5d5b1042fa1ece10ca97e6\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (0.1.25) is behind the latest release on PyPI (0.1.26): `pip install hubcap` gives newer code than these docs describe."
+      "The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install hubcap` gives newer code than these docs describe."
     ]
   }
 }

@@ -2,18 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-11-21 18:43 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/bc604b6646806add2d2783651d59c3996fc83c70"><code>bc604b6</code></a> on branch <code>master</code>, for **hubcap 0.1.25** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:50 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/f829bd52367516acdd5d5b1042fa1ece10ca97e6"><code>f829bd5</code></a> on branch <code>master</code>, for **hubcap 0.1.26** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.25) is behind the latest release on PyPI (0.1.26): `pip install hubcap` gives newer code than these docs describe.
+- The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install hubcap` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/bc604b6646806add2d2783651d59c3996fc83c70"><code>bc604b6646806add2d2783651d59c3996fc83c70</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/f829bd52367516acdd5d5b1042fa1ece10ca97e6"><code>f829bd52367516acdd5d5b1042fa1ece10ca97e6</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -24,9 +24,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/44936879076">44936879076</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45057175988">45057175988</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>bc604b6646806add2d2783651d59c3996fc83c70</code> (in the history of the built commit) |
+| Event commit | <code>f829bd52367516acdd5d5b1042fa1ece10ca97e6</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -51,13 +51,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.26/">0.1.26</a>, newer than the documented version (0.1.25).
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.27/">0.1.27</a>, newer than the documented version (0.1.26).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout bc604b6646806add2d2783651d59c3996fc83c70
+git checkout f829bd52367516acdd5d5b1042fa1ece10ca97e6
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
