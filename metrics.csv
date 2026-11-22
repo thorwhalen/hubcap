@@ -1,8 +1,8 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-22T23:35:38.213713Z
-commit_sha,84c712f84d33fb3a8862dbf41f001e291dfcd39d
-commit_message,"docs: README opening (what it is, install, token), import in first example"
+timestamp,2026-11-22T23:36:44.150189Z
+commit_sha,64d5f1940ac8dca518a09ff3e19d1f5c27bcb4e9
+commit_message,Merge 84c712f84d33fb3a8862dbf41f001e291dfcd39d into f807247bc9daea698a4bba1b6bb590d65b8604d4
 python_version,3.10
 metrics.umpyre_stats.num_functions,25345
 metrics.umpyre_stats.num_classes,3491
@@ -18,9 +18,9 @@ metrics.umpyre_stats.mean_lines_per_function,19.202209508778854
 metrics.umpyre_stats.files_analyzed,1598
 metrics.umpyre_stats.pypi_version,0.1.31
 metrics.workflow_status.last_run_status,success
-metrics.workflow_status.last_success_timestamp,2026-11-22T22:58:30Z
+metrics.workflow_status.last_success_timestamp,2026-11-22T23:35:44Z
 metrics.workflow_status.recent_failure_count,0
-metrics.workflow_status.run_url,https://github.com/thorwhalen/hubcap/actions/runs/45080620354
+metrics.workflow_status.run_url,https://github.com/thorwhalen/hubcap/actions/runs/45083951818
 metrics.workflow_status.total_runs_analyzed,10
 metrics.wily.cyclomatic_avg,0.0
 metrics.wily.maintainability_index,0.0
@@ -36,4 +36,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,8.19847822189331
+collection_duration_seconds,6.769150972366333
