@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.133127450942993,
-  "commit_message": "Merge f00a4e691e7746149e6165c0656f782c97675d71 into b868eff47504f94ab4c5e348927ab080c3590423",
-  "commit_sha": "74cc6e425b84a8aa6ff201f1657707ac80eea55c",
+  "collection_duration_seconds": 6.602387428283691,
+  "commit_message": "test: offline client and util tests, coverage 42% to 46% [skip publish] (#18)\n\n* test: offline GithubClient (fake session) and util URL helpers [skip publish]\n\n* test: use util.path_sep so the helper test passes on Windows [skip publish]",
+  "commit_sha": "a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,19 +11,29 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 45427,
-      "comment_lines_ratio": 0.05822496340672496,
-      "docs_lines": 165502,
-      "empty_lines": 112105,
-      "empty_lines_ratio": 0.14368788435756052,
-      "files_analyzed": 1598,
-      "function_lines": 486617,
-      "function_lines_ratio": 0.6237096224291783,
-      "mean_lines_per_function": 19.200481376262626,
-      "num_classes": 3490,
-      "num_functions": 25344,
+      "comment_lines": 46315,
+      "comment_lines_ratio": 0.05817656080621923,
+      "docs_lines": 201938,
+      "empty_lines": 113855,
+      "empty_lines_ratio": 0.1430139766942047,
+      "errors": [
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1504,
+      "function_lines": 517535,
+      "function_lines_ratio": 0.650078946277592,
+      "mean_lines_per_function": 21.083431783924716,
+      "num_classes": 3239,
+      "num_functions": 24547,
       "pypi_version": "0.1.27",
-      "total_lines": 780198
+      "total_errors": 7,
+      "total_lines": 796111
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -34,14 +44,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T18:55:17Z",
+      "last_success_timestamp": "2026-11-22T18:57:32Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45057651727",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45057851243",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T18:57:26.931207Z",
+  "timestamp": "2026-11-22T18:59:15.880447Z",
   "workflow_status": {}
 }
