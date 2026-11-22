@@ -5,19 +5,19 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-11-22 19:54 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5</code></a> on branch <code>master</code>, for **hubcap 0.1.28** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 21:57 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb9</code></a> on branch <code>master</code>, for **hubcap 0.1.29** (from <code>pyproject.toml</code>).
 
 :::{warning}
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.28) is behind the latest release on PyPI (0.1.29): `pip install hubcap` gives newer code than these docs describe.
+- The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install hubcap` gives newer code than these docs describe.
 :::
 
 ## Source
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code></a> |
+| Commit | <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code></a> |
 | Branch | <code>master</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -28,9 +28,9 @@ The documentation and the package may be misaligned:
 | | |
 |---|---|
 | Repository | <code>thorwhalen/hubcap</code> |
-| Run | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45063184550">45063184550</a> |
+| Run | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45074809702">45074809702</a> |
 | Ref | <code>refs/heads/master</code> |
-| Event commit | <code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code> (in the history of the built commit) |
+| Event commit | <code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -55,13 +55,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.29/">0.1.29</a>, newer than the documented version (0.1.28).
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.30/">0.1.30</a>, newer than the documented version (0.1.29).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout 7fc65e5006dba0e42c8a92efb7513ba326e8764e
+git checkout 7c01bb92b55f51bc53ed679c00bf3b2c98e0b743
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

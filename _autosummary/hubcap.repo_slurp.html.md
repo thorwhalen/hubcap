@@ -89,6 +89,9 @@ Clone a git repository and make a mapping of the files in the repository.
 
 Puts .py content in a code block, and returns a markdown formatted string.
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### hubcap.repo_slurp.notebook_to_markdown(notebook, , process_code=True, process_markdown=True, process_output=True, encoding='utf-8')
 
 Transforms a Jupyter notebook into a markdown string with control over cell processing.

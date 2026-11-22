@@ -91,10 +91,16 @@ For example:
 
 Add a list of repositories to a team with read permission
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### hubcap.tools.copy_discussion(source_discussion_url, target_repo_url, , target_category_name='General')
 
 Copies a discussion from a source URL to a target repository URL.
 Attempts to preserve content and provide context for original authors/timestamps.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### hubcap.tools.create_discussion(repo_id, title, body, category_id)
 
@@ -224,6 +230,9 @@ Post-process Markdown content generated from a notebook.
 
 Add a list of repositories to a team with read permission
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### hubcap.tools.run_graphql_query(query, variables=None)
 
 Executes a GraphQL query against the GitHub API.
@@ -231,3 +240,6 @@ Executes a GraphQL query against the GitHub API.
 ### hubcap.tools.team_repositories_action(repositories, team, , action, org, wait_s=1)
 
 Add a list of repositories to a team with read permission
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

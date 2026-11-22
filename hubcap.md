@@ -1,4 +1,4 @@
-> built 2026-11-22 19:54 UTC from 7fc65e5 (master) · hubcap 0.1.28. Details: build_info.json
+> built 2026-11-22 21:57 UTC from 7c01bb9 (master) · hubcap 0.1.29. Details: build_info.json
 
 # index.html.md
 
@@ -610,11 +610,11 @@ dtype: object
 Get HTTP headers for GitHub API requests.
 
 * **Parameters:**
-  **token** – GitHub API token
+  **token** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – GitHub API token
 * **Returns:**
   Headers dictionary with Authorization and Accept fields
 * **Return type:**
-  [*dict*](https://docs.python.org/3/builtins/stdtypes.html#dict)
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### hubcap.actions.get_last_build_status(repo='thorwhalen/graze', token=None, \*\*params)
 
@@ -643,12 +643,12 @@ True
 Resolves token from parameter or environment variable.
 
 * **Parameters:**
-  * **token** – GitHub API token. If None, will look in environment variable.
-  * **environ_name** – Name of environment variable to check for token.
+  * **token** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – GitHub API token. If None, will look in environment variable.
+  * **environ_name** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Name of environment variable to check for token.
 * **Returns:**
   GitHub API token
 * **Return type:**
-  [*str*](https://docs.python.org/3/builtins/stdtypes.html#str)
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 * **Raises:**
   [**KeyError**](https://docs.python.org/3/builtins/exceptions.html#KeyError) – If token is None and environment variable is not set.
 
@@ -1442,6 +1442,9 @@ Clone a git repository and make a mapping of the files in the repository.
 
 Puts .py content in a code block, and returns a markdown formatted string.
 
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 ### hubcap.repo_slurp.notebook_to_markdown(notebook, , process_code=True, process_markdown=True, process_output=True, encoding='utf-8')
 
 Transforms a Jupyter notebook into a markdown string with control over cell processing.
@@ -1727,10 +1730,16 @@ For example:
 
 Add a list of repositories to a team with read permission
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### hubcap.tools.copy_discussion(source_discussion_url, target_repo_url, , target_category_name='General')
 
 Copies a discussion from a source URL to a target repository URL.
 Attempts to preserve content and provide context for original authors/timestamps.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### hubcap.tools.create_discussion(repo_id, title, body, category_id)
 
@@ -1860,6 +1869,9 @@ Post-process Markdown content generated from a notebook.
 
 Add a list of repositories to a team with read permission
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### hubcap.tools.run_graphql_query(query, variables=None)
 
 Executes a GraphQL query against the GitHub API.
@@ -1867,6 +1879,9 @@ Executes a GraphQL query against the GitHub API.
 ### hubcap.tools.team_repositories_action(repositories, team, , action, org, wait_s=1)
 
 Add a list of repositories to a team with read permission
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/hubcap.util.html.md
@@ -2430,18 +2445,18 @@ Transforms a GitHub URL to another type, updating components as needed.
 
 # About this build
 
-This documentation was built on **2026-11-22 19:54 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5</code></a> on branch <code>master</code>, for **hubcap 0.1.28** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 21:57 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb9</code></a> on branch <code>master</code>, for **hubcap 0.1.29** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.28) is behind the latest release on PyPI (0.1.29): `pip install hubcap` gives newer code than these docs describe.
+- The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install hubcap` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/7fc65e5006dba0e42c8a92efb7513ba326e8764e"><code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2452,9 +2467,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45063184550">45063184550</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45074809702">45074809702</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>7fc65e5006dba0e42c8a92efb7513ba326e8764e</code> (in the history of the built commit) |
+| Event commit | <code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2479,13 +2494,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.29/">0.1.29</a>, newer than the documented version (0.1.28).
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.30/">0.1.30</a>, newer than the documented version (0.1.29).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout 7fc65e5006dba0e42c8a92efb7513ba326e8764e
+git checkout 7c01bb92b55f51bc53ed679c00bf3b2c98e0b743
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

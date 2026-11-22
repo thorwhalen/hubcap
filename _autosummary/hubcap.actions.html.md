@@ -120,11 +120,11 @@ dtype: object
 Get HTTP headers for GitHub API requests.
 
 * **Parameters:**
-  **token** – GitHub API token
+  **token** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – GitHub API token
 * **Returns:**
   Headers dictionary with Authorization and Accept fields
 * **Return type:**
-  [*dict*](https://docs.python.org/3/builtins/stdtypes.html#dict)
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### hubcap.actions.get_last_build_status(repo='thorwhalen/graze', token=None, \*\*params)
 
@@ -153,12 +153,12 @@ True
 Resolves token from parameter or environment variable.
 
 * **Parameters:**
-  * **token** – GitHub API token. If None, will look in environment variable.
-  * **environ_name** – Name of environment variable to check for token.
+  * **token** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – GitHub API token. If None, will look in environment variable.
+  * **environ_name** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Name of environment variable to check for token.
 * **Returns:**
   GitHub API token
 * **Return type:**
-  [*str*](https://docs.python.org/3/builtins/stdtypes.html#str)
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 * **Raises:**
   [**KeyError**](https://docs.python.org/3/builtins/exceptions.html#KeyError) – If token is None and environment variable is not set.
 
