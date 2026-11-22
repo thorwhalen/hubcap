@@ -1,4 +1,4 @@
-> built 2026-11-22 18:50 UTC from f829bd5 (master) · hubcap 0.1.26. Details: build_info.json
+> built 2026-11-22 18:59 UTC from a9d608f (master) · hubcap 0.1.27. Details: build_info.json
 
 # index.html.md
 
@@ -2421,18 +2421,16 @@ Transforms a GitHub URL to another type, updating components as needed.
 
 # About this build
 
-This documentation was built on **2026-11-22 18:50 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/f829bd52367516acdd5d5b1042fa1ece10ca97e6"><code>f829bd5</code></a> on branch <code>master</code>, for **hubcap 0.1.26** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 18:59 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f"><code>a9d608f</code></a> on branch <code>master</code>, for **hubcap 0.1.27** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.1.26) is behind the latest release on PyPI (0.1.27): `pip install hubcap` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/f829bd52367516acdd5d5b1042fa1ece10ca97e6"><code>f829bd52367516acdd5d5b1042fa1ece10ca97e6</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f"><code>a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2443,9 +2441,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45057175988">45057175988</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45058014568">45058014568</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>f829bd52367516acdd5d5b1042fa1ece10ca97e6</code> (in the history of the built commit) |
+| Event commit | <code>a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2470,13 +2468,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.27/">0.1.27</a>, newer than the documented version (0.1.26).
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.27/">0.1.27</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout f829bd52367516acdd5d5b1042fa1ece10ca97e6
+git checkout a9d608fb5745fab3ad96ddb812bea4cf0d5acc9f
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
