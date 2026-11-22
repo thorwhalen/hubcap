@@ -2,25 +2,23 @@
 
 # hubcap
 
-A [dol](https://github.com/i2mint/dol) (i.e. dict-like) interface to github
+A [dol](https://github.com/i2mint/dol) (dict-like) interface to GitHub: browse a user’s or organization’s repositories, branches and files, and issues and discussions, as nested `Mapping`s.
 
-To install:	`pip install hubcap`
+```default
+pip install hubcap
+```
+
+You need a GitHub API token: set it in the environment variable `GITHUB_TOKEN` or `HUBCAP_GITHUB_TOKEN` (the second is useful because GitHub Actions doesn’t allow variables starting with `GITHUB`), or pass it when making hubcap objects.
 
 # Examples
 
 ## Basics
 
-The simplest facade to github data.
-
-Interact with github like you’d interact with a `dict` object.
-
-Warning: You’ll need to have a github api token (google it if you don’t have one;
-it’s easy to get). You’ll have to specify this token when making hubcap objects,
-or put it in an environmental variable under the name `GITHUB_TOKEN` or `HUBCAP_GITHUB_TOKEN`
-(useful since github actions doesn’t allow you to have env variables starting with `GITHUB`).
+The simplest facade to GitHub data: interact with it like you would with a `dict`.
 
 <!-- wads-docs: skip - calls the GitHub API: needs a token and network -->
 ```python
+>>> from hubcap import GitHubReader
 >>> s = GitHubReader('thorwhalen')  # connnecting to a particular user/organization
 >>> list(s)
 ['agen',

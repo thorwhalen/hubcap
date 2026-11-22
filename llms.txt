@@ -5,7 +5,7 @@
 
 ## Pages
 
-- [hubcap](index.html.md): A dol (i.e. dict-like) interface to github
+- [hubcap](index.html.md): A dol (dict-like) interface to GitHub: browse a user’s or organization’s repositories, branches and ...
 - [API reference](api.html.md): | &#96;hubcap&#96;   | The simplest facade to github data.   |
 - [hubcap](_autosummary/hubcap.html.md): The simplest facade to github data.
 - [hubcap.actions](_autosummary/hubcap.actions.html.md): GitHub Actions and CI status utilities.
@@ -16,7 +16,7 @@
 - [hubcap.snapshot](_autosummary/hubcap.snapshot.html.md): Incremental snapshot of GitHub orgs: issues, PRs and discussions with all comments.
 - [hubcap.tools](_autosummary/hubcap.tools.html.md): A medley of tools for Hubcap.
 - [hubcap.util](_autosummary/hubcap.util.html.md): Utils for hubcap.
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 22:57 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 23:38 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 
