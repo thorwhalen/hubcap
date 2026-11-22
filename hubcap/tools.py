@@ -910,7 +910,9 @@ class _RepoInfoMapping(KvReader):
 class _RepoArtifactMapping(KvReader):
     """Base class for mapping interfaces to cached repository artifacts."""
 
-    def __init__(self, artifact_type: str, artifact_class, refresh: bool = False) -> None:
+    def __init__(
+        self, artifact_type: str, artifact_class, refresh: bool = False
+    ) -> None:
         self.artifact_type = artifact_type
         self.artifact_class = artifact_class
         self.refresh = refresh
