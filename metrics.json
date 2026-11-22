@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 5.631184816360474,
-  "commit_message": "Merge 0be08b271a884c9eeab038921a7c1e89d1cab5aa into 35cd0c539b1554a5de703bbefdb7ec1a2edfa79a",
-  "commit_sha": "98955c89bb208f2b730c217aaf380d52a51bd0cd",
+  "collection_duration_seconds": 6.539549112319946,
+  "commit_message": "Fix git_wiki_clone unpacking three values from _prep_git_clone_args (#19)",
+  "commit_sha": "0be08b271a884c9eeab038921a7c1e89d1cab5aa",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -42,6 +42,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T22:55:25.609238Z",
+  "timestamp": "2026-11-22T22:55:30.411917Z",
   "workflow_status": {}
 }
