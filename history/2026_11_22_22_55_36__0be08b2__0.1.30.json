@@ -1,0 +1,57 @@
+{
+  "collection_duration_seconds": 8.476740598678589,
+  "commit_message": "Fix git_wiki_clone unpacking three values from _prep_git_clone_args (#19)",
+  "commit_sha": "0be08b271a884c9eeab038921a7c1e89d1cab5aa",
+  "metrics": {
+    "coverage": {
+      "branch_coverage": 0.0,
+      "error": "No coverage file found",
+      "line_coverage": 0.0,
+      "statements_covered": 0,
+      "statements_total": 0
+    },
+    "umpyre_stats": {
+      "comment_lines": 46315,
+      "comment_lines_ratio": 0.05817568390813982,
+      "docs_lines": 201938,
+      "empty_lines": 113855,
+      "empty_lines_ratio": 0.14301182103770396,
+      "errors": [
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1504,
+      "function_lines": 517547,
+      "function_lines_ratio": 0.6500842206543461,
+      "mean_lines_per_function": 21.08392064203365,
+      "num_classes": 3239,
+      "num_functions": 24547,
+      "pypi_version": "0.1.30",
+      "total_errors": 7,
+      "total_lines": 796123
+    },
+    "wily": {
+      "cyclomatic_avg": 0.0,
+      "error": "wily report failed: Usage: wily report [OPTIONS] FILE [METRICS]...\nTry 'wily report --help' for help.\n\nError: Invalid value for '-f' / '--format': 'json' is not one of 'CONSOLE', 'HTML'.\n",
+      "files_analyzed": 0,
+      "maintainability_index": 0.0,
+      "total_loc": 0
+    },
+    "workflow_status": {
+      "last_run_status": "success",
+      "last_success_timestamp": "2026-11-22T21:58:28Z",
+      "recent_failure_count": 0,
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45074996486",
+      "total_runs_analyzed": 10
+    }
+  },
+  "python_version": "3.10",
+  "schema_version": "1.0",
+  "timestamp": "2026-11-22T22:55:35.322170Z",
+  "workflow_status": {}
+}

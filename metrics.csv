@@ -1,22 +1,24 @@
 metric,value
 schema_version,1.0
-timestamp,2026-11-22T22:55:30.411917Z
+timestamp,2026-11-22T22:55:35.322170Z
 commit_sha,0be08b271a884c9eeab038921a7c1e89d1cab5aa
 commit_message,Fix git_wiki_clone unpacking three values from _prep_git_clone_args (#19)
 python_version,3.10
-metrics.umpyre_stats.num_functions,25344
-metrics.umpyre_stats.num_classes,3490
-metrics.umpyre_stats.total_lines,780210
-metrics.umpyre_stats.empty_lines,112105
-metrics.umpyre_stats.comment_lines,45427
-metrics.umpyre_stats.docs_lines,165502
-metrics.umpyre_stats.function_lines,486629
-metrics.umpyre_stats.empty_lines_ratio,0.14368567436972096
-metrics.umpyre_stats.comment_lines_ratio,0.05822406787916074
-metrics.umpyre_stats.function_lines_ratio,0.6237154099537304
-metrics.umpyre_stats.mean_lines_per_function,19.20095486111111
-metrics.umpyre_stats.files_analyzed,1598
+metrics.umpyre_stats.num_functions,24547
+metrics.umpyre_stats.num_classes,3239
+metrics.umpyre_stats.total_lines,796123
+metrics.umpyre_stats.empty_lines,113855
+metrics.umpyre_stats.comment_lines,46315
+metrics.umpyre_stats.docs_lines,201938
+metrics.umpyre_stats.function_lines,517547
+metrics.umpyre_stats.empty_lines_ratio,0.14301182103770396
+metrics.umpyre_stats.comment_lines_ratio,0.05817568390813982
+metrics.umpyre_stats.function_lines_ratio,0.6500842206543461
+metrics.umpyre_stats.mean_lines_per_function,21.08392064203365
+metrics.umpyre_stats.files_analyzed,1504
 metrics.umpyre_stats.pypi_version,0.1.30
+metrics.umpyre_stats.errors,"['_shape.py: invalid syntax (_shape.py, line 4)', '_array_like.py: invalid syntax (_array_like.py, line 15)', '_nbit.py: invalid syntax (_nbit.py, line 6)', '_scalars.py: invalid syntax (_scalars.py, line 7)', '_char_codes.py: invalid syntax (_char_codes.py, line 3)', '_dtype_like.py: invalid syntax (_dtype_like.py, line 21)', 'mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)']"
+metrics.umpyre_stats.total_errors,7
 metrics.workflow_status.last_run_status,success
 metrics.workflow_status.last_success_timestamp,2026-11-22T21:58:28Z
 metrics.workflow_status.recent_failure_count,0
@@ -36,4 +38,4 @@ metrics.coverage.branch_coverage,0.0
 metrics.coverage.statements_covered,0
 metrics.coverage.statements_total,0
 metrics.coverage.error,No coverage file found
-collection_duration_seconds,6.539549112319946
+collection_duration_seconds,8.476740598678589
