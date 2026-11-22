@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.152534484863281,
-  "commit_message": "Merge 0ab67403bf111913da771a5929ee7bf00c8ae6dd into f87e8c31c8bc437b3ce5b3ca545a85fb67ff18ce",
-  "commit_sha": "5e7364812fc23607fa5acddb14c164f500c78dfa",
+  "collection_duration_seconds": 5.347996473312378,
+  "commit_message": "docs(README): mark GitHub-API and network examples with wads-docs skip reasons [skip publish] (#20)",
+  "commit_sha": "7fc65e5006dba0e42c8a92efb7513ba326e8764e",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -44,14 +44,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T19:00:19Z",
+      "last_success_timestamp": "2026-11-22T19:46:15Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45058190913",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45062490683",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T19:46:09.680143Z",
+  "timestamp": "2026-11-22T19:53:18.300846Z",
   "workflow_status": {}
 }
