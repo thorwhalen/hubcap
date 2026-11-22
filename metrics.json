@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 5.499041318893433,
-  "commit_message": "Merge f00a4e691e7746149e6165c0656f782c97675d71 into b868eff47504f94ab4c5e348927ab080c3590423",
-  "commit_sha": "74cc6e425b84a8aa6ff201f1657707ac80eea55c",
+  "collection_duration_seconds": 7.933353424072266,
+  "commit_message": "test: use util.path_sep so the helper test passes on Windows [skip publish]",
+  "commit_sha": "f00a4e691e7746149e6165c0656f782c97675d71",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -17,13 +17,13 @@
       "empty_lines": 113855,
       "empty_lines_ratio": 0.1430139766942047,
       "errors": [
-        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)",
-        "_scalars.py: invalid syntax (_scalars.py, line 7)",
         "_shape.py: invalid syntax (_shape.py, line 4)",
-        "_nbit.py: invalid syntax (_nbit.py, line 6)",
         "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
         "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
-        "_char_codes.py: invalid syntax (_char_codes.py, line 3)"
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
       ],
       "files_analyzed": 1504,
       "function_lines": 517535,
@@ -52,6 +52,6 @@
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T18:57:16.306351Z",
+  "timestamp": "2026-11-22T18:57:18.677150Z",
   "workflow_status": {}
 }
