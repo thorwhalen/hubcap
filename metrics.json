@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 7.123133420944214,
-  "commit_message": "docs(README): mark GitHub-API and network examples with wads-docs skip reasons [skip publish] (#20)",
-  "commit_sha": "7fc65e5006dba0e42c8a92efb7513ba326e8764e",
+  "collection_duration_seconds": 6.766822099685669,
+  "commit_message": "types: annotate actions and None returns [skip publish]",
+  "commit_sha": "b135e127b89f324c95922b2c0dfb9c9f5e8ec1cd",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,37 +11,47 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 45427,
-      "comment_lines_ratio": 0.05822496340672496,
-      "docs_lines": 165502,
-      "empty_lines": 112105,
-      "empty_lines_ratio": 0.14368788435756052,
-      "files_analyzed": 1598,
-      "function_lines": 486617,
-      "function_lines_ratio": 0.6237096224291783,
-      "mean_lines_per_function": 19.200481376262626,
-      "num_classes": 3490,
-      "num_functions": 25344,
-      "pypi_version": "0.1.28",
-      "total_lines": 780198
+      "comment_lines": 46315,
+      "comment_lines_ratio": 0.05817612235387512,
+      "docs_lines": 201938,
+      "empty_lines": 113855,
+      "empty_lines_ratio": 0.1430128988578312,
+      "errors": [
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1504,
+      "function_lines": 517541,
+      "function_lines_ratio": 0.6500815834858444,
+      "mean_lines_per_function": 21.08367621297918,
+      "num_classes": 3239,
+      "num_functions": 24547,
+      "pypi_version": "0.1.29",
+      "total_errors": 7,
+      "total_lines": 796117
     },
     "wily": {
       "cyclomatic_avg": 0.0,
-      "error": "wily report failed: Usage: wily report [OPTIONS] FILE [METRICS]...\nTry 'wily report --help' for help.\n\nError: Invalid value for '-f' / '--format': 'json' is not one of 'CONSOLE', 'HTML'.\n",
+      "error": "wily build failed: \u001b[31mFailed to setup archiver: 'Dirty repository, make sure you commit/stash files first'\u001b[0m\n",
       "files_analyzed": 0,
       "maintainability_index": 0.0,
       "total_loc": 0
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T19:46:15Z",
+      "last_success_timestamp": "2026-11-22T19:54:40Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45062490683",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45063371947",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T19:53:31.181696Z",
+  "timestamp": "2026-11-22T21:55:09.712438Z",
   "workflow_status": {}
 }
