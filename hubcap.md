@@ -1,4 +1,4 @@
-> built 2026-11-22 21:57 UTC from 7c01bb9 (master) · hubcap 0.1.29. Details: build_info.json
+> built 2026-11-22 22:57 UTC from bf38ed4 (master) · hubcap 0.1.30. Details: build_info.json
 
 # index.html.md
 
@@ -444,7 +444,7 @@ len(py_files)
 # 37
 ```
 
-<!-- wads-docs: skip - blocked by thorwhalen/hubcap#19 (git_wiki_clone unpack bug); also clones over the network -->
+<!-- wads-docs: skip - clones over the network -->
 ```python
 wiki_files = repo_wiki_files("i2mint/dol")
 list(wiki_files)
@@ -2445,18 +2445,18 @@ Transforms a GitHub URL to another type, updating components as needed.
 
 # About this build
 
-This documentation was built on **2026-11-22 21:57 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb9</code></a> on branch <code>master</code>, for **hubcap 0.1.29** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 22:57 UTC** from commit <a href="https://github.com/thorwhalen/hubcap/commit/bf38ed4f0c2f7b810a72023929d84a4499ff4743"><code>bf38ed4</code></a> on branch <code>master</code>, for **hubcap 0.1.30** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.29) is behind the latest release on PyPI (0.1.30): `pip install hubcap` gives newer code than these docs describe.
+- The documented version (0.1.30) is behind the latest release on PyPI (0.1.31): `pip install hubcap` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/7c01bb92b55f51bc53ed679c00bf3b2c98e0b743"><code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/hubcap/commit/bf38ed4f0c2f7b810a72023929d84a4499ff4743"><code>bf38ed4f0c2f7b810a72023929d84a4499ff4743</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2467,9 +2467,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/hubcap</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45074809702">45074809702</a>    |
+| Run          | <a href="https://github.com/thorwhalen/hubcap/actions/runs/45080421897">45080421897</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>7c01bb92b55f51bc53ed679c00bf3b2c98e0b743</code> (in the history of the built commit) |
+| Event commit | <code>bf38ed4f0c2f7b810a72023929d84a4499ff4743</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2494,13 +2494,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/hubcap/0.1.30/">0.1.30</a>, newer than the documented version (0.1.29).
+Latest release: <a href="https://pypi.org/project/hubcap/0.1.31/">0.1.31</a>, newer than the documented version (0.1.30).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/hubcap && cd hubcap
-git checkout 7c01bb92b55f51bc53ed679c00bf3b2c98e0b743
+git checkout bf38ed4f0c2f7b810a72023929d84a4499ff4743
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

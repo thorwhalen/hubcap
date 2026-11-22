@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=904119ea"></script>
+    <script src="../../_static/documentation_options.js?v=73657eb8"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.29" />
+  <meta name="docsearch:version" content="0.1.30" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -1363,7 +1363,7 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">git_wiki_clone</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suppress_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">)</span>
+    <span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_prep_git_clone_args</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">clone_to_folder</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">git</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">"clone </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2">.wiki.git </span><span class="si">{</span><span class="n">clone_to_folder</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
