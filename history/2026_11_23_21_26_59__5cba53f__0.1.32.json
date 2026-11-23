@@ -1,0 +1,47 @@
+{
+  "collection_duration_seconds": 8.106567144393921,
+  "commit_message": "ensure_full_name: understand a clone URL's .git suffix and the SSH form (#24) (#25)\n\ngit_wiki_clone of 'https://github.com/o/r.git' cloned 'r.git.wiki.git', and\n'git@github.com:o/r.git' became 'https://github.com/git@github.com:o/r.git'.\n\nCloses #24",
+  "commit_sha": "5cba53f15f2af88e198fdc8cc86ab972266a2c34",
+  "metrics": {
+    "coverage": {
+      "branch_coverage": 0.0,
+      "error": "No coverage file found",
+      "line_coverage": 0.0,
+      "statements_covered": 0,
+      "statements_total": 0
+    },
+    "umpyre_stats": {
+      "comment_lines": 45421,
+      "comment_lines_ratio": 0.05819169012262008,
+      "docs_lines": 165568,
+      "empty_lines": 112130,
+      "empty_lines_ratio": 0.14365677139317473,
+      "files_analyzed": 1598,
+      "function_lines": 486816,
+      "function_lines_ratio": 0.6236904915949323,
+      "mean_lines_per_function": 19.20302946629324,
+      "num_classes": 3491,
+      "num_functions": 25351,
+      "pypi_version": "0.1.32",
+      "total_lines": 780541
+    },
+    "wily": {
+      "cyclomatic_avg": 0.0,
+      "error": "wily report failed: Usage: wily report [OPTIONS] FILE [METRICS]...\nTry 'wily report --help' for help.\n\nError: Invalid value for '-f' / '--format': 'json' is not one of 'CONSOLE', 'HTML'.\n",
+      "files_analyzed": 0,
+      "maintainability_index": 0.0,
+      "total_loc": 0
+    },
+    "workflow_status": {
+      "last_run_status": "success",
+      "last_success_timestamp": "2026-11-23T21:23:48Z",
+      "recent_failure_count": 0,
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45268932960",
+      "total_runs_analyzed": 10
+    }
+  },
+  "python_version": "3.10",
+  "schema_version": "1.0",
+  "timestamp": "2026-11-23T21:26:58.665753Z",
+  "workflow_status": {}
+}
