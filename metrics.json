@@ -1,5 +1,5 @@
 {
-  "collection_duration_seconds": 5.506614446640015,
+  "collection_duration_seconds": 8.447270631790161,
   "commit_message": "Merge 8227d9f040714542e8aef46b5c1ec37c26f0eb12 into 65fa686cb41d54feeac65c9f05bdf7be60f3a216",
   "commit_sha": "a51db27026a78f220e7f2d8c22915004e5ba3f86",
   "metrics": {
@@ -11,19 +11,29 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 45421,
-      "comment_lines_ratio": 0.05819169012262008,
-      "docs_lines": 165568,
-      "empty_lines": 112130,
-      "empty_lines_ratio": 0.14365677139317473,
-      "files_analyzed": 1598,
-      "function_lines": 486816,
-      "function_lines_ratio": 0.6236904915949323,
-      "mean_lines_per_function": 19.20302946629324,
-      "num_classes": 3491,
-      "num_functions": 25351,
+      "comment_lines": 46326,
+      "comment_lines_ratio": 0.0581635650953322,
+      "docs_lines": 202003,
+      "empty_lines": 113879,
+      "empty_lines_ratio": 0.1429782115764654,
+      "errors": [
+        "_shape.py: invalid syntax (_shape.py, line 4)",
+        "_array_like.py: invalid syntax (_array_like.py, line 15)",
+        "_nbit.py: invalid syntax (_nbit.py, line 6)",
+        "_scalars.py: invalid syntax (_scalars.py, line 7)",
+        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
+        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
+        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
+      ],
+      "files_analyzed": 1504,
+      "function_lines": 517759,
+      "function_lines_ratio": 0.6500606419763006,
+      "mean_lines_per_function": 21.087402761373355,
+      "num_classes": 3240,
+      "num_functions": 24553,
       "pypi_version": "0.1.32",
-      "total_lines": 780541
+      "total_errors": 7,
+      "total_lines": 796478
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -34,14 +44,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T23:39:24Z",
+      "last_success_timestamp": "2026-11-23T21:23:29Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45084381252",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45268911901",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-23T21:23:34.074717Z",
+  "timestamp": "2026-11-23T21:23:41.735598Z",
   "workflow_status": {}
 }
