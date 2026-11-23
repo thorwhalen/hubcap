@@ -478,7 +478,17 @@ def ensure_full_name(repo: RepoSpec) -> str:
     'thorwhalen/hubcap'
     >>> ensure_full_name('thorwhalen/hubcap')
     'thorwhalen/hubcap'
+
+    A clone URL's ``.git`` suffix and the SSH form are understood too (#24):
+
+    >>> ensure_full_name('https://github.com/thorwhalen/hubcap.git')
+    'thorwhalen/hubcap'
+    >>> ensure_full_name('git@github.com:thorwhalen/hubcap.git')
+    'thorwhalen/hubcap'
     """
+    if isinstance(repo, str):
+        repo = repo.strip().removeprefix("git@github.com:")
+        repo = repo.rstrip("/").removesuffix(".git")
     suffix = ensure_url_suffix(repo)
     slash_seperated = suffix.strip("/").split("/")
     if len(slash_seperated) == 2:
