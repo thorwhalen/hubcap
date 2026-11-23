@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=d71dfaa1"></script>
+    <script src="../../_static/documentation_options.js?v=e0e570cb"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.31" />
+  <meta name="docsearch:version" content="0.1.32" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -1198,7 +1198,17 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    'thorwhalen/hubcap'</span>
 <span class="sd">    &gt;&gt;&gt; ensure_full_name('thorwhalen/hubcap')</span>
 <span class="sd">    'thorwhalen/hubcap'</span>
+
+<span class="sd">    A clone URL's ``.git`` suffix and the SSH form are understood too (#24):</span>
+
+<span class="sd">    &gt;&gt;&gt; ensure_full_name('https://github.com/thorwhalen/hubcap.git')</span>
+<span class="sd">    'thorwhalen/hubcap'</span>
+<span class="sd">    &gt;&gt;&gt; ensure_full_name('git@github.com:thorwhalen/hubcap.git')</span>
+<span class="sd">    'thorwhalen/hubcap'</span>
 <span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">"git@github.com:"</span><span class="p">)</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">".git"</span><span class="p">)</span>
     <span class="n">suffix</span> <span class="o">=</span> <span class="n">ensure_url_suffix</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
     <span class="n">slash_seperated</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">slash_seperated</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>

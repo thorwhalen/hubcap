@@ -1,36 +1,36 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T23:38:53Z",
+  "built_at": "2026-11-23T21:27:42Z",
   "package": {
     "name": "hubcap",
-    "version": "0.1.31",
+    "version": "0.1.32",
     "display_name": "hubcap",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "a5c38547301b0001aec467530b61c7b75e21ecbf",
-    "short_commit": "a5c3854",
+    "commit": "5cba53f15f2af88e198fdc8cc86ab972266a2c34",
+    "short_commit": "5cba53f",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/hubcap",
-    "commit_url": "https://github.com/thorwhalen/hubcap/commit/a5c38547301b0001aec467530b61c7b75e21ecbf",
+    "commit_url": "https://github.com/thorwhalen/hubcap/commit/5cba53f15f2af88e198fdc8cc86ab972266a2c34",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/hubcap",
-    "sha": "a5c38547301b0001aec467530b61c7b75e21ecbf",
+    "sha": "5cba53f15f2af88e198fdc8cc86ab972266a2c34",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45084219657",
-    "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45084219657",
+    "run_id": "45269540469",
+    "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45269540469",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.23",
+    "epythet": "0.2.25",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.16"
@@ -60,11 +60,11 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.31",
+    "latest": "0.1.32",
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/hubcap && cd hubcap\ngit checkout a5c38547301b0001aec467530b61c7b75e21ecbf\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/hubcap && cd hubcap\ngit checkout 5cba53f15f2af88e198fdc8cc86ab972266a2c34\npip install \"epythet==0.2.25\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

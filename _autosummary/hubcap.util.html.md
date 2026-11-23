@@ -146,6 +146,15 @@ Ensure we have a full name (user/repo string)
 'thorwhalen/hubcap'
 ```
 
+A clone URL’s `.git` suffix and the SSH form are understood too (#24):
+
+```pycon
+>>> ensure_full_name('https://github.com/thorwhalen/hubcap.git')
+'thorwhalen/hubcap'
+>>> ensure_full_name('git@github.com:thorwhalen/hubcap.git')
+'thorwhalen/hubcap'
+```
+
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
