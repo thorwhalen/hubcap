@@ -1,7 +1,7 @@
 {
-  "collection_duration_seconds": 8.037105560302734,
-  "commit_message": "docs: README opening (what it is, install, token), import in first example (#23)",
-  "commit_sha": "a5c38547301b0001aec467530b61c7b75e21ecbf",
+  "collection_duration_seconds": 6.760458707809448,
+  "commit_message": "ensure_full_name: understand a clone URL's .git suffix and the SSH form (#24)\n\ngit_wiki_clone of 'https://github.com/o/r.git' cloned 'r.git.wiki.git', and\n'git@github.com:o/r.git' became 'https://github.com/git@github.com:o/r.git'.\n\nCloses #24",
+  "commit_sha": "8227d9f040714542e8aef46b5c1ec37c26f0eb12",
   "metrics": {
     "coverage": {
       "branch_coverage": 0.0,
@@ -11,29 +11,19 @@
       "statements_total": 0
     },
     "umpyre_stats": {
-      "comment_lines": 46321,
-      "comment_lines_ratio": 0.05817744743168191,
-      "docs_lines": 201947,
-      "empty_lines": 113864,
-      "empty_lines_ratio": 0.1430089349185257,
-      "errors": [
-        "_shape.py: invalid syntax (_shape.py, line 4)",
-        "_array_like.py: invalid syntax (_array_like.py, line 15)",
-        "_nbit.py: invalid syntax (_nbit.py, line 6)",
-        "_scalars.py: invalid syntax (_scalars.py, line 7)",
-        "_char_codes.py: invalid syntax (_char_codes.py, line 3)",
-        "_dtype_like.py: invalid syntax (_dtype_like.py, line 21)",
-        "mypy_plugin.py: invalid syntax (mypy_plugin.py, line 118)"
-      ],
-      "files_analyzed": 1504,
-      "function_lines": 517598,
-      "function_lines_ratio": 0.6500837727109452,
-      "mean_lines_per_function": 21.08513931888545,
-      "num_classes": 3240,
-      "num_functions": 24548,
-      "pypi_version": "0.1.31",
-      "total_errors": 7,
-      "total_lines": 796202
+      "comment_lines": 45421,
+      "comment_lines_ratio": 0.05819169012262008,
+      "docs_lines": 165568,
+      "empty_lines": 112130,
+      "empty_lines_ratio": 0.14365677139317473,
+      "files_analyzed": 1598,
+      "function_lines": 486816,
+      "function_lines_ratio": 0.6236904915949323,
+      "mean_lines_per_function": 19.20302946629324,
+      "num_classes": 3491,
+      "num_functions": 25351,
+      "pypi_version": "0.1.32",
+      "total_lines": 780541
     },
     "wily": {
       "cyclomatic_avg": 0.0,
@@ -44,14 +34,14 @@
     },
     "workflow_status": {
       "last_run_status": "success",
-      "last_success_timestamp": "2026-11-22T23:36:59Z",
+      "last_success_timestamp": "2026-11-22T23:39:24Z",
       "recent_failure_count": 0,
-      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45084075779",
+      "run_url": "https://github.com/thorwhalen/hubcap/actions/runs/45084381252",
       "total_runs_analyzed": 10
     }
   },
   "python_version": "3.10",
   "schema_version": "1.0",
-  "timestamp": "2026-11-22T23:38:27.423902Z",
+  "timestamp": "2026-11-23T21:23:14.547767Z",
   "workflow_status": {}
 }
